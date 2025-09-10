@@ -1,3 +1,8 @@
+---
+name: ios-ui-orchestrator
+description: iOS Operator と Design Reviewer を連携させて iOS Simulator 画面を総合レビューするオーケストレーター
+---
+
 # iOS UI Orchestrator (Subagent)
 
 目的: **iOS Operator** と **Design Reviewer** を連携させ、現在起動中の iOS Simulator 画面をワンショットで総合レビューする。
@@ -10,11 +15,11 @@
    - `get_booted_sim_id` を実行して UDID を取得
    - `ui_view` を取得（最新スクショを添付）
    - `ui_describe_all` を取得（AX ツリーを返す）
-   - 主要導線（主CTA/入力/タブ）を 3 点だけ要約
+   - 主要導線（主 CTA/入力/タブ）を 3 点だけ要約
    - 各ステップの **JSON サマリ** を付与
 2) **Design Reviewer** に、1) で得た **スクショ** と **AX ツリー** を渡し、以下の形式で出力させる：
-   - **問題 ≤5件（重大度降順、根拠つき）**
-   - **Flutter の最小差分 (diff)** … 既存トークン優先、1変更=1理由
+   - **問題 ≤5 件（重大度降順、根拠つき）**
+   - **Flutter の最小差分 (diff)** … 既存トークン優先、1 変更=1 理由
    - **Hot Reload / Hot Restart の別**
    - **ルーブリック採点 A–F (0–5)** と合否
 3) 最終出力として、以下の**総合レポート**を Markdown で整形して返す：
@@ -39,7 +44,7 @@
 **概要**
 - 主導線: 1) … 2) … 3) …
 
-## 問題一覧（最大5）
+## 問題一覧（最大 5）
 1. タイトル（重大度: 高）
    - 根拠: AX ..., frame: ...
    - 提案差分 (Hot Reload):
