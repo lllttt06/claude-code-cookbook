@@ -1,0 +1,22 @@
+[
+  {
+    "content": "dart format lib/ を実行してDartコードをフォーマット",
+    "status": "completed",
+    "activeForm": "dart format lib/ を実行中"
+  },
+  {
+    "content": "flutter pub run import_sorter:main lib/ を実行してimport文を整理",
+    "status": "completed",
+    "activeForm": "import文を整理中"
+  },
+  {
+    "content": "flutter analyze lib && flutter analyze test を実行して静的解析でエラーチェック",
+    "status": "in_progress",
+    "activeForm": "静的解析でエラーチェック中"
+  },
+  {
+    "content": "dart fix --apply を実行して自動修正（必要に応じて）",
+    "status": "pending",
+    "activeForm": "自動修正を実行中"
+  }
+]

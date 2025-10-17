@@ -1,0 +1,22 @@
+[
+  {
+    "content": "AuthClient._processAuthException の実装を確認",
+    "status": "completed",
+    "activeForm": "AuthClient._processAuthException の実装を確認中"
+  },
+  {
+    "content": "UnconfirmedEmailFailure 時に email を保存する処理を AuthClient に追加",
+    "status": "completed",
+    "activeForm": "UnconfirmedEmailFailure 時に email を保存する処理を AuthClient に追加中"
+  },
+  {
+    "content": "LoginPage から email 保存処理を削除",
+    "status": "completed",
+    "activeForm": "LoginPage から email 保存処理を削除中"
+  },
+  {
+    "content": "変更内容の動作確認",
+    "status": "in_progress",
+    "activeForm": "変更内容を動作確認中"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "content": "iOS側: currentEntitlements取得前に自動sync実装",
+    "status": "completed",
+    "activeForm": "iOS側で currentEntitlements取得前に自動sync実装中"
+  },
+  {
+    "content": "Flutter側: リトライメカニズムの実装",
+    "status": "completed",
+    "activeForm": "Flutter側でリトライメカニズムを実装中"
+  },
+  {
+    "content": "コードの動作確認とエラーチェック",
+    "status": "in_progress",
+    "activeForm": "コードの動作確認とエラーチェック中"
+  }
+]

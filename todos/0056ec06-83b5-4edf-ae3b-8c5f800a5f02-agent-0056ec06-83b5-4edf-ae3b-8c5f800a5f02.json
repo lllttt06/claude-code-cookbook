@@ -1,0 +1,12 @@
+[
+  {
+    "content": "AICoachReportContent にカスタム JSON パーサーを追加",
+    "status": "completed",
+    "activeForm": "AICoachReportContent にカスタム JSON パーサーを追加中"
+  },
+  {
+    "content": "build_runner でコード生成を実行",
+    "status": "in_progress",
+    "activeForm": "build_runner でコード生成を実行中"
+  }
+]

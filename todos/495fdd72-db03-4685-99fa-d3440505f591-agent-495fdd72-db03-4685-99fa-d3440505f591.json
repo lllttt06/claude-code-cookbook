@@ -1,0 +1,22 @@
+[
+  {
+    "content": "PR レビューの体系的実施",
+    "status": "in_progress",
+    "activeForm": "PR レビューを体系的に実施中"
+  },
+  {
+    "content": "セキュリティとコード品質の評価",
+    "status": "pending",
+    "activeForm": "セキュリティとコード品質を評価中"
+  },
+  {
+    "content": "アーキテクチャとパフォーマンスの確認",
+    "status": "pending",
+    "activeForm": "アーキテクチャとパフォーマンスを確認中"
+  },
+  {
+    "content": "レビューコメントの作成",
+    "status": "pending",
+    "activeForm": "レビューコメントを作成中"
+  }
+]

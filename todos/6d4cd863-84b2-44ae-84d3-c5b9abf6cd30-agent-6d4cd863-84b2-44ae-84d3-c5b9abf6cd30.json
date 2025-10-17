@@ -1,0 +1,12 @@
+[
+  {
+    "content": "AICoachValidator のコード生成を実行",
+    "status": "in_progress",
+    "activeForm": "AICoachValidator のコード生成を実行中"
+  },
+  {
+    "content": "switch 文の exhaustive pattern matching エラーを修正",
+    "status": "pending",
+    "activeForm": "switch 文の exhaustive pattern matching エラーを修正中"
+  }
+]

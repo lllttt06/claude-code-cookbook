@@ -1,0 +1,22 @@
+[
+  {
+    "content": "app_en.arb から指定された文言を削除",
+    "status": "completed",
+    "activeForm": "app_en.arb から指定された文言を削除中"
+  },
+  {
+    "content": "app_ja.arb から指定された文言を削除",
+    "status": "completed",
+    "activeForm": "app_ja.arb から指定された文言を削除中"
+  },
+  {
+    "content": "mise l10n を実行して生成ファイルを更新",
+    "status": "completed",
+    "activeForm": "mise l10n を実行中"
+  },
+  {
+    "content": "mise analyze でエラーチェック",
+    "status": "in_progress",
+    "activeForm": "mise analyze でエラーチェック中"
+  }
+]

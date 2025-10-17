@@ -1,0 +1,12 @@
+[
+  {
+    "content": "UserData に emailVerified フィールドを追加",
+    "status": "completed",
+    "activeForm": "UserData に emailVerified フィールドを追加中"
+  },
+  {
+    "content": "分析サーバーの起動状態を確認",
+    "status": "in_progress",
+    "activeForm": "分析サーバーの起動状態を確認中"
+  }
+]

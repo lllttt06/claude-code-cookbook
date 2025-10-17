@@ -1,0 +1,22 @@
+[
+  {
+    "content": "mise l10n を実行して ARB ファイルの変更を反映（手動実行が必要）",
+    "status": "pending",
+    "activeForm": "mise l10n の実行を待機中"
+  },
+  {
+    "content": "mise format_dart を実行して Dart コードをフォーマット（手動実行が必要）",
+    "status": "pending",
+    "activeForm": "mise format_dart の実行を待機中"
+  },
+  {
+    "content": "mise format_import を実行して import 文を整理（手動実行が必要）",
+    "status": "pending",
+    "activeForm": "mise format_import の実行を待機中"
+  },
+  {
+    "content": "mise analyze を実行して静的解析でエラーチェック（手動実行が必要）",
+    "status": "pending",
+    "activeForm": "mise analyze の実行を待機中"
+  }
+]

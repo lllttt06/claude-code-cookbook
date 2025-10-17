@@ -1,0 +1,27 @@
+[
+  {
+    "content": "plan_card.dart に use_ai_coach_count をインポート",
+    "status": "completed",
+    "activeForm": "use_ai_coach_count をインポート中"
+  },
+  {
+    "content": "_CurrentPlanSection に AI コーチ使用状況の表示を追加",
+    "status": "completed",
+    "activeForm": "AI コーチ使用状況の表示を追加中"
+  },
+  {
+    "content": "既存の使用状況ラベルを「解析」であることを明確にする",
+    "status": "completed",
+    "activeForm": "解析使用状況のラベルを更新中"
+  },
+  {
+    "content": "ARB ファイルに必要な翻訳キーを追加",
+    "status": "completed",
+    "activeForm": "翻訳キーを追加中"
+  },
+  {
+    "content": "コード生成とフォーマット実行",
+    "status": "in_progress",
+    "activeForm": "コード生成とフォーマット実行中"
+  }
+]

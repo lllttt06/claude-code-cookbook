@@ -1,0 +1,27 @@
+[
+  {
+    "content": "ハードコードされた文言を特定",
+    "status": "completed",
+    "activeForm": "ハードコードされた文言を特定中"
+  },
+  {
+    "content": "l10nファイルに文言を追加",
+    "status": "completed",
+    "activeForm": "l10nファイルに文言を追加中"
+  },
+  {
+    "content": "SubscriptionPageで l10n を使用するように更新",
+    "status": "completed",
+    "activeForm": "SubscriptionPageで l10n を使用するように更新中"
+  },
+  {
+    "content": "l10n コード生成を実行",
+    "status": "completed",
+    "activeForm": "l10n コード生成を実行中"
+  },
+  {
+    "content": "コードの静的解析を実行",
+    "status": "in_progress",
+    "activeForm": "コードの静的解析を実行中"
+  }
+]

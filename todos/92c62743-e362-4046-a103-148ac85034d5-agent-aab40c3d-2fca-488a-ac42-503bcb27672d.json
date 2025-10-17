@@ -1,0 +1,12 @@
+[
+  {
+    "content": "Install Jest and related packages",
+    "status": "completed",
+    "activeForm": "Installing Jest and related packages"
+  },
+  {
+    "content": "Verify installed packages in package.json",
+    "status": "pending",
+    "activeForm": "Verifying installed packages in package.json"
+  }
+]

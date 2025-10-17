@@ -1,0 +1,37 @@
+[
+  {
+    "content": "TeamPlanStatus の analysisLimit テストを修正",
+    "status": "completed",
+    "activeForm": "TeamPlanStatus の analysisLimit テストを修正中"
+  },
+  {
+    "content": "TeamPlanStatus の analysisLimitIsApproaching テストを修正",
+    "status": "completed",
+    "activeForm": "TeamPlanStatus の analysisLimitIsApproaching テストを修正中"
+  },
+  {
+    "content": "BallAnalysisUsageStatus のテストを追加",
+    "status": "completed",
+    "activeForm": "BallAnalysisUsageStatus のテストを追加中"
+  },
+  {
+    "content": "AiCoachUsageStatus のテストを追加",
+    "status": "completed",
+    "activeForm": "AiCoachUsageStatus のテストを追加中"
+  },
+  {
+    "content": "canAnalyzeBall のテストを追加",
+    "status": "completed",
+    "activeForm": "canAnalyzeBall のテストを追加中"
+  },
+  {
+    "content": "canUseAiCoach のテストを追加",
+    "status": "completed",
+    "activeForm": "canUseAiCoach のテストを追加中"
+  },
+  {
+    "content": "mise test でテスト実行",
+    "status": "in_progress",
+    "activeForm": "mise test でテスト実行中"
+  }
+]

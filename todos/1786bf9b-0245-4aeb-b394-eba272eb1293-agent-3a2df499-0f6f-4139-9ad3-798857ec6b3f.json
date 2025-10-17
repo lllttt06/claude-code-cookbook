@@ -1,0 +1,12 @@
+[
+  {
+    "content": "dart run build_runner build --delete-conflicting-outputs を実行してコード生成",
+    "status": "completed",
+    "activeForm": "dart run build_runner build --delete-conflicting-outputs を実行中"
+  },
+  {
+    "content": "mise analyze を実行してエラーチェック",
+    "status": "in_progress",
+    "activeForm": "mise analyze を実行中"
+  }
+]

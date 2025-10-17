@@ -1,0 +1,12 @@
+[
+  {
+    "content": "Team クラスの getter のテストコード作成",
+    "status": "in_progress",
+    "activeForm": "Team クラスのテストコードを作成中"
+  },
+  {
+    "content": "team-status.ts のヘルパー関数のテストコード作成",
+    "status": "completed",
+    "activeForm": "team-status.ts のテストコードを作成中"
+  }
+]

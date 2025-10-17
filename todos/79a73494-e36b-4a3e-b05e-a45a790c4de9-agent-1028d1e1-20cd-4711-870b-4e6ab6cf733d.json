@@ -1,0 +1,17 @@
+[
+  {
+    "content": "Investigate PhaseScriptExecution build error",
+    "status": "completed",
+    "activeForm": "Investigating PhaseScriptExecution build error"
+  },
+  {
+    "content": "Fix storefront_provider.dart type error",
+    "status": "completed",
+    "activeForm": "Fixing storefront_provider.dart type error"
+  },
+  {
+    "content": "Verify Xcode build succeeds",
+    "status": "in_progress",
+    "activeForm": "Verifying Xcode build succeeds"
+  }
+]
