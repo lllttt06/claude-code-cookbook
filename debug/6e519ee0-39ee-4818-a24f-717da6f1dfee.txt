@@ -1,0 +1,515 @@
+[DEBUG] Watching for changes in setting files /Users/kokiyoshida/.claude/settings.json, /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.claude/settings.local.json...
+[DEBUG] Applying permission update: Adding 14 allow rule(s) to destination 'userSettings': ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Applying permission update: Adding 51 deny rule(s) to destination 'userSettings': ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+[DEBUG] >>>>> getSkillsIfEnabled() CALLED <<<<<
+[DEBUG] ENABLE_SKILLS value: false, type: boolean
+[DEBUG] ENABLE_SKILLS check failed, returning empty
+[DEBUG] Creating shell snapshot for zsh (/bin/zsh)
+[DEBUG] Looking for shell config file: /Users/kokiyoshida/.zshrc
+[DEBUG] Snapshots directory: /Users/kokiyoshida/.claude/shell-snapshots
+[DEBUG] Creating snapshot at: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760576383532-2we3wa.sh
+[DEBUG] Shell binary exists: true
+[DEBUG] Execution timeout: 10000ms
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/6e519ee0-39ee-4818-a24f-717da6f1dfee-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760576383534
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/6e519ee0-39ee-4818-a24f-717da6f1dfee-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760576383534 to /Users/kokiyoshida/.claude/todos/6e519ee0-39ee-4818-a24f-717da6f1dfee-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/6e519ee0-39ee-4818-a24f-717da6f1dfee-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Total plugin commands loaded: 0
+[DEBUG] Registered 0 hooks from 0 plugins
+[DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg)
+[DEBUG] Total plugin agents loaded: 0
+[DEBUG] Shell snapshot created successfully (68564 bytes)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576383844
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576383844 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576383884
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576383884 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576383936
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576383936 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] MCP server "serena": Starting connection with timeout of 30000ms
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576384290
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576384290 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for SessionStart with query: startup
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576384354
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293092 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576384354 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576384387
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293092 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576384387 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] performStartupChecks called, ENABLE_PLUGINS=true
+[DEBUG] Starting background plugin installations
+[DEBUG] performBackgroundPluginInstallations called
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576384938
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576384938 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Setting installation status: 0 marketplaces, 0 installable plugins, 0 uninstallable plugins
+[DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+[DEBUG] Stream started - received first chunk
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,480 [MainThread] serena.cli:start_mcp_server:172 - Initializing Serena MCP server
+INFO  2025-10-16 09:59:45,481 [MainThread] serena.cli:start_mcp_server:173 - Storing logs in /Users/kokiyoshida/.serena/logs/2025-10-16/mcp_20251016-095945.txt
+INFO  2025-10-16 09:59:45,482 [MainThread] serena.config.serena_config:from_config_file:413 - Loading Serena configuration from /Users/kokiyoshida/.serena/serena_config.yml
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,594 [MainThread] serena.agent:__init__:186 - Starting Serena server (version=0.1.4-1453f35a, process id=74752, parent process id=74720)
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,594 [MainThread] serena.agent:__init__:187 - Configuration file: /Users/kokiyoshida/.serena/serena_config.yml
+INFO  2025-10-16 09:59:45,594 [MainThread] serena.agent:__init__:188 - Available projects: baseball_detector_api, baseball_detector_flutter, baseball_detector_web
+INFO  2025-10-16 09:59:45,595 [MainThread] serena.agent:__init__:189 - Loaded tools (36): read_file, create_text_file, list_dir, find_file, replace_regex, delete_lines, replace_lines, insert_at_line, search_for_pattern, restart_language_server, get_symbols_overview, find_symbol, find_referencing_symbols, replace_symbol_body, insert_after_symbol, insert_before_symbol, write_memory, read_memory, list_memories, delete_memory, execute_shell_command, activate_project, remove_project, switch_modes, get_current_config, check_onboarding_performed, onboarding, think_about_collected_information, think_about_task_adherence, think_about_whether_you_are_done, summarize_changes, prepare_for_new_conversation, initial_instructions, jet_brains_find_symbol, jet_brains_find_referencing_symbols, jet_brains_get_symbols_overview
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,595 [MainThread] serena.config.serena_config:start:329 - Loading project instance for RegisteredProject[project_root=/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter, project_config=ProjectConfig[project_name='baseball_detector_flutter']] starting ...
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,596 [MainThread] serena.util.file_system:start:329 - Loading of .gitignore files starting ...
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,596 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,599 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/ios/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,601 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_video_editor/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,603 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,604 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/volume_key_listener/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,606 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_configurable_camera/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,609 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_video_editor/example/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,612 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_video_editor/ios/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,614 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_video_editor/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,616 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/scripts/environment_json_uploader/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,619 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/volume_key_listener/example/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,621 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/volume_key_listener/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,622 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_configurable_camera/example/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,625 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_configurable_camera/ios/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,627 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_configurable_camera/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,631 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_video_editor/example/ios/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,634 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_video_editor/example/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,640 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/volume_key_listener/example/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,642 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_configurable_camera/example/ios/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,645 [MainThread] serena.util.file_system:_load_gitignore_files:148 - Processing .gitignore file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/knowhere_configurable_camera/example/android/.gitignore
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,709 [MainThread] serena.util.file_system:stop:336 - Loading of .gitignore files completed in 0.114 seconds
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,714 [MainThread] serena.config.serena_config:stop:336 - Loading project instance for RegisteredProject[project_root=/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter, project_config=ProjectConfig[project_name='baseball_detector_flutter']] completed in 0.119 seconds
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,714 [MainThread] serena.agent:load_project_from_path_or_name:454 - Found registered project 'baseball_detector_flutter' at path /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter
+INFO  2025-10-16 09:59:45,714 [MainThread] serena.config.serena_config:apply:108 - SerenaAgentContext[name='ide-assistant'] excluded 5 tools: create_text_file, read_file, execute_shell_command, prepare_for_new_conversation, replace_regex
+INFO  2025-10-16 09:59:45,714 [MainThread] serena.config.serena_config:apply:108 - ToolInclusionDefinition(excluded_tools=['activate_project', 'get_current_config'], included_optional_tools=()) excluded 2 tools: activate_project, get_current_config
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,715 [MainThread] serena.agent:__init__:203 - Number of exposed tools: 18
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,727 [MainThread] serena.agent:_update_active_tools:383 - Active tools (18): check_onboarding_performed, delete_memory, find_file, find_referencing_symbols, find_symbol, get_symbols_overview, insert_after_symbol, insert_before_symbol, list_dir, list_memories, onboarding, read_memory, replace_symbol_body, search_for_pattern, think_about_collected_information, think_about_task_adherence, think_about_whether_you_are_done, write_memory
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,728 [MainThread] serena.agent:load_project_from_path_or_name:454 - Found registered project 'baseball_detector_flutter' at path /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter
+INFO  2025-10-16 09:59:45,728 [MainThread] serena.agent:_activate_project:423 - Activating baseball_detector_flutter at /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,728 [MainThread] serena.agent:_update_active_tools:383 - Active tools (18): check_onboarding_performed, delete_memory, find_file, find_referencing_symbols, find_symbol, get_symbols_overview, insert_after_symbol, insert_before_symbol, list_dir, list_memories, onboarding, read_memory, replace_symbol_body, search_for_pattern, think_about_collected_information, think_about_task_adherence, think_about_whether_you_are_done, write_memory
+INFO  2025-10-16 09:59:45,728 [MainThread] serena.agent:issue_task:402 - Scheduling Task-1[init_language_server]
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,728 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-1[init_language_server] starting ...
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,728 [MainThread] serena.agent:create_system_prompt:355 - Generating system prompt with available_tools=(see exposed tools), available_markers={'ToolMarkerCanEdit', 'InsertAfterSymbolTool', 'ToolMarkerSymbolicRead', 'FindReferencingSymbolsTool', 'FindSymbolTool', 'InsertBeforeSymbolTool', 'GetSymbolsOverviewTool', 'ReplaceSymbolBodyTool', 'ToolMarkerSymbolicEdit'}
+INFO  2025-10-16 09:59:45,728 [SerenaAgentExecutor_0] serena.agent:start:329 - Language server initialization starting ...
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,731 [MainThread] serena.agent:create_system_prompt:362 - System prompt:
+You are a professional coding agent concerned with one particular codebase. You have 
+access to semantic coding tools on which you rely heavily for all your work, as well as collection of memory 
+files containing general information about the codebase. You operate in a resource-efficient and intelligent manner, always
+keeping in mind to not read or generate content that is not needed for the task at hand.
+
+When reading code in order to answer a user question or task, you should try reading only the necessary code. 
+Some tasks may require you to understand the architecture of large parts of the codebase, while for others,
+it may be enough to read a small set of symbols or a single file.
+Generally, you should avoid reading entire files unless it is absolutely necessary, instead relying on
+intelligent step-by-step acquisition of information. However, if you already read a file, it does not make
+sense to further analyse it with the symbolic tools (except for the `find_referencing_symbols` tool), 
+as you already have the information.
+
+I WILL BE SERIOUSLY UPSET IF YOU READ ENTIRE FILES WITHOUT NEED!
+
+CONSIDER INSTEAD USING THE OVERVIEW TOOL AND SYMBOLIC TOOLS TO READ ONLY THE NECESSARY CODE FIRST!
+I WILL BE EVEN MORE UPSET IF AFTER HAVING READ AN ENTIRE FILE YOU KEEP READING THE SAME CONTENT WITH THE SYMBOLIC TOOLS!
+THE PURPOSE OF THE SYMBOLIC TOOLS IS TO HAVE TO READ LESS CODE, NOT READ THE SAME CONTENT MULTIPLE TIMES!
+
+
+You can achieve the intelligent reading of code by using the symbolic tools for getting an overview of symbols and
+the relations between them, and then only reading the bodies of symbols that are necessary to answer the question 
+or complete the task. 
+You can use the standard tools like list_dir, find_file and search_for_pattern if you need to.
+When tools allow it, you pass the `relative_path` parameter to restrict the search to a specific file or directory.
+For some tools, `relative_path` can only be a file path, so make sure to properly read the tool descriptions.
+
+If you are unsure about a symbol's name or location (to the extent that substring_matching for the symbol name is not enough), you can use the `search_for_pattern` tool, which allows fast
+and flexible search for patterns in the codebase.This way you can first find candidates for symbols or files,
+and then proceed with the symbolic tools.
+
+
+
+Symbols are identified by their `name_path and `relative_path`, see the description of the `find_symbol` tool for more details
+on how the `name_path` matches symbols.
+You can get information about available symbols by using the `get_symbols_overview` tool for finding top-level symbols in a file,
+or by using `find_symbol` if you already know the symbol's name path. You generally try to read as little code as possible
+while still solving your task, meaning you only read the bodies when you need to, and after you have found the symbol you want to edit.
+For example, if you are working with python code and already know that you need to read the body of the constructor of the class Foo, you can directly
+use `find_symbol` with the name path `Foo/__init__` and `include_body=True`. If you don't know yet which methods in `Foo` you need to read or edit,
+you can use `find_symbol` with the name path `Foo`, `include_body=False` and `depth=1` to get all (top-level) methods of `Foo` before proceeding
+to read the desired methods with `include_body=True`
+You can understand relationships between symbols by using the `find_referencing_symbols` tool.
+
+
+
+You generally have access to memories and it may be useful for you to read them, but also only if they help you
+to answer the question or complete the task. You can infer which memories are relevant to the current task by reading
+the memory names and descriptions.
+
+
+The context and modes of operation are described below. From them you can infer how to interact with your user
+and which tasks and kinds of interactions are expected of you.
+
+Context description:
+You are running in IDE assistant context where file operations, basic (line-based) edits and reads, 
+and shell commands are handled by your own, internal tools.
+The initial instructions and the current config inform you on which tools are available to you,
+and how to use them.
+Don't attempt to use any excluded tools, instead rely on your own internal tools
+for achieving the basic file or shell operations.
+
+If serena's tools can be used for achieving your task, 
+you should prioritize them. In particular, it is important that you avoid reading entire source code files,
+unless it is strictly necessary! Instead, for exploring and reading code in a token-efficient manner, 
+you should use serena's overview and symbolic search tools. 
+Before reading a full file, it is usually best to first explore the file using the symbol_overview tool, 
+and then make targeted reads using find_symbol and other symbolic tools.
+For non-code files or for reads where you don't know the symbol's name path, you can use the pattern searching tool,
+and read full files only as a last resort.
+
+Modes descriptions:
+
+- You are operating in interactive mode. You should engage with the user throughout the task, asking for clarification
+whenever anything is unclear, insufficiently specified, or ambiguous.
+
+Break down complex tasks into smaller steps and explain your thinking at each stage. When you're uncertain about
+a decision, present options to the user and ask for guidance rather than making assumptions.
+
+Focus on providing informative results for intermediate steps so the user can follow along with your progress and
+provide feedback as needed.
+
+- You are operating in editing mode. You can edit files with the provided tools
+to implement the requested changes to the code base while adhering to the project's code style and patterns.
+Use symbolic editing tools whenever possible for precise code modifications.
+If no editing task has yet been provided, wait for the user to provide one.
+
+When writing new code, think about where it belongs best. Don't generate new files if you don't plan on actually
+integrating them into the codebase, instead use the editing tools to insert the code directly into the existing files in that case.
+
+You have two main approaches for editing code - editing by regex and editing by symbol.
+The symbol-based approach is appropriate if you need to adjust an entire symbol, e.g. a method, a class, a function, etc.
+But it is not appropriate if you need to adjust just a few lines of code within a symbol, for that you should
+use the regex-based approach that is described below.
+
+Let us first discuss the symbol-based approach.
+Symbols are identified by their name path and relative file path, see the description of the `find_symbol` tool for more details
+on how the `name_path` matches symbols.
+You can get information about available symbols by using the `get_symbols_overview` tool for finding top-level symbols in a file,
+or by using `find_symbol` if you already know the symbol's name path. You generally try to read as little code as possible
+while still solving your task, meaning you only read the bodies when you need to, and after you have found the symbol you want to edit.
+Before calling symbolic reading tools, you should have a basic understanding of the repository structure that you can get from memories
+or by using the `list_dir` and `find_file` tools (or similar).
+For example, if you are working with python code and already know that you need to read the body of the constructor of the class Foo, you can directly
+use `find_symbol` with the name path `Foo/__init__` and `include_body=True`. If you don't know yet which methods in `Foo` you need to read or edit,
+you can use `find_symbol` with the name path `Foo`, `include_body=False` and `depth=1` to get all (top-level) methods of `Foo` before proceeding
+to read the desired methods with `include_body=True`.
+In particular, keep in mind the description of the `replace_symbol_body` tool. If you want to add some new code at the end of the file, you should
+use the `insert_after_symbol` tool with the last top-level symbol in
+[ERROR] MCP server "serena" Server stderr: the file. If you want to add an import, often a good strategy is to use
+`insert_before_symbol` with the first top-level symbol in the file.
+You can understand relationships between symbols by using the `find_referencing_symbols` tool. If not explicitly requested otherwise by a user,
+you make sure that when you edit a symbol, it is either done in a backward-compatible way, or you find and adjust the references as needed.
+The `find_referencing_symbols` tool will give you code snippets around the references, as well as symbolic information.
+You will generally be able to use the info from the snippets and the regex-based approach to adjust the references as well.
+You can assume that all symbol editing tools are reliable, so you don't need to verify the results if the tool returns without error.
+
+
+
+INFO  2025-10-16 09:59:45,731 [SerenaAgentExecutor_0] serena.project:create_language_server:307 - Creating language server instance for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter.
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,734 [MainThread] serena.cli:start_mcp_server:191 - Starting MCP server …
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,781 [MainThread] serena.mcp:_set_mcp_tools:240 - Starting MCP server with 18 tools: ['list_dir', 'find_file', 'search_for_pattern', 'get_symbols_overview', 'find_symbol', 'find_referencing_symbols', 'replace_symbol_body', 'insert_after_symbol', 'insert_before_symbol', 'write_memory', 'read_memory', 'list_memories', 'delete_memory', 'check_onboarding_performed', 'onboarding', 'think_about_collected_information', 'think_about_task_adherence', 'think_about_whether_you_are_done']
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,782 [MainThread] serena.mcp:server_lifespan:347 - MCP server lifetime setup complete
+[DEBUG] MCP server "serena": Successfully connected to stdio server in 1535ms
+[DEBUG] MCP server "serena": Connection established with capabilities: {"hasTools":true,"hasPrompts":true,"hasResources":true,"serverVersion":{"name":"FastMCP","version":"1.12.3"}}
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,786 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type ListToolsRequest
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,787 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type ListPromptsRequest
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,788 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type ListResourcesRequest
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,842 [SerenaAgentExecutor_0] solidlsp:load_cache:1589 - Loading document symbols cache from /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.serena/cache/python/document_symbols_cache_v23-06-25.pkl
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,845 [SerenaAgentExecutor_0] solidlsp:load_cache:1593 - Loaded 50 document symbols from cache.
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,851 [SerenaAgentExecutor_0] serena.agent:reset_language_server:575 - Starting the language server for baseball_detector_flutter
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,851 [SerenaAgentExecutor_0] solidlsp:start:1635 - Starting language server with language python for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,852 [SerenaAgentExecutor_0] solidlsp:_start_server:172 - Starting pyright-langserver server process
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,852 [SerenaAgentExecutor_0] solidlsp.ls_handler:start:189 - Starting language server process via command: python -m pyright.langserver --stdio
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:45,856 [SerenaAgentExecutor_0] solidlsp:_start_server:178 - Sending initialize request from LSP client to pyright server and awaiting response
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,103 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Pyright language server 1.1.406 starting
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,103 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Server root directory: file:///Users/kokiyoshida/.cache/uv/archive-v0/5Loq8oF5bKfnSHqnwT1T_/lib/python3.11/site-packages/pyright/dist/dist
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,105 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Starting service instance "baseball_detector_flutter"
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,106 [SerenaAgentExecutor_0] solidlsp:_start_server:183 - Received initialize response from pyright server: {"capabilities": {"textDocumentSync": 2, "definitionProvider": {"workDoneProgress": True}, "declarationProvider": {"workDoneProgress": True}, "typeDefinitionProvider": {"workDoneProgress": True}, "referencesProvider": {"workDoneProgress": True}, "documentSymbolProvider": {"workDoneProgress": True}, "workspaceSymbolProvider": {"workDoneProgress": True}, "hoverProvider": {"workDoneProgress": True}, "documentHighlightProvider": {"workDoneProgress": True}, "renameProvider": {"prepareProvider": True, "workDoneProgress": True}, "completionProvider": {"triggerCharacters": [".", "[", """, """], "resolveProvider": True, "workDoneProgress": True, "completionItem": {"labelDetailsSupport": True}}, "signatureHelpProvider": {"triggerCharacters": ["(", ",", ")"], "workDoneProgress": True}, "codeActionProvider": {"codeActionKinds": ["quickfix", "source.organizeImports"], "workDoneProgress": True}, "executeCommandProvider": {"commands": [], "workDoneProgress": True}, "callHierarchyProvider": True, "workspace": {"workspaceFolders": {"supported": True, "changeNotifications": True}}}}
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,106 [SerenaAgentExecutor_0] solidlsp:_start_server:195 - Waiting for Pyright to complete initial workspace analysis...
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,219 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: No include entries specified; assuming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,219 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Auto-excluding **/node_modules
+INFO  2025-10-16 09:59:46,220 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Auto-excluding **/__pycache__
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,220 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Auto-excluding **/.*
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,220 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Assuming Python version 3.11.13.final.0
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:46,479 [LSP-stdout-reader] solidlsp:window_log_message:142 - LSP: window/logMessage: Found 4 source files
+INFO  2025-10-16 09:59:46,479 [LSP-stdout-reader] solidlsp:window_log_message:147 - Pyright workspace scanning complete
+INFO  2025-10-16 09:59:46,480 [SerenaAgentExecutor_0] solidlsp:_start_server:197 - Pyright initial analysis complete, server ready
+INFO  2025-10-16 09:59:46,480 [SerenaAgentExecutor_0] serena.agent:stop:336 - Language server initialization completed in 0.752 seconds
+INFO  2025-10-16 09:59:46,480 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-1[init_language_server] completed in 0.752 seconds
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Getting matching hook commands for SubagentStop with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] FileHistory: Added snapshot for 872eaa8d-3d84-4b2c-8621-b3ac9da8574a, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[ERROR] SyntaxError: SyntaxError: Unexpected token '`', "```json
+{
+"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:62:719
+    at Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:8:15093)
+    at Pi2 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1056:20444)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:57,904 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 09:59:57,905 [MainThread] serena.agent:issue_task:402 - Scheduling Task-2[FindSymbolTool]
+INFO  2025-10-16 09:59:57,906 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-2[FindSymbolTool] starting ...
+INFO  2025-10-16 09:59:57,906 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - find_symbol: name_path='Team', depth=1, relative_path='lib/data/models', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:58,155 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: []
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 09:59:58,156 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-2[FindSymbolTool] completed in 0.250 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 257ms
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_file
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_file
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_file" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: find_file
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 10:00:01,394 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 10:00:01,394 [MainThread] serena.agent:issue_task:402 - Scheduling Task-3[FindFileTool]
+INFO  2025-10-16 10:00:01,394 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-3[FindFileTool] starting ...
+INFO  2025-10-16 10:00:01,394 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - find_file: file_mask='team.dart', relative_path='lib/data/models'
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 10:00:01,423 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: {"files": ["lib/data/models/team.dart"]}
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 10:00:01,423 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-3[FindFileTool] completed in 0.029 seconds
+[DEBUG] MCP server "serena": Tool 'find_file' completed successfully in 32ms
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_file
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_file" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n    };","new_string":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n      'users': null,\n    };"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n    };","new_string":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n      'users': null,\n    };"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart.tmp.74124.1760576428633
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 33908 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart.tmp.74124.1760576428633 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n    };","new_string":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n      'users': null,\n    };"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","oldString":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n    };","newString":"    final teamJson = {\n      'id': id,\n      'name': name,\n      'ownerUserId': ownerUserId,\n      'createdAt': fixedCreatedAt.toIso8601String(),\n      'updatedAt': fixedUpdatedAt.toIso8601String(),\n      'imageUrl': imageUrl,\n      'teamPlan': {\n        'id': oldTeamPlanId,\n        'teamId': teamPlan.teamId,\n        'planId': teamPlan.planId,\n        'startDate': teamPlan.startDate!.toIso8601String(),\n        'endDate': teamPlan.endDate!.toIso8601String(),\n        'currentUsage': teamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': teamPlan.isActive,\n        'isPendingActivation': teamPlan.isPendingActivation,\n        'createdAt': teamPlan.createdAt!.toIso8601String(),\n        'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'nextTeamPlan': {\n        'id': oldNextTeamPlanId,\n        'teamId': nextTeamPlan.teamId,\n        'planId': nextTeamPlan.planId,\n        'startDate': nextTeamPlan.startDate!.toIso8601String(),\n        'endDate': nextTeamPlan.endDate!.toIso8601String(),\n        'currentUsage': nextTeamPlan.currentUsage,\n        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n        'isActive': nextTeamPlan.isActive,\n        'isPendingActivation': nextTeamPlan.isPendingActivation,\n        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n        'plan': null,\n        'appleSubscription': null,\n        'stripeSubscription': null,\n      },\n      'presignedImageUrl': presignedImageUrl,\n      'teamType': 'multiple',\n      'teamPlanCancelAt': null,\n      'teamPlanDowngradeAt': null,\n      'billingFailureReason': null,\n      'downgradePlanId': null,\n      'users': null,\n    };","originalFile":"// Package imports
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192 (line 1 column 8193)
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 15);","new_string":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 16);"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 15);","new_string":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 16);"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart.tmp.74124.1760576458800
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 33908 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart.tmp.74124.1760576458800 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 15);","new_string":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 16);"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","oldString":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 15);","newString":"      final teamJson = team.toJson();\n\n      expect(teamJson.length, 16);","originalFile":"// Package imports:\nimport 'package:flutter_test/flutter_test.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/data/models/item.dart';\nimport 'package:baseball_detector_flutter/data/models/plan.dart';\nimport 'package:baseball_detector_flutter/data/models/team.dart';\nimport 'package:baseball_detector_flutter/data/models/team_plan.dart';\nimport 'package:baseball_detector_flutter/data/models/utils/now_provider.dart';\n\n// ========================================\n// テストヘルパー関数\n// ========================================\n\n/// 共通で使用する定数\nconst id = '00000000-0000-4000-8000-000000000000';\nconst teamPlanId = '77777777-0003-0001-0000-000000000001';\nconst teamPlanId2 = '77777777-0003-0001-0000-000000000002';\nconst name = 'test name';\nconst ownerUserId = '00000000-0000-4000-8000-000000000001';\nconst imageUrl = 'https://example.test/image.jpg';\nconst presignedImageUrl = 'https://example.test/image.jpg?presigned';\n\n/// テストで使用する日時を返す\nDateTime now() => DateTime.now();\nDateTime createdAt() => now().subtract(const Duration(days: 1));\nDateTime updatedAt() => now().subtract(const Duration(days: 1));\n\n/// 標準的な Plan を作成\nPlan createPlan({\n  String planId = '2',\n  String planName = 'Test plan',\n  int maxBalls = 100,\n  int maxAiCoachs = 50,\n}) {\n  return Plan(\n    id: planId,\n    name: planName,\n    description: 'Test description',\n    type: 1,\n    maxBalls: maxBalls,\n    maxAiCoachs: maxAiCoachs,\n    createdAt: createdAt(),\n    updatedAt: updatedAt(),\n  );\n}\n\n/// TeamPlan を作成\nTeamPlan createTeamPlan({\n  String? id = teamPlanId,\n  String? teamId = id,\n  String planId = '2',\n  DateTime? startDate,\n  DateTime? endDate,\n  int currentUsage = 0,\n  int currentAiCoachUsage = 0,\n  bool isActive = true,\n  bool isPendingActivation = false,\n  Plan? plan,\n}) {\n  return TeamPlan(\n    id: id,\n    teamId: teamId,\n    planId: planId,\n    startDate: startDate ?? now().subtract(const Duration(days: 10)),\n    endDate: endDate ?? now().add(const Duration(days: 40)),\n    currentUsage: currentUsage,\n    currentAiCoachUsage: currentAiCoachUsage,\n    isActive: isActive,\n    isPendingActivation: isPendingActivation,\n    createdAt: createdAt(),\n    updatedAt: updatedAt(),\n    plan: plan,\n  );\n}\n\n/// Team を作成\nTeam createTeam({\n  String? teamId = id,\n  String? teamName = name,\n  String? ownerId = ownerUserId,\n  TeamPlan? teamPlan,\n  TeamPlan? nextTeamPlan,\n  Item? item,\n}) {\n  return Team(\n    id: teamId,\n    name: teamName,\n    ownerUserId: ownerId,\n    createdAt: createdAt(),\n    updatedAt: updatedAt(),\n    imageUrl: imageUrl,\n    teamPlan: teamPlan,\n    nextTeamPlan: nextTeamPlan,\n    presignedImageUrl: presignedImageUrl,\n    item: item,\n  );\n}\n\n// ========================================\n// テストケース\n// ========================================\n\nvoid main() {\n  group('Testing Team', () {\n    final fixedCreatedAt = DateTime(2024, 1, 1, 0, 0);\n    final fixedUpdatedAt = DateTime(2024, 1, 1, 1, 0);\n    const item = Item(\n      aiCoachUsage: 1,\n      ballUsage: 10,\n      aiCoachAvailableCount: 5,\n      ballAvailableCount: 50,\n    );\n    final teamPlan = TeamPlan(\n      id: teamPlanId,\n      teamId: '00000000-0000-4000-8000-000000000000',\n      planId: '2',\n      startDate: DateTime.utc(2023, 1, 1, 0, 0),\n      endDate: DateTime.utc(2024, 1, 1, 0, 0),\n      currentUsage: 0,\n      currentAiCoachUsage: 0,\n      isActive: true,\n      isPendingActivation: false,\n      createdAt: fixedCreatedAt,\n      updatedAt: fixedUpdatedAt,\n      plan: null,\n    );\n    final nextTeamPlan = TeamPlan(\n      id: teamPlanId2,\n      teamId: '00000000-0000-4000-8000-000000000001',\n      planId: '3',\n      startDate: DateTime.utc(2024, 1, 1, 0, 0),\n      endDate: DateTime.utc(2025, 1, 1, 0, 0),\n      isPendingActivation: false,\n      currentUsage: 0,\n      currentAiCoachUsage: 0,\n      isActive: true,\n      createdAt: fixedCreatedAt,\n      updatedAt: fixedUpdatedAt,\n      plan: null,\n    );\n\n    test('toJson1', () {\n      final team = Team(\n        id: id,\n        name: name,\n        ownerUserId: ownerUserId,\n        createdAt: fixedCreatedAt,\n        updatedAt: fixedUpdatedAt,\n        imageUrl: imageUrl,\n        teamPlan: teamPlan,\n        nextTeamPlan: nextTeamPlan,\n        presignedImageUrl: presignedImageUrl,\n        item: item,\n      );\n\n      final teamJson = team.toJson();\n\n      expect(teamJson.length, 15);\n      expect(teamJson.containsKey('id'), isTrue);\n      expect(teamJson.containsKey('name'), isTrue);\n      expect(teamJson.containsKey('ownerUserId'), isTrue);\n      expect(teamJson.containsKey('createdAt'), isTrue);\n      expect(teamJson.containsKey('updatedAt'), isTrue);\n      expect(teamJson.containsKey('imageUrl'), isTrue);\n      expect(teamJson.containsKey('teamPlan'), isTrue);\n      expect(teamJson.containsKey('nextTeamPlan'), isTrue);\n      expect(teamJson.containsKey('presignedImageUrl'), isTrue);\n      expect(teamJson.containsKey('item'), isTrue);\n\n      expect(teamJson['id'], id);\n      expect(teamJson['name'], name);\n      expect(teamJson['ownerUserId'], ownerUserId);\n      expect(teamJson['createdAt'], fixedCreatedAt.toIso8601String());\n      expect(teamJson['updatedAt'], fixedUpdatedAt.toIso8601String());\n      expect(teamJson['imageUrl'], imageUrl);\n      expect(teamJson['teamPlan'], teamPlan.toJson());\n      expect(teamJson['nextTeamPlan'], nextTeamPlan.toJson());\n      expect(teamJson['presignedImageUrl'], presignedImageUrl);\n      expect(teamJson['item'], item.toJson());\n\n      final deserializedTeam = Team.fromJson(teamJson);\n      expect(deserializedTeam, team);\n    });\n\n    test('fromJson1 (API New)', () {\n      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoach
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8092 (line 1 column 8093)
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n      };","new_string":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n        'users': null,\n      };"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n      };","new_string":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n        'users': null,\n      };"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart.tmp.74124.1760576477817
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 33931 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart.tmp.74124.1760576477817 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6e519ee0-39ee-4818-a24f-717da6f1dfee","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/6e519ee0-39ee-4818-a24f-717da6f1dfee.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","old_string":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n      };","new_string":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n        'users': null,\n      };"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/test/data/models/team_test.dart","oldString":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'presignedImageUrl': presignedImageUrl,\n        'teamType': 'multiple',\n        'teamPlanCancelAt': null,\n        'teamPlanDowngradeAt': null,\n        'billingFailureReason': null,\n        'downgradePlanId': null,\n        'item': item.toJson(),\n      };","newString":"      final teamJson = {\n        'id': id,\n        'name': name,\n        'ownerUserId': ownerUserId,\n        'createdAt': fixedCreatedAt.toIso8601String(),\n        'updatedAt': fixedUpdatedAt.toIso8601String(),\n        'imageUrl': imageUrl,\n        'teamPlan': {\n          'id': teamPlan.id,\n          'teamId': teamPlan.teamId,\n          'planId': teamPlan.planId,\n          'startDate': teamPlan.startDate!.toIso8601String(),\n          'endDate': teamPlan.endDate!.toIso8601String(),\n          'currentUsage': teamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': teamPlan.isActive,\n          'isPendingActivation': teamPlan.isPendingActivation,\n          'createdAt': teamPlan.createdAt!.toIso8601String(),\n          'updatedAt': teamPlan.updatedAt!.toIso8601String(),\n          'plan': null,\n          'appleSubscription': null,\n          'stripeSubscription': null,\n        },\n        'nextTeamPlan': {\n          'id': nextTeamPlan.id,\n          'teamId': nextTeamPlan.teamId,\n          'planId': nextTeamPlan.planId,\n          'startDate': nextTeamPlan.startDate!.toIso8601String(),\n          'endDate': nextTeamPlan.endDate!.toIso8601String(),\n          'currentUsage': nextTeamPlan.currentUsage,\n          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,\n          'isActive': nextTeamPlan.isActive,\n          'isPendingActivation': nextTeamPlan.isPendingActivation,\n          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),\n          'updatedAt': ne
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192 (line 1 column 8193)
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576514740
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576514740 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576515857
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293197 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576515857 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760576515924
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1290955 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760576515924 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)

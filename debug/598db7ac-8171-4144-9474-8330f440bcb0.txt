@@ -1,0 +1,260 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for e70b8489-04f0-4652-9b03-8e8712fcd0ec, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101498396
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701632 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101498396 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101498431
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701628 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101498431 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 3de5a7a2-7c56-4b6b-a04c-55bcffa98015
+[DEBUG] FileHistory: Added snapshot for 3de5a7a2-7c56-4b6b-a04c-55bcffa98015, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });","new_string":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });","new_string":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bc...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760101528692
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 11939 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760101528692 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });","new_string":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","oldString":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });","newString":"/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');","originalFile":"import {\n  expect,\n  Page,\n  PageAssertionsToHaveScreenshotOptions,\n  test,\n  TestInfo,\n} from '@playwright/test';\n\n/**\n * テスト用の定数\n */\nconst TEST_DATA = {\n  TEAM_ID: 'a0000000-0000-0000-0000-000000000000',\n  TARGET_TEAM_ID: 'ac100000-0001-0000-0000-000000000000',\n  SESSION_ID: 'a0000000-0001-0001-0000-000000000000',\n  RESOURCE_ID: 'a0000000-0001-0001-0001-000000000000',\n  TEST_USER_NAME: 'adm1-team_a',\n  DELETABLE_PLAYER_NAME: 'ply2-mgr1-team_a',\n  EDITABLE_PLAYER_NAME: 'ply1-adm1-team_a',\n} as const;\n\n/**\n * コミットハッシュなどをマスク\n */\nfunction getScreenshotOptions(\n  page: Page,\n): PageAssertionsToHaveScreenshotOptions {\n  return {\n    fullPage: true,\n    mask: [page.locator('.develop')],\n  };\n}\n\n/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page): Promise<void> {\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}\n\n/**\n * モバイルかどうかを判定\n */\nfunction isMobileDevice(testInfo: TestInfo): boolean {\n  return testInfo.project.name.includes('Mobile Safari');\n}\n\n/**\n * 公開ページ（未認証）のVRT\n */\ntest.describe('public', () => {\n  const publicPages = [\n    '/auth/recover',\n    '/auth/reset-password',\n    '/auth/signin',\n    '/auth/signup',\n    '/privacy-policy',\n    '/terms-of-use',\n  ];\n\n  for (const pagePath of publicPages) {\n    test(pagePath, async ({ page }) => {\n      await page.goto(pagePath);\n      await expect(page).toHaveScreenshot();\n    });\n  }\n});\n\n/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  test('/super-admin/teams', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 初期表示\n    await page.goto('/super-admin/teams');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // チーム作成モーダルの表示確認\n    await page.getByRole('button', { name: 'Create New Team' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'CANCEL' }).click();\n\n    // 現在のプラン表示モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await takeScreenshot(page); // メニュー表示\n    await page.getByRole('menuitem', { name: 'Current' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'DISCARD' }).click();\n\n    // 次のプラン表示モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await page.getByRole('menuitem', { name: 'Next' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'DISCARD' }).click();\n\n    // プラン詳細モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await page.getByRole('menuitem', { name: 'Details' }).click();\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/notifications', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 通知一覧\n    await page.goto('/super-admin/notifications');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // 通知作成ページ\n    await page.goto('/super-admin/notifications/new');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/resources', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 動画一覧\n    await page.goto('/super-admin/resources');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/ai-coach', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // AI コーチ\n    await page.goto('/super-admin/ai-coach');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // 編集モード\n    await page.getByRole('button', { name: '編集' }).click();\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/items', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // AI コーチ\n    await page.goto('/super-admin/items');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // item 詳細モーダル\n    await page\n      .getByRole('table')\n      .getByRole('row')\n      .getByRole('button')\n      .first()\n      .click();\n\n    await takeScreenshot(page);\n  });\n\n});\n\nasync function openTeamActionMenu(page: Page, teamId: string): Promise<void> {\n  await page\n    .getByRole('table')\n    .getByRole('row')\n    .filter({ has: page.getByText(teamId) })\n    .getByRole('button')\n    .first()\n    .click();\n}\n\nasync function openUserActionMenu(\n  page: Page,\n  userName: string,\n): Promise<void> {\n  await page\n    .getByRole('table')\n    .getByRole('row')\n    .filter({ has: page.getByText(userName) })\n    .getByRole('button')\n    .first()\n    .click();\n}\n\nasync function openPlayerActionMenu(\n  page: Page,\n  playerName: string,\n  isMobile: boolean,\n): Promise<void> {\n  if (isMobile) {\n    await page\n      .locator('.MuiPaper-root')\n      .locator('.MuiStack-root')\n      .locator('.MuiPaper-root')\n      .filter({ has: page.getByText(playerName) })\n      .getByRole('button')\n      .first()\n      .click();\n  } else {\n    await page\n      .getByRole('table')\n      .getByRole('row')\n      .filter({ has: page.getByText(playerName) })\n      .getByRole('button')\n      .first()\n      .click();\n  }\n}\n\nasync function openSessionActionMenu(\n  page: Page,\n  isMobile: boolean,\n): Promise<void> {\n
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 7680
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bc...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101538694
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701628 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101538694 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101540273
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701628 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101540273 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101540308
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701505 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101540308 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 8b85a8ab-5753-4366-bfa5-43a011f1c920
+[DEBUG] FileHistory: Added snapshot for 8b85a8ab-5753-4366-bfa5-43a011f1c920, tracking 1 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');","new_string":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo: TestInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');","new_string":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo: TestInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bc...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760101721997
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 11957 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760101721997 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');","new_string":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo: TestInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","oldString":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');","newString":"test.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo: TestInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');","originalFile":"import {\n  expect,\n  Page,\n  PageAssertionsToHaveScreenshotOptions,\n  test,\n  TestInfo,\n} from '@playwright/test';\n\n/**\n * テスト用の定数\n */\nconst TEST_DATA = {\n  TEAM_ID: 'a0000000-0000-0000-0000-000000000000',\n  TARGET_TEAM_ID: 'ac100000-0001-0000-0000-000000000000',\n  SESSION_ID: 'a0000000-0001-0001-0000-000000000000',\n  RESOURCE_ID: 'a0000000-0001-0001-0001-000000000000',\n  TEST_USER_NAME: 'adm1-team_a',\n  DELETABLE_PLAYER_NAME: 'ply2-mgr1-team_a',\n  EDITABLE_PLAYER_NAME: 'ply1-adm1-team_a',\n} as const;\n\n/**\n * コミットハッシュなどをマスク\n */\nfunction getScreenshotOptions(\n  page: Page,\n): PageAssertionsToHaveScreenshotOptions {\n  return {\n    fullPage: true,\n    mask: [page.locator('.develop')],\n  };\n}\n\n/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page): Promise<void> {\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}\n\n/**\n * モバイルかどうかを判定\n */\nfunction isMobileDevice(testInfo: TestInfo): boolean {\n  return testInfo.project.name.includes('Mobile Safari');\n}\n\n/**\n * 公開ページ（未認証）のVRT\n */\ntest.describe('public', () => {\n  const publicPages = [\n    '/auth/recover',\n    '/auth/reset-password',\n    '/auth/signin',\n    '/auth/signup',\n    '/privacy-policy',\n    '/terms-of-use',\n  ];\n\n  for (const pagePath of publicPages) {\n    test(pagePath, async ({ page }) => {\n      await page.goto(pagePath);\n      await expect(page).toHaveScreenshot();\n    });\n  }\n});\n\n/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');\n\n  test('/super-admin/teams', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 初期表示\n    await page.goto('/super-admin/teams');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // チーム作成モーダルの表示確認\n    await page.getByRole('button', { name: 'Create New Team' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'CANCEL' }).click();\n\n    // 現在のプラン表示モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await takeScreenshot(page); // メニュー表示\n    await page.getByRole('menuitem', { name: 'Current' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'DISCARD' }).click();\n\n    // 次のプラン表示モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await page.getByRole('menuitem', { name: 'Next' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'DISCARD' }).click();\n\n    // プラン詳細モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await page.getByRole('menuitem', { name: 'Details' }).click();\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/notifications', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 通知一覧\n    await page.goto('/super-admin/notifications');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // 通知作成ページ\n    await page.goto('/super-admin/notifications/new');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/resources', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 動画一覧\n    await page.goto('/super-admin/resources');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n  });\n\n  test(
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 5688
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bc...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfotestInfo,) => {","new_string":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfo) => {"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfotestInfo,) => {","new_string":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfo) => {"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bc...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760101731463
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 11948 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760101731463 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bcb0.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfotestInfo,) => {","new_string":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfo) => {"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","oldString":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfotestInfo,) => {","newString":"  test('/teams/[team_id]/sessions/[session_id]/resources/[resource_id]', async ({\n    page,\n  }, testInfo) => {","originalFile":"import {\n  expect,\n  Page,\n  PageAssertionsToHaveScreenshotOptions,\n  test,\n  TestInfo,\n} from '@playwright/test';\n\n/**\n * テスト用の定数\n */\nconst TEST_DATA = {\n  TEAM_ID: 'a0000000-0000-0000-0000-000000000000',\n  TARGET_TEAM_ID: 'ac100000-0001-0000-0000-000000000000',\n  SESSION_ID: 'a0000000-0001-0001-0000-000000000000',\n  RESOURCE_ID: 'a0000000-0001-0001-0001-000000000000',\n  TEST_USER_NAME: 'adm1-team_a',\n  DELETABLE_PLAYER_NAME: 'ply2-mgr1-team_a',\n  EDITABLE_PLAYER_NAME: 'ply1-adm1-team_a',\n} as const;\n\n/**\n * コミットハッシュなどをマスク\n */\nfunction getScreenshotOptions(\n  page: Page,\n): PageAssertionsToHaveScreenshotOptions {\n  return {\n    fullPage: true,\n    mask: [page.locator('.develop')],\n  };\n}\n\n/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page): Promise<void> {\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}\n\n/**\n * モバイルかどうかを判定\n */\nfunction isMobileDevice(testInfo: TestInfo): boolean {\n  return testInfo.project.name.includes('Mobile Safari');\n}\n\n/**\n * 公開ページ（未認証）のVRT\n */\ntest.describe('public', () => {\n  const publicPages = [\n    '/auth/recover',\n    '/auth/reset-password',\n    '/auth/signin',\n    '/auth/signup',\n    '/privacy-policy',\n    '/terms-of-use',\n  ];\n\n  for (const pagePath of publicPages) {\n    test(pagePath, async ({ page }) => {\n      await page.goto(pagePath);\n      await expect(page).toHaveScreenshot();\n    });\n  }\n});\n\n/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  // super_admin は mobile のテストをスキップ\n  test.skip(({ }, testInfo: TestInfo) => isMobileDevice(testInfo), 'Skip mobile tests for super_admin');\n\n  test('/super-admin/teams', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 初期表示\n    await page.goto('/super-admin/teams');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // チーム作成モーダルの表示確認\n    await page.getByRole('button', { name: 'Create New Team' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'CANCEL' }).click();\n\n    // 現在のプラン表示モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await takeScreenshot(page); // メニュー表示\n    await page.getByRole('menuitem', { name: 'Current' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'DISCARD' }).click();\n\n    // 次のプラン表示モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await page.getByRole('menuitem', { name: 'Next' }).click();\n    await takeScreenshot(page);\n    await page.getByRole('button', { name: 'DISCARD' }).click();\n\n    // プラン詳細モーダル\n    await openTeamActionMenu(page, TEST_DATA.TARGET_TEAM_ID);\n    await page.getByRole('menuitem', { name: 'Details' }).click();\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/notifications', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 通知一覧\n    await page.goto('/super-admin/notifications');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // 通知作成ページ\n    await page.goto('/super-admin/notifications/new');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/resources', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // 動画一覧\n    await page.goto('/super-admin/resources');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/ai-coach', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // AI コーチ\n    await page.goto('/super-admin/ai-coach');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // 編集モード\n    await page.getByRole('button', { name: '編集' }).click();\n    await takeScreenshot(page);\n  });\n\n  test('/super-admin/items', async ({ page }, testInfo) => {\n    const isMobile = isMobileDevice(testInfo);\n    if (!isMobile) {\n      // super-admin は開発チーム用であるため、macbook pro のサイズ\n      await page.setViewportSize({ width: 1728, height: 1117 });\n    }\n    // AI コーチ\n    await page.goto('/super-admin/items');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // item 詳細モーダル\n    await page\n      .getByRole('table')\n      .getByRole('row')\n      .getByRole('button')\n      .first()\n      .click();\n\n    await takeScreenshot(page);\n  });\n\n});\n\nasync function openTeamActionMenu(page: Page, teamId: string): Promise<void> {\n  await page\n    .getByRole('table')\n    .getByRole('row')\n    .filter({ has: page.getByText(teamId) })\n    .getByRole('button')\n    .first()\n    .click();\n}\n\nasync function openUserActionMenu(\n  page: Page,\n  userName: string,\n): Promise<void> {\n  await page\n    .getByRole('table')\n    .getByRole('row')\n    .filter({ has: page.getByText(userName) })\n    .getByRole('button')\n    .first()\n    .click();\n}\n\nasync function openPlayerActionMenu(\n  page: Page,\n  playerName: string,\n  isMobile: boolean,\n): Promise<void> {\n  if (isMobile) {\n    await page\n      .locator('.MuiPaper-root')\n      .locator('.MuiStack-root')\n      .locator('.MuiPaper-root')\n      .filter({ has: page.getByText(playerName) })\n      .getByRole('button')\n      .first()\n      .click();\n  } else {\n    await page\n      .getByRole('table')\n      .getByRole('row')\n      .filter({ has: page.getByText(playerName) })\n      .getByRole('button')\n      .first()\n      .click();\n  }\n}\n\nasync function openSessionActionMenu(\n  page: Page,\n  isMobile: boolean,\n): Promise<void> {\n  if (isMobile) {\n    await page\n      .locator('.MuiGrid2-root')\n      .locator('.MuiGrid2-root')\n      .locator('.MuiPaper-root')\n      .locator('.MuiBox-root')\n      .getByRole('button')\n      .first()\n      .click
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 7710
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"598db7ac-8171-4144-9474-8330f440bcb0","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/598db7ac-8171-4144-9474-8330f440bc...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101740864
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701505 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101740864 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101742453
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701505 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101742453 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760101742488
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702709 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760101742488 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)

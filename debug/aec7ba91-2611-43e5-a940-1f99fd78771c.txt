@@ -1,0 +1,29 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for 5556a3fe-d5d7-4953-a03a-b4ab403354fe, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.42098.1760409130208
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 696151 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.42098.1760409130208 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.42098.1760409130248
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 696138 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.42098.1760409130248 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760405551295-qmoabu.sh
+[DEBUG] MCP server "serena": Sending SIGINT to MCP server process
+[DEBUG] MCP server "serena": SIGINT failed, sending SIGTERM to MCP server process
+[DEBUG] MCP server "serena": MCP server process exited cleanly
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.42098.1760409134955
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 696553 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.42098.1760409134955 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

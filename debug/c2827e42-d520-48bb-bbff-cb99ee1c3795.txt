@@ -1,0 +1,594 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for 25d050dc-b9bb-42f1-a88f-91771d60d47a, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.50353.1760347158870
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 694992 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.50353.1760347158870 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 1d08e887-07f2-4571-aee7-0d32edb98b85
+[DEBUG] FileHistory: Added snapshot for 1d08e887-07f2-4571-aee7-0d32edb98b85, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.50353.1760347161072
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 694992 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.50353.1760347161072 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: mcp__serena__search_for_pattern
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__search_for_pattern
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: search_for_pattern
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:29,145 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-13 18:19:29,147 [MainThread] serena.agent:issue_task:420 - Scheduling Task-19[SearchForPatternTool]
+INFO  2025-10-13 18:19:29,147 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-19[SearchForPatternTool] starting ...
+INFO  2025-10-13 18:19:29,147 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - search_for_pattern: substring_pattern='openURLWithSystemBrowser', context_lines_before=2, context_lines_after=2, paths_include_glob='', paths_exclude_glob='', relative_path='', restrict_search_to_code_files=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:29,350 [SerenaAgentExecutor_0] serena.text_utils:search_files:326 - Processing 1419 files.
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:29,526 [SerenaAgentExecutor_0] serena.text_utils:search_files:367 - Found 10 total matches across 1419 files
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:29,526 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: {"lib/utils/web_url.dart": ["  >   7:Future<void> openURLWithSystemBrowser({"], "lib/views/hooks/use_store_url.dart": ["  >  23:      await openURLWithSystemBrowser(url: storeUrl);", "  >  34:        await openURLWithSystemBrowser(url: appleAppUrl);"], "lib/views/hooks/use_launch_url.dart": ["  >  16:      await openURLWithSystemBrowser(url: url);"], "lib/views/pages/home/settings/subscription/subscription_page.dart": ["  > 114:          await openURLWithSystemBrowser(url: appleUrl);", "  > 263:                                    await openURLWithSystemBrowser("], "lib/views/pages/home/settings/subscription/components/organization_plan_recommend_container.dart": ["  >  31:        await openURLWithSystemBrowser(url: teamPlanUrl);"], "lib/views/pages/home/settings/components/plan_card.dart": ["  > 161:                await openURLWithSystemBrowser(url: teamPlanUrl);"], "lib/views/pages/home/settings/hooks/use_tutorial_video.dart": ["  >  28:    openURLWithSystemBrowser(url: url);"], "lib/views/pages/delete_account/cancel_subscription_page.dart": ["  >  32:          await openURLWithSystemBrowser(url: appleUrl);"]}
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:29,528 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-19[SearchForPatternTool] completed in 0.381 seconds
+[DEBUG] MCP server "serena": Tool 'search_for_pattern' completed successfully in 391ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__search_for_pattern
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__search_for_pattern
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__search_for_pattern
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: search_for_pattern
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:38,008 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-13 18:19:38,008 [MainThread] serena.agent:issue_task:420 - Scheduling Task-20[SearchForPatternTool]
+INFO  2025-10-13 18:19:38,008 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-20[SearchForPatternTool] starting ...
+INFO  2025-10-13 18:19:38,008 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - search_for_pattern: substring_pattern='recordingExplanationVideoURL|howToUseSmartScoutURL', context_lines_before=1, context_lines_after=1, paths_include_glob='**/constants.dart', paths_exclude_glob='', relative_path='', restrict_search_to_code_files=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:38,235 [SerenaAgentExecutor_0] serena.text_utils:search_files:326 - Processing 1 files.
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:38,249 [SerenaAgentExecutor_0] serena.text_utils:search_files:367 - Found 4 total matches across 1 files
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-13 18:19:38,249 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: {"lib/constants.dart": ["  >  53:  static const String recordingExplanationVideoURLJa =", "  >  55:  static const String recordingExplanationVideoURLEn =", "  >  58:  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";", "  >  59:  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";"]}
+INFO  2025-10-13 18:19:38,250 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-20[SearchForPatternTool] completed in 0.242 seconds
+[DEBUG] MCP server "serena": Tool 'search_for_pattern' completed successfully in 246ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__search_for_pattern
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart","old_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","new_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";\n\n  static const String howToUseSmartScoutURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart","old_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","new_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";\n\n  static const String howToUseSmartScoutURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c37...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart.tmp.50353.1760347193533
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 3615 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart.tmp.50353.1760347193533 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart","old_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","new_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";\n\n  static const String howToUseSmartScoutURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart","oldString":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","newString":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";\n\n  static const String howToUseSmartScoutURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";","originalFile":"/// {@category Misc}\nlibrary;\n\n// Package imports:\nimport 'package:json_annotation/json_annotation.dart';\n\n/// Class that manages constants used throughout the application\nclass Constants {\n  /// Relative path for managing local video data\n  /// Absolute path depends on device/OS\n  static const String relLocalVideoDataPath = 'localVideoData.json';\n\n  /// Whether to enable Device Preview\n  static bool get enablePreview => const bool.fromEnvironment('PREVIEW');\n\n  /// API server URL\n  static String get apiServerURL =>\n      const String.fromEnvironment('apiServerURL');\n\n  /// Amplify authentication related settings\n  static String get amplifyAuthIdentityPoolId =>\n      const String.fromEnvironment('amplifyAuthIdentityPoolId');\n  static String get amplifyAuthRegion =>\n      const String.fromEnvironment('amplifyAuthRegion');\n  static String get amplifyAuthUserPoolId =>\n      const String.fromEnvironment('amplifyAuthUserPoolId');\n  static String get amplifyAuthUserPoolClientId =>\n      const String.fromEnvironment('amplifyAuthUserPoolClientId');\n  static String get amplifyAuthUserPoolEndpoint =>\n      const String.fromEnvironment('amplifyAuthUserPoolEndpoint');\n\n  /// Amplify logging related settings\n  static String get amplifyLoggingRegion =>\n      const String.fromEnvironment('amplifyLoggingRegion');\n  static String get amplifyLoggingLogGroupName =>\n      const String.fromEnvironment('amplifyLoggingLogGroupName');\n\n  /// Application related URLs\n  static String get maintenanceInfoURL =>\n      const String.fromEnvironment('maintenanceInfoURL');\n  static String get versionInfoURL =>\n      const String.fromEnvironment('versionInfoURL');\n  static String get appleAppURL => const String.fromEnvironment('appleAppURL');\n  static String get appleSubscriptionURL =>\n      const String.fromEnvironment('appleSubscriptionURL');\n  static String get contactFormURLJa =>\n      const String.fromEnvironment('contactFormJaURL');\n  static String get contactFormURLEn =>\n      const String.fromEnvironment('contactFormEnURL');\n  static String get webURL => const String.fromEnvironment('webURL');\n\n  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";\n\n  // チーム向けプラン案内の URL\n  static const String organizationPlanURLJa =\n      'https://tether-a87.pages.dev/jp/';\n  static const String organizationPlanURL = 'https://tether-a87.pages.dev/';\n\n  static const String appStoreProductIdLight =\n      String.fromEnvironment('appStoreProductIdLight');\n  static const String appStoreProductIdStandard =\n      String.fromEnvironment('appStoreProductIdStandard');\n  static const String appStoreProductIdPremium =\n      String.fromEnvironment('appStoreProductIdPremium');\n\n  static const bool isDeprecated =\n      String.fromEnvironment('isDeprecated') == 'true';\n\n  /// Network connection timeout settings\n  static const connectTimeout = Duration(seconds: 10);\n  static const defaultSendTimeout = Duration(seconds: 10);\n  static const defaultReceiveTimeout = Duration(seconds: 10);\n\n  /// Background downloader settings\n  static const requestTimeout = Duration(seconds: 10);\n  static const resourceTimeout = Duration(minutes: 5);\n\n  /// Model related settings\n  static const FieldRename modelFieldRename = FieldRename.none;\n}\n","structuredPatch":[{"oldStart":51,"oldLines":12,"newStart":51,"newLines":14,"lines":[" ","   /// チュートリアル URL","   static const String recordingExplanationVideoURLJa =","-      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";","+      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";","   static const String recordingExplanationVideoURLEn =","-      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";","+      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";"," ","-  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";","-  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","+  static const String howToUseSmartScoutURLJa =","+      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";","+  static const String howToUseSmartScoutURLEn =","+      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";"," ","   // チーム向けプラン案内の URL","   static const String organizationPlanURLJa ="]}],"userModified":false,"replaceAll":false}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart","old_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","new_string":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";\n\n  static const String howToUseSmartScoutURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart","oldString":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","newString":"  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";\n\n  static const String howToUseSmartScoutURLJa =\n      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn =\n      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";","originalFile":"/// {@category Misc}\nlibrary;\n\n// Package imports:\nimport 'package:json_annotation/json_annotation.dart';\n\n/// Class that manages constants used throughout the application\nclass Constants {\n  /// Relative path for managing local video data\n  /// Absolute path depends on device/OS\n  static const String relLocalVideoDataPath = 'localVideoData.json';\n\n  /// Whether to enable Device Preview\n  static bool get enablePreview => const bool.fromEnvironment('PREVIEW');\n\n  /// API server URL\n  static String get apiServerURL =>\n      const String.fromEnvironment('apiServerURL');\n\n  /// Amplify authentication related settings\n  static String get amplifyAuthIdentityPoolId =>\n      const String.fromEnvironment('amplifyAuthIdentityPoolId');\n  static String get amplifyAuthRegion =>\n      const String.fromEnvironment('amplifyAuthRegion');\n  static String get amplifyAuthUserPoolId =>\n      const String.fromEnvironment('amplifyAuthUserPoolId');\n  static String get amplifyAuthUserPoolClientId =>\n      const String.fromEnvironment('amplifyAuthUserPoolClientId');\n  static String get amplifyAuthUserPoolEndpoint =>\n      const String.fromEnvironment('amplifyAuthUserPoolEndpoint');\n\n  /// Amplify logging related settings\n  static String get amplifyLoggingRegion =>\n      const String.fromEnvironment('amplifyLoggingRegion');\n  static String get amplifyLoggingLogGroupName =>\n      const String.fromEnvironment('amplifyLoggingLogGroupName');\n\n  /// Application related URLs\n  static String get maintenanceInfoURL =>\n      const String.fromEnvironment('maintenanceInfoURL');\n  static String get versionInfoURL =>\n      const String.fromEnvironment('versionInfoURL');\n  static String get appleAppURL => const String.fromEnvironment('appleAppURL');\n  static String get appleSubscriptionURL =>\n      const String.fromEnvironment('appleSubscriptionURL');\n  static String get contactFormURLJa =>\n      const String.fromEnvironment('contactFormJaURL');\n  static String get contactFormURLEn =>\n      const String.fromEnvironment('contactFormEnURL');\n  static String get webURL => const String.fromEnvironment('webURL');\n\n  /// チュートリアル URL\n  static const String recordingExplanationVideoURLJa =\n      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";\n  static const String recordingExplanationVideoURLEn =\n      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";\n\n  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";\n  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";\n\n  // チーム向けプラン案内の URL\n  static const String organizationPlanURLJa =\n      'https://tether-a87.pages.dev/jp/';\n  static const String organizationPlanURL = 'https://tether-a87.pages.dev/';\n\n  static const String appStoreProductIdLight =\n      String.fromEnvironment('appStoreProductIdLight');\n  static const String appStoreProductIdStandard =\n      String.fromEnvironment('appStoreProductIdStandard');\n  static const String appStoreProductIdPremium =\n      String.fromEnvironment('appStoreProductIdPremium');\n\n  static const bool isDeprecated =\n      String.fromEnvironment('isDeprecated') == 'true';\n\n  /// Network connection timeout settings\n  static const connectTimeout = Duration(seconds: 10);\n  static const defaultSendTimeout = Duration(seconds: 10);\n  static const defaultReceiveTimeout = Duration(seconds: 10);\n\n  /// Background downloader settings\n  static const requestTimeout = Duration(seconds: 10);\n  static const resourceTimeout = Duration(minutes: 5);\n\n  /// Model related settings\n  static const FieldRename modelFieldRename = FieldRename.none;\n}\n","structuredPatch":[{"oldStart":51,"oldLines":12,"newStart":51,"newLines":14,"lines":[" ","   /// チュートリアル URL","   static const String recordingExplanationVideoURLJa =","-      \"https://youtu.be/4laqp9k7z_E?si=sYUMbrFOshL7VikD&t=41\";","+      \"https://www.youtube.com/watch?v=4laqp9k7z_E&t=41\";","   static const String recordingExplanationVideoURLEn =","-      \"https://youtu.be/wwqpWyjN8JM?si=gsfe31Z2TozA0lIe&t=39\";","+      \"https://www.youtube.com/watch?v=wwqpWyjN8JM&t=39\";"," ","-  static const String howToUseSmartScoutURLJa = \"https://youtu.be/4laqp9k7z_E\";","-  static const String howToUseSmartScoutURLEn = \"https://youtu.be/wwqpWyjN8JM\";","+  static const String howToUseSmartScoutURLJa =","+      \"https://www.youtube.com/watch?v=4laqp9k7z_E\";","+  static const String howToUseSmartScoutURLEn =","+      \"https://www.youtube.com/watch?v=wwqpWyjN8JM\";"," ","   // チーム向けプラン案内の URL","   static const String organizationPlanURLJa ="]}],"userModified":false,"replaceAll":false}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c37...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/constants.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: mise analyze
+[DEBUG] Bash tool description: Run static analysis to check for errors
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.50353.1760347228615
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 695660 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.50353.1760347228615 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 9854a4b3-4f8d-474c-a4d0-f62ba4e1c58f
+[DEBUG] FileHistory: Added snapshot for 9854a4b3-4f8d-474c-a4d0-f62ba4e1c58f, tracking 1 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347363776
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347363776 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347363784
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347363784 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347363790
+[DEBUG] Temp file written successfully, size: 297 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347363790 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347382635
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347382635 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347382643
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347382643 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347382650
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 299 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347382650 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart","old_string":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    return localVideoList.where((element) => element.id == id).toList().first;\n  }","new_string":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    try {\n      return localVideoList.firstWhere((element) => element.id == id);\n    } on StateError {\n      throw StateError('LocalVideoData with id $id not found');\n    }\n  }"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart","old_string":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    return localVideoList.where((element) => element.id == id).toList().first;\n  }","new_string":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    try {\n      return localVideoList.firstWhere((element) => element.id == id);\n    } on StateError {\n      throw StateError('LocalVideoData with id $id not found');\n    }\n  }"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c37...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart.tmp.50353.1760347382751
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 6789 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart.tmp.50353.1760347382751 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart","old_string":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    return localVideoList.where((element) => element.id == id).toList().first;\n  }","new_string":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    try {\n      return localVideoList.firstWhere((element) => element.id == id);\n    } on StateError {\n      throw StateError('LocalVideoData with id $id not found');\n    }\n  }"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart","oldString":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    return localVideoList.where((element) => element.id == id).toList().first;\n  }","newString":"  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {\n    try {\n      return localVideoList.firstWhere((element) => element.id == id);\n    } on StateError {\n      throw StateError('LocalVideoData with id $id not found');\n    }\n  }","originalFile":"// Dart imports:\nimport 'dart:convert';\nimport 'dart:io';\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\nimport 'package:mutex/mutex.dart';\nimport 'package:path/path.dart';\nimport 'package:path_provider/path_provider.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/constants.dart';\nimport 'package:baseball_detector_flutter/data/models/resource.dart';\n\npart 'local_video.freezed.dart';\npart 'local_video.g.dart';\n\n/// Classes to manage local video data files in smartphone.\n///\n/// TODO: Separate model and control.\n///\n/// A data model class of local video.\n@unfreezed\nabstract class LocalVideoData with _$LocalVideoData {\n  LocalVideoData._();\n\n  @JsonSerializable(fieldRename: FieldRename.snake)\n  factory LocalVideoData({\n    required String id,\n    required String sessionId,\n    required String teamId,\n    required String path,\n    required int analyzeType,\n    required DateTime createdAt,\n    required double? focalLengthIn35mmEquivalent,\n    required double? longsideAngleOfView,\n    double? accX,\n    double? accY,\n    double? accZ,\n    String? lens,\n    String? cameraMode,\n    double? focus,\n    bool? isAutoFocus,\n    double? shutterSpeed,\n    double? zoom,\n    double? iso,\n    String? device,\n    bool? hasEverUploaded,\n    @JsonKey(includeToJson: false, includeFromJson: false) String? absolutePath,\n  }) = _LocalVideoData;\n\n  factory LocalVideoData.fromJson(Map<String, dynamic> json) =>\n      _$LocalVideoDataFromJson(json);\n\n  ResourceData transformToResourceData() {\n    return ResourceData(\n        id: id,\n        sessionId: sessionId,\n        teamId: teamId,\n        // -1 is equal to [ResourceStatusType.onLocalStorage]. See `resource.dart`.\n        status: -1,\n        pathVideoOnLocal: absolutePath,\n        createdAt: createdAt); // TODO: Use recordedAt.\n  }\n\n  void _fillFields(String dirPath) {\n    if (isAbsolute(path)) {\n      // Old apps store files directly under dirPath (getBaseDirectory())\n      // NOTE: The UUID of the app changes when the app is updated (even if it is without uninstalling).\n      // This method overwrite the file paths of the videos on the local storage.\n      path = basename(path);\n    }\n    // The new app records paths relative to dirPath.\n    absolutePath = join(dirPath, path);\n    hasEverUploaded ??= false;\n  }\n\n  static Future<String> getBaseDirectory() async {\n    return (await getApplicationDocumentsDirectory()).path;\n  }\n}\n\n/// A data list model singleton class of [LocalVideoData].\n@JsonSerializable(constructor: '_privateConstructor', explicitToJson: true)\nclass LocalVideoStorage {\n  // NOTE: Do not add an underscore to the identifier of the field.\n  // JsonSerializable ignores the field when an underscore added.\n  var localVideoList = <LocalVideoData>[];\n\n  //////////////////////////////////////////////////////////////////////////////////\n  // Instance handling functions\n  //////////////////////////////////////////////////////////////////////////////////\n\n  LocalVideoStorage._privateConstructor();\n\n  static LocalVideoStorage _singletonInstance =\n      LocalVideoStorage._privateConstructor();\n\n  static LocalVideoStorage getInstance() {\n    return _singletonInstance;\n  }\n\n  factory LocalVideoStorage._fromJson(Map<String, dynamic> json) =>\n      _$LocalVideoStorageFromJson(json);\n\n  Map<String, dynamic> _toJson() => _$LocalVideoStorageToJson(this);\n\n  static Future<String> _getLocalVideoDataPath() async {\n    final applicationSupportDirectory =\n        await getApplicationSupportDirectory(); // Users cannot access to it.\n    return '${applicationSupportDirectory.path}/${Constants.relLocalVideoDataPath}';\n  }\n\n  static Future<void> loadSingleton() async {\n    final dataPath = await _getLocalVideoDataPath();\n    final file = File(dataPath);\n    if (await file.exists()) {\n      final buf = await file.readAsString();\n      try {\n        // NOTE: A mismatch occurs when the model is updated and then a new app deployed.\n        _singletonInstance = LocalVideoStorage._fromJson(json.decode(buf));\n\n        // NOTE: If you change this directory, change camera_controller.dart too.\n        final dirPath = await LocalVideoData.getBaseDirectory();\n        for (final localVideoData in _singletonInstance.localVideoList) {\n          localVideoData._fillFields(dirPath);\n        }\n      } catch (e) {\n        // noop\n      }\n    }\n  }\n\n  Future<void> save() async {\n    final dataPath = await _getLocalVideoDataPath();\n    final buf = json.encode(_toJson());\n\n    // ディレクトリが存在しない場合は作成する\n    final parentDir = Directory(dirname(dataPath));\n    if (!await parentDir.exists()) {\n      await parentDir.create(recursive: true);\n    }\n\n    // NOTE: In order to handle file corruption, the process involves saving\n    // the file as a temporary file and subsequently renaming it.\n    final tmpDataPath = '$dataPath.tmp';\n    final file = File(tmpDataPath);\n    await file.writeAsString(buf);\n    await file.rename(dataPath);\n  }\n\n  //////////////////////////////////////////////////////////////////////////////////\n  // List handling functions\n  //////////////////////////////////////////////////////////////////////////////////\n\n  final Mutex _mutex = Mutex();\n\n  List<LocalVideoData> getLocalVideoList(String sessionId) {\n    return localVideoList\n        .where((localVideoData) => localVideoData.sessionId == sessionId)\n        .toList();\n  }\n\n  /// This method adds an instance of [LocalVideoData], and then call [save] to make it permanent.\n  Future<void> add(LocalVideoData localVideoData) async {\n    await _mutex.acquire();\n    try {\n      final newList = [...localVideoList];\n      newList.add(localVideoData);\n      localVideoList = newList;\n      await save();\n    } catch (e) {\n      rethrow;\n    } finally {\n      _mutex.release();\n    }\n  }\n\n  /// This method removes from the list an instance of [LocalVideoData] that matches the given id,\n  /// and then call [save] to make it permanent.\n  /// Returns whether the video has been deleted.\n  /// Note that this method does not delete the file at the path.\n  Future<bool> removeById(String id) async {\n    await _mutex.acquire();\n\n    var deleted = false;\n    try {\n      final newList = <LocalVideoData>[];\n      for (final localVideo in localVideoList) {\n        if (localVideo.id != id) {\n          newList.add(localVideo);\n          continue;\n        }\n        deleted = true;\n      }\n      localVideoList = newList;\n      await save();\n    } catch (e) {\n      rethrow;\n    } final
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8154 (line 1 column 8155)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c37...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/data/models/local_video.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart","old_string":"      aboveButtonAction: (context) async {\n        final localVideoData = await ref\n            .read(localVideoListControllerProvider.notifier)\n            .findVideoById(resource.id!);\n\n        // Add to upload queue\n        ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n        // Invalidate resource data list\n        ref.invalidate(\n          resourceDataListControllerProvider(\n            teamId: resource.teamId!,\n            sessionId: resource.sessionId!,\n          ),\n        );\n        onSucceeded?.call();\n        if (context.mounted) {\n          Navigator.of(context).pop(); // pop the dialog.\n        }\n      },","new_string":"      aboveButtonAction: (context) async {\n        try {\n          final localVideoData = await ref\n              .read(localVideoListControllerProvider.notifier)\n              .findVideoById(resource.id!);\n\n          // Add to upload queue\n          ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n          // Invalidate resource data list\n          ref.invalidate(\n            resourceDataListControllerProvider(\n              teamId: resource.teamId!,\n              sessionId: resource.sessionId!,\n            ),\n          );\n          onSucceeded?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop(); // pop the dialog.\n          }\n        } on DeletedVideoIdException {\n          // Video has been deleted, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        } on StateError {\n          // Video not found, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        }\n      },"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart","old_string":"      aboveButtonAction: (context) async {\n        final localVideoData = await ref\n            .read(localVideoListControllerProvider.notifier)\n            .findVideoById(resource.id!);\n\n        // Add to upload queue\n        ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n        // Invalidate resource data list\n        ref.invalidate(\n          resourceDataListControllerProvider(\n            teamId: resource.teamId!,\n            sessionId: resource.sessionId!,\n          ),\n        );\n        onSucceeded?.call();\n        if (context.mounted) {\n          Navigator.of(context).pop(); // pop the dialog.\n        }\n      },","new_string":"      aboveButtonAction: (context) async {\n        try {\n          final localVideoData = await ref\n              .read(localVideoListControllerProvider.notifier)\n              .findVideoById(resource.id!);\n\n          // Add to upload queue\n          ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n          // Invalidate resource data list\n          ref.invalidate(\n            resourceDataListControllerProvider(\n              teamId: resource.teamId!,\n              sessionId: resource.sessionId!,\n            ),\n          );\n          onSucceeded?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop(); // pop the dialog.\n          }\n        } on DeletedVideoIdException {\n          // Video has been deleted, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        } on StateError {\n          // Video not found, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        }\n      },"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c37...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart.tmp.50353.1760347405223
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2418 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart.tmp.50353.1760347405223 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c3795.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart","old_string":"      aboveButtonAction: (context) async {\n        final localVideoData = await ref\n            .read(localVideoListControllerProvider.notifier)\n            .findVideoById(resource.id!);\n\n        // Add to upload queue\n        ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n        // Invalidate resource data list\n        ref.invalidate(\n          resourceDataListControllerProvider(\n            teamId: resource.teamId!,\n            sessionId: resource.sessionId!,\n          ),\n        );\n        onSucceeded?.call();\n        if (context.mounted) {\n          Navigator.of(context).pop(); // pop the dialog.\n        }\n      },","new_string":"      aboveButtonAction: (context) async {\n        try {\n          final localVideoData = await ref\n              .read(localVideoListControllerProvider.notifier)\n              .findVideoById(resource.id!);\n\n          // Add to upload queue\n          ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n          // Invalidate resource data list\n          ref.invalidate(\n            resourceDataListControllerProvider(\n              teamId: resource.teamId!,\n              sessionId: resource.sessionId!,\n            ),\n          );\n          onSucceeded?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop(); // pop the dialog.\n          }\n        } on DeletedVideoIdException {\n          // Video has been deleted, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        } on StateError {\n          // Video not found, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        }\n      },"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart","oldString":"      aboveButtonAction: (context) async {\n        final localVideoData = await ref\n            .read(localVideoListControllerProvider.notifier)\n            .findVideoById(resource.id!);\n\n        // Add to upload queue\n        ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n        // Invalidate resource data list\n        ref.invalidate(\n          resourceDataListControllerProvider(\n            teamId: resource.teamId!,\n            sessionId: resource.sessionId!,\n          ),\n        );\n        onSucceeded?.call();\n        if (context.mounted) {\n          Navigator.of(context).pop(); // pop the dialog.\n        }\n      },","newString":"      aboveButtonAction: (context) async {\n        try {\n          final localVideoData = await ref\n              .read(localVideoListControllerProvider.notifier)\n              .findVideoById(resource.id!);\n\n          // Add to upload queue\n          ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n          // Invalidate resource data list\n          ref.invalidate(\n            resourceDataListControllerProvider(\n              teamId: resource.teamId!,\n              sessionId: resource.sessionId!,\n            ),\n          );\n          onSucceeded?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop(); // pop the dialog.\n          }\n        } on DeletedVideoIdException {\n          // Video has been deleted, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        } on StateError {\n          // Video not found, close dialog and call onFailed\n          onFailed?.call();\n          if (context.mounted) {\n            Navigator.of(context).pop();\n          }\n        }\n      },","originalFile":"// Project imports:\nimport 'package:baseball_detector_flutter/controllers/local_video_list_controller.dart';\nimport 'package:baseball_detector_flutter/controllers/resource_data_list_controller.dart';\nimport 'package:baseball_detector_flutter/data/models/resource.dart';\nimport 'package:baseball_detector_flutter/data/upload_queue.dart';\nimport 'package:baseball_detector_flutter/l10n/l10n_ext.dart';\nimport 'package:baseball_detector_flutter/views/components/custom_dialog.dart';\nimport 'package:flutter/material.dart';\n// Package imports:\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass ResourceUploadDialog extends HookConsumerWidget {\n  const ResourceUploadDialog({\n    required this.resource,\n    this.onSucceeded,\n    this.onFailed,\n    super.key,\n  });\n\n  final ResourceData resource;\n  final VoidCallback? onSucceeded;\n  final VoidCallback? onFailed;\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    return CustomDialog.oneMessage(\n      title: context.l10n.resource_upload_dialog__title,\n      aboveButtonText: context.l10n.resource_upload_dialog__above_button_label,\n      messageText: context.l10n.resource_upload_dialog__message,\n      isAbovePositive: true,\n      belowButtonText: context.l10n.resource_upload_dialog__below_button_label,\n      aboveButtonAction: (context) async {\n        final localVideoData = await ref\n            .read(localVideoListControllerProvider.notifier)\n            .findVideoById(resource.id!);\n\n        // Add to upload queue\n        ref.read(uploadQueueProvider).addUploadTask(localVideoData);\n\n        // Invalidate resource data list\n        ref.invalidate(\n          resourceDataListControllerProvider(\n            teamId: resource.teamId!,\n            sessionId: resource.sessionId!,\n          ),\n        );\n        onSucceeded?.call();\n        if (context.mounted) {\n          Navigator.of(context).pop(); // pop the dialog.\n        }\n      },\n    );\n  }\n}\n","structuredPatch":[{"oldStart":30,"oldLines":23,"newStart":30,"newLines":37,"lines":["       isAbovePositive: true,","       belowButtonText: context.l10n.resource_upload_dialog__below_button_label,","       aboveButtonAction: (context) async {","-        final localVideoData = await ref","-            .read(localVideoListControllerProvider.notifier)","-            .findVideoById(resource.id!);","+        try {","+          final localVideoData = await ref","+              .read(localVideoListControllerProvider.notifier)","+              .findVideoById(resource.id!);"," ","-        // Add to upload queue","-        ref.read(uploadQueueProvider).addUploadTask(localVideoData);","+          // Add to upload queue","+          ref.read(uploadQueueProvider).addUploadTask(localVideoData);"," ","-        // Invalidate resource data list","-        ref.invalidate(","-          resourceDataListControllerProvider(","-            teamId: resource.teamId!,","-            sessionId: resource.sessionId!,","-          ),","-        );","-        onSucceeded?.call();","-        if (context.mounted) {","-          Navigator.of(context).pop(); // pop the dialog.","+          // Invalidate resource data list","+          ref.invalidate(","+            resourceDataListControllerProvider(","+              teamId: resource.teamId!,","+              sessionId: resource.sessionId!,","+            ),","+          );","+          onSucceeded?.call();","+          if (context.mounted) {","+            Navigator.of(context).pop(); // pop the dialog.","+          }","+        } on DeletedVideoIdException {","+          // Video has been deleted, close dialog and call onFailed","+          onFailed?.call();","+          if (context.mounted) {","+
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192 (line 1 column 8193)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"c2827e42-d520-48bb-bbff-cb99ee1c3795","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-flutter/c2827e42-d520-48bb-bbff-cb99ee1c37...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347417846
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347417846 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347417853
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347417853 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347417859
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 301 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347417859 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: mise analyze
+[DEBUG] Bash tool description: Run static analysis to check for errors
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347429220
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json.tmp.50353.1760347429220 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c0c0586d-e38a-4bfe-aac8-481949cbf4c8.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347429243
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json.tmp.50353.1760347429243 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-5151e8a0-10c6-41d0-b299-b020229697c9.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347429247
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json.tmp.50353.1760347429247 to /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/c2827e42-d520-48bb-bbff-cb99ee1c3795-agent-c2827e42-d520-48bb-bbff-cb99ee1c3795.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.50353.1760347447737
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 696210 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.50353.1760347447737 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760253266334-hvmt20.sh
+[DEBUG] MCP server "serena": Sending SIGINT to MCP server process
+[DEBUG] MCP server "serena": SIGINT failed, sending SIGTERM to MCP server process
+[DEBUG] MCP server "serena": MCP server process exited cleanly
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.50353.1760349860352
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 696647 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.50353.1760349860352 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

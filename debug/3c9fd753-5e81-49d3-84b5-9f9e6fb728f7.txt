@@ -1,0 +1,93 @@
+[DEBUG] Watching for changes in setting files /Users/kokiyoshida/.claude/settings.json...
+[DEBUG] Applying permission update: Adding 14 allow rule(s) to destination 'userSettings': ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Applying permission update: Adding 51 deny rule(s) to destination 'userSettings': ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+[DEBUG] Creating shell snapshot for zsh (/bin/zsh)
+[DEBUG] Looking for shell config file: /Users/kokiyoshida/.zshrc
+[DEBUG] Snapshots directory: /Users/kokiyoshida/.claude/shell-snapshots
+[DEBUG] Creating snapshot at: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760050931396-5m5jvv.sh
+[DEBUG] Shell binary exists: true
+[DEBUG] Execution timeout: 10000ms
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/3c9fd753-5e81-49d3-84b5-9f9e6fb728f7-agent-3c9fd753-5e81-49d3-84b5-9f9e6fb728f7.json.tmp.25082.1760050931398
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/3c9fd753-5e81-49d3-84b5-9f9e6fb728f7-agent-3c9fd753-5e81-49d3-84b5-9f9e6fb728f7.json.tmp.25082.1760050931398 to /Users/kokiyoshida/.claude/todos/3c9fd753-5e81-49d3-84b5-9f9e6fb728f7-agent-3c9fd753-5e81-49d3-84b5-9f9e6fb728f7.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/3c9fd753-5e81-49d3-84b5-9f9e6fb728f7-agent-3c9fd753-5e81-49d3-84b5-9f9e6fb728f7.json written atomically
+[DEBUG] Registered 0 hooks from 0 plugins
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050931533
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050931533 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Shell snapshot created successfully (68231 bytes)
+[DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/Users/kokiyoshida/.local/share/mise/installs/node/20.17.0/lib/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg)
+[DEBUG] Total plugin agents loaded: 0
+[DEBUG] Loading skills from directories: managed=/Library/Application Support/ClaudeCode/.claude/skills, user=/Users/kokiyoshida/.claude/skills, project=/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/.claude/skills
+[DEBUG] Loaded 0 skills total (managed: 0, user: 0, project: 0)
+[DEBUG] Total plugin commands loaded: 0
+[DEBUG] Total plugin skills loaded: 0
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050931707
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050931707 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050931733
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050931733 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050931768
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050931768 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] MCP server "serena": Starting connection with timeout of 30000ms
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050932387
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050932387 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for SessionStart:startup
+[DEBUG] Getting matching hook commands for SessionStart with query: startup
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050932472
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693348 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050932472 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050932497
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693348 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050932497 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] performStartupChecks called, ENABLE_PLUGINS=true
+[DEBUG] Trust not accepted for current directory - skipping plugin installations
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050932999
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050932999 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050933068
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693453 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050933068 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760050931396-5m5jvv.sh
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.25082.1760050933523
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 693833 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.25082.1760050933523 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

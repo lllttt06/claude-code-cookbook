@@ -1,0 +1,120 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for e07142da-5ddc-47e6-9c9f-ad8b6963518a, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.77788.1760016971912
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692706 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.77788.1760016971912 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.77788.1760016971956
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692706 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.77788.1760016971956 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 22849aff-57fe-4296-a9f5-f0945fe2b8e4
+[DEBUG] FileHistory: Added snapshot for 22849aff-57fe-4296-a9f5-f0945fe2b8e4, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.77788.1760016975971
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692793 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.77788.1760016975971 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.77788.1760016983478
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692793 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.77788.1760016983478 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.77788.1760016988314
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692793 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.77788.1760016988314 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.77788.1760016989823
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692793 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.77788.1760016989823 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[ERROR] bk1: bk1: Failed to install new version of claude:  npm error code EIDLETIMEOUT
+npm error Idle timeout reached for host `registry.npmjs.org:443`
+npm error A complete log of this run can be found in: /Users/kokiyoshida/.npm/_logs/2025-10-09T18_08_40_242Z-debug-0.log
+    at cG1 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1982:389)
+    at async Object.current (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2664:8314)
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[ERROR] bk1: bk1: Another process is currently installing an update
+    at cG1 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1972:1779)
+    at Object.current (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2664:8320)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[ERROR] bk1: bk1: Another process is currently installing an update
+    at cG1 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1972:1779)
+    at Object.current (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2664:8320)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)

@@ -1,0 +1,1198 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for da4189b5-5a3c-4837-8aab-bc9686eac11d, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760494057468
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1267609 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760494057468 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760494057515
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1267693 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760494057515 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 3f4a6897-46c1-4f15-8a31-1319947acd8d
+[DEBUG] FileHistory: Added snapshot for 3f4a6897-46c1-4f15-8a31-1319947acd8d, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: WebFetch
+[DEBUG] Executing hooks for PreToolUse:WebFetch
+[DEBUG] Getting matching hook commands for PreToolUse with query: WebFetch
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "WebFetch" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: WebFetch
+[DEBUG] Executing hooks for PreToolUse:WebFetch
+[DEBUG] Getting matching hook commands for PreToolUse with query: WebFetch
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "WebFetch" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[ERROR] AxiosError: AxiosError: Request failed with status code 404
+    at AO (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:24:1136)
+    at Unzip.<anonymous> (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:29:9845)
+    at Unzip.emit (node:events:536:35)
+    at Unzip.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at H81.request (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:31:2129)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async X6Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2579:1062)
+    at async F6Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2579:2055)
+    at async Object.call (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2579:8350)
+    at async nS5 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2492:64762)
+    at async c2Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2492:62271)
+[ERROR] AxiosError: AxiosError: Request failed with status code 404
+    at AO (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:24:1136)
+    at Unzip.<anonymous> (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:29:9845)
+    at Unzip.emit (node:events:536:35)
+    at Unzip.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+    at H81.request (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:31:2129)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async X6Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2579:1062)
+    at async F6Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2579:2055)
+    at async Object.call (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2579:8350)
+    at async nS5 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2492:64762)
+    at async c2Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2492:62271)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Grep
+[DEBUG] Executing hooks for PreToolUse:Grep
+[DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Grep
+[DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494233627
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494233627 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494233635
+[DEBUG] Temp file written successfully, size: 697 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494233635 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Write
+[DEBUG] Executing hooks for PreToolUse:Write
+[DEBUG] Getting matching hook commands for PreToolUse with query: Write
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Write" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart","content":"/// {@category DTO}\nlibrary;\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\n\n// Project imports:\npart 'resend_code_request.freezed.dart';\npart 'resend_code_request.g.dart';\n\n@freezed\nabstract class ResendCodeRequest with _$ResendCodeRequest {\n  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)\n  const factory ResendCodeRequest({\n    required String email,\n    @Default('code') String type,\n  }) = _ResendCodeRequest;\n\n  factory ResendCodeRequest.fromJson(Map<String, dynamic> json) =>\n      _$ResendCodeRequestFromJson(json);\n}\n"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart","content":"/// {@category DTO}\nlibrary;\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\n\n// Project imports:\npart 'resend_code_request.freezed.dart';\npart 'resend_code_request.g.dart';\n\n@freezed\nabstract class ResendCodeRequest with _$ResendCodeRequest {\n  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)\n  const factory ResendCodeRequest({\n    required String email,\n    @Default('code') String type,\n  }) = _ResendCodeRequest;\n\n  factory ResendCodeRequest.fromJson(Map<String, dynamic> json) =>\n      _$ResendCodeRequestFromJson(json);\n}\n"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart.tmp.32028.1760494250980
+[DEBUG] Temp file written successfully, size: 586 bytes
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart.tmp.32028.1760494250980 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Write
+[DEBUG] Getting matching hook commands for PostToolUse with query: Write
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Write" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart","content":"/// {@category DTO}\nlibrary;\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\n\n// Project imports:\npart 'resend_code_request.freezed.dart';\npart 'resend_code_request.g.dart';\n\n@freezed\nabstract class ResendCodeRequest with _$ResendCodeRequest {\n  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)\n  const factory ResendCodeRequest({\n    required String email,\n    @Default('code') String type,\n  }) = _ResendCodeRequest;\n\n  factory ResendCodeRequest.fromJson(Map<String, dynamic> json) =>\n      _$ResendCodeRequestFromJson(json);\n}\n"},"tool_response":{"type":"create","filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart","content":"/// {@category DTO}\nlibrary;\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\n\n// Project imports:\npart 'resend_code_request.freezed.dart';\npart 'resend_code_request.g.dart';\n\n@freezed\nabstract class ResendCodeRequest with _$ResendCodeRequest {\n  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)\n  const factory ResendCodeRequest({\n    required String email,\n    @Default('code') String type,\n  }) = _ResendCodeRequest;\n\n  factory ResendCodeRequest.fromJson(Map<String, dynamic> json) =>\n      _$ResendCodeRequestFromJson(json);\n}\n","structuredPatch":[]}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart","content":"/// {@category DTO}\nlibrary;\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\n\n// Project imports:\npart 'resend_code_request.freezed.dart';\npart 'resend_code_request.g.dart';\n\n@freezed\nabstract class ResendCodeRequest with _$ResendCodeRequest {\n  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)\n  const factory ResendCodeRequest({\n    required String email,\n    @Default('code') String type,\n  }) = _ResendCodeRequest;\n\n  factory ResendCodeRequest.fromJson(Map<String, dynamic> json) =>\n      _$ResendCodeRequestFromJson(json);\n}\n"},"tool_response":{"type":"create","filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/models/dto/user/resend_code_request.dart","content":"/// {@category DTO}\nlibrary;\n\n// Package imports:\nimport 'package:freezed_annotation/freezed_annotation.dart';\n\n// Project imports:\npart 'resend_code_request.freezed.dart';\npart 'resend_code_request.g.dart';\n\n@freezed\nabstract class ResendCodeRequest with _$ResendCodeRequest {\n  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)\n  const factory ResendCodeRequest({\n    required String email,\n    @Default('code') String type,\n  }) = _ResendCodeRequest;\n\n  factory ResendCodeRequest.fromJson(Map<String, dynamic> json) =>\n      _$ResendCodeRequestFromJson(json);\n}\n","structuredPatch":[]}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494259303
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494259303 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494259309
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 699 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494259309 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}","new_string":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, void>> resendCode({required String email});\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}","new_string":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, void>> resendCode({required String email});\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760494268613
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 14383 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760494268613 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}","new_string":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, void>> resendCode({required String email});\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","oldString":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}","newString":"abstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, void>> resendCode({required String email});\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}","originalFile":"/// {@category Data}\nlibrary;\n\n// Flutter imports:\nimport 'package:flutter/material.dart';\n\n// Package imports:\nimport 'package:amplify_auth_cognito/amplify_auth_cognito.dart';\nimport 'package:amplify_flutter/amplify_flutter.dart';\nimport 'package:fimber/fimber.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';\n\nabstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}\n\nclass AuthClientImpl extends AuthClient {\n  static final _fc = failureCodeBuilder.category('AAC'); // Auth-AuthClient\n  static final _logger = FimberLog('AuthClient');\n\n  late final APIServerClient _apiClient;\n\n  QueryRunner get _runner => _apiClient.runner;\n\n  /// local storage provider\n  final ProfileStorage _profileStorage;\n\n  /// Default constructor\n  AuthClientImpl(\n    this._profileStorage,\n    Locale locale,\n    String? appVersion,\n  ) {\n    _apiClient = APIServerClient(\n      locale: locale,\n      appVersion: appVersion,\n    );\n  }\n\n  @override\n\n  /// Sign in user to the application with email and password\n  Future<Result<Failure, bool>> signInWithPassword(\n      String email, String password, bool saveCredentials) async {\n    final methodFc = _fc.category('SIP');\n\n    // Run the query and return result.\n    final result = await _runner.runQuery(\n      () async {\n        if (await AuthUtils.instance.isSignedIn()) {\n          await AuthUtils.instance.signOut();\n        }\n        await Amplify.Auth.signIn(\n          username: email,\n          password: password,\n          options: const SignInOptions(\n            pluginOptions: CognitoSignInPluginOptions(\n              authFlowType: AuthenticationFlowType.userPasswordAuth,\n            ),\n          ),\n        );\n      },\n      false,\n    );\n    if (result.hasLeft) {\n      if (result.left is NetworkFailure) {\n        return Left(Failure.network(\n          code: methodFc.position('001'),\n          description: (l10n) =>\n              l10n.auth_client__failed_to_authenticate_check_network,\n          underlyingException: result.left.underlyingException,\n        ));\n      }\n      if (result.left is InvalidSessionFailure) {\n        final e = result.left.underlyingException;\n        if (e is Auth
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192 (line 1 column 8193)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';","new_string":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/resend_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';","new_string":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/resend_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760494283041
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 14473 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760494283041 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';","new_string":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/resend_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","oldString":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';","newString":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/resend_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';","originalFile":"/// {@category Data}\nlibrary;\n\n// Flutter imports:\nimport 'package:flutter/material.dart';\n\n// Package imports:\nimport 'package:amplify_auth_cognito/amplify_auth_cognito.dart';\nimport 'package:amplify_flutter/amplify_flutter.dart';\nimport 'package:fimber/fimber.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';\n\nabstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unexpected end of JSON input
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n        type: 'code',\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n        type: 'code',\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760494298454
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 14928 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760494298454 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n        type: 'code',\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","oldString":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {","newString":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/signup',\n      data: SignUpRequest(\n        name: email,\n        email: email,\n        password: password,\n        birthday: birthday,\n      ).toJson(),\n      responseMapper: SignUpResponse.fromJson,\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n\n    final userId = result.right.userId;\n    await Future.wait([\n      _profileStorage.setIsInSignUpFlow(true),\n      _profileStorage.setEmail(email),\n      _profileStorage.setPendingSignUpUserId(userId),\n      _profileStorage.setUserId(userId),\n      _profileStorage.setPassword(password),\n      _profileStorage.setUserBirthday(birthday),\n    ]);\n    return Right(userId);\n  }\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n        type: 'code',\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }\n\n  @override\n  Future<Result<Failure, String>> verifyCode({\n    required String code,\n  }) async {","originalFile":"/// {@category Data}\nlibrary;\n\n// Flutter imports:\nimport 'package:flutter/material.dart';\n\n// Package imports:\nimport 'package:amplify_auth_cognito/amplify_auth_cognito.dart';\nimport 'package:amplify_flutter/amplify_flutter.dart';\nimport 'package:fimber/fimber.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/resend_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';\n\nabstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    require
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192 (line 1 column 8193)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494312013
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494312013 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494312020
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 701 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494312020 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart","old_string":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    final password = await _profileStorage.getPassword();\n    final birthday = await _profileStorage.getUserBirthday();\n    assert(\n      email != null && password != null,\n      'email and password must not be null',\n    );\n\n    final res = await _authClient.signUp(\n      email: email!,\n      password: password!,\n      birthday: birthday,\n    );\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }","new_string":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    assert(\n      email != null,\n      'email must not be null',\n    );\n\n    final res = await _authClient.resendCode(email: email!);\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart","old_string":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    final password = await _profileStorage.getPassword();\n    final birthday = await _profileStorage.getUserBirthday();\n    assert(\n      email != null && password != null,\n      'email and password must not be null',\n    );\n\n    final res = await _authClient.signUp(\n      email: email!,\n      password: password!,\n      birthday: birthday,\n    );\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }","new_string":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    assert(\n      email != null,\n      'email must not be null',\n    );\n\n    final res = await _authClient.resendCode(email: email!);\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart.tmp.32028.1760494319485
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 7998 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart.tmp.32028.1760494319485 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart","old_string":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    final password = await _profileStorage.getPassword();\n    final birthday = await _profileStorage.getUserBirthday();\n    assert(\n      email != null && password != null,\n      'email and password must not be null',\n    );\n\n    final res = await _authClient.signUp(\n      email: email!,\n      password: password!,\n      birthday: birthday,\n    );\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }","new_string":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    assert(\n      email != null,\n      'email must not be null',\n    );\n\n    final res = await _authClient.resendCode(email: email!);\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart","oldString":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    final password = await _profileStorage.getPassword();\n    final birthday = await _profileStorage.getUserBirthday();\n    assert(\n      email != null && password != null,\n      'email and password must not be null',\n    );\n\n    final res = await _authClient.signUp(\n      email: email!,\n      password: password!,\n      birthday: birthday,\n    );\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }","newString":"  Future<Result<Failure, void>> resendCode() async {\n    state = const AsyncValue.loading();\n    final email = await _profileStorage.getEmail();\n    assert(\n      email != null,\n      'email must not be null',\n    );\n\n    final res = await _authClient.resendCode(email: email!);\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }","originalFile":"/// {@category Controllers}\nlibrary;\n\n// Package imports:\nimport 'package:riverpod_annotation/riverpod_annotation.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';\nimport 'package:baseball_detector_flutter/data/clients/auth/auth_client.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/providers/auth_client_provider.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\n\npart 'login_state_controller.g.dart';\n\n@Riverpod(keepAlive: true)\nclass LoginStateController extends _$LoginStateController {\n  static final _fc =\n      failureCodeBuilder.category('CLS'); // Controller-LoginState\n\n  bool _mounted = true;\n\n  AuthClient get _authClient => ref.read(authClientProvider);\n\n  ProfileStorage get _profileStorage => ref.read(profileStorageProvider);\n\n  // NOTE:\n  // [supabase.GoTrueClient] automatically restore session when [Supabase.initialize] is called.\n  // In addition to this, calling [goTrueClient.restoreSession] in the constructor of this class\n  // causes an exception.\n  @override\n  FutureOr<bool> build() {\n    _mounted = true;\n    ref.onDispose(() => _mounted = false);\n\n    ref.watch(authClientProvider);\n    return false;\n  }\n\n  /// Signs in using Supabase auth\n  Future<Result<Failure, bool>> signInWithPassword(\n      String email, String password, bool saveCredentials) async {\n    state = const AsyncValue.loading();\n    final res =\n        await _authClient.signInWithPassword(email, password, saveCredentials);\n\n    // UnconfirmedEmailFailure の場合は自動的に resendCode を実行\n    // これにより複数アカウントのサインアップ時に発生する `pendingUserId` 不整合問題を解決\n    //\n    // 発生シナリオ\n    // 1. email1/password1/birthday1 でサインアップ（setPendingUserId に email1 の userId）\n    // 2. メール未検証のまま戻る\n    // 3. email2/password2/birthday2 でサインアップ（setPendingUserId に email2 の userId）\n    // 4. email2 はメール検証してログイン ( setPendingUserId が null になる)\n    // 5. email2 でログアウト\n    // 6. email1 でログイン試行\n    // 7. UnconfirmedEmailFailure を検知し、コード入力画面へ遷移\n    // 8. コード入力画面で古い確認コードを入力し次へ\n    // 9. lib/data/clients/auth/auth_client.dart の completeSignUp で assert(userId != null) により Exception が発生 (completeSignUp 時にはその user の userId が必要でそれを getPendingUserId から取得している)\n    //\n    // TODO: use_auth_code_operations.dart, login_state_controller.dart, auth_client.dart\n    // の処理の流れが複雑なのでリファクタ\n    if (res.hasLeft && res.left is UnconfirmedEmailFailure) {\n      await resendCode();\n    }\n\n    // Refresh user's accessible contents after successful login\n    if (res.hasRight && _mounted) {\n      await ref\n          .read(userAccessibleContentsControllerProvider.notifier)\n          .refresh();\n    }\n\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }\n\n  /// Sign out using Supabase auth\n  Future<Result<Failure, bool>> signOut() async {\n    state = const AsyncValue.loading();\n    final res = await _authClient.signOut();\n\n    // Clear user's accessible contents after sign out\n    if (_mounted) {\n      ref.invalidate(userAccessibleContentsControllerProvider);\n    }\n\n    if (!_mounted) return res;\n    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),\n        (r) => const AsyncValue.data(true));\n    return res;\n  }\n\n  /// Switch team if user belongs to multiple teams\n  /// NOTE: implement here for renew LoginStateController state\n  Future<Result<Failure, bool>> switchTeam(\n    String teamId,\n  ) async {\n    final fc = _fc.category('SWTM');\n\n    state = const AsyncValue.loading();\n    final res = await _profileStorage.setTeamId(teamId);\n\n    // Refresh user's accessible contents after successful team switch\n    if (res && _mounted) {\n      await ref\n          .read(userAccessibleContentsControllerProvider.notifier)\n          .refresh();\n    }\n\n    if (_mounted) {\n      state = res\n          ? const AsyncValue.data(true)\n          : AsyncValue.error('failed to setTeamId', StackTrace.current);\n    }\n    return res\n        ? const Right(true)\n        : Left(Failure.undefined(\n            code: fc.position('001'),\n            description: (l10n) =>\n                l10n.login_state_controller__failed_to_switch_team,\n          ));\n  }\n\n  Future<Result<Failure, void>> signUp(\n    String email,\n    String password,\n    DateTime birthday,\n  ) async {\n    state = const AsyncValue.loading();\n    final res = await _authClient.signUp(\n      email: email,\n
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 7804 (line 1 column 7805)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/controllers/login_state_controller.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494331159
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494331159 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494331165
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 703 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494331165 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494379454
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494379454 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494379473
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 705 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494379473 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async =>\n      const Right(null);\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async =>\n      const Right(null);\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart.tmp.32028.1760494401646
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1489 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart.tmp.32028.1760494401646 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async =>\n      const Right(null);\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart","oldString":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","newString":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async =>\n      const Right(null);\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","originalFile":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/auth/auth_client.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\n\nclass FakeAuthClient extends AuthClient {\n  @override\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  ) async =>\n      const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> signOut() async => const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> deleteAccount() async => const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  }) async =>\n      const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> forgotPassword({required String email}) async =>\n      const Right(true);\n\n  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> completeSignUp({required String token}) async =>\n      const Right(null);\n\n  @override\n  Future<bool> get isLoggedIn async => true;\n}\n","structuredPatch":[{"oldStart":38,"oldLines":6,"newStart":38,"newLines":10,"lines":["       const Right('');"," ","   @override","+  Future<Result<Failure, void>> resendCode({required String email}) async =>","+      const Right(null);","+","+  @override","   Future<Result<Failure, String>> verifyCode({required String code}) async =>","       const Right('');"," "]}],"userModified":false,"replaceAll":false}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart","old_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","new_string":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async =>\n      const Right(null);\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart","oldString":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","newString":"  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async =>\n      const Right(null);\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');","originalFile":"// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/auth/auth_client.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\n\nclass FakeAuthClient extends AuthClient {\n  @override\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  ) async =>\n      const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> signOut() async => const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> deleteAccount() async => const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  }) async =>\n      const Right(true);\n\n  @override\n  Future<Result<Failure, bool>> forgotPassword({required String email}) async =>\n      const Right(true);\n\n  @override\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  }) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, String>> verifyCode({required String code}) async =>\n      const Right('');\n\n  @override\n  Future<Result<Failure, void>> completeSignUp({required String token}) async =>\n      const Right(null);\n\n  @override\n  Future<bool> get isLoggedIn async => true;\n}\n","structuredPatch":[{"oldStart":38,"oldLines":6,"newStart":38,"newLines":10,"lines":["       const Right('');"," ","   @override","+  Future<Result<Failure, void>> resendCode({required String email}) async =>","+      const Right(null);","+","+  @override","   Future<Result<Failure, String>> verifyCode({required String code}) async =>","       const Right('');"," "]}],"userModified":false,"replaceAll":false}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client_fake.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494421858
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760494421858 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494421867
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760494421867 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760494435328
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1267693 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760494435328 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760494436902
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1267693 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760494436902 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760494436951
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1268094 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760494436951 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 097c2b02-e997-4f9c-b857-dd297afff596
+[DEBUG] FileHistory: Added snapshot for 097c2b02-e997-4f9c-b857-dd297afff596, tracking 4 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[ERROR] RangeError: RangeError: path should be a `path.relative()`d string, but got ".."
+    at df6 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1756:16943)
+    at I_ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1756:17120)
+    at vYB._test (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1756:17657)
+    at vYB.test (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1756:18320)
+    at ML (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:3426:6602)
+    at JO0 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1308:3327)
+    at Z7B (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1308:3980)
+    at Sk6 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1308:4485)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1308:4927
+    at kk6 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1308:5824)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760495145729
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760495145729 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760495145737
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 296 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760495145737 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760495169324
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760495169324 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760495169329
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 306 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760495169329 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }","new_string":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/code-resend',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }","new_string":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/code-resend',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760495182566
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 14943 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart.tmp.32028.1760495182566 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","old_string":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }","new_string":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/code-resend',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart","oldString":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/resend-code',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }","newString":"  @override\n  Future<Result<Failure, void>> resendCode({required String email}) async {\n    debugPrint('resendCode:$email');\n    // Run the query and return result.\n    final result = await _apiClient.request(\n      method: 'POST',\n      path: '/auth/code-resend',\n      data: ResendCodeRequest(\n        email: email,\n      ).toJson(),\n      authenticated: false,\n    );\n    if (result.hasLeft) {\n      return Left(result.left);\n    }\n    return const Right(null);\n  }","originalFile":"/// {@category Data}\nlibrary;\n\n// Flutter imports:\nimport 'package:flutter/material.dart';\n\n// Package imports:\nimport 'package:amplify_auth_cognito/amplify_auth_cognito.dart';\nimport 'package:amplify_flutter/amplify_flutter.dart';\nimport 'package:fimber/fimber.dart';\n\n// Project imports:\nimport 'package:baseball_detector_flutter/data/clients/api_server_client.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/email_verification_status_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_change_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/password_reset_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/resend_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/set_user_initial_password_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/sign_up_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/user_detail_response.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_request.dart';\nimport 'package:baseball_detector_flutter/data/models/dto/user/verify_code_response.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure.dart';\nimport 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';\nimport 'package:baseball_detector_flutter/data/profile_storage.dart';\nimport 'package:baseball_detector_flutter/data/query_runner.dart';\nimport 'package:baseball_detector_flutter/data/result.dart';\nimport 'package:baseball_detector_flutter/modules/amplify/amplify.dart';\n\nabstract class AuthClient {\n  Future<Result<Failure, bool>> signInWithPassword(\n    String email,\n    String password,\n    bool saveCredentials,\n  );\n\n  Future<Result<Failure, bool>> signOut();\n\n  Future<Result<Failure, bool>> changePassword({\n    required String newPassword,\n    required bool saveCredentials,\n  });\n\n  Future<Result<Failure, bool>> forgotPassword({required String email});\n\n  Future<Result<Failure, String>> signUp({\n    required String email,\n    required String password,\n    DateTime? birthday,\n  });\n\n  Future<Result<Failure, void>> resendCode({required String email});\n\n  Future<Result<Failure, String>> verifyCode({required String code});\n\n  Future<Result<Failure, void>> completeSignUp({required String token});\n\n  Future<Result<Failure, bool>> deleteAccount();\n\n  Future<bool> get isLoggedIn;\n}\n\nclass AuthClientImpl extends AuthClient {\n  static final _fc = failureCodeBuilder.category('AAC'); // Auth-AuthClient\n  static final _logger = FimberLog('AuthClient');\n\n  late final APIServerClient _apiClient;\n\n  QueryRunner get _runner => _apiClient.runner;\n\n  /// local storage provider\n  final ProfileStorage _profileStorage;\n\n  /// Default constructor\n  AuthClientImpl(\n    this._profileStorage,\n    Locale locale,\n    String? appVersion,\n  ) {\n    _apiClient = APIServerClient(\n      locale: locale,\n      appVersion: appVersion,\n    );\n  }\n\n  @override\n\n  /// Sign in user to the application with email and password\n  Future<Result<Failure, bool>> signInWithPassword(\n      String email, String password, bool saveCredentials) async {\n    final methodFc = _fc.category('SIP');\n\n    // Run the query and return result.\n    final result = await _runner.runQuery(\n      () async {\n        if (await AuthUtils.instance.isSignedIn()) {\n          await AuthUtils.instance.signOut();\n        }\n        await Amplify.Auth.signIn(\n          username: email,\n          password: password,\n          options: const SignInOptions(\n            pluginOptions: CognitoSignInPluginOptions(\n              authFlowType: AuthenticationFlowType.userPasswordAuth,\n            ),\n          ),\n        );\n      },\n      false,\n    );\n    if (result.hasLeft) {\n      if (result.left is NetworkFailure) {\n        return Left(Failure.network(\n          code: methodFc.position('001'),\n          description: (l10n) =>\n              l10n.auth_client__failed_to_authenticate_check_network,\n          underlyingException: result.left.underlyingException,\n        ));\n      }\n      if (result.left is InvalidSessionFailure) {\n        final e = result.left.underlyingException;\n        if (e is AuthException) {\n          return Left(await _processAuthException(\n            e,\n            email: email,\n            password: password,\n          ));\n        }\n      }\n      return Left(result.left);\n    }\n\n    late String userId;\n    try {\n      userId = await AuthUtils.instance.getUserId();\n    } catch (e, stackTrace) {\n      _logger.e('failed to get userId', ex: e, stacktrace: stackTrace);\n      return Left(Failure.undefined(\n        code: methodFc.position('002'),\n        underlyingException: e,\n        stackTrace: stackTrace,\n      ));\n    }\n\n    await _profileStorage.setEmail(email);\n    if (saveCredentials) {\n      // Cache user password\n      await _profileStorage.setPassword(password);\n    } else {\n      // Remove cached user password\n      await _profileStorage.setPassword(null);\n    }\n\n    await _profileStorage.setUserId(userId);\n\n    // Get team_id and role of the user using direct API call\n    // This avoids circular dependency with Repository\n    final userInfoResult = await _apiClient.request(\n      method: 'GET',\n      path: '/users/me',\n      responseMapper: UserDetailResponse.fromJson,\n
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8189 (line 1 column 8190)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"682436a2-4f5c-4f4e-96d0-e265fc1805ed","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/682436a2-4f5c-4f4e-96d0-e265fc1805ed.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/data/clients/auth/auth_client.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760495191335
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json.tmp.32028.1760495191335 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-9fe8b3eb-d61f-4d01-8725-b086e71a3049.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760495191341
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json.tmp.32028.1760495191341 to /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/682436a2-4f5c-4f4e-96d0-e265fc1805ed-agent-682436a2-4f5c-4f4e-96d0-e265fc1805ed.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760495199679
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1268094 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760495199679 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760495221779
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1268094 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760495221779 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760495223310
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1268094 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760495223310 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760495223355
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1270020 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760495223355 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)

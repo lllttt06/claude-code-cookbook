@@ -1,0 +1,30 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for 7a67ad31-e3b3-4cbc-9ed6-6fed479027e8, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.53701.1759964333177
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 653254 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.53701.1759964333177 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.53701.1759964334713
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 653254 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.53701.1759964334713 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1759922356008-1hjoxr.sh
+[DEBUG] MCP server "serena": Sending SIGINT to MCP server process
+[DEBUG] MCP server "serena": SIGINT failed, sending SIGTERM to MCP server process
+[DEBUG] MCP server "serena": MCP server process exited cleanly
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.53701.1759964335124
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 653685 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.53701.1759964335124 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

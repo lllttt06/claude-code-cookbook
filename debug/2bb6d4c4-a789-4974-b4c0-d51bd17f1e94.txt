@@ -1,0 +1,212 @@
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] FileHistory: Added snapshot for 295ae61a-db43-4e82-9d39-b2f23a693e15, tracking 0 files
+[DEBUG] Rendering user message with 1 content blocks
+[DEBUG] Block 0: <command-name>/clear</command-name>
+            <command-message>clear</command-message>
+           ...
+[DEBUG] UserCommandMessage rendering: "clear" (args: "none")
+[DEBUG] isSkillFormat: false, prefix: "/"
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760658675220
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1264920 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760658675220 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] FileHistory: Making snapshot for message 846001a9-08df-4262-8963-9a5379604878
+[DEBUG] FileHistory: Added snapshot for 846001a9-08df-4262-8963-9a5379604878, tracking 0 files
+[DEBUG] Skills and commands included in Skill tool:
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Skills and commands included in Skill tool:
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Skills and commands included in Skill tool:
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Skills and commands included in Skill tool:
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Skills and commands included in Skill tool:
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760658755222
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1252332 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760658755222 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760662997949
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1252533 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760662997949 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760664795707
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1254315 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760664795707 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760666597063
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1254280 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760666597063 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760668395814
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1253939 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760668395814 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760670195771
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1254018 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760670195771 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760671996240
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1254018 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760671996240 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Detected change to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.claude/settings.local.json
+[DEBUG] Replacing all allow rules for destination 'userSettings' with 14 rule(s): ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Replacing all deny rules for destination 'userSettings' with 51 rule(s): ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Replacing all allow rules for destination 'localSettings' with 1 rule(s): ["mcp__serena__find_symbol"]
+[DEBUG] Detected change to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.claude/settings.local.json
+[DEBUG] Replacing all allow rules for destination 'userSettings' with 14 rule(s): ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Replacing all deny rules for destination 'userSettings' with 51 rule(s): ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Replacing all allow rules for destination 'localSettings' with 2 rule(s): ["mcp__serena__find_symbol","mcp__serena__find_file"]
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760673795895
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1254167 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760673795895 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760675595932
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1254167 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760675595932 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdater: Detected installation type: npm-global
+[DEBUG] AutoUpdater: Using global update method
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.6877.1760677395877
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1248230 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.6877.1760677395877 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Detected change to /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.claude/settings.local.json
+[DEBUG] Replacing all allow rules for destination 'userSettings' with 14 rule(s): ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Replacing all deny rules for destination 'userSettings' with 51 rule(s): ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Replacing all allow rules for destination 'localSettings' with 3 rule(s): ["mcp__serena__find_symbol","mcp__serena__find_file","Read(//Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/teams/[team_id]/sessions/**)"]

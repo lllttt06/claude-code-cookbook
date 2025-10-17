@@ -1,0 +1,65 @@
+[DEBUG] Watching for changes in setting files /Users/kokiyoshida/.claude/settings.json, /Users/kokiyoshida/Knowhere-inc/baseball_detector_flutter/.claude/settings.local.json...
+[DEBUG] Applying permission update: Adding 14 allow rule(s) to destination 'userSettings': ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Applying permission update: Adding 51 deny rule(s) to destination 'userSettings': ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+[DEBUG] >>>>> getSkillsIfEnabled() CALLED <<<<<
+[DEBUG] ENABLE_SKILLS value: false, type: boolean
+[DEBUG] ENABLE_SKILLS check failed, returning empty
+[DEBUG] Creating shell snapshot for zsh (/bin/zsh)
+[DEBUG] Looking for shell config file: /Users/kokiyoshida/.zshrc
+[DEBUG] Snapshots directory: /Users/kokiyoshida/.claude/shell-snapshots
+[DEBUG] Creating snapshot at: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760572835121-m1pahg.sh
+[DEBUG] Shell binary exists: true
+[DEBUG] Execution timeout: 10000ms
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/129599cb-af37-4462-8d4c-ead258efed1d-agent-129599cb-af37-4462-8d4c-ead258efed1d.json.tmp.48043.1760572835123
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/129599cb-af37-4462-8d4c-ead258efed1d-agent-129599cb-af37-4462-8d4c-ead258efed1d.json.tmp.48043.1760572835123 to /Users/kokiyoshida/.claude/todos/129599cb-af37-4462-8d4c-ead258efed1d-agent-129599cb-af37-4462-8d4c-ead258efed1d.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/129599cb-af37-4462-8d4c-ead258efed1d-agent-129599cb-af37-4462-8d4c-ead258efed1d.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.48043.1760572835162
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292868 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.48043.1760572835162 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Total plugin commands loaded: 0
+[DEBUG] Registered 0 hooks from 0 plugins
+[DEBUG] Summarizing all 3 messages (~0 tokens)
+[DEBUG] Shell snapshot created successfully (68564 bytes)
+[DEBUG] rg error (signal=undefined, code=ABORT_ERR, stderr: ), 0 results
+[ERROR] AbortError: AbortError: The operation was aborted
+    at abortChildProcess (node:child_process:716:27)
+    at AbortSignal.onAbortListener (node:child_process:786:7)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+    at AbortSignal.dispatchEvent (node:internal/event_target:762:26)
+    at runAbort (node:internal/abort_controller:447:10)
+    at abortSignal (node:internal/abort_controller:433:3)
+    at AbortController.abort (node:internal/abort_controller:466:5)
+    at Timeout._onTimeout (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:3284:566)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+[DEBUG] rg error (signal=undefined, code=ABORT_ERR, stderr: ), 0 results
+[ERROR] AbortError: AbortError: The operation was aborted
+    at abortChildProcess (node:child_process:716:27)
+    at AbortSignal.onAbortListener (node:child_process:786:7)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+    at AbortSignal.dispatchEvent (node:internal/event_target:762:26)
+    at runAbort (node:internal/abort_controller:447:10)
+    at abortSignal (node:internal/abort_controller:433:3)
+    at AbortController.abort (node:internal/abort_controller:466:5)
+    at Timeout._onTimeout (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:3588:5435)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+[DEBUG] rg error (signal=undefined, code=ABORT_ERR, stderr: ), 0 results
+[ERROR] AbortError: AbortError: The operation was aborted
+    at abortChildProcess (node:child_process:716:27)
+    at AbortSignal.onAbortListener (node:child_process:786:7)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:827:20)
+    at AbortSignal.dispatchEvent (node:internal/event_target:762:26)
+    at runAbort (node:internal/abort_controller:447:10)
+    at abortSignal (node:internal/abort_controller:433:3)
+    at AbortController.abort (node:internal/abort_controller:466:5)
+    at Timeout._onTimeout (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:3284:566)
+    at listOnTimeout (node:internal/timers:594:17)
+    at process.processTimers (node:internal/timers:529:7)
+[DEBUG] Total plugin agents loaded: 0
+[DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg)

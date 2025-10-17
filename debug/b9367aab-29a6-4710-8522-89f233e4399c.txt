@@ -1,0 +1,881 @@
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] FileHistory: Added snapshot for 1bd7d8fc-8aa0-4b79-a31e-749a1c1001b0, tracking 0 files
+[DEBUG] Rendering user message with 1 content blocks
+[DEBUG] Block 0: <command-name>/clear</command-name>
+            <command-message>clear</command-message>
+           ...
+[DEBUG] UserCommandMessage rendering: "clear" (args: "none")
+[DEBUG] isSkillFormat: false, prefix: "/"
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760583587857
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1286198 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760583587857 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760583587905
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285984 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760583587905 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] FileHistory: Making snapshot for message e90f2e03-628f-47d5-aa4a-add67937f135
+[DEBUG] FileHistory: Added snapshot for e90f2e03-628f-47d5-aa4a-add67937f135, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[ERROR] SyntaxError: SyntaxError: Unexpected token '`', "```json
+{
+"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:62:719
+    at Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:8:15093)
+    at Pi2 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1056:20444)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:31,276 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 12:00:31,277 [MainThread] serena.agent:issue_task:402 - Scheduling Task-4[FindSymbolTool]
+INFO  2025-10-16 12:00:31,277 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-4[FindSymbolTool] starting ...
+INFO  2025-10-16 12:00:31,277 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - find_symbol: name_path='IncorrectPasswordFailure', depth=1, relative_path='', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:32,506 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: []
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:32,507 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-4[FindSymbolTool] completed in 1.230 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 1s
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:32,542 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 12:00:32,542 [MainThread] serena.agent:issue_task:402 - Scheduling Task-5[FindSymbolTool]
+INFO  2025-10-16 12:00:32,543 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-5[FindSymbolTool] starting ...
+INFO  2025-10-16 12:00:32,543 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - find_symbol: name_path='UnconfirmedEmailFailure', depth=1, relative_path='', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:33,757 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: []
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:33,758 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-5[FindSymbolTool] completed in 1.215 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 1s
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:33,791 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 12:00:33,792 [MainThread] serena.agent:issue_task:402 - Scheduling Task-6[FindSymbolTool]
+INFO  2025-10-16 12:00:33,792 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-6[FindSymbolTool] starting ...
+INFO  2025-10-16 12:00:33,792 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - find_symbol: name_path='UnregisteredEmailFailure', depth=1, relative_path='', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:35,017 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: []
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:35,017 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-6[FindSymbolTool] completed in 1.226 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 1s
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__search_for_pattern
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: search_for_pattern
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,682 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 12:00:41,682 [MainThread] serena.agent:issue_task:402 - Scheduling Task-7[SearchForPatternTool]
+INFO  2025-10-16 12:00:41,682 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-7[SearchForPatternTool] starting ...
+INFO  2025-10-16 12:00:41,682 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - search_for_pattern: substring_pattern='class IncorrectPasswordFailure', context_lines_before=0, context_lines_after=0, paths_include_glob='', paths_exclude_glob='', relative_path='', restrict_search_to_code_files=True, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,755 [SerenaAgentExecutor_0] serena.text_utils:search_files:363 - Processing 2 files.
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,776 [SerenaAgentExecutor_0] serena.text_utils:search_files:404 - Found 0 total matches across 2 files
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,776 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: {}
+INFO  2025-10-16 12:00:41,777 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-7[SearchForPatternTool] completed in 0.095 seconds
+[DEBUG] MCP server "serena": Tool 'search_for_pattern' completed successfully in 99ms
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: mcp__serena__search_for_pattern
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] MCP server "serena": Calling MCP tool: search_for_pattern
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,811 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-16 12:00:41,811 [MainThread] serena.agent:issue_task:402 - Scheduling Task-8[SearchForPatternTool]
+INFO  2025-10-16 12:00:41,812 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-8[SearchForPatternTool] starting ...
+INFO  2025-10-16 12:00:41,812 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:207 - search_for_pattern: substring_pattern='class UnconfirmedEmailFailure', context_lines_before=0, context_lines_after=0, paths_include_glob='', paths_exclude_glob='', relative_path='', restrict_search_to_code_files=True, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,885 [SerenaAgentExecutor_0] serena.text_utils:search_files:363 - Processing 2 files.
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-16 12:00:41,900 [SerenaAgentExecutor_0] serena.text_utils:search_files:404 - Found 0 total matches across 2 files
+INFO  2025-10-16 12:00:41,900 [SerenaAgentExecutor_0] serena.tools.tools_base:task:274 - Result: {}
+INFO  2025-10-16 12:00:41,901 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-8[SearchForPatternTool] completed in 0.090 seconds
+[DEBUG] MCP server "serena": Tool 'search_for_pattern' completed successfully in 93ms
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__search_for_pattern
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__search_for_pattern" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Grep
+[DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760583649995
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760583649995 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760583650005
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760583650005 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760583650009
+[DEBUG] Temp file written successfully, size: 482 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760583650009 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Grep
+[DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760583664149
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760583664149 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760583664159
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760583664159 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760583664166
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 488 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760583664166 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760583689917
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760583689917 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760583689926
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760583689926 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760583689933
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760583689933 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760583712977
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285984 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760583712977 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760583721861
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285984 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760583721861 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760583723379
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285984 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760583723379 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760583723424
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285915 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760583723424 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] FileHistory: Making snapshot for message 8a33986b-46fb-49ba-9d51-2f84585cfc6d
+[DEBUG] FileHistory: Added snapshot for 8a33986b-46fb-49ba-9d51-2f84585cfc6d, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] SyntaxError: SyntaxError: Unexpected token '`', "```json
+{
+"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:62:719
+    at Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:8:15093)
+    at Pi2 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1056:20444)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584011265
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584011265 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584011274
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584011274 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584011279
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 373 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584011279 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584046730
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584046730 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584046738
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584046738 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584046744
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 375 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584046744 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584064339
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584064339 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584064351
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584064351 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584064357
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584064357 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584096520
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285915 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584096520 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584111239
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285915 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584111239 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584112782
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1285915 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584112782 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584112827
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293474 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584112827 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] FileHistory: Making snapshot for message d6719afb-a3b9-4b39-8c11-9f8f8c460409
+[DEBUG] FileHistory: Added snapshot for d6719afb-a3b9-4b39-8c11-9f8f8c460409, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[ERROR] SyntaxError: SyntaxError: Unexpected token '`', "```json
+{
+"... is not valid JSON
+    at JSON.parse (<anonymous>)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:62:719
+    at Q (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:8:15093)
+    at Pi2 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1056:20444)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584263046
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584263046 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584263054
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584263054 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584263060
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 514 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584263060 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Grep
+[DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] executePreToolHooks called for tool: Grep
+[DEBUG] Getting matching hook commands for PreToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Grep
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Grep" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584313956
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584313956 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584313966
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584313966 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584313973
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 516 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584313973 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584363486
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584363486 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584363496
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584363496 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584363502
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 518 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584363502 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584491967
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json.tmp.74124.1760584491967 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-6e519ee0-39ee-4818-a24f-717da6f1dfee.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584491974
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json.tmp.74124.1760584491974 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-052ebeaa-5444-4893-ab78-ba9ee9c06c52.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584491980
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json.tmp.74124.1760584491980 to /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/b9367aab-29a6-4710-8522-89f233e4399c-agent-b9367aab-29a6-4710-8522-89f233e4399c.json written atomically
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at vK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4413)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4141
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:1140:4132)
+    at YoB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2127:9433)
+    at _$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at ks (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at Zd (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at l$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584512584
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293480 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584512584 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584514143
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293480 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584514143 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.74124.1760584514188
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293341 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.74124.1760584514188 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text

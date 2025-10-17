@@ -1,0 +1,100 @@
+[DEBUG] Watching for changes in setting files /Users/kokiyoshida/.claude/settings.json...
+[DEBUG] Applying permission update: Adding 14 allow rule(s) to destination 'userSettings': ["Bash","Edit(**)","Glob(**)","GlobTool(**)","Grep(**)","GrepTool(**)","LS(**)","MultiEdit(**)","Read(**)","TodoRead","TodoWrite(**)","WebFetch(domain:*)","WebSearch","Write(**)"]
+[DEBUG] Applying permission update: Adding 51 deny rule(s) to destination 'userSettings': ["Bash(> /dev/sda*)","Bash(apt-get install:*)","Bash(brew install:*)","Bash(bundle install:*)","Bash(chmod -R 777:*)","Bash(chmod 777:*)","Bash(chown -R:*)","Bash(dd:*)","Bash(format:*)","Bash(gem install:*)","Bash(gh api --method DELETE:*)","Bash(gh auth logout:*)","Bash(gh auth refresh:*)","Bash(gh gist create:*)","Bash(gh gist delete:*)","Bash(gh gpg-key add:*)","Bash(gh gpg-key delete:*)","Bash(gh release create:*)","Bash(gh release delete:*)","Bash(gh release upload:*)","Bash(gh repo archive:*)","Bash(gh repo clone:*)","Bash(gh repo create:*)","Bash(gh repo delete:*)","Bash(gh repo deploy-key:*)","Bash(gh repo edit:*)","Bash(gh repo fork:*)","Bash(gh repo rename:*)","Bash(gh repo sync:*)","Bash(gh repo unarchive:*)","Bash(gh secret delete:*)","Bash(gh secret set:*)","Bash(gh ssh-key add:*)","Bash(gh ssh-key delete:*)","Bash(gh workflow disable:*)","Bash(gh workflow enable:*)","Bash(gh workflow run:*)","Bash(git checkout:*)","Bash(git config:*)","Bash(git rebase:*)","Bash(git reset --hard:*)","Bash(git restore:*)","Bash(mkfs:*)","Bash(npm install -g:*)","Bash(pip install:*)","Bash(rm -rf ../*)","Bash(rm -rf /)","Bash(rm -rf /*)","Bash(rm -rf ~/*)","Bash(sudo:*)","Bash(yum install:*)"]
+[DEBUG] Found 0 plugins (0 enabled, 0 disabled)
+[DEBUG] Creating shell snapshot for zsh (/bin/zsh)
+[DEBUG] Looking for shell config file: /Users/kokiyoshida/.zshrc
+[DEBUG] Snapshots directory: /Users/kokiyoshida/.claude/shell-snapshots
+[DEBUG] Creating snapshot at: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760536961344-nkniem.sh
+[DEBUG] Shell binary exists: true
+[DEBUG] Execution timeout: 10000ms
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/1410cf65-d76c-405d-a472-8f056b1eee08-agent-1410cf65-d76c-405d-a472-8f056b1eee08.json.tmp.95051.1760536961346
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/1410cf65-d76c-405d-a472-8f056b1eee08-agent-1410cf65-d76c-405d-a472-8f056b1eee08.json.tmp.95051.1760536961346 to /Users/kokiyoshida/.claude/todos/1410cf65-d76c-405d-a472-8f056b1eee08-agent-1410cf65-d76c-405d-a472-8f056b1eee08.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/1410cf65-d76c-405d-a472-8f056b1eee08-agent-1410cf65-d76c-405d-a472-8f056b1eee08.json written atomically
+[DEBUG] Registered 0 hooks from 0 plugins
+[DEBUG] Ripgrep first use test: PASSED (mode=builtin, path=/Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/vendor/ripgrep/arm64-darwin/rg)
+[DEBUG] Total plugin agents loaded: 0
+[DEBUG] Loading skills from directories: managed=/Library/Application Support/ClaudeCode/.claude/skills, user=/Users/kokiyoshida/.claude/skills, project=/Users/kokiyoshida/Knowhere-inc/stripe-link/.claude/skills
+[DEBUG] Loaded 0 skills total (managed: 0, user: 0, project: 0)
+[DEBUG] Total plugin commands loaded: 0
+[DEBUG] Total plugin skills loaded: 0
+[DEBUG] Shell snapshot created successfully (68564 bytes)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536961676
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292076 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536961676 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536961712
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292076 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536961712 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536961761
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292076 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536961761 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536962411
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292076 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536962411 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for SessionStart:startup
+[DEBUG] Getting matching hook commands for SessionStart with query: startup
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "startup" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536962486
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1291971 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536962486 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536962518
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1291971 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536962518 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] performStartupChecks called, ENABLE_PLUGINS=true
+[DEBUG] Trust not accepted for current directory - skipping plugin installations
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536963051
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292076 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536963051 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Loaded plugins - Enabled: 0, Disabled: 0, Commands: 0, Agents: 0, Errors: 0
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Executing hooks for SessionStart:resume
+[DEBUG] Getting matching hook commands for SessionStart with query: resume
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "resume" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Copied backup 18c9be3b8a189b92@v1 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup ff5d1ae06f70ec31@v1 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup 18c9be3b8a189b92@v2 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup ff5d1ae06f70ec31@v2 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup ff5d1ae06f70ec31@v3 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup 9cf79b34117287a0@v1 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup 9cf79b34117287a0@v2 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] FileHistory: Copied backup ff5d1ae06f70ec31@v4 from session e97325ce-efe1-44e6-a659-fd2d0634ffac to 1410cf65-d76c-405d-a472-8f056b1eee08
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536967209
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1291971 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536967209 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.95051.1760536967241
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1291971 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.95051.1760536967241 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

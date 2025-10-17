@@ -1,0 +1,1075 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for 6a530edc-f553-4e00-8411-3b828883623e, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252417372
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692881 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252417372 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 59ca0936-2a7a-4af1-a185-d7280c3211b4
+[DEBUG] FileHistory: Added snapshot for 59ca0936-2a7a-4af1-a185-d7280c3211b4, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252474178
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252474178 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252474190
+[DEBUG] Temp file written successfully, size: 332 bytes
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252474190 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252483592
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252483592 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252483598
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 334 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252483598 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","new_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","new_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252493904
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 18226 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252493904 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","new_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","oldString":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","newString":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","originalFile":"import {\n  AdminPanelSettings,\n  AdminPanelSettingsOutlined,\n  FormatListBulleted,\n  Groups3Outlined,\n  Inventory2Outlined,\n  KeyboardDoubleArrowLeft,\n  KeyboardDoubleArrowRight,\n  Menu as MenuIcon,\n  NotificationsOutlined,\n} from '@mui/icons-material';\nimport {\n  AppBar,\n  Box,\n  Button,\n  CSSObject,\n  Divider,\n  Drawer as MuiDrawer,\n  IconButton,\n  List,\n  ListItem,\n  ListItemButton,\n  ListItemIcon,\n  ListItemText,\n  Slide,\n  styled,\n  Theme,\n  Toolbar,\n  Typography,\n  useMediaQuery,\n  useScrollTrigger,\n  useTheme,\n} from '@mui/material';\nimport Image from 'next/image';\nimport Link from 'next/link';\nimport { enqueueSnackbar } from 'notistack';\nimport React, { ReactElement, ReactNode, useEffect, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport AppConstants from '@/constants/app.constants';\nimport { EnvManager } from '@/constants/env.constants';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport { isTopTierPlan } from '@/constants/plan.constants';\nimport useServicesHook from '@/hooks';\nimport { Team, TeamType } from '@/models/team';\nimport { BallUsageStatus, TeamPlanStatus } from '@/models/team-status';\nimport { User } from '@/models/user';\nimport { useSelector } from '@/store';\nimport { wrapForLoading } from '@/utils/functions/transformer';\nimport { translate } from '@/utils/i18n';\nimport { logger } from '@/utils/logger';\nimport { createSafeCallbackUrl } from '@/utils/redirect-validator';\n\nconst drawerWidth = '16rem';\n\nconst openedMixin = (theme: Theme): CSSObject => ({\n  width: drawerWidth,\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.enteringScreen,\n  }),\n  overflowX: 'hidden',\n});\n\nconst closedMixin = (theme: Theme): CSSObject => ({\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.leavingScreen,\n  }),\n  overflowX: 'hidden',\n  width: `calc(${theme.spacing(7)} + 1px)`,\n  [theme.breakpoints.up('sm')]: {\n    width: `calc(${theme.spacing(8)} + 1px)`,\n  },\n});\n\nconst Drawer = styled(MuiDrawer)(({ theme }) => ({\n  width: drawerWidth,\n  flexShrink: 0,\n  whiteSpace: 'nowrap',\n  boxSizing: 'border-box',\n  variants: [\n    {\n      props: { open: true },\n      style: {\n        ...openedMixin(theme),\n        '.MuiDrawer-paper': openedMixin(theme),\n      },\n    },\n    {\n      props: { open: false },\n      style: {\n        ...closedMixin(theme),\n        '.MuiDrawer-paper': closedMixin(theme),\n      },\n    },\n  ],\n}));\n\ntype MenuItemDataType = {\n  name: string;\n  link?: string;\n  isSelected?: boolean;\n  icon: ReactElement;\n  isDivider?: boolean;\n};\n\nfunction LayoutInner({\n  children,\n  currentUser,\n  currentTeam,\n}: {\n  children: ReactNode;\n  currentUser: User;\n  currentTeam: Team;\n}) {\n  const { router, services } = useServicesHook();\n\n  const theme = useTheme();\n  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));\n  const scrollTrigger = useScrollTrigger();\n\n  const [open, setOpen] = useState(!isSmallScreen);\n  const flipOpen = () => setOpen(!open);\n\n  const adminItem = {\n    name: translate(PAGE_INFO.ADMIN.name as keyof typeof translate),\n    icon: <AdminPanelSettingsOutlined />,\n    isSelected: router.pathname == PAGE_INFO.ADMIN.href(currentTeam.id),\n    link: PAGE_INFO.ADMIN.href(currentTeam.id),\n  };\n\n  const superAdminItems = [\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_RESOURCES.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n      link: PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_TEAMS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_AI_COACH.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n      link: PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_ITEMS.name as keyof typeof t
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 7572
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252504567
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252504567 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252504584
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 336 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252504584 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: cd web && npm run lint -- --max-warnings 0 src/layouts/console.layout.tsx
+[DEBUG] Bash tool description: console.layout.tsx のリント確認
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: cd web && npm run typecheck
+[DEBUG] Bash tool description: 型チェック実行
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: cd web && npm run build
+[DEBUG] Bash tool description: ビルドで型チェックと動作確認
+[DEBUG] Bash tool timeout: 120000ms
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252578720
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252578720 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252578727
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252578727 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252591151
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692881 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252591151 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252592710
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692881 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252592710 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252592746
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692826 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252592746 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 65f342af-2271-47c2-9b8b-426ed3578d23
+[DEBUG] FileHistory: Added snapshot for 65f342af-2271-47c2-9b8b-426ed3578d23, tracking 1 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252708697
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252708697 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252708705
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 480 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252708705 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Write
+[DEBUG] Executing hooks for PreToolUse:Write
+[DEBUG] Getting matching hook commands for PreToolUse with query: Write
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Write" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","content":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}\n"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","content":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}\n"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx.tmp.47919.1760252721640
+[DEBUG] Temp file written successfully, size: 2234 bytes
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx.tmp.47919.1760252721640 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Write
+[DEBUG] Getting matching hook commands for PostToolUse with query: Write
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Write" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","content":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}\n"},"tool_response":{"type":"create","filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","content":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}\n","structuredPatch":[]}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Write","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","content":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}\n"},"tool_response":{"type":"create","filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","content":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}\n","structuredPatch":[]}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252729947
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252729947 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252729953
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 482 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252729953 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';","new_string":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport SingleTeamPlanCard from '@/components/common/single-team-plan-card';"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';","new_string":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport SingleTeamPlanCard from '@/components/common/single-team-plan-card';"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252736404
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 18302 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252736404 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';","new_string":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport SingleTeamPlanCard from '@/components/common/single-team-plan-card';"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","oldString":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';","newString":"import CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport SingleTeamPlanCard from '@/components/common/single-team-plan-card';","originalFile":"import {\n  AdminPanelSettings,\n  AdminPanelSettingsOutlined,\n  FormatListBulleted,\n  Groups3Outlined,\n  Inventory2Outlined,\n  KeyboardDoubleArrowLeft,\n  KeyboardDoubleArrowRight,\n  Menu as MenuIcon,\n  NotificationsOutlined,\n} from '@mui/icons-material';\nimport {\n  AppBar,\n  Box,\n  Button,\n  CSSObject,\n  Divider,\n  Drawer as MuiDrawer,\n  IconButton,\n  List,\n  ListItem,\n  ListItemButton,\n  ListItemIcon,\n  ListItemText,\n  Slide,\n  styled,\n  Theme,\n  Toolbar,\n  Typography,\n  useMediaQuery,\n  useScrollTrigger,\n  useTheme,\n} from '@mui/material';\nimport Image from 'next/image';\nimport Link from 'next/link';\nimport { enqueueSnackbar } from 'notistack';\nimport React, { ReactElement, ReactNode, useEffect, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport AppConstants from '@/constants/app.constants';\nimport { EnvManager } from '@/constants/env.constants';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport { isTopTierPlan } from '@/constants/plan.constants';\nimport useServicesHook from '@/hooks';\nimport { Team, TeamType } from '@/models/team';\nimport { BallUsageStatus, TeamPlanStatus } from '@/models/team-status';\nimport { User } from '@/models/user';\nimport { useSelector } from '@/store';\nimport { wrapForLoading } from '@/utils/functions/transformer';\nimport { translate } from '@/utils/i18n';\nimport { logger } from '@/utils/logger';\nimport { createSafeCallbackUrl } from '@/utils/redirect-validator';\n\nconst drawerWidth = '16rem';\n\nconst openedMixin = (theme: Theme): CSSObject => ({\n  width: drawerWidth,\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.enteringScreen,\n  }),\n  overflowX: 'hidden',\n});\n\nconst closedMixin = (theme: Theme): CSSObject => ({\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.leavingScreen,\n  }),\n  overflowX: 'hidden',\n  width: `calc(${theme.spacing(7)} + 1px)`,\n  [theme.breakpoints.up('sm')]: {\n    width: `calc(${theme.spacing(8)} + 1px)`,\n  },\n});\n\nconst Drawer = styled(MuiDrawer)(({ theme }) => ({\n  width: drawerWidth,\n  flexShrink: 0,\n  whiteSpace: 'nowrap',\n  boxSizing: 'border-box',\n  variants: [\n    {\n      props: { open: true },\n      style: {\n        ...openedMixin(theme),\n        '.MuiDrawer-paper': openedMixin(theme),\n      },\n    },\n    {\n      props: { open: false },\n      style: {\n        ...closedMixin(theme),\n        '.MuiDrawer-paper': closedMixin(theme),\n      },\n    },\n  ],\n}));\n\ntype MenuItemDataType = {\n  name: string;\n  link?: string;\n  isSelected?: boolean;\n  icon: ReactElement;\n  isDivider?: boolean;\n};\n\nfunction LayoutInner({\n  children,\n  currentUser,\n  currentTeam,\n}: {\n  children: ReactNode;\n  currentUser: User;\n  currentTeam: Team;\n}) {\n  const { router, services } = useServicesHook();\n\n  const theme = useTheme();\n  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));\n  const scrollTrigger = useScrollTrigger();\n\n  const [open, setOpen] = useState(!isSmallScreen);\n  const flipOpen = () => setOpen(!open);\n\n  const adminItem = {\n    name: translate(PAGE_INFO.ADMIN.name as keyof typeof translate),\n    icon: <AdminPanelSettingsOutlined />,\n    isSelected: router.pathname == PAGE_INFO.ADMIN.href(currentTeam.id),\n    link: PAGE_INFO.ADMIN.href(currentTeam.id),\n  };\n\n  const superAdminItems = [\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_RESOURCES.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n      link: PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_TEAMS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_AI_COACH.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n      link: PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_ITEMS.name as keyof typeof translate,\n      ),\n      icon: <Inventory2Outlined />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_ITEMS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_ITEMS.href(),\n    },\n  ];\n\n  const menuItems: MenuItemDataType[] = [\n    {\n      name: translate(PAGE_INFO.SESSIONS.name as keyof typeof translate),\n      icon: <FormatListBulleted />,\n      isSelected: router.pathname == PAGE_INFO.SESSIONS.href(currentTeam.id),\n      link: PAGE_INFO.SESSIONS.href(currentTeam.id),\n    },\n    {\n      name: translate(PAGE_INFO.PLAYERS.name as keyof typeof translate),\n      icon: <Groups3Outlined />,\n      isSelected: router.pathname == PAGE_INFO.PLAYERS.href(currentTeam.id),\n      link: PAGE_INFO.PLAYERS.href(currentTeam.id),\n    },\n    ...(User.isAccessible(\n      currentUser,\n      currentTeam.id,\n      'management',\n      'read',\n      true,\n    )\n      ? [adminItem]\n      : []),\n    {\n      name: '_divider_0',\n      icon: <></>,\n      isDivider: true,\n    },\n    {\n      name: translate(PAGE_INFO.NOTIFICATIONS.name as keyof typeof translate),\n      icon: <NotificationsOutlined />,\n      isSelected: router.pathname == PAGE_INFO.NOTIFICATIONS.href(),\n      link: PAGE_INFO.NOTIFICATIONS.href(),\n    },\n    ...(User.isAccessible(currentUser, 'all', 'admin', 'read', false)\n      ? [\n          {\n            name: '_divider_2',\n            icon: <></>,\n            isDivider: true,\n          },\n          ...superAdminItems,\n        ]\n      : []),\n
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8190
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"          {/* Plan Status Card */}\n          {planStatus.status !== null && (\n            <PlanStatusCard\n              status={planStatus.status}\n              open={open}\n              onUpgrade={handleUpgrade}\n              billingFailureReason={currentTeam.billingFailureReason}\n            />\n          )}","new_string":"          {/* Plan Status Card */}\n          {currentTeam.teamType === TeamType.SINGLE ? (\n            <SingleTeamPlanCard open={open} />\n          ) : (\n            planStatus.status !== null && (\n              <PlanStatusCard\n                status={planStatus.status}\n                open={open}\n                onUpgrade={handleUpgrade}\n                billingFailureReason={currentTeam.billingFailureReason}\n              />\n            )\n          )}"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"          {/* Plan Status Card */}\n          {planStatus.status !== null && (\n            <PlanStatusCard\n              status={planStatus.status}\n              open={open}\n              onUpgrade={handleUpgrade}\n              billingFailureReason={currentTeam.billingFailureReason}\n            />\n          )}","new_string":"          {/* Plan Status Card */}\n          {currentTeam.teamType === TeamType.SINGLE ? (\n            <SingleTeamPlanCard open={open} />\n          ) : (\n            planStatus.status !== null && (\n              <PlanStatusCard\n                status={planStatus.status}\n                open={open}\n                onUpgrade={handleUpgrade}\n                billingFailureReason={currentTeam.billingFailureReason}\n              />\n            )\n          )}"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252745518
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 18448 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252745518 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"          {/* Plan Status Card */}\n          {planStatus.status !== null && (\n            <PlanStatusCard\n              status={planStatus.status}\n              open={open}\n              onUpgrade={handleUpgrade}\n              billingFailureReason={currentTeam.billingFailureReason}\n            />\n          )}","new_string":"          {/* Plan Status Card */}\n          {currentTeam.teamType === TeamType.SINGLE ? (\n            <SingleTeamPlanCard open={open} />\n          ) : (\n            planStatus.status !== null && (\n              <PlanStatusCard\n                status={planStatus.status}\n                open={open}\n                onUpgrade={handleUpgrade}\n                billingFailureReason={currentTeam.billingFailureReason}\n              />\n            )\n          )}"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","oldString":"          {/* Plan Status Card */}\n          {planStatus.status !== null && (\n            <PlanStatusCard\n              status={planStatus.status}\n              open={open}\n              onUpgrade={handleUpgrade}\n              billingFailureReason={currentTeam.billingFailureReason}\n            />\n          )}","newString":"          {/* Plan Status Card */}\n          {currentTeam.teamType === TeamType.SINGLE ? (\n            <SingleTeamPlanCard open={open} />\n          ) : (\n            planStatus.status !== null && (\n              <PlanStatusCard\n                status={planStatus.status}\n                open={open}\n                onUpgrade={handleUpgrade}\n                billingFailureReason={currentTeam.billingFailureReason}\n              />\n            )\n          )}","originalFile":"import {\n  AdminPanelSettings,\n  AdminPanelSettingsOutlined,\n  FormatListBulleted,\n  Groups3Outlined,\n  Inventory2Outlined,\n  KeyboardDoubleArrowLeft,\n  KeyboardDoubleArrowRight,\n  Menu as MenuIcon,\n  NotificationsOutlined,\n} from '@mui/icons-material';\nimport {\n  AppBar,\n  Box,\n  Button,\n  CSSObject,\n  Divider,\n  Drawer as MuiDrawer,\n  IconButton,\n  List,\n  ListItem,\n  ListItemButton,\n  ListItemIcon,\n  ListItemText,\n  Slide,\n  styled,\n  Theme,\n  Toolbar,\n  Typography,\n  useMediaQuery,\n  useScrollTrigger,\n  useTheme,\n} from '@mui/material';\nimport Image from 'next/image';\nimport Link from 'next/link';\nimport { enqueueSnackbar } from 'notistack';\nimport React, { ReactElement, ReactNode, useEffect, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport SingleTeamPlanCard from '@/components/common/single-team-plan-card';\nimport AppConstants from '@/constants/app.constants';\nimport { EnvManager } from '@/constants/env.constants';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport { isTopTierPlan } from '@/constants/plan.constants';\nimport useServicesHook from '@/hooks';\nimport { Team, TeamType } from '@/models/team';\nimport { BallUsageStatus, TeamPlanStatus } from '@/models/team-status';\nimport { User } from '@/models/user';\nimport { useSelector } from '@/store';\nimport { wrapForLoading } from '@/utils/functions/transformer';\nimport { translate } from '@/utils/i18n';\nimport { logger } from '@/utils/logger';\nimport { createSafeCallbackUrl } from '@/utils/redirect-validator';\n\nconst drawerWidth = '16rem';\n\nconst openedMixin = (theme: Theme): CSSObject => ({\n  width: drawerWidth,\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.enteringScreen,\n  }),\n  overflowX: 'hidden',\n});\n\nconst closedMixin = (theme: Theme): CSSObject => ({\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.leavingScreen,\n  }),\n  overflowX: 'hidden',\n  width: `calc(${theme.spacing(7)} + 1px)`,\n  [theme.breakpoints.up('sm')]: {\n    width: `calc(${theme.spacing(8)} + 1px)`,\n  },\n});\n\nconst Drawer = styled(MuiDrawer)(({ theme }) => ({\n  width: drawerWidth,\n  flexShrink: 0,\n  whiteSpace: 'nowrap',\n  boxSizing: 'border-box',\n  variants: [\n    {\n      props: { open: true },\n      style: {\n        ...openedMixin(theme),\n        '.MuiDrawer-paper': openedMixin(theme),\n      },\n    },\n    {\n      props: { open: false },\n      style: {\n        ...closedMixin(theme),\n        '.MuiDrawer-paper': closedMixin(theme),\n      },\n    },\n  ],\n}));\n\ntype MenuItemDataType = {\n  name: string;\n  link?: string;\n  isSelected?: boolean;\n  icon: ReactElement;\n  isDivider?: boolean;\n};\n\nfunction LayoutInner({\n  children,\n  currentUser,\n  currentTeam,\n}: {\n  children: ReactNode;\n  currentUser: User;\n  currentTeam: Team;\n}) {\n  const { router, services } = useServicesHook();\n\n  const theme = useTheme();\n  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));\n  const scrollTrigger = useScrollTrigger();\n\n  const [open, setOpen] = useState(!isSmallScreen);\n  const flipOpen = () => setOpen(!open);\n\n  const adminItem = {\n    name: translate(PAGE_INFO.ADMIN.name as keyof typeof translate),\n    icon: <AdminPanelSettingsOutlined />,\n    isSelected: router.pathname == PAGE_INFO.ADMIN.href(currentTeam.id),\n    link: PAGE_INFO.ADMIN.href(currentTeam.id),\n  };\n\n  const superAdminItems = [\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_RESOURCES.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n      link: PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_TEAMS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_AI_COACH.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n      link: PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_ITEMS.name as keyof typeof translate,\n      ),\n      icon: <Inventory2Outlined />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_ITEMS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_ITEMS.href(),\n    },\n  ];\n\n  const menuItems: MenuItemDataType[] = [\n    {\n      name: translate(PAGE_INFO.SESSIONS.name as keyof typeof translate),\n      icon: <FormatListBulleted />,\n      isSelected: router.pathname == PAGE_INFO.SESSIONS.href(currentTeam.id),\n      link: PAGE_INFO.SESSIONS.href(currentTeam.id),\n    },\n    {\n      name: translate(PAGE_INFO.PLAYERS.name as keyof typeof translate),\n      icon: <Groups3Outlined />,\n      isSelected: router.pathname == PAGE_INFO.PLAYERS.href(currentTeam.id),\n      link: PAGE_INFO.PLAYERS.href(currentTeam.id),\n    },\n    ...(User.isAccessible(\n      currentUser,\n      currentTeam.id,\n      'management',\n      'read',\n      true,\n    )\n      ? [adminItem]\
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unexpected end of JSON input
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252757488
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252757488 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252757497
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 484 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252757497 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","new_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","new_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252767040
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 18258 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx.tmp.47919.1760252767040 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","old_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","new_string":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx","oldString":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // single チームの場合は外部サイトに遷移\n    if (currentTeam.teamType === TeamType.SINGLE) {\n      window.open('https://tether-a87.pages.dev/jp/', '_blank', 'noopener,noreferrer');\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","newString":"  const handleUpgrade = () => {\n    // 期限内のAppleサブスクリプションがある場合は何もしない\n    if (currentTeam.teamPlan?.isInAppleSubscription) {\n      return;\n    }\n    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く\n    if (currentTeam.teamPlan?.isInStripeSubscription) {\n      handleBillingPortal(planStatus.status);\n      return;\n    }\n    // その他の場合はプラン選択ページに遷移\n    router.push('/account/plans');\n  };","originalFile":"import {\n  AdminPanelSettings,\n  AdminPanelSettingsOutlined,\n  FormatListBulleted,\n  Groups3Outlined,\n  Inventory2Outlined,\n  KeyboardDoubleArrowLeft,\n  KeyboardDoubleArrowRight,\n  Menu as MenuIcon,\n  NotificationsOutlined,\n} from '@mui/icons-material';\nimport {\n  AppBar,\n  Box,\n  Button,\n  CSSObject,\n  Divider,\n  Drawer as MuiDrawer,\n  IconButton,\n  List,\n  ListItem,\n  ListItemButton,\n  ListItemIcon,\n  ListItemText,\n  Slide,\n  styled,\n  Theme,\n  Toolbar,\n  Typography,\n  useMediaQuery,\n  useScrollTrigger,\n  useTheme,\n} from '@mui/material';\nimport Image from 'next/image';\nimport Link from 'next/link';\nimport { enqueueSnackbar } from 'notistack';\nimport React, { ReactElement, ReactNode, useEffect, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport { ImageOrAvatar } from '@/components/common/image-or-avatar';\nimport PlanStatusCard, {\n  PlanStatus,\n} from '@/components/common/plan-status-card';\nimport SingleTeamPlanCard from '@/components/common/single-team-plan-card';\nimport AppConstants from '@/constants/app.constants';\nimport { EnvManager } from '@/constants/env.constants';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport { isTopTierPlan } from '@/constants/plan.constants';\nimport useServicesHook from '@/hooks';\nimport { Team, TeamType } from '@/models/team';\nimport { BallUsageStatus, TeamPlanStatus } from '@/models/team-status';\nimport { User } from '@/models/user';\nimport { useSelector } from '@/store';\nimport { wrapForLoading } from '@/utils/functions/transformer';\nimport { translate } from '@/utils/i18n';\nimport { logger } from '@/utils/logger';\nimport { createSafeCallbackUrl } from '@/utils/redirect-validator';\n\nconst drawerWidth = '16rem';\n\nconst openedMixin = (theme: Theme): CSSObject => ({\n  width: drawerWidth,\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.enteringScreen,\n  }),\n  overflowX: 'hidden',\n});\n\nconst closedMixin = (theme: Theme): CSSObject => ({\n  transition: theme.transitions.create('width', {\n    easing: theme.transitions.easing.sharp,\n    duration: theme.transitions.duration.leavingScreen,\n  }),\n  overflowX: 'hidden',\n  width: `calc(${theme.spacing(7)} + 1px)`,\n  [theme.breakpoints.up('sm')]: {\n    width: `calc(${theme.spacing(8)} + 1px)`,\n  },\n});\n\nconst Drawer = styled(MuiDrawer)(({ theme }) => ({\n  width: drawerWidth,\n  flexShrink: 0,\n  whiteSpace: 'nowrap',\n  boxSizing: 'border-box',\n  variants: [\n    {\n      props: { open: true },\n      style: {\n        ...openedMixin(theme),\n        '.MuiDrawer-paper': openedMixin(theme),\n      },\n    },\n    {\n      props: { open: false },\n      style: {\n        ...closedMixin(theme),\n        '.MuiDrawer-paper': closedMixin(theme),\n      },\n    },\n  ],\n}));\n\ntype MenuItemDataType = {\n  name: string;\n  link?: string;\n  isSelected?: boolean;\n  icon: ReactElement;\n  isDivider?: boolean;\n};\n\nfunction LayoutInner({\n  children,\n  currentUser,\n  currentTeam,\n}: {\n  children: ReactNode;\n  currentUser: User;\n  currentTeam: Team;\n}) {\n  const { router, services } = useServicesHook();\n\n  const theme = useTheme();\n  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));\n  const scrollTrigger = useScrollTrigger();\n\n  const [open, setOpen] = useState(!isSmallScreen);\n  const flipOpen = () => setOpen(!open);\n\n  const adminItem = {\n    name: translate(PAGE_INFO.ADMIN.name as keyof typeof translate),\n    icon: <AdminPanelSettingsOutlined />,\n    isSelected: router.pathname == PAGE_INFO.ADMIN.href(currentTeam.id),\n    link: PAGE_INFO.ADMIN.href(currentTeam.id),\n  };\n\n  const superAdminItems = [\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_RESOURCES.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n      link: PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_TEAMS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_TEAMS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n      link: PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),\n    },\n    {\n      name: translate(\n        PAGE_INFO.SUPER_ADMIN_AI_COACH.name as keyof typeof translate,\n      ),\n      icon: <AdminPanelSettings />,\n      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n      link: PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),\n    },\n    {\n
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 7567
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/layouts/console.layout.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252779797
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252779797 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252779807
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 486 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252779807 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: cd web && npm run build
+[DEBUG] Bash tool description: ビルドで型チェックと動作確認
+[DEBUG] Bash tool timeout: 120000ms
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252833362
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760252833362 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252833378
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760252833378 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252845574
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692826 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252845574 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252847130
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692826 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252847130 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760252847165
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692795 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760252847165 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message de696e52-e11a-40ab-84d7-adaeda71bbca
+[DEBUG] FileHistory: Added snapshot for de696e52-e11a-40ab-84d7-adaeda71bbca, tracking 2 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254345936
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254345936 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254345945
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 223 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254345945 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","old_string":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}","new_string":"import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <RocketLaunchIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              {translate('plan_upgrade_prompt_title')}\n            </Typography>\n\n            <Typography\n              variant=\"body2\"\n              sx={{\n                color: (theme) => alpha(theme.palette.common.white, 0.95),\n                lineHeight: 1.6,\n                wordBreak: 'break-word',\n                whiteSpace: 'normal',\n                textShadow: '0 1px 4px rgba(0,0,0,0.15)',\n              }}\n            >\n              {translate('plan_upgrade_message')}\n            </Typography>\n          </Box>\n\n          <Button\n            variant=\"contained\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{\n              py: 1.5,\n              fontWeight: 700,\n              fontSize: '0.95rem',\n              bgcolor: 'white',\n              color: 'primary.main',\n              borderRadius: 2,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.15)}`,\n              transition: 'all 0.2s ease-in-out',\n              '&:hover': {\n                bgcolor: (theme) => alpha(theme.palette.common.white, 0.95),\n                transform: 'scale(1.02)',\n                boxShadow: (theme) =>\n                  `0 6px 20px ${alpha(theme.palette.common.black, 0.2)}`,\n              },\n            }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </Box>\n    </Card>\n  );\n}"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","old_string":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}","new_string":"import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <RocketLaunchIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              {translate('plan_upgrade_prompt_title')}\n            </Typography>\n\n            <Typography\n              variant=\"body2\"\n              sx={{\n                color: (theme) => alpha(theme.palette.common.white, 0.95),\n                lineHeight: 1.6,\n                wordBreak: 'break-word',\n                whiteSpace: 'normal',\n                textShadow: '0 1px 4px rgba(0,0,0,0.15)',\n              }}\n            >\n              {translate('plan_upgrade_message')}\n            </Typography>\n          </Box>\n\n          <Button\n            variant=\"contained\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{\n              py: 1.5,\n              fontWeight: 700,\n              fontSize: '0.95rem',\n              bgcolor: 'white',\n              color: 'primary.main',\n              borderRadius: 2,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.15)}`,\n              transition: 'all 0.2s ease-in-out',\n              '&:hover': {\n                bgcolor: (theme) => alpha(theme.palette.common.white, 0.95),\n                transform: 'scale(1.02)',\n                boxShadow: (theme) =>\n                  `0 6px 20px ${alpha(theme.palette.common.black, 0.2)}`,\n              },\n            }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </Box>\n    </Card>\n  );\n}"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx.tmp.47919.1760254372092
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 4421 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx.tmp.47919.1760254372092 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","old_string":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        boxShadow: 4,\n        borderRadius: 2,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        backgroundColor: 'white',\n      }}\n    >\n      <CardContent\n        sx={{\n          p: 2,\n          textAlign: 'center',\n          width: '100%',\n          boxSizing: 'border-box',\n        }}\n      >\n        <Stack spacing={2} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Typography variant=\"body2\" color=\"primary\" sx={{ mb: -1 }}>\n            {translate('plan_upgrade_prompt_title')}\n          </Typography>\n\n          <Box\n            sx={{\n              width: 48,\n              height: 48,\n              bgcolor: 'primary.main',\n              borderRadius: 1,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n            }}\n          >\n            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />\n          </Box>\n\n          <Typography\n            variant=\"body2\"\n            sx={{\n              lineHeight: 1.4,\n              wordBreak: 'break-word',\n              whiteSpace: 'normal',\n              textAlign: 'center',\n            }}\n          >\n            {translate('plan_upgrade_message')}\n          </Typography>\n\n          <Button\n            variant=\"contained\"\n            color=\"primary\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{ py: 1, fontWeight: 600 }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </CardContent>\n    </Card>\n  );\n}","new_string":"import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <RocketLaunchIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              {translate('plan_upgrade_prompt_title')}\n            </Typography>\n\n            <Typography\n              variant=\"body2\"\n              sx={{\n                color: (theme) => alpha(theme.palette.common.white, 0.95),\n                lineHeight: 1.6,\n                wordBreak: 'break-word',\n                whiteSpace: 'normal',\n                textShadow: '0 1px 4px rgba(0,0,0,0.15)',\n              }}\n            >\n              {translate('plan_upgrade_message')}\n            </Typography>\n          </Box>\n\n          <Button\n            variant=\"contained\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{\n              py: 1.5,\n              fontWeight: 700,\n              fontSize: '0.95rem',\n              bgcolor: 'white',\n              color: 'primary.main',\n              borderRadius: 2,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.15)}`,\n              transition: 'all 0.2s ease-in-out',\n              '&:hover': {\n                bgcolor: (theme) => alpha(theme.palette.common.white, 0.95),\n                transform: 'scale(1.02)',\n                boxShadow: (theme) =>\n                  `0 6px 20px ${alpha(theme.palette.common.black, 0.2)}`,\n              },\n            }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </Box>\n    </Card>\n  );\n}"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","oldString":"import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';\nimport {\n  Box,\n  Button,\n  Card,\n  CardContent,\n  Stack,\n  Typography,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unexpected end of JSON input
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254382343
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254382343 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254382349
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 225 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254382349 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: cd web && npm run build
+[DEBUG] Bash tool description: ビルドで型チェックと動作確認
+[DEBUG] Bash tool timeout: 120000ms
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760254438565
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692842 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760254438565 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254454569
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254454569 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254454579
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 234 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254454579 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","old_string":"import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <RocketLaunchIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              {translate('plan_upgrade_prompt_title')}\n            </Typography>\n\n            <Typography\n              variant=\"body2\"\n              sx={{\n                color: (theme) => alpha(theme.palette.common.white, 0.95),\n                lineHeight: 1.6,\n                wordBreak: 'break-word',\n                whiteSpace: 'normal',\n                textShadow: '0 1px 4px rgba(0,0,0,0.15)',\n              }}\n            >\n              {translate('plan_upgrade_message')}\n            </Typography>\n          </Box>\n\n          <Button\n            variant=\"contained\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{\n              py: 1.5,\n              fontWeight: 700,\n              fontSize: '0.95rem',\n              bgcolor: 'white',\n              color: 'primary.main',\n              borderRadius: 2,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.15)}`,\n              transition: 'all 0.2s ease-in-out',\n              '&:hover': {\n                bgcolor: (theme) => alpha(theme.palette.common.white, 0.95),\n                transform: 'scale(1.02)',\n                boxShadow: (theme) =>\n                  `0 6px 20px ${alpha(theme.palette.common.black, 0.2)}`,\n              },\n            }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </Box>\n    </Card>\n  );\n}","new_string":"import GroupsIcon from '@mui/icons-material/Groups';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleOpenTeamPlan = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <GroupsIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              チーム向けプ
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8180
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx.tmp.47919.1760254488439
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 4303 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx.tmp.47919.1760254488439 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx","old_string":"import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\nimport { translate } from '@/utils/i18n';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleUpgrade = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <RocketLaunchIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              {translate('plan_upgrade_prompt_title')}\n            </Typography>\n\n            <Typography\n              variant=\"body2\"\n              sx={{\n                color: (theme) => alpha(theme.palette.common.white, 0.95),\n                lineHeight: 1.6,\n                wordBreak: 'break-word',\n                whiteSpace: 'normal',\n                textShadow: '0 1px 4px rgba(0,0,0,0.15)',\n              }}\n            >\n              {translate('plan_upgrade_message')}\n            </Typography>\n          </Box>\n\n          <Button\n            variant=\"contained\"\n            fullWidth\n            onClick={handleUpgrade}\n            sx={{\n              py: 1.5,\n              fontWeight: 700,\n              fontSize: '0.95rem',\n              bgcolor: 'white',\n              color: 'primary.main',\n              borderRadius: 2,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.15)}`,\n              transition: 'all 0.2s ease-in-out',\n              '&:hover': {\n                bgcolor: (theme) => alpha(theme.palette.common.white, 0.95),\n                transform: 'scale(1.02)',\n                boxShadow: (theme) =>\n                  `0 6px 20px ${alpha(theme.palette.common.black, 0.2)}`,\n              },\n            }}\n          >\n            {translate('plan_upgrade_button')}\n          </Button>\n        </Stack>\n      </Box>\n    </Card>\n  );\n}","new_string":"import GroupsIcon from '@mui/icons-material/Groups';\nimport {\n  Box,\n  Button,\n  Card,\n  Stack,\n  Typography,\n  alpha,\n} from '@mui/material';\nimport React from 'react';\n\ninterface SingleTeamPlanCardProps {\n  open: boolean;\n}\n\nconst TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';\n\nexport default function SingleTeamPlanCard({\n  open,\n}: SingleTeamPlanCardProps) {\n  if (!open) {\n    return null;\n  }\n\n  const handleOpenTeamPlan = () => {\n    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');\n  };\n\n  return (\n    <Card\n      sx={{\n        position: 'relative',\n        mx: 2,\n        mb: 2,\n        mt: 1,\n        overflow: 'hidden',\n        borderRadius: 3,\n        maxWidth: '100%',\n        width: 'calc(100% - 32px)',\n        background: (theme) =>\n          `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${alpha(theme.palette.primary.dark, 0.9)} 100%)`,\n        boxShadow: (theme) =>\n          `0 8px 32px ${alpha(theme.palette.primary.main, 0.3)}`,\n        transition: 'transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out',\n        '&:hover': {\n          transform: 'translateY(-2px)',\n          boxShadow: (theme) =>\n            `0 12px 40px ${alpha(theme.palette.primary.main, 0.4)}`,\n        },\n      }}\n    >\n      <Box\n        sx={{\n          position: 'absolute',\n          top: -50,\n          right: -50,\n          width: 150,\n          height: 150,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.1),\n          pointerEvents: 'none',\n        }}\n      />\n      <Box\n        sx={{\n          position: 'absolute',\n          bottom: -30,\n          left: -30,\n          width: 100,\n          height: 100,\n          borderRadius: '50%',\n          background: (theme) => alpha(theme.palette.common.white, 0.08),\n          pointerEvents: 'none',\n        }}\n      />\n\n      <Box sx={{ p: 3, position: 'relative', zIndex: 1 }}>\n        <Stack spacing={2.5} alignItems=\"center\" sx={{ width: '100%' }}>\n          <Box\n            sx={{\n              width: 64,\n              height: 64,\n              bgcolor: (theme) => alpha(theme.palette.common.white, 0.2),\n              backdropFilter: 'blur(10px)',\n              borderRadius: 3,\n              display: 'flex',\n              alignItems: 'center',\n              justifyContent: 'center',\n              color: 'white',\n              border: (theme) => `2px solid ${alpha(theme.palette.common.white, 0.3)}`,\n              boxShadow: (theme) =>\n                `0 4px 16px ${alpha(theme.palette.common.black, 0.2)}`,\n            }}\n          >\n            <GroupsIcon sx={{ fontSize: '2rem' }} />\n          </Box>\n\n          <Box sx={{ textAlign: 'center' }}>\n            <Typography\n              variant=\"h6\"\n              sx={{\n                color: 'white',\n                fontWeight: 700,\n                mb: 0.5,\n                textShadow: '0 2px 8px rgba(0,0,0,0.2)',\n              }}\n            >\n              チーム向け
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8180
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"f9c87fb8-bb04-4d7a-9ed0-aab09ed41788","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.j...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/components/common/single-team-plan-card.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254498628
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254498628 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254498635
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 236 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254498635 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Bash tool invoked with command: cd web && npm run build
+[DEBUG] Bash tool description: ビルドで型チェックと動作確認
+[DEBUG] Bash tool timeout: 120000ms
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: TodoWrite
+[DEBUG] Executing hooks for PreToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PreToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254552496
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json.tmp.47919.1760254552496 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-e46dab68-6a0d-4ab3-92ea-b467e84e0934.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254552505
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json.tmp.47919.1760254552505 to /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json
+[DEBUG] File /Users/kokiyoshida/.claude/todos/f9c87fb8-bb04-4d7a-9ed0-aab09ed41788-agent-f9c87fb8-bb04-4d7a-9ed0-aab09ed41788.json written atomically
+[DEBUG] Executing hooks for PostToolUse:TodoWrite
+[DEBUG] Getting matching hook commands for PostToolUse with query: TodoWrite
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "TodoWrite" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760254566836
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692842 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760254566836 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760254568417
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692842 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760254568417 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.47919.1760254568449
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 692843 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.47919.1760254568449 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] npm view failed with code 1
+[DEBUG] npm stderr: (empty)
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)

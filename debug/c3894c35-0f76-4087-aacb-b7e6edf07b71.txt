@@ -1,0 +1,29 @@
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] FileHistory: Added snapshot for dabf3c09-d07a-46e5-b3e0-8058ad6255a2, tracking 0 files
+[DEBUG] Rendering user message with 1 content blocks
+[DEBUG] Block 0: <command-name>/clear</command-name>
+            <command-message>clear</command-message>
+           ...
+[DEBUG] UserCommandMessage rendering: "clear" (args: "none")
+[DEBUG] isSkillFormat: false, prefix: "/"
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.28762.1760572831125
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1292868 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.28762.1760572831125 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760570279840-nnrris.sh
+[DEBUG] MCP server "serena": Sending SIGINT to MCP server process
+[DEBUG] MCP server "serena": SIGINT failed, sending SIGTERM to MCP server process
+[DEBUG] MCP server "serena": MCP server process exited cleanly
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.28762.1760572832128
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1293295 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.28762.1760572832128 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

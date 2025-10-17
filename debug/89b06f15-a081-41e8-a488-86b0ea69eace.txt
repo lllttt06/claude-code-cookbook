@@ -1,0 +1,599 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for d497b3dd-73b0-4a45-ae76-4e8f4bfdba0a, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109039077
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698153 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109039077 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109039111
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698147 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109039111 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 4c5b4858-751e-48d9-bf26-dad1a9c7e2da
+[DEBUG] FileHistory: Added snapshot for 4c5b4858-751e-48d9-bf26-dad1a9c7e2da, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109086131
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698147 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109086131 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:43,377 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:43,378 [MainThread] serena.agent:issue_task:420 - Scheduling Task-4[FindSymbolTool]
+INFO  2025-10-11 00:11:43,378 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-4[FindSymbolTool] starting ...
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:43,379 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='getTeamItemBallUsageString', depth=0, relative_path='src/utils/string.util.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: ERROR 2025-10-11 00:11:43,379 [SerenaAgentExecutor_0] serena.tools.tools_base:task:275 - Error executing tool: File or directory not found: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/src/utils/string.util.ts
+Traceback (most recent call last):
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/serena/tools/tools_base.py", line 259, in task
+    result = apply_fn(**kwargs)
+             ^^^^^^^^^^^^^^^^^^
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/serena/tools/symbol_tools.py", line 150, in apply
+    symbols = symbol_retriever.find_by_name(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/serena/symbol.py", line 478, in find_by_name
+    symbol_roots = self._lang_server.request_full_symbol_tree(within_relative_path=within_relative_path, include_body=include_body)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/solidlsp/ls.py", line 982, in request_full_symbol_tree
+    raise FileNotFoundError(f"File or directory not found: {within_abs_path}")
+FileNotFoundError: File or directory not found: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/src/utils/string.util.ts
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:43,381 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: Error executing tool: File or directory not found: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/src/utils/string.util.ts
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:43,383 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-4[FindSymbolTool] completed in 0.004 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 16ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 5ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:43,422 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:11:43,422 [MainThread] serena.agent:issue_task:420 - Scheduling Task-5[FindSymbolTool]
+INFO  2025-10-11 00:11:43,422 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-5[FindSymbolTool] starting ...
+INFO  2025-10-11 00:11:43,422 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='getTeamItemAiCoachUsageString', depth=0, relative_path='src/utils/string.util.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+ERROR 2025-10-11 00:11:43,422 [SerenaAgentExecutor_0] serena.tools.tools_base:task:275 - Error executing tool: File or directory not found: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/src/utils/string.util.ts
+Traceback (most recent call last):
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/serena/tools/tools_base.py", line 259, in task
+    result = apply_fn(**kwargs)
+             ^^^^^^^^^^^^^^^^^^
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/serena/tools/symbol_tools.py", line 150, in apply
+    symbols = symbol_retriever.find_by_name(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/serena/symbol.py", line 478, in find_by_name
+    symbol_roots = self._lang_server.request_full_symbol_tree(within_relative_path=within_relative_path, include_body=include_body)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/kokiyoshida/.cache/uv/archive-v0/_aCd1gPRwKXa_QoSTTdm_/lib/python3.11/site-packages/solidlsp/ls.py", line 982, in request_full_symbol_tree
+    raise FileNotFoundError(f"File or directory not found: {within_abs_path}")
+FileNotFoundError: File or directory not found: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/src/utils/string.util.ts
+INFO  2025-10-11 00:11:43,423 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: Error executing tool: File or directory not found: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/src/utils/string.util.ts
+INFO  2025-10-11 00:11:43,423 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-5[FindSymbolTool] completed in 0.001 seconds
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_file
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_file
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_file
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_file" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_file
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:47,584 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:11:47,585 [MainThread] serena.agent:issue_task:420 - Scheduling Task-6[FindFileTool]
+INFO  2025-10-11 00:11:47,585 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-6[FindFileTool] starting ...
+INFO  2025-10-11 00:11:47,585 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_file: file_mask='string.util.ts', relative_path='.'
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:47,645 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: {"files": ["web/src/utils/string.util.ts"]}
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:47,646 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-6[FindFileTool] completed in 0.061 seconds
+[DEBUG] MCP server "serena": Tool 'find_file' completed successfully in 64ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_file
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_file
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_file" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:53,270 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:11:53,270 [MainThread] serena.agent:issue_task:420 - Scheduling Task-7[FindSymbolTool]
+INFO  2025-10-11 00:11:53,270 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-7[FindSymbolTool] starting ...
+INFO  2025-10-11 00:11:53,270 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='getTeamItemBallUsageString', depth=0, relative_path='web/src/utils/string.util.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:53,699 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: [{"name_path": "StringUtil/getTeamItemBallUsageString", "kind": "Property", "body_location": {"start_line": 67, "end_line": 74}, "body": "static getTeamItemBallUsageString = (team: Team) => {\n    if (!team.teamPlan && !team.item) {\n      return '-';\n    }\n    const current = team.ballUsage;\n    const max = team.maxBalls;\n    return `${current.toLocaleString()}/${max.toLocaleString()}`;\n  };", "relative_path": "web/src/utils/string.util.ts"}]
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:53,699 [SerenaAgentExecutor_0] solidlsp:save_cache:1571 - Saving updated document symbols cache to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/.serena/cache/typescript/document_symbols_cache_v23-06-25.pkl
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:53,813 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-7[FindSymbolTool] completed in 0.543 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 548ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 11ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:11:53,897 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:11:53,898 [MainThread] serena.agent:issue_task:420 - Scheduling Task-8[FindSymbolTool]
+INFO  2025-10-11 00:11:53,898 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-8[FindSymbolTool] starting ...
+INFO  2025-10-11 00:11:53,898 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='getTeamItemAiCoachUsageString', depth=0, relative_path='web/src/utils/string.util.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+INFO  2025-10-11 00:11:53,900 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: [{"name_path": "StringUtil/getTeamItemAiCoachUsageString", "kind": "Property", "body_location": {"start_line": 76, "end_line": 83}, "body": "static getTeamItemAiCoachUsageString = (team: Team) => {\n    if (!team.teamPlan && !team.item) {\n      return '-';\n    }\n    const current = team.aiCoachUsage;\n    const max = team.maxAiCoachCount;\n    return `${current.toLocaleString()}/${max.toLocaleString()}`;\n  };", "relative_path": "web/src/utils/string.util.ts"}]
+INFO  2025-10-11 00:11:53,901 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-8[FindSymbolTool] completed in 0.003 seconds
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:00,054 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:12:00,056 [MainThread] serena.agent:issue_task:420 - Scheduling Task-9[FindSymbolTool]
+INFO  2025-10-11 00:12:00,060 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-9[FindSymbolTool] starting ...
+INFO  2025-10-11 00:12:00,061 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='Team', depth=1, relative_path='web/src/models/team.ts', include_body=False, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:00,106 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: [{"name_path": "Team", "kind": "Class", "body_location": {"start_line": 19, "end_line": 258}, "children": [{"name": "constructor", "name_path": "Team/constructor", "kind": "Constructor", "location": {"line": 49, "column": 2}, "body_location": {"start_line": 49, "end_line": 59}}, {"name": "_cast", "name_path": "Team/_cast", "kind": "Property", "location": {"line": 20, "column": 9}, "body_location": {"start_line": 20, "end_line": 23}}, {"name": "aiCoachUsage", "name_path": "Team/aiCoachUsage", "kind": "Method", "location": {"line": 151, "column": 6}, "body_location": {"start_line": 151, "end_line": 164}}, {"name": "aiCoachUsageStatus", "name_path": "Team/aiCoachUsageStatus", "kind": "Method", "location": {"line": 229, "column": 6}, "body_location": {"start_line": 229, "end_line": 242}}, {"name": "ballRate", "name_path": "Team/ballRate", "kind": "Method", "location": {"line": 65, "column": 6}, "body_location": {"start_line": 65, "end_line": 75}}, {"name": "ballUsage", "name_path": "Team/ballUsage", "kind": "Method", "location": {"line": 121, "column": 6}, "body_location": {"start_line": 121, "end_line": 134}}, {"name": "ballUsageStatus", "name_path": "Team/ballUsageStatus", "kind": "Method", "location": {"line": 208, "column": 6}, "body_location": {"start_line": 208, "end_line": 224}}, {"name": "billingFailureReason", "name_path": "Team/billingFailureReason", "kind": "Property", "location": {"line": 38, "column": 2}, "body_location": {"start_line": 38, "end_line": 38}}, {"name": "canAnalyzeBall", "name_path": "Team/canAnalyzeBall", "kind": "Method", "location": {"line": 247, "column": 6}, "body_location": {"start_line": 247, "end_line": 249}}, {"name": "canUseAiCoach", "name_path": "Team/canUseAiCoach", "kind": "Method", "location": {"line": 254, "column": 6}, "body_location": {"start_line": 254, "end_line": 256}}, {"name": "createdAt", "name_path": "Team/createdAt", "kind": "Property", "location": {"line": 31, "column": 2}, "body_location": {"start_line": 31, "end_line": 31}}, {"name": "deletionScheduledAt", "name_path": "Team/deletionScheduledAt", "kind": "Property", "location": {"line": 33, "column": 2}, "body_location": {"start_line": 33, "end_line": 33}}, {"name": "downgradePlanId", "name_path": "Team/downgradePlanId", "kind": "Property", "location": {"line": 41, "column": 2}, "body_location": {"start_line": 41, "end_line": 41}}, {"name": "id", "name_path": "Team/id", "kind": "Property", "location": {"line": 25, "column": 2}, "body_location": {"start_line": 25, "end_line": 25}}, {"name": "imageUrl", "name_path": "Team/imageUrl", "kind": "Property", "location": {"line": 26, "column": 2}, "body_location": {"start_line": 26, "end_line": 26}}, {"name": "item", "name_path": "Team/item", "kind": "Property", "location": {"line": 42, "column": 2}, "body_location": {"start_line": 42, "end_line": 47}}, {"name": "maxAiCoachCount", "name_path": "Team/maxAiCoachCount", "kind": "Method", "location": {"line": 169, "column": 6}, "body_location": {"start_line": 169, "end_line": 176}}, {"name": "maxBalls", "name_path": "Team/maxBalls", "kind": "Method", "location": {"line": 139, "column": 6}, "body_location": {"start_line": 139, "end_line": 146}}, {"name": "name", "name_path": "Team/name", "kind": "Property", "location": {"line": 28, "column": 2}, "body_location": {"start_line": 28, "end_line": 28}}, {"name": "nextTeamPlan", "name_path": "Team/nextTeamPlan", "kind": "Property", "location": {"line": 36, "column": 2}, "body_location": {"start_line": 36, "end_line": 36}}, {"name": "ownerUserId", "name_path": "Team/ownerUserId", "kind": "Property", "location": {"line": 29, "column": 2}, "body_location": {"start_line": 29, "end_line": 29}}, {"name": "planMaxAiCoachs", "name_path": "Team/planMaxAiCoachs", "kind": "Method", "location": {"line": 112, "column": 6}, "body_location": {"start_line": 112, "end_line": 116}}, {"name": "planMaxBalls", "name_path": "Team/planMaxBalls", "kind": "Method", "location": {"line": 103, "column": 6}, "body_location": {"start_line": 103, "end_line": 107}}, {"name": "presignedImageUrl", "name_path": "Team/presignedImageUrl", "kind": "Property", "location": {"line": 27, "column": 2}, "body_location": {"start_line": 27, "end_line": 27}}, {"name": "remainingDays", "name_path": "Team/remainingDays", "kind": "Method", "location": {"line": 82, "column": 6}, "body_location": {"start_line": 82, "end_line": 98}}, {"name": "teamPlan", "name_path": "Team/teamPlan", "kind": "Property", "location": {"line": 35, "column": 2}, "body_location": {"start_line": 35, "end_line": 35}}, {"name": "teamPlanCancelAt", "name_path": "Team/teamPlanCancelAt", "kind": "Property", "location": {"line": 39, "column": 2}, "body_location": {"start_line": 39, "end_line": 39}}, {"name": "teamPlanDowngradeAt", "name_path": "Team/teamPlanDowngradeAt", "kind": "Property", "location": {"line": 40, "column": 2}, "body_location": {"start_line": 40, "end_line": 40}}, {"name": "teamPlanStatus", "name_path": "Team/teamPlanStatus", "kind": "Method", "location": {"line": 181, "column": 6}, "body_location": {"start_line": 181, "end_line": 203}}, {"name": "teamType", "name_path": "Team/teamType", "kind": "Property", "location": {"line": 30, "column": 2}, "body_location": {"start_line": 30, "end_line": 30}}, {"name": "updatedAt", "name_path": "Team/updatedAt", "kind": "Property", "location": {"line": 32, "column": 2}, "body_location": {"start_line": 32, "end_line": 32}}, {"name": "users", "name_path": "Team/users", "kind": "Property", "location": {"line": 37, "column": 2}, "body_location": {"start_line": 37, "end_line": 37}}], "relative_path": "web/src/models/team.ts"}]
+INFO  2025-10-11 00:12:00,107 [SerenaAgentExecutor_0] solidlsp:save_cache:1571 - Saving updated document symbols cache to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/.serena/cache/typescript/document_symbols_cache_v23-06-25.pkl
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:00,223 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-9[FindSymbolTool] completed in 0.163 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 178ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:07,401 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:12:07,401 [MainThread] serena.agent:issue_task:420 - Scheduling Task-10[FindSymbolTool]
+INFO  2025-10-11 00:12:07,401 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-10[FindSymbolTool] starting ...
+INFO  2025-10-11 00:12:07,401 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='Team/item', depth=0, relative_path='web/src/models/team.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:07,428 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: [{"name_path": "Team/item", "kind": "Property", "body_location": {"start_line": 42, "end_line": 47}, "body": "item: {\n    aiCoachUsage: number;\n    ballUsage: number;\n    aiCoachAvailableCount: number;\n    ballAvailableCount: number;\n  } | null = null;", "relative_path": "web/src/models/team.ts"}]
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:07,429 [SerenaAgentExecutor_0] solidlsp:save_cache:1571 - Saving updated document symbols cache to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/.serena/cache/typescript/document_symbols_cache_v23-06-25.pkl
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:07,479 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-10[FindSymbolTool] completed in 0.077 seconds
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 81ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 7ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: mcp__serena__find_symbol
+[DEBUG] Executing hooks for PreToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PreToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] MCP server "serena": Calling MCP tool: find_symbol
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:07,528 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:12:07,528 [MainThread] serena.agent:issue_task:420 - Scheduling Task-11[FindSymbolTool]
+INFO  2025-10-11 00:12:07,528 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-11[FindSymbolTool] starting ...
+INFO  2025-10-11 00:12:07,528 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='Team/planMaxBalls', depth=0, relative_path='web/src/models/team.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+INFO  2025-10-11 00:12:07,530 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: [{"name_path": "Team/planMaxBalls", "kind": "Method", "body_location": {"start_line": 103, "end_line": 107}, "body": "get planMaxBalls(): number {\n    return teamPlanStatusIsValid(this.teamPlanStatus)\n      ? this.teamPlan?.plan.maxBalls ?? 0\n      : 0;\n  }", "relative_path": "web/src/models/team.ts"}]
+INFO  2025-10-11 00:12:07,530 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-11[FindSymbolTool] completed in 0.002 seconds
+INFO  2025-10-11 00:12:07,585 [MainThread] mcp.server.lowlevel.server:_handle_request:625 - Processing request of type CallToolRequest
+INFO  2025-10-11 00:12:07,585 [MainThread] serena.agent:issue_task:420 - Scheduling Task-12[FindSymbolTool]
+INFO  2025-10-11 00:12:07,585 [SerenaAgentExecutor_0] serena.agent:start:329 - Task-12[FindSymbolTool] starting ...
+INFO  2025-10-11 00:12:07,586 [SerenaAgentExecutor_0] serena.tools.tools_base:_log_tool_application:212 - find_symbol: name_path='Team/planMaxAiCoachs', depth=0, relative_path='web/src/models/team.ts', include_body=True, include_kinds=[], exclude_kinds=[], substring_matching=False, max_answer_chars=-1
+[DEBUG] MCP server "serena": Tool 'find_symbol' completed successfully in 11ms
+[DEBUG] Executing hooks for PostToolUse:mcp__serena__find_symbol
+[DEBUG] Getting matching hook commands for PostToolUse with query: mcp__serena__find_symbol
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "mcp__serena__find_symbol" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[ERROR] MCP server "serena" Server stderr: INFO  2025-10-11 00:12:07,587 [SerenaAgentExecutor_0] serena.tools.tools_base:task:279 - Result: [{"name_path": "Team/planMaxAiCoachs", "kind": "Method", "body_location": {"start_line": 112, "end_line": 116}, "body": "get planMaxAiCoachs(): number {\n    return teamPlanStatusIsValid(this.teamPlanStatus)\n      ? this.teamPlan?.plan.maxAiCoachs ?? 0\n      : 0;\n  }", "relative_path": "web/src/models/team.ts"}]
+INFO  2025-10-11 00:12:07,588 [SerenaAgentExecutor_0] serena.agent:stop:336 - Task-12[FindSymbolTool] completed in 0.003 seconds
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                          {' : '}\n                          {StringUtil.getTeamItemBallUsageString(team)}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                          {' : '}\n                          {StringUtil.getTeamItemAiCoachUsageString(team)}\n                        </Typography>\n                      </Box>","new_string":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                          {' : '}\n                          {StringUtil.getTeamItemBallUsageString(team)}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                          {' : '}\n                          {StringUtil.getTeamItemAiCoachUsageString(team)}\n                        </Typography>\n                      </Box>","new_string":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69ea...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx.tmp.51696.1760109139243
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 35241 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx.tmp.51696.1760109139243 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                          {' : '}\n                          {StringUtil.getTeamItemBallUsageString(team)}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                          {' : '}\n                          {StringUtil.getTeamItemAiCoachUsageString(team)}\n                        </Typography>\n                      </Box>","new_string":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","oldString":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                          {' : '}\n                          {StringUtil.getTeamItemBallUsageString(team)}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                          {' : '}\n                          {StringUtil.getTeamItemAiCoachUsageString(team)}\n                        </Typography>\n                      </Box>","newString":"                    <TableCell align=\"left\">\n                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>","originalFile":"import { MoreHoriz, PersonAddAlt } from '@mui/icons-material';\nimport {\n  Alert,\n  Box,\n  Button,\n  Card,\n  Chip,\n  Container,\n  Divider,\n  FormControl,\n  FormControlLabel,\n  Grid2 as Grid,\n  Menu,\n  MenuItem,\n  Paper,\n  Select,\n  Stack,\n  Switch,\n  Table,\n  TableBody,\n  TableCell,\n  TableContainer,\n  TableHead,\n  TableRow,\n  Tooltip,\n  Typography,\n} from '@mui/material';\nimport _ from 'lodash';\nimport React, { ReactElement, useEffect, useMemo, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport DefaultBreadCrumbs from '@/components/common/default-breadcrumb';\nimport { FloatingButton } from '@/components/common/floating-button';\nimport DefaultSearchField from '@/components/common/input/default-search-field';\nimport { ConfirmationModal } from '@/components/modal/confirmation-modal';\nimport { CreateTeamPlanModal } from '@/components/modal/super-admin/create-team-plan-modal';\nimport { EditCurrentOrPreviousTeamPlanModal } from '@/components/modal/super-admin/edit-current-or-previous-team-plan-modal';\nimport { EditOrDeleteNextTeamPlanModal } from '@/components/modal/super-admin/edit-or-delete-next-team-plan-modal';\nimport {\n  getDefaultParam,\n  TeamCreationModal,\n} from '@/components/modal/super-admin/team-creation-modal';\nimport {\n  CommonPagination,\n  CommonPaginationData,\n} from '@/components/pagination/common-pagination';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport useServicesHook from '@/hooks';\nimport ConsoleLayout from '@/layouts/console.layout';\nimport { Team } from '@/models/team';\nimport { User } from '@/models/user';\nimport { ServiceError } from '@/services/errors/service-error';\nimport {\n  CreateTeamParam,\n  PlanFilterType,\n  planFilterTypes,\n  TeamPlanExpiryFilterType,\n  teamPlanExpiryFilterTypes,\n  TeamSortType,\n  teamSortTypes,\n  TeamStatusFilterType,\n  teamStatusFilterTypes,\n  TeamTypeFilterType,\n  teamTypeFilterTypes,\n} from '@/services/interfaces/super-admin-api.interface';\nimport { useSelector } from '@/store';\nimport { translate } from '@/utils/i18n';\nimport { PathUtil } from '@/utils/path.util';\nimport { StringUtil } from '@/utils/string.util';\n\ntype TeamQueryCondition = {\n  keyword: string;\n  sort: TeamSortType;\n  expiry: TeamPlanExpiryFilterType;\n  plan: PlanFilterType;\n  teamType: TeamTypeFilterType;\n  status: TeamStatusFilterType;\n  teamOwner: string;\n  includeNextPlan: boolean;\n  searchTrigger: Date;\n};\n\nconst defaultCondition: TeamQueryCondition & CommonPaginationData = {\n  keyword: '',\n  sort: 'recent',\n  expiry: 'all',\n  plan: 'all',\n  teamType: 'all',\n  status: 'all',\n  teamOwner: '',\n  includeNextPlan: false,\n  currentPage: 0,\n  rowsPerPage: 10,\n\n  searchTrigger: new Date(),\n};\n\nconst buildQueryParam = (data: TeamQueryCondition & CommonPaginationData) => {\n  return {\n    keyword: data.keyword.toString(),\n    sort: data.sort.toString(),\n    expiry: data.expiry.toString(),\n    plan: data.plan.toString(),\n    teamType: data.teamType.toString(),\n    status: data.status.toString(),\n    teamOwner: data.teamOwner.toString(),\n    includeNextPlan: data.includeNextPlan.toString(),\n    page: data.currentPage.toString(),\n    pageSiz
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69ea...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109151047
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698147 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109151047 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109156407
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698147 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109156407 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109157942
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698147 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109157942 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109157974
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698243 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109157974 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message b94e0179-3b7f-4234-a207-af711d5246aa
+[DEBUG] FileHistory: Added snapshot for b94e0179-3b7f-4234-a207-af711d5246aa, tracking 1 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>","new_string":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>","new_string":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69ea...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx.tmp.51696.1760109225408
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 35257 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx.tmp.51696.1760109225408 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>","new_string":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","oldString":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Plan: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>","newString":"                      <Box>\n                        <Typography variant=\"inherit\">\n                          {translate('analyzed_balls')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.ballUsage - (team.item?.ballUsage ?? 0)).toLocaleString()}/${team.planMaxBalls.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.ballUsage.toLocaleString()}/${team.item.ballAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\">\n                          {translate('ai_coach')}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Subscription: {team.teamPlan ? `${(team.aiCoachUsage - (team.item?.aiCoachUsage ?? 0)).toLocaleString()}/${team.planMaxAiCoachs.toLocaleString()}` : '-'}\n                        </Typography>\n                        <Typography variant=\"inherit\" sx={{ pl: 2 }}>\n                          Item: {team.item ? `${team.item.aiCoachUsage.toLocaleString()}/${team.item.aiCoachAvailableCount.toLocaleString()}` : '-'}\n                        </Typography>\n                      </Box>","originalFile":"import { MoreHoriz, PersonAddAlt } from '@mui/icons-material';\nimport {\n  Alert,\n  Box,\n  Button,\n  Card,\n  Chip,\n  Container,\n  Divider,\n  FormControl,\n  FormControlLabel,\n  Grid2 as Grid,\n  Menu,\n  MenuItem,\n  Paper,\n  Select,\n  Stack,\n  Switch,\n  Table,\n  TableBody,\n  TableCell,\n  TableContainer,\n  TableHead,\n  TableRow,\n  Tooltip,\n  Typography,\n} from '@mui/material';\nimport _ from 'lodash';\nimport React, { ReactElement, useEffect, useMemo, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport DefaultBreadCrumbs from '@/components/common/default-breadcrumb';\nimport { FloatingButton } from '@/components/common/floating-button';\nimport DefaultSearchField from '@/components/common/input/default-search-field';\nimport { ConfirmationModal } from '@/components/modal/confirmation-modal';\nimport { CreateTeamPlanModal } from '@/components/modal/super-admin/create-team-plan-modal';\nimport { EditCurrentOrPreviousTeamPlanModal } from '@/components/modal/super-admin/edit-current-or-previous-team-plan-modal';\nimport { EditOrDeleteNextTeamPlanModal } from '@/components/modal/super-admin/edit-or-delete-next-team-plan-modal';\nimport {\n  getDefaultParam,\n  TeamCreationModal,\n} from '@/components/modal/super-admin/team-creation-modal';\nimport {\n  CommonPagination,\n  CommonPaginationData,\n} from '@/components/pagination/common-pagination';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport useServicesHook from '@/hooks';\nimport ConsoleLayout from '@/layouts/console.layout';\nimport { Team } from '@/models/team';\nimport { User } from '@/models/user';\nimport { ServiceError } from '@/services/errors/se
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69ea...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109234068
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698243 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109234068 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109235645
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698243 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109235645 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109235679
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698272 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109235679 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 5c644cc2-401d-4a08-889d-b1cb219db4f5
+[DEBUG] FileHistory: Added snapshot for 5c644cc2-401d-4a08-889d-b1cb219db4f5, tracking 1 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\">{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>","new_string":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '25%' }}>{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\">{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>","new_string":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '25%' }}>{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69ea...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx.tmp.51696.1760109310809
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 35279 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx.tmp.51696.1760109310809 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69eace.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","old_string":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\">{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>","new_string":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '25%' }}>{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx","oldString":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\">{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>","newString":"              <TableHead>\n                <TableRow>\n                  <TableCell align=\"left\">ID</TableCell>\n                  <TableCell align=\"left\">{translate('team_name')}</TableCell>\n                  <TableCell align=\"left\">{translate('plan')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '25%' }}>{translate('usage')}</TableCell>\n                  <TableCell align=\"left\">{translate('start_end')}</TableCell>\n                  <TableCell align=\"left\" sx={{ width: '18%' }}>\n                    {translate('num_users_and_users')}\n                  </TableCell>\n                  <TableCell sx={{ width: '5rem' }} />\n                </TableRow>\n              </TableHead>","originalFile":"import { MoreHoriz, PersonAddAlt } from '@mui/icons-material';\nimport {\n  Alert,\n  Box,\n  Button,\n  Card,\n  Chip,\n  Container,\n  Divider,\n  FormControl,\n  FormControlLabel,\n  Grid2 as Grid,\n  Menu,\n  MenuItem,\n  Paper,\n  Select,\n  Stack,\n  Switch,\n  Table,\n  TableBody,\n  TableCell,\n  TableContainer,\n  TableHead,\n  TableRow,\n  Tooltip,\n  Typography,\n} from '@mui/material';\nimport _ from 'lodash';\nimport React, { ReactElement, useEffect, useMemo, useState } from 'react';\n\nimport CriticalError from '@/components/common/critical-error';\nimport DefaultBreadCrumbs from '@/components/common/default-breadcrumb';\nimport { FloatingButton } from '@/components/common/floating-button';\nimport DefaultSearchField from '@/components/common/input/default-search-field';\nimport { ConfirmationModal } from '@/components/modal/confirmation-modal';\nimport { CreateTeamPlanModal } from '@/components/modal/super-admin/create-team-plan-modal';\nimport { EditCurrentOrPreviousTeamPlanModal } from '@/components/modal/super-admin/edit-current-or-previous-team-plan-modal';\nimport { EditOrDeleteNextTeamPlanModal } from '@/components/modal/super-admin/edit-or-delete-next-team-plan-modal';\nimport {\n  getDefaultParam,\n  TeamCreationModal,\n} from '@/components/modal/super-admin/team-creation-modal';\nimport {\n  CommonPagination,\n  CommonPaginationData,\n} from '@/components/pagination/common-pagination';\nimport { PAGE_INFO } from '@/constants/page.constants';\nimport useServicesHook from '@/hooks';\nimport ConsoleLayout from '@/layouts/console.layout';\nimport { Team } from '@/models/team';\nimport { User } from '@/models/user';\nimport { ServiceError } from '@/services/errors/service-error';\nimport {\n  CreateTeamParam,\n  PlanFilterType,\n  planFilterTypes,\n  TeamPlanExpiryFilterType,\n  teamPlanExpiryFilterTypes,\n  TeamSortType,\n  teamSortTypes,\n  TeamStatusFilterType,\n  teamStatusFilterTypes,\n  TeamTypeFilterType,\n  teamTypeFilterTypes,\n} from '@/services/interfaces/super-admin-api.interface';\nimport { useSelector } from '@/store';\nimport { translate } from '@/utils/i18n';\nimport { PathUtil } from '@/utils/path.util';\nimport { StringUtil } from '@/utils/string.util';\n\ntype TeamQueryCondition = {\n  keyword: string;\n  sort: TeamSortType;\n  expiry: TeamPlanExpiryFilterType;\n  plan: PlanFilterType;\n  teamType: TeamTypeFilterType;\n  status: TeamStatusFilterType;\n  teamOwner: string;\n  includeNextPlan: boolean;\n  searchTrigger: Date;\n};\n\nconst defaultCondition: TeamQueryCondition & CommonPaginationData = {\n  keyword: '',\n  sort: 'recent',\n  expiry: 'all',\n  plan: 'all',\n  teamType: 'all',\n  status: 'all',\n  teamOwner: '',\n  includeNextPlan: false,\n  currentPage: 0,\n  rowsPerPage: 10,\n\n  searchTrigger: new Date(),\n};\n\nconst buildQueryParam = (data: TeamQueryCondition & CommonPaginationData) => {\n  return {\n    keyword: data.keyword.toString(),\n    sort: data.sort.toString(),\n    expiry: data.expiry.toString(),\n    plan: data.plan.toString(),\n    teamType: data.teamType.toString(),\n    status: data.status.toString(),\n    teamOwner: data.teamOwner.toString(),\n    includeNextPlan: data.includeNextPlan.toString(),\n    page: data.currentPage.toString(),\n    pageSize: data.rowsPerPage.toString(),\n  };\n};\n\nconst parseQueryParam = (data: any) => {\n  return _.chain({\n    keyword: PathUtil.getStringFromQuery(data.keyword),\n    sort: PathUtil.getEnumFromQuery(teamSortTypes, data.sort),\n    expiry: PathUtil.getEnumFromQuery(teamPlanExpiryFilterTypes, data.expiry),\n    plan: PathUtil.getEnumFromQuery(planFilterTypes, data.plan),\n    teamType: PathUtil.getEnumFromQuery(teamTypeFilterTypes, data.teamType),\n    status: PathUtil.getEnumFromQuery(teamStatusFilterTypes, data.status),\n    teamOwner: PathUtil.getStringFromQuery(data.teamOwner),\n    includeNextPlan: PathUtil.getBoolFromQuery(data.includeNextPlan),\n    currentPage: PathUtil.getIntFromQuery(data.page),\n    rowsPerPage: PathUtil.getIntFromQuery(data.pageSize),\n  })\n    .omitBy((v) => {\n      return _.isNil(v);\n    })\n    .defaultsDeep(defaultCondition)\n    .value();\n};\n\ntype TeamPlanModalParam = {\n  isOpen: boolean;\n  team: Team | null;\n  title?: string;\n};\n\nconst getDefaultTeamPlanModalParam: () => TeamPlanModalParam = () => ({\n  isOpen: false,\n  team: null,\n});\n\nfunction PageInner({\n  currentUser,\n}: {\n  currentUser: User;\n  currentTeam: Team;\n}) {\n  const { services, router, reloader } = useServicesHook();\n\n  const [isInitialized, setIsInitialized] = useState<boolean>(false);\n  const [loadError, setLoadError] = useState<
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8192
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"89b06f15-a081-41e8-a488-86b0ea69eace","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/89b06f15-a081-41e8-a488-86b0ea69ea...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/src/pages/super-admin/teams/index.tsx: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109322504
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698272 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109322504 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109325382
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698272 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109325382 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109325413
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698116 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109325413 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760106750760-80fcsp.sh
+[DEBUG] MCP server "serena": Sending SIGINT to MCP server process
+[DEBUG] MCP server "serena": SIGINT failed, sending SIGTERM to MCP server process
+[DEBUG] MCP server "serena": MCP server process exited cleanly
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.51696.1760109631089
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 698544 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.51696.1760109631089 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

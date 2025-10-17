@@ -1,0 +1,381 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for fa507769-0a00-4f03-aa17-313091681916, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523464230
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1275135 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523464230 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523464277
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1275219 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523464277 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 5d9f5fad-4a85-4db4-9a54-679dc3eeffe4
+[DEBUG] FileHistory: Added snapshot for 5d9f5fad-4a85-4db4-9a54-679dc3eeffe4, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[ERROR] Error: Error: Language not supported while highlighting code, falling back to markdown: 
+    at cK (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2123:729)
+    at file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2123:457
+    at Array.map (<anonymous>)
+    at ZV (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2123:448)
+    at nlB (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:2123:12742)
+    at V$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:73:19415)
+    at pa (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:42814)
+    at y9 (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38355)
+    at qm (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38283)
+    at N$ (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:75:38137)
+[DEBUG] executePreToolHooks called for tool: Glob
+[DEBUG] Executing hooks for PreToolUse:Glob
+[DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Glob
+[DEBUG] Executing hooks for PreToolUse:Glob
+[DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Glob
+[DEBUG] Executing hooks for PreToolUse:Glob
+[DEBUG] Getting matching hook commands for PreToolUse with query: Glob
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Glob
+[DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Glob
+[DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Glob
+[DEBUG] Getting matching hook commands for PostToolUse with query: Glob
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Glob" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523535459
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1275219 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523535459 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Streaming aborted by user: Request was aborted.
+[ERROR] Error in non-streaming fallback: Request was aborted.
+[ERROR] Error: Error: Request was aborted.
+    at Yl._createMessage (file:///Users/kokiyoshida/.local/share/mise/installs/node/22.13.0/lib/node_modules/@anthropic-ai/claude-code/cli.js:432:4515)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523535513
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1275219 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523535513 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523535557
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1280580 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523535557 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message e2ef85fa-4f58-4b83-a2d9-f0fe8a6d790d
+[DEBUG] FileHistory: Added snapshot for e2ef85fa-4f58-4b83-a2d9-f0fe8a6d790d, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"3b3ea5c8-b4de-40af-b038-e50ada561ff3","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/3b3ea5c8-b4de-40af-b038-e50ada561ff3.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh","old_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"","new_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\n-- Restore user active status for test users\nUPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE\nWHERE \"user_id\" IN (\n  '11111111-0000-0000-0000-000000000000',  -- team_admin\n  '22222222-0000-0000-0000-000000000000',  -- team_manager\n  '33333333-0000-0000-0000-000000000000',  -- team_member\n  '44444444-0000-0000-0000-000000000000',  -- personal\n  '55555555-0000-0000-0000-000000000000',  -- super_admin\n  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test\n  '77777777-0000-0000-0000-000000000000',  -- to_be_edited\n  '88888888-0000-0000-0000-000000000000'   -- to_be_activated\n);\n\n-- Restore team active status for test teams\nUPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;\n\nEOF\n)\""}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"3b3ea5c8-b4de-40af-b038-e50ada561ff3","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/3b3ea5c8-b4de-40af-b038-e50ada561ff3.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh","old_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"","new_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\n-- Restore user active status for test users\nUPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE\nWHERE \"user_id\" IN (\n  '11111111-0000-0000-0000-000000000000',  -- team_admin\n  '22222222-0000-0000-0000-000000000000',  -- team_manager\n  '33333333-0000-0000-0000-000000000000',  -- team_member\n  '44444444-0000-0000-0000-000000000000',  -- personal\n  '55555555-0000-0000-0000-000000000000',  -- super_admin\n  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test\n  '77777777-0000-0000-0000-000000000000',  -- to_be_edited\n  '88888888-0000-0000-0000-000000000000'   -- to_be_activated\n);\n\n-- Restore team active status for test teams\nUPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;\n\nEOF\n)\""}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"3b3ea5c8-b4de-40af-b038-e50ada561ff3","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/3b3ea5c8-b4de-40af-b038-e50ada561ff3.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh: 755
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh.tmp.32028.1760523721837
+[DEBUG] Preserving file permissions: 100755
+[DEBUG] Temp file written successfully, size: 1459 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh.tmp.32028.1760523721837 to /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"3b3ea5c8-b4de-40af-b038-e50ada561ff3","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/3b3ea5c8-b4de-40af-b038-e50ada561ff3.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh","old_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"","new_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\n-- Restore user active status for test users\nUPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE\nWHERE \"user_id\" IN (\n  '11111111-0000-0000-0000-000000000000',  -- team_admin\n  '22222222-0000-0000-0000-000000000000',  -- team_manager\n  '33333333-0000-0000-0000-000000000000',  -- team_member\n  '44444444-0000-0000-0000-000000000000',  -- personal\n  '55555555-0000-0000-0000-000000000000',  -- super_admin\n  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test\n  '77777777-0000-0000-0000-000000000000',  -- to_be_edited\n  '88888888-0000-0000-0000-000000000000'   -- to_be_activated\n);\n\n-- Restore team active status for test teams\nUPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;\n\nEOF\n)\""},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh","oldString":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"","newString":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\n-- Restore user active status for test users\nUPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE\nWHERE \"user_id\" IN (\n  '11111111-0000-0000-0000-000000000000',  -- team_admin\n  '22222222-0000-0000-0000-000000000000',  -- team_manager\n  '33333333-0000-0000-0000-000000000000',  -- team_member\n  '44444444-0000-0000-0000-000000000000',  -- personal\n  '55555555-0000-0000-0000-000000000000',  -- super_admin\n  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test\n  '77777777-0000-0000-0000-000000000000',  -- to_be_edited\n  '88888888-0000-0000-0000-000000000000'   -- to_be_activated\n);\n\n-- Restore team active status for test teams\nUPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;\n\nEOF\n)\"","originalFile":"#!/bin/bash\n\nexecutePsql() {\n\tDB_HOST=${1}_DB_HOST\n\tDB_PORT=${1}_DB_PORT\n\tDB_USER=${1}_DB_USER\n\tDB_PASSWORD=${1}_DB_PASSWORD\n\tPGPASSWORD=${!DB_PASSWORD} psql --host=\"${!DB_HOST}\" --port=\"${!DB_PORT}\" --username=\"${!DB_USER}\" \"${@:2}\"\n}\n\nexecuteSqlStmt() {\n\tlocal env=$1\n\tlocal sql=$2\n\texecutePsql \"$env\" --file=<(echo \"$sql\")\n}\n\ncd \"$(dirname \"$0\")\"\n\n# Importing variables\n# NOTE: Copy .env.example to create .env and edit it as needed.\nsource ../.env\n\n\nexecuteSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"\n","structuredPatch":[{"oldStart":27,"oldLines":5,"newStart":27,"newLines":21,"lines":[" UPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;"," UPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;"," ","+-- Restore user active status for test users","+UPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE","+WHERE \"user_id\" IN (","+  '11111111-0000-0000-0000-000000000000',  -- team_admin","+  '22222222-0000-0000-0000-000000000000',  -- team_manager","+  '33333333-0000-0000-0000-000000000000',  -- team_member","+  '44444444-0000-0000-0000-000000000000',  -- personal","+  '55555555-0000-0000-0000-000000000000',  -- super_admin","+  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test","+  '77777777-0000-0000-0000-000000000000',  -- to_be_edited","+  '88888888-0000-0000-0000-000000000000'   -- to_be_activated","+);","+","+-- Restore team active status for test teams","+UPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;","+"," EOF"," )\""]}],"userModified":false,"replaceAll":false}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"3b3ea5c8-b4de-40af-b038-e50ada561ff3","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/3b3ea5c8-b4de-40af-b038-e50ada561ff3.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh","old_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"","new_string":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\n-- Restore user active status for test users\nUPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE\nWHERE \"user_id\" IN (\n  '11111111-0000-0000-0000-000000000000',  -- team_admin\n  '22222222-0000-0000-0000-000000000000',  -- team_manager\n  '33333333-0000-0000-0000-000000000000',  -- team_member\n  '44444444-0000-0000-0000-000000000000',  -- personal\n  '55555555-0000-0000-0000-000000000000',  -- super_admin\n  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test\n  '77777777-0000-0000-0000-000000000000',  -- to_be_edited\n  '88888888-0000-0000-0000-000000000000'   -- to_be_activated\n);\n\n-- Restore team active status for test teams\nUPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;\n\nEOF\n)\""},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh","oldString":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"","newString":"executeSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\n-- Restore user active status for test users\nUPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE\nWHERE \"user_id\" IN (\n  '11111111-0000-0000-0000-000000000000',  -- team_admin\n  '22222222-0000-0000-0000-000000000000',  -- team_manager\n  '33333333-0000-0000-0000-000000000000',  -- team_member\n  '44444444-0000-0000-0000-000000000000',  -- personal\n  '55555555-0000-0000-0000-000000000000',  -- super_admin\n  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test\n  '77777777-0000-0000-0000-000000000000',  -- to_be_edited\n  '88888888-0000-0000-0000-000000000000'   -- to_be_activated\n);\n\n-- Restore team active status for test teams\nUPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;\n\nEOF\n)\"","originalFile":"#!/bin/bash\n\nexecutePsql() {\n\tDB_HOST=${1}_DB_HOST\n\tDB_PORT=${1}_DB_PORT\n\tDB_USER=${1}_DB_USER\n\tDB_PASSWORD=${1}_DB_PASSWORD\n\tPGPASSWORD=${!DB_PASSWORD} psql --host=\"${!DB_HOST}\" --port=\"${!DB_PORT}\" --username=\"${!DB_USER}\" \"${@:2}\"\n}\n\nexecuteSqlStmt() {\n\tlocal env=$1\n\tlocal sql=$2\n\texecutePsql \"$env\" --file=<(echo \"$sql\")\n}\n\ncd \"$(dirname \"$0\")\"\n\n# Importing variables\n# NOTE: Copy .env.example to create .env and edit it as needed.\nsource ../.env\n\n\nexecuteSqlStmt API \"$(cat <<EOF\n\nUPDATE \"public\".\"players\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\nUPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;\n\nEOF\n)\"\n","structuredPatch":[{"oldStart":27,"oldLines":5,"newStart":27,"newLines":21,"lines":[" UPDATE \"public\".\"sessions\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;"," UPDATE \"public\".\"resources\" SET \"delete_flag\" = FALSE WHERE \"delete_flag\" IS TRUE;"," ","+-- Restore user active status for test users","+UPDATE \"public\".\"user_roles\" SET \"is_active\" = TRUE","+WHERE \"user_id\" IN (","+  '11111111-0000-0000-0000-000000000000',  -- team_admin","+  '22222222-0000-0000-0000-000000000000',  -- team_manager","+  '33333333-0000-0000-0000-000000000000',  -- team_member","+  '44444444-0000-0000-0000-000000000000',  -- personal","+  '55555555-0000-0000-0000-000000000000',  -- super_admin","+  '66666666-0000-0000-0000-000000000000',  -- team_admin_write_test","+  '77777777-0000-0000-0000-000000000000',  -- to_be_edited","+  '88888888-0000-0000-0000-000000000000'   -- to_be_activated","+);","+","+-- Restore team active status for test teams","+UPDATE \"public\".\"teams\" SET \"is_active\" = TRUE WHERE \"is_active\" = FALSE;","+"," EOF"," )\""]}],"userModified":false,"replaceAll":false}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"3b3ea5c8-b4de-40af-b038-e50ada561ff3","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/3b3ea5c8-b4de-40af-b038-e50ada561ff3.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/test/_testdata/tools/restore_records.sh: 755
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Executing hooks for PostToolUse:Bash
+[DEBUG] Getting matching hook commands for PostToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Bash" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "Read" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523774997
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1280580 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523774997 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523783848
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1280580 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523783848 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523785396
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1280580 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523785396 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Cleaned up session snapshot: /Users/kokiyoshida/.claude/shell-snapshots/snapshot-zsh-1760486475541-2y7fd2.sh
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760523926662
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1281014 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760523926662 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically

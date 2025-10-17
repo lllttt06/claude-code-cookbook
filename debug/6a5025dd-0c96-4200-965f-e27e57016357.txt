@@ -1,0 +1,271 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for db689a46-913b-43dc-b7e0-40e94aa405cd, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096501567
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702859 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096501567 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096501635
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702846 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096501635 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message d8947b0f-2c55-4c7f-a6cb-4a14786da8b8
+[DEBUG] FileHistory: Added snapshot for d8947b0f-2c55-4c7f-a6cb-4a14786da8b8, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096555308
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702846 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096555308 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096556901
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702846 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096556901 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096556938
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702888 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096556938 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message de41d51e-8c89-4e8f-b121-c2c52fe6f17f
+[DEBUG] FileHistory: Added snapshot for de41d51e-8c89-4e8f-b121-c2c52fe6f17f, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096627293
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702888 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096627293 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096628839
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702888 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096628839 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096628873
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702849 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096628873 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message ce777dae-9feb-4f3f-97ea-a33bb5483210
+[DEBUG] FileHistory: Added snapshot for ce777dae-9feb-4f3f-97ea-a33bb5483210, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096944634
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702849 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096944634 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096948320
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702849 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096948320 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096949844
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702849 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096949844 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760096949877
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702828 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760096949877 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 4a088355-901e-4b6d-b541-b3e43771e03f
+[DEBUG] FileHistory: Added snapshot for 4a088355-901e-4b6d-b541-b3e43771e03f, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6a5025dd-0c96-4200-965f-e27e57016357","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/6a5025dd-0c96-4200-965f-e27e57016357.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize: {\n  width: number;\n  height: number;\n} | undefined): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}","new_string":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize?: {\n  width: number;\n  height: number;\n}): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"6a5025dd-0c96-4200-965f-e27e57016357","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/6a5025dd-0c96-4200-965f-e27e57016357.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize: {\n  width: number;\n  height: number;\n} | undefined): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}","new_string":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize?: {\n  width: number;\n  height: number;\n}): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"6a5025dd-0c96-4200-965f-e27e57016357","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/6a5025dd-0c96-4200-965f-e27e570163...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760098103723
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 9978 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts.tmp.96422.1760098103723 to /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"6a5025dd-0c96-4200-965f-e27e57016357","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/6a5025dd-0c96-4200-965f-e27e57016357.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","old_string":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize: {\n  width: number;\n  height: number;\n} | undefined): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}","new_string":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize?: {\n  width: number;\n  height: number;\n}): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts","oldString":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize: {\n  width: number;\n  height: number;\n} | undefined): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}","newString":"/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize?: {\n  width: number;\n  height: number;\n}): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}","originalFile":"import {\n  expect,\n  Page,\n  PageAssertionsToHaveScreenshotOptions,\n  test,\n  TestInfo,\n} from '@playwright/test';\n\n/**\n * テスト用の定数\n */\nconst TEST_DATA = {\n  TEAM_ID: 'a0000000-0000-0000-0000-000000000000',\n  TARGET_TEAM_ID: 'ac100000-0001-0000-0000-000000000000',\n  SESSION_ID: 'a0000000-0001-0001-0000-000000000000',\n  RESOURCE_ID: 'a0000000-0001-0001-0001-000000000000',\n  TEST_USER_NAME: 'adm1-team_a',\n  DELETABLE_PLAYER_NAME: 'ply2-mgr1-team_a',\n  EDITABLE_PLAYER_NAME: 'ply1-adm1-team_a',\n} as const;\n\n/**\n * コミットハッシュなどをマスク\n */\nfunction getScreenshotOptions(\n  page: Page,\n): PageAssertionsToHaveScreenshotOptions {\n  return {\n    // fullPage: true,\n    mask: [page.locator('.develop')],\n  };\n}\n\n/**\n * スクリーンショットを撮影\n */\nasync function takeScreenshot(page: Page, viewportSize: {\n  width: number;\n  height: number;\n} | undefined): Promise<void> {\n  if (viewportSize) {\n    await page.setViewportSize(viewportSize);\n  }\n  await expect(page).toHaveScreenshot(getScreenshotOptions(page));\n}\n\n/**\n * モバイルかどうかを判定\n */\nfunction isMobileDevice(testInfo: TestInfo): boolean {\n  return testInfo.project.name.includes('Mobile Safari');\n}\n\n/**\n * 公開ページ（未認証）のVRT\n */\ntest.describe('public', () => {\n  const publicPages = [\n    '/auth/recover',\n    '/auth/reset-password',\n    '/auth/signin',\n    '/auth/signup',\n    '/privacy-policy',\n    '/terms-of-use',\n  ];\n\n  for (const pagePath of publicPages) {\n    test(pagePath, async ({ page }) => {\n      await page.goto(pagePath);\n      await expect(page).toHaveScreenshot();\n    });\n  }\n});\n\n/**\n * super_admin のVRT\n */\ntest.describe('super_admin', () => {\n  test.use({ storageState: 'playwright/.auth/super_admin.json' });\n\n  test('/super-admin/teams', async ({\n    page,\n  }) => {\n    // 初期表示\n    await page.goto('/super-admin/teams');\n    await page.waitForLoadState('networkidle');\n    await takeScreenshot(page);\n\n    // チーム作成モーダルの表示確認\n    await page.getByRole('button', { name: 'Create Ne
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 3852
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"6a5025dd-0c96-4200-965f-e27e57016357","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-baseball-detector-web-web/6a5025dd-0c96-4200-965f-e27e570163...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/baseball_detector_web/web/tests/vrt.spec.ts: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760098110369
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702828 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760098110369 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760098111947
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702828 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760098111947 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.96422.1760098111982
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 702840 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.96422.1760098111982 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)

@@ -1,0 +1,217 @@
+[DEBUG] Executing hooks for SessionStart:clear
+[DEBUG] Getting matching hook commands for SessionStart with query: clear
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "clear" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Added snapshot for 446a6371-0ee4-41ad-bd1d-0cab48d6d814, tracking 0 files
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515449363
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274384 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515449363 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515449411
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274468 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515449411 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Executing hooks for UserPromptSubmit
+[DEBUG] Getting matching hook commands for UserPromptSubmit with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] FileHistory: Making snapshot for message 8a23c5c8-3bbb-4940-be3f-f54468232af2
+[DEBUG] FileHistory: Added snapshot for 8a23c5c8-3bbb-4940-be3f-f54468232af2, tracking 0 files
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515654762
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274468 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515654762 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","old_string":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends ConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {","new_string":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:flutter_hooks/flutter_hooks.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends HookConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    final animationController = useAnimationController(\n      duration: const Duration(seconds: 3),\n    );\n\n    useEffect(\n      () {\n        animationController.forward();\n        return null;\n      },\n      [],\n    );"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","old_string":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends ConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {","new_string":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:flutter_hooks/flutter_hooks.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends HookConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    final animationController = useAnimationController(\n      duration: const Duration(seconds: 3),\n    );\n\n    useEffect(\n      () {\n        animationController.forward();\n        return null;\n      },\n      [],\n    );"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] FileHistory: Tracked file modification for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart.tmp.32028.1760515666015
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2249 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart.tmp.32028.1760515666015 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","old_string":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends ConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {","new_string":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:flutter_hooks/flutter_hooks.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends HookConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    final animationController = useAnimationController(\n      duration: const Duration(seconds: 3),\n    );\n\n    useEffect(\n      () {\n        animationController.forward();\n        return null;\n      },\n      [],\n    );"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","oldString":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends ConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {","newString":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:flutter_hooks/flutter_hooks.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends HookConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    final animationController = useAnimationController(\n      duration: const Duration(seconds: 3),\n    );\n\n    useEffect(\n      () {\n        animationController.forward();\n        return null;\n      },\n      [],\n    );","originalFile":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends ConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    final teamList = ref.watch(teamListControllerProvider);\n    debugPrint('aaaaaaaaaaaaaaaaaa');\n    return teamList.when(\n      error: (Object error, StackTrace stackTrace) => const SizedBox.shrink(),\n      loading: () => const SizedBox.shrink(),\n      data: (teams) {\n        debugPrint('teams: $teams');\n        if (teams.hasLeft) return const SizedBox.shrink();\n        final teamId = ref.read(profileStorageProvider).getTeamId();\n        final team = teams.right.firstWhereOrNull((t) => t.id == teamId);\n        debugPrint('teamId: $team');\n        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return Container(\n            decoration: BoxDecoration(\n              color: Theme.of(context).colorScheme.surface,\n              borderRadius: BorderRadius.circular(12),\n              border: Border.all(\n                color: context.isDarkMode\n                    ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                    : ColorManager.secondaryText.withValues(alpha: 0.3),\n              ),\n            ),\n            height: 56,\n            child: Text('20球計測でAIコーチ1回無料'),\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}\n","structuredPatch":[{"oldStart":4,"oldLines":13,"newStart":4,"newLines":25,"lines":[" import 'package:baseball_detector_flutter/views/themes/color_manager.dart';"," import 'package:collection/collection.dart';"," import 'package:flutter/material.dart'
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 6124 (line 1 column 6125)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Edit
+[DEBUG] Executing hooks for PreToolUse:Edit
+[DEBUG] Getting matching hook commands for PreToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "Edit" (1 before deduplication)
+[DEBUG] Found 1 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","old_string":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return Container(\n            decoration: BoxDecoration(\n              color: Theme.of(context).colorScheme.surface,\n              borderRadius: BorderRadius.circular(12),\n              border: Border.all(\n                color: context.isDarkMode\n                    ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                    : ColorManager.secondaryText.withValues(alpha: 0.3),\n              ),\n            ),\n            height: 56,\n            child: Text('20球計測でAIコーチ1回無料'),\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}","new_string":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return AnimatedBuilder(\n            animation: animationController,\n            builder: (context, child) {\n              final hue = animationController.value * 360 * 3;\n              final rainbowColor = HSVColor.fromAHSV(1.0, hue % 360, 0.8, 0.8).toColor();\n              final isAnimating = animationController.status == AnimationStatus.forward;\n\n              return Container(\n                decoration: BoxDecoration(\n                  color: Theme.of(context).colorScheme.surface,\n                  borderRadius: BorderRadius.circular(12),\n                  border: Border.all(\n                    color: isAnimating\n                        ? rainbowColor\n                        : context.isDarkMode\n                            ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                            : ColorManager.secondaryText.withValues(alpha: 0.3),\n                    width: isAnimating ? 2 : 1,\n                  ),\n                ),\n                height: 56,\n                child: Text('20球計測でAIコーチ1回無料'),\n              );\n            },\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}"}}
+[DEBUG] Hooks: Parsed initial response: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PreToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","old_string":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return Container(\n            decoration: BoxDecoration(\n              color: Theme.of(context).colorScheme.surface,\n              borderRadius: BorderRadius.circular(12),\n              border: Border.all(\n                color: context.isDarkMode\n                    ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                    : ColorManager.secondaryText.withValues(alpha: 0.3),\n              ),\n            ),\n            height: 56,\n            child: Text('20球計測でAIコーチ1回無料'),\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}","new_string":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return AnimatedBuilder(\n            animation: animationController,\n            builder: (context, child) {\n              final hue = animationController.value * 360 * 3;\n              final rainbowColor = HSVColor.fromAHSV(1.0, hue % 360, 0.8, 0.8).toColor();\n              final isAnimating = animationController.status == AnimationStatus.forward;\n\n              return Container(\n                decoration: BoxDecoration(\n                  color: Theme.of(context).colorScheme.surface,\n                  borderRadius: BorderRadius.circular(12),\n                  border: Border.all(\n                    color: isAnimating\n                        ? rainbowColor\n                        : context.isDarkMode\n                            ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                            : ColorManager.secondaryText.withValues(alpha: 0.3),\n                    width: isAnimating ? 2 : 1,\n                  ),\n                ),\n                height: 56,\n                child: Text('20球計測でAIコーチ1回無料'),\n              );\n            },\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}"}}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd...
+[DEBUG] Hook stderr: Saved permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Writing to temp file: /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart.tmp.32028.1760515680199
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 2823 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart.tmp.32028.1760515680199 to /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart
+[DEBUG] File /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart written atomically
+[DEBUG] Executing hooks for PostToolUse:Edit
+[DEBUG] Getting matching hook commands for PostToolUse with query: Edit
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Edit" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/auto-comment.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/preserve-file-permissions.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/auto-comment.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: Checking initial response for async: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd":"/Users/kokiyoshida/Knowhere-inc/stripe-link","permission_mode":"bypassPermissions","hook_event_name":"PostToolUse","tool_name":"Edit","tool_input":{"file_path":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","old_string":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return Container(\n            decoration: BoxDecoration(\n              color: Theme.of(context).colorScheme.surface,\n              borderRadius: BorderRadius.circular(12),\n              border: Border.all(\n                color: context.isDarkMode\n                    ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                    : ColorManager.secondaryText.withValues(alpha: 0.3),\n              ),\n            ),\n            height: 56,\n            child: Text('20球計測でAIコーチ1回無料'),\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}","new_string":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return AnimatedBuilder(\n            animation: animationController,\n            builder: (context, child) {\n              final hue = animationController.value * 360 * 3;\n              final rainbowColor = HSVColor.fromAHSV(1.0, hue % 360, 0.8, 0.8).toColor();\n              final isAnimating = animationController.status == AnimationStatus.forward;\n\n              return Container(\n                decoration: BoxDecoration(\n                  color: Theme.of(context).colorScheme.surface,\n                  borderRadius: BorderRadius.circular(12),\n                  border: Border.all(\n                    color: isAnimating\n                        ? rainbowColor\n                        : context.isDarkMode\n                            ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                            : ColorManager.secondaryText.withValues(alpha: 0.3),\n                    width: isAnimating ? 2 : 1,\n                  ),\n                ),\n                height: 56,\n                child: Text('20球計測でAIコーチ1回無料'),\n              );\n            },\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}"},"tool_response":{"filePath":"/Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart","oldString":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return Container(\n            decoration: BoxDecoration(\n              color: Theme.of(context).colorScheme.surface,\n              borderRadius: BorderRadius.circular(12),\n              border: Border.all(\n                color: context.isDarkMode\n                    ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                    : ColorManager.secondaryText.withValues(alpha: 0.3),\n              ),\n            ),\n            height: 56,\n            child: Text('20球計測でAIコーチ1回無料'),\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}","newString":"        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return AnimatedBuilder(\n            animation: animationController,\n            builder: (context, child) {\n              final hue = animationController.value * 360 * 3;\n              final rainbowColor = HSVColor.fromAHSV(1.0, hue % 360, 0.8, 0.8).toColor();\n              final isAnimating = animationController.status == AnimationStatus.forward;\n\n              return Container(\n                decoration: BoxDecoration(\n                  color: Theme.of(context).colorScheme.surface,\n                  borderRadius: BorderRadius.circular(12),\n                  border: Border.all(\n                    color: isAnimating\n                        ? rainbowColor\n                        : context.isDarkMode\n                            ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                            : ColorManager.secondaryText.withValues(alpha: 0.3),\n                    width: isAnimating ? 2 : 1,\n                  ),\n                ),\n                height: 56,\n                child: Text('20球計測でAIコーチ1回無料'),\n              );\n            },\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}","originalFile":"import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';\nimport 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';\nimport 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';\nimport 'package:baseball_detector_flutter/views/themes/color_manager.dart';\nimport 'package:collection/collection.dart';\nimport 'package:flutter/material.dart';\nimport 'package:flutter_hooks/flutter_hooks.dart';\nimport 'package:hooks_riverpod/hooks_riverpod.dart';\n\nclass AICoachPromotionContainer extends HookConsumerWidget {\n  const AICoachPromotionContainer({super.key});\n\n  @override\n  Widget build(BuildContext context, WidgetRef ref) {\n    final animationController = useAnimationController(\n      duration: const Duration(seconds: 3),\n    );\n\n    useEffect(\n      () {\n        animationController.forward();\n        return null;\n      },\n      [],\n    );\n    final teamList = ref.watch(teamListControllerProvider);\n    debugPrint('aaaaaaaaaaaaaaaaaa');\n    return teamList.when(\n      error: (Object error, StackTrace stackTrace) => const SizedBox.shrink(),\n      loading: () => const SizedBox.shrink(),\n      data: (teams) {\n        debugPrint('teams: $teams');\n        if (teams.hasLeft) return const SizedBox.shrink();\n        final teamId = ref.read(profileStorageProvider).getTeamId();\n        final team = teams.right.firstWhereOrNull((t) => t.id == teamId);\n        debugPrint('teamId: $team');\n        if (team != null &&\n            team.isSingleUserTeam == true &&\n            team.teamPlan?.isInAppleSubscription != true &&\n            team.teamPlan?.isInStripeSubscription != true) {\n          return Container(\n            decoration: BoxDecoration(\n              color: Theme.of(context).colorScheme.surface,\n              borderRadius: BorderRadius.circular(12),\n              border: Border.all(\n                color: context.isDarkMode\n                    ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)\n                    : ColorManager.secondaryText.withValues(alpha: 0.3),\n              ),\n            ),\n            height: 56,\n            child: Text('20球計測でAIコーチ1回無料'),\n          );\n        } else {\n          return const SizedBox.shrink();\n        }\n      },\n    );\n  }\n}\n","structuredPatch":[{"oldStart":38,"oldLines":18,"newStart":38,"newLines":30,"lines":["             team.isSingleUserTeam == true &&","             team.teamPlan?.isInAppleSubscription != true &&","             team.teamPlan?.isInStripeSubscription != true) {","-          return Container(","-            decoration: BoxDecoration(","-              color: Theme.of(context).colorScheme.surface,","-              borderRadius: BorderRadius.circular(12),","-              border: Border.all(","-                color: context.isDarkMode","-
+[DEBUG] Hooks: Failed to parse initial response as JSON: SyntaxError: Unterminated string in JSON at position 8073 (line 1 column 8074)
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/preserve-file-permissions.sh
+[DEBUG] Hook stdout: {"session_id":"b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43","transcript_path":"/Users/kokiyoshida/.claude/projects/-Users-kokiyoshida-Knowhere-inc-stripe-link/b28c4ef2-540b-4ba1-aa4c-5876cf3b1b43.jsonl","cwd...
+[DEBUG] Hook stderr: Restored permissions for /Users/kokiyoshida/Knowhere-inc/stripe-link/lib/views/pages/home/sessions/session_details/components/ai_coach_promotion_container.dart: 644
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {}
+[DEBUG] Processed hook result: {}
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Bash
+[DEBUG] Executing hooks for PreToolUse:Bash
+[DEBUG] Getting matching hook commands for PreToolUse with query: Bash
+[DEBUG] Found 2 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "Bash" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-ai-commit.sh with timeout 60000ms
+[DEBUG] Executing hook command: ~/.claude/scripts/deny-check.sh with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-ai-commit.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/deny-check.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hooks: getAsyncHookResponseAttachments called
+[DEBUG] Hooks: checkForNewResponses called
+[DEBUG] Hooks: Found 0 total hooks in registry
+[DEBUG] Hooks: checkForNewResponses returning 0 responses
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515705268
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274468 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515705268 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hooks: Checking initial response for async: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+[DEBUG] Hooks: Parsed initial response: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hooks: Initial response is not async, continuing normal processing
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook stdout: {
+  "decision": "block",
+  "reason": "作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"
+}
+...
+[DEBUG] Successfully parsed and validated hook JSON output
+[DEBUG] Parsed JSON output from hook: {"decision":"block","reason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Processed hook result: {"permissionBehavior":"deny","blockingError":{"blockingError":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。","command":"~/.claude/scripts/check-continue.sh"},"hookPermissionDecisionReason":"作業を再開してください。\n  続ける作業がない場合は `May the Force be with you.` を出力して終了してください。"}
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Slash commands included in SlashCommand tool:
+[DEBUG] Stream started - received first chunk
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515710413
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274468 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515710413 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 2 unique hooks for query "no match query" (2 before deduplication)
+[DEBUG] Found 2 hook commands to execute
+[DEBUG] Executing hook command: ~/.claude/scripts/check-continue.sh with timeout 60000ms
+[DEBUG] Executing hook command: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3 with timeout 60000ms
+[DEBUG] Hook command completed with status 0: ~/.claude/scripts/check-continue.sh
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Hook command completed with status 0: osascript -e 'display notification "Task completed" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515712003
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274468 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515712003 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Writing to temp file: /Users/kokiyoshida/.claude.json.tmp.32028.1760515712059
+[DEBUG] Preserving file permissions: 100644
+[DEBUG] Temp file written successfully, size: 1274672 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /Users/kokiyoshida/.claude.json.tmp.32028.1760515712059 to /Users/kokiyoshida/.claude.json
+[DEBUG] File /Users/kokiyoshida/.claude.json written atomically
+[DEBUG] Getting matching hook commands for Notification with query: undefined
+[DEBUG] Found 1 hook matchers in settings
+[DEBUG] Matched 1 unique hooks for query "no match query" (1 before deduplication)
+[DEBUG] Notification [osascript -e 'display notification "Awaiting confirmation" with title "Claude Code"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3] completed with status 0
+[DEBUG] Hook output does not start with {, treating as plain text
+[DEBUG] AutoUpdaterWrapper: Installation type: npm-global, using native: false
+[DEBUG] Getting matching hook commands for SessionEnd with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 unique hooks for query "no match query" (0 before deduplication)
