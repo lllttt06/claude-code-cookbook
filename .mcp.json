@@ -11,10 +11,6 @@
         "GITHUB_PERSONAL_ACCESS_TOKEN": "ghp_*****************"
       }
     },
-    "notionMCP": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://mcp.notion.com/sse"]
-    },
     "deepwiki": {
       "command": "npx",
       "args": ["mcp-remote", "https://mcp.deepwiki.com/sse"]
