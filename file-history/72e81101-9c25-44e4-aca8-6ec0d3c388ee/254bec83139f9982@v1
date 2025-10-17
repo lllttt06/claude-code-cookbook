@@ -1,0 +1,32 @@
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/dto/user/sign_up_request.dart';
+
+void main() {
+  group('Testing SignUpRequest', () {
+    test('toJson1', () {
+      final req = SignUpRequest(
+        name: 'Test User',
+        email: 'test@example.com',
+        password: 'Password123!',
+        birthday: DateTime(2000, 1, 15),
+      );
+
+      final reqJson = req.toJson();
+
+      expect(reqJson.length, 4);
+
+      expect(reqJson.containsKey('name'), isTrue);
+      expect(reqJson.containsKey('email'), isTrue);
+      expect(reqJson.containsKey('password'), isTrue);
+      expect(reqJson.containsKey('birthday'), isTrue);
+
+      expect(reqJson['name'], req.name);
+      expect(reqJson['email'], req.email);
+      expect(reqJson['password'], req.password);
+      expect(reqJson['birthday'], '2000-01-15');
+    });
+  });
+}

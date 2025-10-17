@@ -1,0 +1,202 @@
+#!/bin/bash
+
+THIS_DIR_PATH=$(dirname "$0")
+SEEDING_DIR="$THIS_DIR_PATH/src/database/seeding"
+SQL_DIR="$SEEDING_DIR/sql/"
+
+RDB_CONNECTION='postgresql://postgres:postgres@localhost:5430/postgres'
+
+yarn typeormds:local schema:drop && yarn typeormds:local migration:run
+
+# Use this line when all of .sql files are generated.
+# ls -1 "$SQL_DIR" | grep '.sql$' | sort | xargs -I '%' psql "$RDB_CONNECTION" < "$SQL_DIR/%"
+
+if [ "$1" = 'skip-seeding' ]; then
+    exit 0
+fi
+
+cd "../../"
+
+docker compose rm -sf magnito
+
+rm -rf ./tools/virtualization/local/magnito_data
+mkdir -p ./tools/virtualization/local/magnito_data
+
+docker compose up -d magnito
+
+COGNITO_USER_POOL_ID=us-east-1_example
+COGNITO_ENDPOINT=http://localhost:5050
+
+export AWS_ACCESS_KEY=test
+export AWS_SECRET_ACCESS_KEY=test
+
+# AWS CLIコマンドでのユーザ一覧取得による Cognitoのエンドポイント疎通確認
+retry_count=0
+max_retries=20
+retry_interval=5
+
+while [ $retry_count -lt $max_retries ]; do
+    if aws cognito-idp list-users \
+        --user-pool-id="${COGNITO_USER_POOL_ID}" \
+        --endpoint-url="${COGNITO_ENDPOINT}" \
+        --no-cli-pager > /dev/null 2>&1; then
+        echo "Successfully connected to Cognito endpoint at $COGNITO_ENDPOINT"
+        break
+    fi
+
+    retry_count=$((retry_count + 1))
+    if [ $retry_count -lt $max_retries ]; then
+        echo "Attempt $retry_count failed."
+        sleep $retry_interval
+    else
+        echo "Error: Cannot connect to Cognito endpoint at $COGNITO_ENDPOINT"
+        echo "Please check if Magnito is running and the endpoint is correct."
+        exit 1
+    fi
+done
+
+cd "servers/api"
+
+echo -e '\n items'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.items.sql"
+echo -e '\n item_ai_coachs'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.item_ai_coachs.sql"
+echo -e '\n item_balls'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.item_balls.sql"
+echo -e '\n subscription_groups'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.subscription_groups.sql"
+echo -e '\n subscriptions'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.subscriptions.sql"
+echo -e '\n subscriptions_items'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.subscriptions_items.sql"
+echo -e '\n teams'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.teams.sql"
+echo -e '\n team_subscriptions'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.team_subscriptions.sql"
+echo -e '\n team_items'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.team_items.sql"
+echo -e '\n team_item_ai_coachs'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.team_item_ai_coachs.sql"
+echo -e '\n team_item_balls'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.team_item_balls.sql"
+echo -e '\n users'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.users.sql"
+echo -e '\n role_groups'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.role_groups.sql"
+echo -e '\n roles'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.roles.sql"
+echo -e '\n user_roles'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.user_roles.sql"
+echo -e '\n profiles'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.profiles.sql"
+echo -e '\n notifications'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.notifications.sql"
+echo -e '\n players'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.players.sql"
+echo -e '\n sessions'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.sessions.sql"
+echo -e '\n resources'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.resources.sql"
+echo -e '\n pitch_types'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.pitch_types.sql"
+echo -e '\n balls'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.balls.sql"
+echo -e '\n ball_positions'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.ball_positions.sql"
+echo -e '\n bounding_boxes'
+psql "$RDB_CONNECTION" < "$SEEDING_DIR/sql/public.bounding_boxes.sql"
+
+# Cognitoユーザー作成関数
+create_cognito_user() {
+    local file="$1"
+    local FILE_PATH="${SEEDING_DIR}/json/cognito/users/${file}"
+    local USER_ID=$(echo "${file}" | sed 's/\.json$//')
+
+    echo "Creating user: ${USER_ID}"
+
+    # リトライ機能付きユーザー作成
+    local retry_count=0
+    local max_retries=3
+    while [ $retry_count -lt $max_retries ]; do
+        if [ $retry_count -gt 0 ]; then
+            echo "Retrying to create user: ${USER_ID}"
+        fi
+        if aws cognito-idp admin-create-user \
+            --user-pool-id="${COGNITO_USER_POOL_ID}" \
+            --username="${USER_ID}" \
+            --cli-input-json="file://${FILE_PATH}" \
+            --no-cli-pager \
+            --output text \
+            --endpoint-url="${COGNITO_ENDPOINT}"; then
+            break
+        else
+            echo "Failed to create user: ${USER_ID}"
+            retry_count=$((retry_count + 1))
+            if [ $retry_count -lt $max_retries ]; then
+                sleep 2
+            fi
+        fi
+    done
+
+    # リトライ機能付きパスワード設定
+    retry_count=0
+    while [ $retry_count -lt $max_retries ]; do
+        if [ $retry_count -gt 0 ]; then
+            echo "Retrying to set password for user: ${USER_ID}"
+        fi
+        if aws cognito-idp admin-set-user-password \
+            --user-pool-id="${COGNITO_USER_POOL_ID}" \
+            --username="${USER_ID}" \
+            --password="test123" \
+            --permanent \
+            --no-cli-pager \
+            --output text \
+            --endpoint-url="${COGNITO_ENDPOINT}"; then
+            break
+        else
+            echo "Failed to set password for user: ${USER_ID}"
+            retry_count=$((retry_count + 1))
+            if [ $retry_count -lt $max_retries ]; then
+                sleep 2
+            fi
+        fi
+    done
+
+    echo "Completed user: ${USER_ID}"
+}
+
+export -f create_cognito_user
+export COGNITO_USER_POOL_ID COGNITO_ENDPOINT SEEDING_DIR
+
+USERS_LIST=$(mktemp)
+ls -1 "${SEEDING_DIR}/json/cognito/users/" > "$USERS_LIST"
+
+MAX_PARALLEL=5
+
+pids=()
+while read -r file; do
+    create_cognito_user "$file" &
+    pids+=($!)
+
+    # プロセス数が上限に達した場合は待機
+    if [ ${#pids[@]} -ge $MAX_PARALLEL ]; then
+        wait "${pids[0]}"
+        pids=("${pids[@]:1}")
+    fi
+done < "$USERS_LIST"
+
+# すべてのプロセスが完了するまで待機
+for pid in "${pids[@]}"; do
+    wait $pid || echo "Process $pid failed"
+done
+
+rm -f "$USERS_LIST"
+
+S3_BUCKET="test-bucket"
+S3_ENDPOINT="http://127.0.0.1:4566"
+
+# Check
+# AWS_ACCESS_KEY=test AWS_SECRET_ACCESS_KEY=test aws cognito-idp list-users \
+#   --user-pool-id=us-east-1_example \
+#   --endpoint-url="http://localhost:5050" \
+#   --no-cli-pager

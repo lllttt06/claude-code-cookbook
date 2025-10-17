@@ -1,0 +1,27 @@
+/// {@category Data}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/subscription_group.dart';
+
+part 'subscription_groups_response.freezed.dart';
+part 'subscription_groups_response.g.dart';
+
+@freezed
+abstract class SubscriptionGroupsResponse with _$SubscriptionGroupsResponse {
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory SubscriptionGroupsResponse({
+    @Default([]) List<SubscriptionGroup> subscriptionGroups,
+    @Default(0) int total,
+  }) = _SubscriptionGroupsResponse;
+
+  factory SubscriptionGroupsResponse.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionGroupsResponseFromJson(json);
+}

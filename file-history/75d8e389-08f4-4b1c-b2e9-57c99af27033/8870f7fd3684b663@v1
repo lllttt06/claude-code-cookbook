@@ -1,0 +1,628 @@
+import {
+  CalendarTodayOutlined,
+  EmailOutlined,
+  ExpandMore,
+  Lock,
+  RemoveRedEye,
+  VisibilityOff,
+} from '@mui/icons-material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Stack,
+  Switch,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers';
+import { format } from 'date-fns';
+import { differenceInYears } from 'date-fns/differenceInYears';
+import { startOfDay } from 'date-fns/startOfDay';
+import _ from 'lodash';
+import moment from 'moment';
+import { enqueueSnackbar } from 'notistack';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
+import { z } from 'zod';
+
+import CriticalError from '@/components/common/critical-error';
+import ValidationError from '@/components/common/validation-error';
+import {
+  maxDateTime,
+  minDateTime,
+  SUPPORTED_LANGUAGES,
+} from '@/constants/app.constants';
+import { EnvManager } from '@/constants/env.constants';
+import useServicesHook from '@/hooks';
+import { Plan } from '@/models/plan';
+import { ServiceError } from '@/services/errors/service-error';
+import { CreateTeamParam } from '@/services/interfaces/super-admin-api.interface';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import { translate } from '@/utils/i18n';
+
+import { CommonModal } from '../common-modal';
+
+export const getDefaultParam = (): CreateTeamParam => {
+  const defaultDate =
+    EnvManager.config.APP_ENV === 'test'
+      ? new Date('2000-01-01')
+      : moment().startOf('day').toDate();
+  return {
+    name: '',
+    planId: null,
+    teamPlanStartDate: defaultDate,
+    teamPlanEndDate: defaultDate,
+    userName: '',
+    email: '',
+    role: 'team_admin',
+    password: '',
+    passwordConfirmation: '',
+    createOwnerAccount: false,
+    language: 'en',
+    ownerBirthday: null,
+  };
+};
+
+export const TeamCreationModal: FC<{
+  param: CreateTeamParam;
+  setParam: Dispatch<SetStateAction<CreateTeamParam>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  onFail?: Function;
+  onSuccess?: Function;
+}> = ({ param, setParam, isOpen, setIsOpen, onFail, onSuccess }) => {
+  const { services } = useServicesHook();
+
+  const [error, setError] = useState<ServiceError | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(
+    getDefaultParam().createOwnerAccount,
+  );
+  const [initializeOwnerPassword, setInitializeOwnerPassword] =
+    useState<boolean>(true);
+
+  const [plans, setPlans] = useState<Plan[]>([]);
+  const [isPasswordShown, setIsPasswordShown] = useState<boolean>(false);
+  const hiddenOwnerBirthdayInputRef = useRef<HTMLInputElement | null>(null);
+  const [ownerBirthdayInputValue, setOwnerBirthdayInputValue] =
+    useState<string>('');
+
+  const planLabelId = useId();
+  const roleLabelId = useId();
+
+  const openOwnerBirthdayPicker = () => {
+    const element = hiddenOwnerBirthdayInputRef.current;
+    if (!element) {
+      return;
+    }
+
+    element.focus();
+
+    if (typeof element.showPicker === 'function') {
+      element.showPicker();
+      return;
+    }
+
+    element.click();
+  };
+
+  const getPlans = async () => {
+    const { plans, total, error } = await services.default.superAdmin.getPlans(
+      {},
+    );
+
+    if (error) {
+      setError(error);
+      return;
+    }
+
+    setPlans(plans);
+  };
+
+  useEffect(() => {
+    if (!param.ownerBirthday) {
+      setOwnerBirthdayInputValue('');
+      return;
+    }
+
+    const formatted = format(param.ownerBirthday, 'yyyy/MM/dd');
+    setOwnerBirthdayInputValue((current) =>
+      current === formatted ? current : formatted,
+    );
+  }, [param.ownerBirthday]);
+
+  const createNewTeam = async () => {
+    const invalidBirthdayMessage = translate('signup_invalid_birthday');
+    const guardianRequiredMessage = translate('team_creation_forbidden_under_13');
+
+    const ownerBirthdaySchema = z.object({
+      ownerBirthday: z
+        .nullable(
+          z
+            .date({
+              invalid_type_error: invalidBirthdayMessage,
+              required_error: invalidBirthdayMessage,
+            })
+            .refine(
+              (birthday) =>
+                startOfDay(birthday) <= startOfDay(new Date()),
+              { message: invalidBirthdayMessage },
+            )
+            .refine(
+              (birthday) =>
+                differenceInYears(new Date(), birthday) >= 13,
+              { message: guardianRequiredMessage },
+            ),
+        ),
+    });
+
+    try {
+      ownerBirthdaySchema.parse({
+        ownerBirthday: param.ownerBirthday ?? null,
+      });
+    } catch (validationError) {
+      if (validationError instanceof Error) {
+        setError(new ServiceError(validationError));
+      }
+      return;
+    }
+
+    setError(null);
+
+    wrapForLoading(setIsSubmitting, async () => {
+      const { error, team } = await services.default.superAdmin.createNewTeam({
+        ...param,
+        userName: isExpanded ? param.userName : null,
+        password: isExpanded && initializeOwnerPassword ? param.password : null,
+        passwordConfirmation:
+          isExpanded && initializeOwnerPassword
+            ? param.passwordConfirmation
+            : null,
+        createOwnerAccount:
+          isExpanded && (!!param.userName || !!param.password),
+        language: isExpanded ? param.language : null,
+        ownerBirthday: isExpanded ? param.ownerBirthday : null,
+      });
+
+      if (error) {
+        onFail?.();
+        setError(error);
+        return;
+      }
+
+      if (!param.password) {
+        enqueueSnackbar({
+          variant: 'success',
+          message: translate('initialize_account_confirmation_link_sent', {
+            email: param.email,
+          }),
+        });
+      }
+
+      onSuccess?.();
+      setIsOpen(false);
+    });
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      // reset
+      getPlans();
+      setParam(getDefaultParam());
+      setInitializeOwnerPassword(true);
+      setError(null);
+    }
+  }, [isOpen]);
+
+  if (plans.length == 0) {
+    return <></>;
+  }
+
+  return (
+    <CommonModal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Typography variant="h4">{translate('create_new_team')}</Typography>
+      <Stack alignItems="stretch" direction="column" spacing={2} sx={{ mt: 2 }}>
+        <FormControl>
+          <TextField
+            label={translate('team_name')}
+            value={param.name}
+            onChange={(e) => {
+              setParam({
+                ...param,
+                name: e.target.value,
+              });
+            }}
+          />
+          <ValidationError error={error} pos={['name']} />
+        </FormControl>
+        <FormControl sx={{ ml: 2 }}>
+          <InputLabel id={planLabelId}>{translate('plan')}</InputLabel>
+          <Select
+            labelId={planLabelId}
+            size="medium"
+            variant="outlined"
+            value={param.planId ?? ''}
+            sx={{ minWidth: '10rem' }}
+            label={translate('plan')}
+            onChange={(e) => {
+              if (!e.target.value) {
+                return;
+              }
+              setParam({
+                ...param,
+                planId: e.target.value,
+              });
+            }}
+          >
+            {_.map(plans, (x) => {
+              return (
+                <MenuItem key={x.id} value={x.id}>
+                  {x.isPaid ? '💲' : '🆓️'} {x.name}
+                </MenuItem>
+              );
+            })}
+          </Select>
+          <ValidationError error={error} pos={['planId']} />
+        </FormControl>
+        <FormControl>
+          <DateTimePicker
+            label={translate('start_datetime_local')}
+            value={moment(param.teamPlanStartDate!)}
+            onChange={(value) => {
+              if (value) {
+                setParam({
+                  ...param,
+                  teamPlanStartDate: value.toDate(),
+                });
+              }
+            }}
+            minDateTime={minDateTime}
+            maxDateTime={maxDateTime}
+          />
+          <ValidationError error={error} pos={['teamPlanStartDate']} />
+        </FormControl>
+        <FormControl>
+          <DateTimePicker
+            label={translate('end_datetime_local')}
+            value={moment(param.teamPlanEndDate!)}
+            onChange={(value) => {
+              if (value) {
+                setParam({
+                  ...param,
+                  teamPlanEndDate: value.toDate(),
+                });
+              }
+            }}
+            minDateTime={minDateTime}
+            maxDateTime={maxDateTime}
+          />
+          <ValidationError error={error} pos={['teamPlanEndDate']} />
+        </FormControl>
+        <FormControl sx={{ ml: 2 }}>
+          <InputLabel id={roleLabelId}>{translate('role')}</InputLabel>
+          <Select
+            labelId={roleLabelId}
+            size="medium"
+            variant="outlined"
+            value={param.role ?? ''}
+            sx={{ minWidth: '10rem' }}
+            label={translate('role')}
+            onChange={(e) => {
+              if (!e.target.value) {
+                return;
+              }
+              setParam({
+                ...param,
+                role: e.target.value,
+              });
+            }}
+          >
+            {_.map(
+              ['team_admin', 'team_manager', 'team_member', 'personal_user'],
+              (x) => {
+                return (
+                  <MenuItem key={x} value={x}>
+                    {x}
+                  </MenuItem>
+                );
+              },
+            )}
+          </Select>
+          <ValidationError error={error} pos={['ownerRoleGroupName']} />
+        </FormControl>
+        <FormControl>
+          <TextField
+            label={translate('email')}
+            value={param.email}
+            onChange={(e) => {
+              setParam({
+                ...param,
+                email: e.target.value,
+              });
+            }}
+          />
+          <ValidationError error={error} pos={['ownerEmail']} />
+        </FormControl>
+        <Box sx={{ pt: 2 }}>
+          <Accordion
+            expanded={isExpanded}
+            onChange={(e) => {
+              setIsExpanded(!isExpanded);
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMore />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              <Typography component="span">
+                {translate('super_admin_new_account_detail')}
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Stack direction="column" spacing={2}>
+                <FormControl>
+                  <TextField
+                    label={translate('user_name')}
+                    value={param.userName}
+                    onChange={(e) => {
+                      setParam({
+                        ...param,
+                        userName: e.target.value,
+                      });
+                    }}
+                  />
+                  <ValidationError error={error} pos={['ownerUserName']} />
+                </FormControl>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={initializeOwnerPassword}
+                      onChange={(e) => {
+                        setInitializeOwnerPassword(e.target.checked);
+                      }}
+                    />
+                  }
+                  label={translate('set_initial_password_for_owner')}
+                />
+                <FormControl>
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={1} alignItems="center">
+                      <Typography
+                        color={
+                          initializeOwnerPassword ? 'textDisabled' : undefined
+                        }
+                        sx={{
+                          wordBreak: 'keep-all',
+                        }}
+                      >
+                        {translate('language')}
+                      </Typography>
+                      <EmailOutlined />
+                    </Stack>
+                    <Select
+                      disabled={initializeOwnerPassword}
+                      fullWidth
+                      value={param.language}
+                      onChange={(e) => {
+                        setParam({
+                          ...param,
+                          language: e.target.value,
+                        });
+                      }}
+                    >
+                      {_.values(SUPPORTED_LANGUAGES).map((x) => {
+                        return (
+                          <MenuItem key={x.value} value={x.value}>
+                            {x.name}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </Stack>
+                  <ValidationError error={error} pos={['language']} />
+                </FormControl>
+                <FormControl>
+                  <OutlinedInput
+                    disabled={!initializeOwnerPassword}
+                    autoComplete="new-password"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => {
+                            setIsPasswordShown(!isPasswordShown);
+                          }}
+                        >
+                          {isPasswordShown ? (
+                            <VisibilityOff />
+                          ) : (
+                            <RemoveRedEye />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    placeholder={translate('password')}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Lock />
+                      </InputAdornment>
+                    }
+                    type={isPasswordShown ? 'text' : 'password'}
+                    value={param.password ?? ''}
+                    onChange={(e) => {
+                      setParam({
+                        ...param,
+                        password: e.target.value,
+                      });
+                    }}
+                  />
+                  <ValidationError error={error} pos={['ownerPassword']} />
+                </FormControl>
+                <FormControl>
+                  <OutlinedInput
+                    disabled={!initializeOwnerPassword}
+                    autoComplete="new-password"
+                    placeholder={translate('password_confirmation')}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Lock />
+                      </InputAdornment>
+                    }
+                    type="password"
+                    value={param.passwordConfirmation ?? ''}
+                    onChange={(e) => {
+                      setParam({
+                        ...param,
+                        passwordConfirmation: e.target.value,
+                      });
+                    }}
+                  />
+                  <ValidationError
+                    error={error}
+                    pos={['ownerPasswordConfirmation']}
+                  />
+                </FormControl>
+                <FormControl>
+                  <OutlinedInput
+                    value={ownerBirthdayInputValue}
+                    placeholder={translate('birthday')}
+                    inputProps={{
+                      readOnly: true,
+                      'aria-haspopup': 'dialog',
+                    }}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton
+                          edge="start"
+                          size="small"
+                          aria-label={translate('birthday')}
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            openOwnerBirthdayPicker();
+                          }}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            openOwnerBirthdayPicker();
+                          }}
+                        >
+                          <CalendarTodayOutlined fontSize="small" />
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      openOwnerBirthdayPicker();
+                    }}
+                    onTouchEnd={(e) => {
+                      e.preventDefault();
+                      openOwnerBirthdayPicker();
+                    }}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === 'Enter' ||
+                        e.key === ' ' ||
+                        e.key === 'Spacebar' ||
+                        e.key === 'ArrowDown'
+                      ) {
+                        e.preventDefault();
+                        openOwnerBirthdayPicker();
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                  <input
+                    ref={hiddenOwnerBirthdayInputRef}
+                    type="date"
+                    value={
+                      param.ownerBirthday
+                        ? format(param.ownerBirthday, 'yyyy-MM-dd')
+                        : ''
+                    }
+                    max={format(new Date(), 'yyyy-MM-dd')}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      if (!value) {
+                        setParam((prev) => ({
+                          ...prev,
+                          ownerBirthday: null,
+                        }));
+                        setOwnerBirthdayInputValue('');
+                        return;
+                      }
+
+                      const date = new Date(`${value}T00:00:00`);
+                      if (Number.isNaN(date.getTime())) {
+                        return;
+                      }
+
+                      setParam((prev) => ({
+                        ...prev,
+                        ownerBirthday: date,
+                      }));
+                      setOwnerBirthdayInputValue(format(date, 'yyyy/MM/dd'));
+                    }}
+                    tabIndex={-1}
+                    aria-hidden
+                    style={{
+                      position: 'absolute',
+                      width: 0,
+                      height: 0,
+                      opacity: 0,
+                    }}
+                  />
+                  <ValidationError error={error} pos={['ownerBirthday']} />
+                </FormControl>
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
+        </Box>
+
+        <CriticalError messagePrefix="Failed to create team: " error={error} />
+
+        <Box sx={{ pt: 4 }}>
+          <Button
+            color="primary"
+            fullWidth
+            loading={isSubmitting}
+            variant="contained"
+            onClick={() => {
+              createNewTeam();
+            }}
+          >
+            CREATE
+          </Button>
+
+          <Button
+            fullWidth
+            color="neutral"
+            sx={{ mt: 2 }}
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            CANCEL
+          </Button>
+        </Box>
+      </Stack>
+    </CommonModal>
+  );
+};

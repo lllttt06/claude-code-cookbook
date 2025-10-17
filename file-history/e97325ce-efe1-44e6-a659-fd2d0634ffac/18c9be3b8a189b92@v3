@@ -1,0 +1,504 @@
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+enum AICoachPromotionStyle {
+  simpleBorder,
+  gradient,
+  card,
+  outlined,
+  shadowed,
+  neon,
+  minimal,
+  badge,
+  ribbon,
+  glossy,
+}
+
+class AICoachPromotionContainer extends ConsumerWidget {
+  const AICoachPromotionContainer._({
+    required this.style,
+    super.key,
+  });
+
+  factory AICoachPromotionContainer.simpleBorder({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.simpleBorder,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.gradient({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.gradient,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.card({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.card,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.outlined({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.outlined,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.shadowed({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.shadowed,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.neon({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.neon,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.minimal({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.minimal,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.badge({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.badge,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.ribbon({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.ribbon,
+      key: key,
+    );
+  }
+
+  factory AICoachPromotionContainer.glossy({Key? key}) {
+    return AICoachPromotionContainer._(
+      style: AICoachPromotionStyle.glossy,
+      key: key,
+    );
+  }
+
+  final AICoachPromotionStyle style;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _buildStyleContainer();
+    final teamList = ref.watch(teamListControllerProvider);
+    return teamList.when(
+      error: (Object error, StackTrace stackTrace) => const SizedBox.shrink(),
+      loading: () => const SizedBox.shrink(),
+      data: (teams) {
+        if (teams.hasLeft) return const SizedBox.shrink();
+        final teamId = ref.read(profileStorageProvider).getTeamId();
+        final team = teams.right.firstWhereOrNull((t) => t.id == teamId);
+        if (team != null &&
+            team.isSingleUserTeam == true &&
+            team.teamPlan?.isInAppleSubscription != true &&
+            team.teamPlan?.isInStripeSubscription != true) {
+          return _buildStyleContainer();
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
+    );
+  }
+
+  Widget _buildStyleContainer() {
+    switch (style) {
+      case AICoachPromotionStyle.simpleBorder:
+        return _SimpleBorderStyle();
+      case AICoachPromotionStyle.gradient:
+        return _GradientStyle();
+      case AICoachPromotionStyle.card:
+        return _CardStyle();
+      case AICoachPromotionStyle.outlined:
+        return _OutlinedStyle();
+      case AICoachPromotionStyle.shadowed:
+        return _ShadowedStyle();
+      case AICoachPromotionStyle.neon:
+        return _NeonStyle();
+      case AICoachPromotionStyle.minimal:
+        return _MinimalStyle();
+      case AICoachPromotionStyle.badge:
+        return _BadgeStyle();
+      case AICoachPromotionStyle.ribbon:
+        return _RibbonStyle();
+      case AICoachPromotionStyle.glossy:
+        return _GlossyStyle();
+    }
+  }
+}
+
+// Pattern 1: Simple Border (元のデザイン)
+class _SimpleBorderStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: ColorManager.main),
+      ),
+      height: 48,
+      width: double.infinity,
+      child: const Center(
+        child: Text('20球計測でAIコーチ1回無料'),
+      ),
+    );
+  }
+}
+
+// Pattern 2: Gradient Background
+class _GradientStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        gradient: LinearGradient(
+          colors: [
+            ColorManager.main.withValues(alpha: 0.1),
+            ColorManager.main.withValues(alpha: 0.05),
+          ],
+        ),
+        border: Border.all(color: ColorManager.main, width: 2),
+      ),
+      height: 48,
+      width: double.infinity,
+      child: Center(
+        child: Text(
+          '20球計測でAIコーチ1回無料',
+          style: TextStyle(
+            color: ColorManager.main,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Pattern 3: Card Style with Shadow
+class _CardStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: ColorManager.main.withValues(alpha: 0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          Icon(Icons.emoji_events, color: ColorManager.main, size: 24),
+          const Gap(12),
+          const Expanded(
+            child: Text(
+              '20球計測でAIコーチ1回無料',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Pattern 4: Outlined with Icon
+class _OutlinedStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: ColorManager.main, width: 2),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.stars, color: ColorManager.main, size: 20),
+          const Gap(8),
+          const Text(
+            '20球計測でAIコーチ1回無料',
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Pattern 5: Elevated Shadow Style
+class _ShadowedStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: ColorManager.main,
+        boxShadow: [
+          BoxShadow(
+            color: ColorManager.main.withValues(alpha: 0.4),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      height: 48,
+      width: double.infinity,
+      child: const Center(
+        child: Text(
+          '20球計測でAIコーチ1回無料',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Pattern 6: Neon Glow Effect
+class _NeonStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: Colors.black87,
+        border: Border.all(color: ColorManager.main, width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: ColorManager.main.withValues(alpha: 0.6),
+            blurRadius: 16,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      height: 48,
+      width: double.infinity,
+      child: Center(
+        child: Text(
+          '20球計測でAIコーチ1回無料',
+          style: TextStyle(
+            color: ColorManager.main,
+            fontWeight: FontWeight.bold,
+            shadows: [
+              Shadow(
+                color: ColorManager.main.withValues(alpha: 0.8),
+                blurRadius: 8,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Pattern 7: Minimal Design
+class _MinimalStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: ColorManager.main.withValues(alpha: 0.05),
+      ),
+      height: 48,
+      width: double.infinity,
+      child: Center(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 4,
+              height: 4,
+              decoration: BoxDecoration(
+                color: ColorManager.main,
+                shape: BoxShape.circle,
+              ),
+            ),
+            const Gap(8),
+            const Text(
+              '20球計測でAIコーチ1回無料',
+              style: TextStyle(fontSize: 13),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Pattern 8: Badge Style
+class _BadgeStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: ColorManager.main,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(4),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(Icons.workspace_premium,
+                color: ColorManager.main, size: 16),
+          ),
+          const Gap(8),
+          const Text(
+            '20球計測でAIコーチ1回無料',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// Pattern 9: Ribbon Style
+class _RibbonStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: ColorManager.main.withValues(alpha: 0.1),
+            border: Border.all(color: ColorManager.main, width: 1.5),
+          ),
+          height: 48,
+          width: double.infinity,
+          padding: const EdgeInsets.only(left: 32),
+          child: const Center(
+            child: Text(
+              '20球の投球でAIコーチ1回無料',
+              // 'One free AI Coach with 20 pitches',
+              style: TextStyle(fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+        Positioned(
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: Container(
+            width: 32,
+            decoration: BoxDecoration(
+              color: ColorManager.main,
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(8),
+                bottomLeft: Radius.circular(8),
+              ),
+            ),
+            child: const Icon(Icons.workspace_premium,
+                color: Colors.white, size: 20),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Pattern 10: Glossy Style
+class _GlossyStyle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            ColorManager.main,
+            ColorManager.main.withValues(alpha: 0.8),
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: ColorManager.main.withValues(alpha: 0.3),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      height: 48,
+      width: double.infinity,
+      child: Stack(
+        children: [
+          // Glossy overlay
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 20,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                ),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withValues(alpha: 0.3),
+                    Colors.white.withValues(alpha: 0),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const Center(
+            child: Text(
+              '20球計測でAIコーチ1回無料',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

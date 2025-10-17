@@ -1,0 +1,72 @@
+// Package imports:
+import 'package:collection/collection.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/data/models/app_store_plan.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_widget_ref.dart';
+
+enum FabState {
+  available,
+  needsSubscription,
+  unavailable,
+}
+
+FabState useFabState({
+  required Session session,
+  required String teamId,
+  required bool canSubscribe,
+}) {
+  final ref = useWidgetRef();
+  final userId = ref.watch(profileStorageProvider).getUserId();
+  final accessibleContents =
+      ref.watch(userAccessibleContentsControllerProvider);
+  final teamList = ref.watch(teamListControllerProvider);
+
+  final isRecordingAvailable = teamList.fold(
+    loading: () => null,
+    error: (_) => null,
+    data: (teams) {
+      final team = teams.where((team) => team.id == teamId).firstOrNull;
+      if (team == null) {
+        return null;
+      }
+
+      if (!session.isVideoUploadableByUser(userId, accessibleContents)) {
+        return false;
+      }
+
+      return team.teamPlanStatus.canAnalyze;
+    },
+  );
+
+  // Premium プラン契約中かつボール解析が残っていない場合は
+  // サブスクリプションページへ遷移させない
+  // (canSubscribe が true の時点で isSingleUserTeam は保証されている)
+  final shouldBlockSubscriptionNavigation = teamList.fold(
+    loading: () => false,
+    error: (_) => false,
+    data: (teams) {
+      final team = teams.where((team) => team.id == teamId).firstOrNull;
+      if (team == null) return false;
+
+      return team.teamPlan?.plan?.planType == PlanType.premium;
+    },
+  );
+
+  if (isRecordingAvailable == true) {
+    return FabState.available;
+  } else if (isRecordingAvailable == false && canSubscribe) {
+    // Premium プラン + ボールゼロの場合は遷移させない
+    if (shouldBlockSubscriptionNavigation) {
+      return FabState.unavailable;
+    }
+    return FabState.needsSubscription;
+  } else {
+    return FabState.unavailable;
+  }
+}

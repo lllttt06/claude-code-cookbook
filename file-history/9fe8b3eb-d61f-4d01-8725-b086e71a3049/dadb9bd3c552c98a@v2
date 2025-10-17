@@ -1,0 +1,54 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+
+class PlayerSearchBarWithFilter extends HookConsumerWidget {
+  final String word;
+  final ValueChanged<String> onSubmitted;
+  const PlayerSearchBarWithFilter({
+    super.key,
+    required this.word,
+    required this.onSubmitted,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useTextEditingController(text: word);
+    final focusNode = useFocusNode();
+
+    useEffect(() {
+      if (controller.text != word) controller.text = word;
+      return null;
+    }, [word]);
+
+    return TextField(
+      controller: controller,
+      focusNode: focusNode,
+      maxLength: 64,
+      decoration: InputDecoration(
+        prefixIcon: Icon(Icons.search),
+        hintText: context.l10n.sessions_page__filter_hint,
+        isDense: true,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        counterText: '',
+        suffixIcon: controller.text.isNotEmpty
+            ? IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: () {
+                  controller.clear();
+                  onSubmitted('');
+                },
+              )
+            : null,
+      ),
+      onSubmitted: onSubmitted,
+      textInputAction: TextInputAction.search,
+    );
+  }
+}

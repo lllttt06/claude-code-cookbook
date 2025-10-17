@@ -1,0 +1,382 @@
+# アーキテクチャガイド
+
+このドキュメントでは、プロジェクトのアーキテクチャと開発ガイドラインについて説明します。
+
+## レイヤー構造
+
+```
+lib/
+├── views/              # UI層
+│   ├── pages/         # 画面単位のディレクトリ構造
+│   ├── components/    # 再利用可能な UI コンポーネント
+│   ├── hooks/         # カスタム Flutter Hooks
+│   ├── routers/       # ルーティング
+│   ├── themes/        # テーマ定義
+│   └── validators/    # 入力検証
+├── controllers/       # ビジネスロジック層（Riverpod Notifier）
+├── data/             # データ層
+│   ├── models/       # イミュータブルなデータモデル
+│   ├── repositories/ # API・ローカルストレージアクセス
+│   └── clients/      # API クライアント実装
+├── providers/        # Riverpod プロバイダー定義
+├── modules/          # 外部連携（AWS Amplify など）
+├── l10n/            # 国際化ファイル（ARB形式）
+└── utils/           # ユーティリティ関数
+```
+
+### pages ディレクトリの構造
+
+各ページは独自のディレクトリを持ち、再帰的な構造になっています：
+
+```
+pages/
+└── home/
+    └── sessions/
+        ├── components/      # ページ固有のコンポーネント
+        ├── hooks/          # ページ固有のフック
+        ├── edit_session/   # 子ページ
+        └── session_details/
+            ├── components/
+            ├── hooks/
+            └── resource_details/  # さらにネストされたページ
+```
+
+## 状態管理
+
+### Riverpod による状態管理
+- グローバルな状態管理に使用
+- `Provider`、`StateProvider`、`StateNotifierProvider`、`AsyncNotifierProvider` を活用
+- ページスコープの状態は `ProviderScope` でオーバーライド
+
+### flutter_hooks によるローカル状態
+- ウィジェット内のローカル状態管理
+- `useState`、`useEffect`、`useMemoized` などを活用
+
+## データモデル
+
+### 基本エンティティ
+
+```
+User
+ ├── Sessions[]        # セッション（録画単位）
+ │    └── Resources[]  # リソース（動画と解析結果）
+ │         └── Balls[] # 個別ボールの解析データ
+ ├── Players[]         # 選手情報
+ └── Team              # チーム情報
+```
+
+### ビデオデータの種類
+
+1. **LocalVideoData**: デバイスローカルの録画動画
+2. **ResourceData**: API サーバーから取得した動画と解析結果
+3. **Ball-Specific Video**: 個別ボール最適化動画
+4. **Cached Video**: ローカルキャッシュされたリモート動画
+
+詳細は [ビデオデータ管理](./video-data-management.md) を参照。
+
+## 認証とロール管理
+
+### AppRole システム
+
+6つのロールによる階層的な権限管理：
+
+| AppRole | 基本ドメイン | 管理ドメイン | システム管理ドメイン | チーム横断 | 全チーム |
+|---------|------------|------------|------------------|----------|---------|
+| team_member | Write | None | None | × | × |
+| team_manager | Write | None | None | ○ | × |
+| team_admin | Admin | Admin | None | ○ | × |
+| personal_user | Admin | None | None | ○ | × |
+| super_admin | Read | Read | Write | ○ | ○ |
+| super_reader | Read | Read | Read | ○ | ○ |
+
+**注**: super_admin と super_reader は、`basic` と `management` ドメインでは実際のロールレベル（Read/Admin）を持ちますが、`admin` ドメインでのみ特別な権限（Write/Read）を持ちます。
+
+### RoleDomain と RoleLevel
+
+権限は `RoleDomain`（ドメイン）と `RoleLevel`（レベル）の組み合わせで管理されます。
+
+#### RoleDomain（権限ドメイン）
+
+| ドメイン | 用途 | 対象 API |
+|---------|-----|---------|
+| `basic` | データの基本操作 | Sessions, Players, Resources の CRUD |
+| `management` | チーム管理操作 | Team メンバー管理、招待、無効化 |
+| `admin` | システム管理操作 | チーム横断検索、全チーム操作（super_admin 専用） |
+
+**注意**:
+- `unknown` は Flutter 側でのデフォルト値として定義されていますが、API サーバーからは送信されません
+- `admin` ドメインは super_admin と super_reader のみが使用します
+
+#### RoleLevel（権限レベル）
+
+| レベル | 説明 | 許可される操作 |
+|--------|-----|--------------|
+| `read` | 読み取りのみ | GET リクエスト |
+| `write` | 読み書き | GET, POST, PUT, DELETE |
+| `admin` | 管理者権限 | すべての操作 + 管理機能 |
+
+#### ドメインごとの詳細
+
+**基本ドメイン (basic)**
+- `read`: データ読み取り権限
+- `write`: CRUD 権限
+- `admin`: 現在は write と同等
+
+**管理ドメイン (management)**
+- `read`: チームユーザー情報の読み取り
+- `write`: チーム情報の編集
+- `admin`: ユーザー招待・無効化
+
+**管理システムドメイン (admin)** ⭐ 新規追加
+- `read`: 全チームのデータ読み取り（super_reader）
+- `write`: 全チームのデータ編集（super_admin）
+- `admin`: 現在未使用
+
+#### API サーバー側との対応
+
+API サーバー側（TypeScript）での定義：
+```typescript
+const _domains = {
+  basic: true,
+  management: true,
+  admin: true,
+};
+```
+
+Flutter 側（Dart）での定義：
+```dart
+enum RoleDomain {
+  unknown,      // API からは送信されない（デフォルト値）
+  basic,
+  management,
+  admin,        // ⭐ 新規追加（2025-01）
+}
+```
+
+#### admin ドメインの使用箇所
+
+API サーバーで `admin` ドメインが使用されている主な箇所（21箇所）：
+
+1. **チーム管理 API** (`/teams/*`)
+   - `POST /teams/search` - チーム検索
+   - `GET /teams/sessions/locations` - 全セッションの場所取得
+   - `POST /teams/sessions/search` - セッション検索
+   - `POST /teams/resources/search` - リソース検索
+   - `POST /teams/players/search` - 選手検索
+
+2. **通知管理 API** (`/notifications/*`)
+   - `POST /notifications/search` - 通知検索
+   - `POST /notifications` - 通知作成
+   - `PUT /notifications/:notificationId` - 通知更新
+
+3. **AI Coach プロンプト管理 API**
+   - `POST /ai-coach-prompts/search` - プロンプト検索
+   - `POST /ai-coach-prompts` - プロンプト作成
+
+これらの API は `SuperAdminAccessGuard('admin', 'read')` または `SuperAdminAccessGuard('admin', 'write')` で保護されており、`admin` ドメインの権限が必要です。
+
+## ネットワーク層
+
+### Repository パターン
+- すべてのネットワーク呼び出しは `lib/data/repository/*.dart` に配置
+- `lib/view/*` 配下では Amplify や Dio を直接インポートしない
+- API クライアントの実装詳細を隠蔽
+
+### エラーハンドリング
+
+Failure クラスによるエラー表現：
+
+```
+EM-[XXXX]-[YYYY]-[NNN]
+    ^^^^   ^^^^   ^^^
+    File  Func   Position
+```
+
+例：`EM-DQR-RQ-001`
+- `DQR`: Data-QueryRunner
+- `RQ`: RunQuery
+- `001`: 発生位置
+
+## カメラモジュール
+
+[knowhere_configurable_camera](https://github.com/Knowhere-inc/knowhere_configurable_camera) として独立管理：
+- Swift（iOS）と Kotlin（Android）でネイティブ実装
+- MethodChannel 経由で Flutter に公開
+- Flutter 側は最小限のインターフェースのみ
+
+## 開発の基本原則
+
+### 1. ウィジェットタイプ
+
+| 状況 | 使用するウィジェット |
+|-----|-------------------|
+| 状態なし | `StatelessWidget` / `ConsumerWidget` |
+| ローカル状態あり | `HookWidget` / `HookConsumerWidget` |
+| 避けるべき | `StatefulWidget` / `ConsumerStatefulWidget` |
+
+### 2. データフロー
+
+- **小規模・単一ページ**: 直接 props を渡す
+- **複数ページで共有**: Riverpod providers を使用
+
+```dart
+// 小規模な例
+class DetailTile extends StatelessWidget {
+  const DetailTile(this.item, {super.key});
+  final Item item;
+  
+  @override
+  Widget build(BuildContext context) => Text(item.name);
+}
+
+// 共有状態の例
+final itemProvider = StateProvider<Item>((ref) => Item());
+```
+
+### 3. イミュータビリティ
+
+- 変数は `final` / `const` を使用
+- モデルクラスは完全にイミュータブル
+- `@freezed` または `@JsonSerializable` を活用
+
+### 4. コーディングスタイル
+
+- **宣言的に書く**: 命令的なボイラープレートを最小限に
+- **インライン化**: 単一使用のヘルパーはインライン化
+- **ネスト削減**: 深い階層は専用ウィジェットクラスに分割
+
+### 5. エラーハンドリング
+
+```dart
+// Failure クラスの使用例
+throw Failure(
+  code: failureCodeBuilder('DQR', 'RQ', '001'),
+  message: 'Query execution failed',
+);
+```
+
+### 6. コメントと TODO
+
+- 保留作業は `TODO: ...` でマーク
+- すべてのコメントは英語で記述
+
+## 開発ワークフロー
+
+### コマンドリファレンス
+
+#### 日常的に使用するコマンド
+
+```bash
+# 開発環境の初期化
+mise install
+
+# 依存関係の更新とコード生成
+mise run refresh
+
+# 静的解析
+mise run analyze
+
+# 自動修正
+mise run fix
+
+# フォーマット
+mise run format_dart    # Dart コード
+mise run format_import  # import 文の整理
+mise run format_arb     # 翻訳ファイル
+```
+
+#### 作業完了時の必須チェック
+
+1. **ARB ファイル編集時**: `mise run l10n`
+2. **モデル・プロバイダー変更時**: `mise run br_clean`
+3. **コード変更時**: `mise run format_dart && mise run format_import`
+4. **エラーチェック**: `mise run analyze`
+5. **テスト実行**: `mise run test`
+
+### 国際化（i18n）
+
+#### ARB ファイルの編集
+
+1. `lib/l10n/app_{locale}.arb` に文字列を追加
+2. **重要**: 既存の並び順は変更しない、新規追加は末尾に
+3. コマンドを実行：
+
+```bash
+mise run l10n
+```
+
+#### 使用例
+
+```dart
+Text(context.l10n.welcomeMessage)
+```
+
+## TDD サイクル
+
+### 1. Red（失敗）
+最もシンプルな失敗するテストを書く
+
+### 2. Green（成功）
+テストを通す最小限のコードを実装
+
+### 3. Refactor（改善）
+テストが通った後でリファクタリング
+
+## 変更管理
+
+### 構造変更
+- コードの配置・整理・フォーマット
+- 動作は一切変更しない
+
+### 動作変更
+- 機能の追加・修正・削除
+- テスト結果が変わる変更
+
+**重要**: 構造変更と動作変更を同一コミットに含めない
+
+## コミット規約
+
+### 前提条件
+- ✅ すべてのテストがパス
+- ✅ リンターの警告がゼロ
+- ✅ 単一の論理的作業単位
+- ✅ 明確なコミットメッセージ
+
+### 推奨事項
+- 小さく頻繁なコミット
+- 各コミットは独立して意味を持つ
+- 履歴を追いやすい粒度
+
+## リファクタリング
+
+### 前提条件
+- すべてのテストが通っている状態
+- 動作変更とリファクタリングを混在させない
+
+### よく使うパターン
+- Extract Method（メソッド抽出）
+- Rename（名前変更）
+- Move Method（メソッド移動）
+- Extract Variable（変数抽出）
+
+## 効率的な実装
+
+### 優先順位
+1. 最もシンプルなケースから着手
+2. 「動くこと」を最優先
+3. 重複を見つけたら即座に排除
+4. エッジケースは基本ケースが動いてから
+
+### 品質保証
+- 単一責任の原則
+- インターフェースによる疎結合
+- 早期リターンで可読性向上
+- 過度な抽象化は避ける
+
+## Flutter バージョンアップグレード
+
+以下のファイルを更新：
+- `pubspec.yaml`
+- `.github/actions/setup-flutter/action.yml`
+- `.fvmrc`
+- `mise.toml`

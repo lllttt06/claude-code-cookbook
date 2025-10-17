@@ -1,0 +1,88 @@
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+
+void main() {
+  group('Testing Plan', () {
+    const id = '1';
+    const name = 'test plan';
+    const description = 'test description';
+    const type = 1;
+    const maxBalls = 100;
+    final createdAt = DateTime(2024, 1, 1, 0, 0);
+    final updatedAt = DateTime(2024, 1, 1, 1, 0);
+
+    test('toJson1', () {
+      final plan = Plan(
+        id: id,
+        name: name,
+        description: description,
+        type: type,
+        maxBalls: maxBalls,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+
+      final planJson = plan.toJson();
+
+      expect(planJson.length, 11);
+
+      expect(planJson.containsKey('id'), isTrue);
+      expect(planJson.containsKey('name'), isTrue);
+      expect(planJson.containsKey('description'), isTrue);
+      expect(planJson.containsKey('type'), isTrue);
+      expect(planJson.containsKey('maxBalls'), isTrue);
+      expect(planJson.containsKey('maxAiCoachs'), isTrue);
+      expect(planJson.containsKey('createdAt'), isTrue);
+      expect(planJson.containsKey('updatedAt'), isTrue);
+      expect(planJson.containsKey('isPaid'), isTrue);
+      expect(planJson.containsKey('isActive'), isTrue);
+      expect(planJson.containsKey('platformConfig'), isTrue);
+
+      expect(planJson['id'], id);
+      expect(planJson['name'], name);
+      expect(planJson['description'], description);
+      expect(planJson['type'], type.toString());
+      expect(planJson['maxBalls'], maxBalls.toString());
+      expect(planJson['createdAt'], createdAt.toIso8601String());
+      expect(planJson['updatedAt'], updatedAt.toIso8601String());
+      expect(planJson['isPaid'], false);
+      expect(planJson['isActive'], false);
+      expect(planJson['platformConfig'], null);
+
+      final deserializedPlan = Plan.fromJson(planJson);
+      expect(deserializedPlan, plan);
+    });
+
+    test('fromJson1 (API)', () {
+      final planJson = {
+        'id': id,
+        'name': name,
+        'description': description,
+        'type': type.toString(),
+        'maxBalls': maxBalls.toString(),
+        'maxAiCoachs': null,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+        'isPaid': false,
+        'isActive': false,
+        'platformConfig': null,
+      };
+
+      final plan = Plan.fromJson(planJson);
+
+      expect(plan.id, id);
+      expect(plan.name, name);
+      expect(plan.description, description);
+      expect(plan.type, type);
+      expect(plan.maxBalls, maxBalls);
+      expect(plan.createdAt, createdAt);
+      expect(plan.updatedAt, updatedAt);
+
+      final serializedJson = plan.toJson();
+      expect(serializedJson, planJson);
+    });
+  });
+}

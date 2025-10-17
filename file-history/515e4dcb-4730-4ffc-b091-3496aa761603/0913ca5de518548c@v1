@@ -1,0 +1,36 @@
+/// {@category DTO}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'session_search_request.freezed.dart';
+part 'session_search_request.g.dart';
+
+@freezed
+abstract class SessionSearchRequest with _$SessionSearchRequest {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)
+  const factory SessionSearchRequest({
+    String? keyword,
+    String? userId,
+    String? location,
+    String? playerId,
+    DateTime? dateFrom,
+    DateTime? dateTo,
+    @JsonKey(includeIfNull: false) int? page,
+    @JsonKey(includeIfNull: false) int? pageSize,
+    @JsonKey(includeIfNull: false) SessionSearchRequestOrderBy? orderBy,
+    @JsonKey(includeIfNull: false) bool? isOrderDesc,
+  }) = _SessionSearchRequest;
+
+  factory SessionSearchRequest.fromJson(Map<String, dynamic> json) =>
+      _$SessionSearchRequestFromJson(json);
+}
+
+@JsonEnum(fieldRename: FieldRename.snake)
+enum SessionSearchRequestOrderBy {
+  id,
+  title,
+  location,
+  createdAt,
+}

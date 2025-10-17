@@ -1,0 +1,426 @@
+import {
+  APIError,
+  APIException,
+  AppStoreServerAPIClient,
+  Environment,
+  JWSRenewalInfoDecodedPayload,
+  JWSTransactionDecodedPayload,
+  ResponseBodyV2DecodedPayload,
+  SignedDataVerifier,
+  TransactionInfoResponse,
+} from '@apple/app-store-server-library';
+import { Injectable, Logger } from '@nestjs/common';
+
+import { Coded, CodedMethod } from '@/app/common/decorators';
+import { BaseProvider } from '@/app/providers/base-provider';
+
+import { CodedException } from '../exceptions/errors/coded-exception';
+import { CodedInvalidArgumentException } from '../exceptions/errors/coded-invalid-argument.exception';
+import { ErrorInfo } from '../exceptions/errors/error-info';
+import { ConfigProvider } from './config.provider';
+
+export enum AppleNotificationType {
+  SUBSCRIBED = 'SUBSCRIBED',
+  CONSUMPTION_REQUEST = 'CONSUMPTION_REQUEST',
+  DID_CHANGE_RENEWAL_STATUS = 'DID_CHANGE_RENEWAL_STATUS',
+  DID_CHANGE_RENEWAL_PREF = 'DID_CHANGE_RENEWAL_PREF',
+  DID_FAIL_TO_RENEW = 'DID_FAIL_TO_RENEW',
+  DID_RENEW = 'DID_RENEW',
+  REFUND = 'REFUND',
+  EXPIRED = 'EXPIRED',
+}
+
+export enum AppleSubtype {
+  UPGRADE = 'UPGRADE',
+  DOWNGRADE = 'DOWNGRADE',
+  AUTO_RENEW_DISABLED = 'AUTO_RENEW_DISABLED',
+  AUTO_RENEW_ENABLED = 'AUTO_RENEW_ENABLED',
+  BILLING_RETRY = 'BILLING_RETRY',
+}
+
+export enum AppleTransactionReason {
+  PURCHASE = 'PURCHASE',
+  RENEWAL = 'RENEWAL',
+}
+
+export interface RenewalInfo {
+  appAccountToken: string;
+  autoRenewProductId: string;
+  autoRenewStatus: number;
+  currency: string;
+  eligibleWinBackOfferIds: string[];
+  environment: string;
+  expirationIntent: number;
+  gracePeriodExpiresDate: number;
+  isInBillingRetryPeriod: boolean;
+  offerDiscountType: string;
+  offerIdentifier: string;
+  offerPeriod: string;
+  offerType: number;
+  originalTransactionId: string;
+  priceIncreaseStatus: number;
+  productId: string;
+  recentSubscriptionStartDate: number;
+  renewalDate: number;
+  renewalPrice: number;
+  signedDate: number;
+}
+
+export interface AppleNotification {
+  notificationUUID: string;
+  notificationType: AppleNotificationType;
+  subtype: string;
+  signedDate: number;
+  environment: string;
+  consumptionRequestReason: string;
+  signedRenewalInfo: string;
+  productId: string;
+  failedCount: number;
+  succeededCount: number;
+  status: number;
+  renewalInfo?: RenewalInfo;
+  transactionInfo?: AppleTransactionInfo;
+  rawData: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
+export interface AppleTransactionInfo {
+  transactionId: string;
+  originalTransactionId: string;
+  webOrderLineItemId: string;
+  bundleId: string;
+  productId: string;
+  subscriptionGroupIdentifier: string;
+  purchaseDate: number;
+  originalPurchaseDate: number;
+  expiresDate: number;
+  quantity: number;
+  type: string;
+  appAccountToken: string;
+  inAppOwnershipType: string;
+  signedDate: number;
+  environment: string;
+  transactionReason: string;
+  storefront: string;
+  price: number;
+  currency: string;
+  appTransactionId: string;
+  revocationDate?: number;
+}
+
+@Coded('PASP')
+@Injectable()
+export class AppleProvider extends BaseProvider {
+  private readonly logger = new Logger(AppleProvider.name);
+  private readonly rootCaURL: string;
+  private readonly client: {
+    [Environment.PRODUCTION]: {
+      appStoreClient: AppStoreServerAPIClient;
+      verifier: SignedDataVerifier;
+    } | null;
+    [Environment.SANDBOX]: {
+      appStoreClient: AppStoreServerAPIClient;
+      verifier: SignedDataVerifier;
+    } | null;
+  };
+
+  static readonly ERROR_CODES = {
+    INVALID_TRANSACTION_INFO: ErrorInfo.getBuilder(
+      'ITI',
+      'invalid_transaction_info',
+    ),
+    INVALID_NOTIFICATION: ErrorInfo.getBuilder('IN', 'invalid_notification'),
+    APPLE_API_ERROR: ErrorInfo.getBuilder('AAE', 'apple_api_error'),
+  };
+
+  get EC() {
+    return AppleProvider.ERROR_CODES;
+  }
+
+  constructor(private readonly configProvider: ConfigProvider) {
+    super();
+    this.rootCaURL = `https://www.apple.com/certificateauthority/AppleRootCA-G3.cer`;
+
+    this.client = {
+      [Environment.PRODUCTION]: null,
+      [Environment.SANDBOX]: null,
+    };
+  }
+
+  @CodedMethod('ISB')
+  isSandbox(payload: string): boolean {
+    const cbuilder = this.getCodeBuilder();
+    const parts = payload.split('.');
+    if (parts.length < 2) {
+      throw new CodedInvalidArgumentException(
+        this.code,
+        this.EC.INVALID_NOTIFICATION(cbuilder.build()),
+      );
+    }
+
+    try {
+      // decode the payload by base64
+      const decodedPayload = Buffer.from(parts[1], 'base64').toString('utf-8');
+      // get the environment from the payload
+      const jsonPayload = JSON.parse(decodedPayload);
+      return jsonPayload.data?.environment === Environment.SANDBOX;
+    } catch (error) {
+      throw new CodedInvalidArgumentException(
+        this.code,
+        this.EC.INVALID_NOTIFICATION(cbuilder.build()),
+      );
+    }
+  }
+
+  private async getAppleRootCAs(): Promise<Buffer> {
+    const response = await fetch(this.rootCaURL);
+    const buffer = await response.arrayBuffer();
+    const cert = Buffer.from(buffer);
+    return cert;
+  }
+
+  @CodedMethod('VJWST')
+  async verifyTransactionInfo(
+    transactionId: string,
+    teamId: string,
+  ): Promise<AppleTransactionInfo> {
+    const cbuilder = this.getCodeBuilder();
+    let client: {
+      appStoreClient: AppStoreServerAPIClient;
+      verifier: SignedDataVerifier;
+    } | null = null;
+
+    // we can't know the environment of the transaction info
+    // so we have to try to get the transaction info in both environments
+    // TODO: After we verify this flow, we should divide the logic to get transaction info by AppEnvironment
+    try {
+      // https://github.com/apple/app-store-server-library-node/blob/7a3cf3238fd7dfe68d82255257a0a3c40f656400/index.ts#L126-L127
+      let transactionInfo: TransactionInfoResponse | null = null;
+      try {
+        const productionClient = await this.getClient(false);
+        transactionInfo =
+          await productionClient.appStoreClient.getTransactionInfo(
+            transactionId,
+          );
+        client = productionClient;
+      } catch (error) {
+        this.logger.log(
+          `Retry to verify transaction info in sandbox environment. transactionId: ${transactionId}`,
+        );
+      }
+      if (!transactionInfo) {
+        const sandboxClient = await this.getClient(true);
+        transactionInfo =
+          await sandboxClient.appStoreClient.getTransactionInfo(transactionId);
+        client = sandboxClient;
+      }
+
+      if (
+        !client ||
+        !transactionInfo ||
+        !transactionInfo.signedTransactionInfo
+      ) {
+        throw new CodedInvalidArgumentException(
+          this.code,
+          this.EC.INVALID_TRANSACTION_INFO(cbuilder.build()),
+        );
+      }
+
+      // base64 decode the signedData
+      const decodedTransactionInfo =
+        await client.verifier.verifyAndDecodeTransaction(
+          transactionInfo.signedTransactionInfo,
+        );
+
+      if (decodedTransactionInfo.appAccountToken !== teamId) {
+        throw new CodedInvalidArgumentException(
+          this.code,
+          this.EC.INVALID_TRANSACTION_INFO(cbuilder.build()),
+        );
+      }
+
+      return this.mapTransactionInfo(decodedTransactionInfo);
+    } catch (error) {
+      if (
+        error instanceof APIException &&
+        error.apiError === APIError.INVALID_TRANSACTION_ID
+      ) {
+        this.logger.log(
+          `Invalid transaction ID. transactionId: ${transactionId}, teamId: ${teamId}`,
+        );
+        throw new CodedInvalidArgumentException(
+          this.code,
+          this.EC.INVALID_TRANSACTION_INFO(cbuilder.build()),
+        );
+      }
+      throw new CodedInvalidArgumentException(
+        this.code,
+        this.EC.APPLE_API_ERROR(cbuilder.build()),
+      );
+    }
+  }
+
+  private async getClient(isSandbox: boolean): Promise<{
+    appStoreClient: AppStoreServerAPIClient;
+    verifier: SignedDataVerifier;
+  }> {
+    const environment = isSandbox
+      ? Environment.SANDBOX
+      : Environment.PRODUCTION;
+    let client = this.client[environment];
+    if (!client) {
+      const appStoreClient = new AppStoreServerAPIClient(
+        this.configProvider.config.appleAppStoreApiKey,
+        this.configProvider.config.appleAppStoreKeyId,
+        this.configProvider.config.appleAppStoreIssuerId,
+        this.configProvider.config.appleAppStoreBundleId,
+        isSandbox ? Environment.SANDBOX : Environment.PRODUCTION,
+      );
+      const verifier = new SignedDataVerifier(
+        [await this.getAppleRootCAs()],
+        true,
+        isSandbox ? Environment.SANDBOX : Environment.PRODUCTION,
+        this.configProvider.config.appleAppStoreBundleId,
+        this.configProvider.config.appleAppStoreAppAppleId
+          ? Number(this.configProvider.config.appleAppStoreAppAppleId)
+          : undefined,
+      );
+      client = { appStoreClient, verifier };
+      this.client[environment] = client;
+    }
+    return client;
+  }
+
+  @CodedMethod('VFN')
+  async verifyNotification(payload: string) {
+    const cbuilder = this.getCodeBuilder();
+    const isSandbox = this.isSandbox(payload);
+    const client = await this.getClient(isSandbox);
+
+    try {
+      const decodedNotification =
+        await client.verifier.verifyAndDecodeNotification(payload);
+
+      if (!decodedNotification.data) {
+        return this.mapNotification(decodedNotification);
+      }
+
+      if (!decodedNotification.data?.signedRenewalInfo) {
+        return this.mapNotification(decodedNotification);
+      }
+
+      const renewalInfo = await client.verifier.verifyAndDecodeRenewalInfo(
+        decodedNotification.data.signedRenewalInfo,
+      );
+
+      if (!decodedNotification.data.signedTransactionInfo) {
+        return this.mapNotification(decodedNotification, renewalInfo);
+      }
+
+      const transactionInfo = await client.verifier.verifyAndDecodeTransaction(
+        decodedNotification.data.signedTransactionInfo,
+      );
+
+      return this.mapNotification(
+        decodedNotification,
+        renewalInfo,
+        transactionInfo,
+      );
+    } catch (error) {
+      this.logger.error({ error: JSON.stringify(error, null, 2) });
+      throw new CodedException(
+        this.code,
+        this.EC.INVALID_NOTIFICATION(cbuilder.build()),
+      );
+    }
+  }
+
+  private mapNotification(
+    notification: ResponseBodyV2DecodedPayload,
+    renewalInfo?: JWSRenewalInfoDecodedPayload,
+    transactionInfo?: JWSTransactionDecodedPayload,
+  ): AppleNotification {
+    const renewalInfoMap = renewalInfo
+      ? this.mapRenewalInfo(renewalInfo)
+      : undefined;
+    const transactionInfoMap = transactionInfo
+      ? this.mapTransactionInfo(transactionInfo)
+      : undefined;
+    return {
+      notificationUUID: notification.notificationUUID || '',
+      notificationType: notification.notificationType as AppleNotificationType,
+      subtype: notification.subtype || '',
+      consumptionRequestReason:
+        notification.data?.consumptionRequestReason || '',
+      environment: notification.data?.environment || '',
+      signedRenewalInfo: notification.data?.signedRenewalInfo || '',
+      productId: notification.summary?.productId || '',
+      failedCount: notification.summary?.failedCount || 0,
+      succeededCount: notification.summary?.succeededCount || 0,
+      status: notification.data?.status || 0,
+      signedDate: notification.signedDate || 0,
+      renewalInfo: renewalInfoMap,
+      transactionInfo: transactionInfoMap,
+      rawData: {
+        ...notification,
+        renewalInfo: renewalInfoMap,
+        transactionInfo: transactionInfoMap,
+      },
+    };
+  }
+
+  private mapTransactionInfo(
+    transactionInfo: JWSTransactionDecodedPayload,
+  ): AppleTransactionInfo {
+    return {
+      transactionId: transactionInfo.transactionId || '',
+      originalTransactionId: transactionInfo.originalTransactionId || '',
+      webOrderLineItemId: transactionInfo.webOrderLineItemId || '',
+      bundleId: transactionInfo.bundleId || '',
+      productId: transactionInfo.productId || '',
+      subscriptionGroupIdentifier:
+        transactionInfo.subscriptionGroupIdentifier || '',
+      purchaseDate: transactionInfo.purchaseDate || 0,
+      originalPurchaseDate: transactionInfo.originalPurchaseDate || 0,
+      expiresDate: transactionInfo.expiresDate || 0,
+      quantity: transactionInfo.quantity || 0,
+      type: transactionInfo.type || '',
+      appAccountToken: transactionInfo.appAccountToken || '',
+      inAppOwnershipType: transactionInfo.inAppOwnershipType || '',
+      signedDate: transactionInfo.signedDate || 0,
+      environment: transactionInfo.environment || '',
+      transactionReason: transactionInfo.transactionReason || '',
+      storefront: transactionInfo.storefront || '',
+      price: transactionInfo.price || 0,
+      currency: transactionInfo.currency || '',
+      appTransactionId: transactionInfo.appTransactionId || '',
+      revocationDate: transactionInfo.revocationDate,
+    };
+  }
+
+  private mapRenewalInfo(
+    renewalInfo: JWSRenewalInfoDecodedPayload,
+  ): RenewalInfo {
+    return {
+      appAccountToken: renewalInfo.appAccountToken || '',
+      autoRenewProductId: renewalInfo.autoRenewProductId || '',
+      autoRenewStatus: renewalInfo.autoRenewStatus || 0,
+      currency: renewalInfo.currency || '',
+      eligibleWinBackOfferIds: renewalInfo.eligibleWinBackOfferIds || [],
+      environment: renewalInfo.environment || '',
+      expirationIntent: renewalInfo.expirationIntent || 0,
+      gracePeriodExpiresDate: renewalInfo.gracePeriodExpiresDate || 0,
+      isInBillingRetryPeriod: renewalInfo.isInBillingRetryPeriod || false,
+      offerDiscountType: renewalInfo.offerDiscountType || '',
+      offerIdentifier: renewalInfo.offerIdentifier || '',
+      offerPeriod: renewalInfo.offerPeriod || '',
+      offerType: renewalInfo.offerType || 0,
+      originalTransactionId: renewalInfo.originalTransactionId || '',
+      priceIncreaseStatus: renewalInfo.priceIncreaseStatus || 0,
+      productId: renewalInfo.productId || '',
+      recentSubscriptionStartDate: renewalInfo.recentSubscriptionStartDate || 0,
+      renewalDate: renewalInfo.renewalDate || 0,
+      renewalPrice: renewalInfo.renewalPrice || 0,
+      signedDate: renewalInfo.signedDate || 0,
+    };
+  }
+}

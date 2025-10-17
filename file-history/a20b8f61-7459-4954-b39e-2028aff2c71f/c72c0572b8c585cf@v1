@@ -1,0 +1,22 @@
+import { Container, Grid2 as Grid } from '@mui/material';
+import Image from 'next/image';
+import { ReactNode } from 'react';
+
+export default function SigningLayout({ children }: { children: ReactNode }) {
+  return (
+    <Container disableGutters>
+      <Grid columns={24} container sx={{ height: '100vh' }}>
+        <Grid size={{ sm: 11, xs: 0 }} sx={{ position: 'relative' }}>
+          <Image
+            alt=""
+            fill
+            priority
+            src="/images/signin-bg.png"
+            style={{ objectFit: 'cover' }}
+          />
+        </Grid>
+        <Grid size={{ sm: 13, xs: 24 }}>{children}</Grid>
+      </Grid>
+    </Container>
+  );
+}

@@ -1,0 +1,59 @@
+import {
+  documentGetInitialProps,
+  DocumentHeadTags,
+  DocumentHeadTagsProps,
+} from '@mui/material-nextjs/v14-pagesRouter';
+import {
+  DocumentContext,
+  DocumentProps,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document';
+
+import { EnvManager } from '@/constants/env.constants';
+
+/**
+ * Get favicon URL based on environment
+ */
+function getFaviconUrl(): string {
+  const env = EnvManager.config.APP_ENV;
+
+  switch (env) {
+    case 'develop':
+      return `/images/favicon-dev.png`;
+    case 'staging':
+      return `/images/favicon-stg.png`;
+    default:
+      return `/images/favicon-prd.png`;
+  }
+}
+
+export default function MyDocument(
+  props: DocumentProps & DocumentHeadTagsProps,
+) {
+  return (
+    <Html>
+      <Head>
+        <DocumentHeadTags {...props} />
+        {/*
+          In some environments, the favicon may be cached aggressively based on
+          its URL. To ensure the latest icon is loaded after changes,
+          a timestamp is appended to the URL. When updating the favicon, make
+          sure to change the timestamp as well.
+        */}
+        <link rel="icon" href={getFaviconUrl() + '?1751688000'} />
+      </Head>
+      <body>
+        <Main />
+        <NextScript />
+      </body>
+    </Html>
+  );
+}
+
+MyDocument.getInitialProps = async (ctx: DocumentContext) => {
+  const finalProps = await documentGetInitialProps(ctx);
+  return finalProps;
+};

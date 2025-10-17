@@ -1,0 +1,186 @@
+# README
+
+このリポジトリは、株式会社KnowhereのWebシステム[SmartScout](https://github.com/Knowhere-inc/baseball_detector_document)のうち、クライアント用Webアプリを定義する。
+
+
+## Screenshots
+
+![](./docs/screenshot1.png) ![](./docs/screenshot2.png) ![](./docs/screenshot3.png)
+
+## Getting Started
+
+### Initialization
+
+```bash
+yarn
+```
+
+### Start
+
+```bash
+yarn start:dev
+```
+
+`local, test, dev, stg`等のidに応じて`./env/.env.[id]`を読み込んで`next dev`を起動する。`.env.[id]`ファイル内にAPIサーバ等の接続先が定義されている。
+- `local, test`は[baseball_detector_api](https://github.com/Knowhere-inc/baseball_detector_api)をローカル環境にセットアップして使用する。
+- `dev, stg, prod`等はAWS上にデプロイされた環境を参照する。リソースは[baseball_detector_iac](https://github.com/Knowhere-inc/baseball_detector_iac)においてCDKで管理されている。
+
+### メンテナンス情報の表示
+
+/sessions, /players, /admin, /account など特定ページに遷移する際に判定を行い、一定時間経過かつ問い合わせ結果により遷移が必要と判断された場合は遷移します。
+
+1. [maintenance-dev.json](https://us-east-1.console.aws.amazon.com/s3/object/smartscout-env-info-test?region=us-east-1&bucketType=general&prefix=maintenance-dev.json)のフラグが`isInMaintenance=false`の場合においては、いくら画面を遷移しても特に何もない（Devにおいてはログに読み込み後5分以上先の時刻である `[maintenance] Next checking date: YYYY-MM-DDTHH:mm:ssZ` が表示され、その時刻を過ぎた段階で特定ページに遷移した際にメンテナンスページへの遷移判定が行われる）。
+2. `maintenance-dev.json`の`isInMaintenance`のフラグをtrueにし、次回判定時刻を過ぎた際に画面遷移を行う。
+3. メンテナンスページへ遷移する。30秒ごとにメンテナンスが終了したかのチェックが行われる。
+4. フラグが`false`に戻ったことを検知すると /sessions ページへ遷移。
+
+`maintenance-dev.json`等の取得先は`.env`ファイルに定義されている。
+
+## Deploy
+
+This Next.js service is hosted by AWS CloudFront and S3 on the production and development environments.
+GitHub Actions defined in `.github/workflows/` build and deploy static files to S3 and update caches on CloudFront.
+See [baseball_detector_document](https://github.com/Knowhere-inc/baseball_detector_document) and [baseball_detector_iac](https://github.com/Knowhere-inc/baseball_detector_iac) for the details of the definition of AWS resources.
+
+ ![](./docs/GHA.png)
+
+
+## 開発
+
+### srcディレクトリの構成
+
+* src
+  * components: componentファイル
+  * constants: アプリケーションの定数
+  * hooks: 全ページで使うようなrouter, serviceのhook
+  * layouts: layoutファイル
+  * models: DBのModelファイル
+  * pages: 各ページ
+  * services: 通信周り
+  * store: reducer, slice
+  * styles: 自作classなどのスタイル
+  * theme: Material UIのテーマ
+  * utils: Utilファイル
+  * validations: Inputなどのvalidationファイル
+
+### Lint
+
+```bash
+# ESlintに定義されたwarningについて直せるところは直し、問題のある箇所は表示させる。
+# コミット前になるべく叩く習慣をつけると良い
+yarn lint
+```
+
+## ライブラリ
+
+### Components Lib / CSS Framework
+
+- [Material UI](https://mui.com/material-ui/getting-started/)
+- [Joy UI](https://mui.com/joy-ui/getting-started/installation/)
+- @emotion/react, @emotion/styled
+
+比較的Joy UIの方が使いやすいが、Material UI側のみでサポートされているものもあるのでハイブリッドで使用する方が好ましい。
+この辺はデザイナー次第なところがあるので、今のところは（他でも似たような構成になるとして）とりあえず入れておく感じ。
+よく入れられるものとしてTailwind、他に簡易のものでBulmaやFoundation、Bootstrapなどあるが、
+
+- Tailwind... 使いやすいが標準で用意されているコンポーネントが割と普通で複雑なコンポーネントが必要な場合はカスタムで自作が結構必要なケースがある。一方カスタムの観点で言えば柔軟に対応可。
+- MUI... 若干カスタムはし辛いが、特にinputのAutocompleteの機能が強力。HTMLの記述はかなりこちらのコンポーネントに寄った感じになる（普通のdomももちろん使えるがMUIのBoxなどを使った方が便利）
+- Bulma... 簡単に使えるが、標準のデザインが若干チープで絶妙にカスタムし辛い部分がある。
+- Bootstrap... かつてはjqueryで内部的にUIを弄るようなところがあり、v5からはそこまではいかないものの、JSで内部的にコンポーネントを処理するようなところがあり、reactなどJS側のフレームワーク上での開発に干渉しないかという不安がある。
+
+などある。
+
+### 配列処理
+
+- [lodash](https://lodash.com/)
+
+#### 選定理由・必要性
+
+- 標準的な配列操作のみだと機能不足でコードがごちゃごちゃしてくるので、より強力な機能をサポートしているものを追加する
+
+### ローカルデータ管理
+
+- [react-redux](https://react-redux.js.org/introduction/getting-started)
+- [@reduxjs/toolkit](https://redux-toolkit.js.org/)
+
+### APIコール/外部APIアクセス
+
+- [axios](https://github.com/axios/axios)
+
+#### 選定理由・必要性
+
+- 標準的なfetch系は機能的に不足&共通化などやり辛いことが多いので、Axiosの利用は割とおすすめ
+- APIサーバのホストやタイムアウト設定など各APIでいちいち指定するのも気持ち悪いので、問い合わせ先ごとの共通クライアントをAxiosで用意すると便利。この辺はfetchだと細かい設定ができないケースがあり、その辺でもAxiosの方が長期的に楽。
+- WebClient2の方でも利用していたため特に問題ないと判断
+
+### Date/Time処理
+
+- [moment](https://momentjs.com/)
+- [moment-timezone](https://momentjs.com/timezone/)
+
+#### 選定理由・必要性
+
+- JS系の日付処理ライブラリでは最も使いやすい
+- WebClient2の方でも利用していたため特に問題ないと判断
+- 「この場合は日本時間で〜」など、現在のロケールとは異なるロケールで表示を得たいなどの需要は発生しうるので、moment-timezoneを追加
+  - 標準のmomentは現在のブラウザのlocaleで日付の変換を行うので、表示時刻を特定のロケールにしたいなどの場合はmoment-timezoneを利用する必要がある
+
+### Logging
+
+- [Consola](https://github.com/unjs/consola)
+
+#### 選定理由・必要性
+
+- **環境ごとのログの出し分け**や表示を綺麗にするのに利用
+  - [Log Level](https://github.com/unjs/consola#log-level)はSTG/本番環境でいわゆるInfoレベルの3を指定、開発レベルではdebugの5。
+
+## ビジュアルリグレッションテスト
+
+ビジュアルリグレッションテストはPlaywrightを使用して実行されます。
+
+### ローカルAPI起動
+[https://github.com/Knowhere-inc/baseball_detector_api](baseball_detector_api)の手順に従ってAPIをローカルで起動してください。
+
+### ビルド
+
+テスト用にビルドしてください。
+```
+yarn install
+yarn run build:test
+```
+
+### ログイン情報
+ログイン必須の画面に対しては環境変数 `TEST_USER_EMAIL`・`TEST_USER_PASSWORD`を使ってアクセスします。正しい認証情報を設定してください。
+```
+export TEST_USER_EMAIL=XXXXX
+export TEST_USER_PASSWORD=xxxxx
+```
+
+### ブラウザの取得
+以下のコマンドで、playwrightのバージョンに対応したブラウザがインストールされます。
+```
+npx playwright install
+```
+
+### リファレンスの生成
+リファレンスとは、リグレッションしていないことの基準となる正しいキャプチャ画像のことです。
+以下のコマンドで、リファレンスを生成できます。
+```
+yarn playwright test --update-snapshots
+```
+
+### リグレッションテストの実行
+以下のコマンドで、リグレッションテストを実行出来ます。
+リファレンスと画面キャプチャに差異があるかどうかを確認することができます。
+```
+yarn playwright test
+```
+
+### テスト記述のコツ
+
+`web/tests/vrt.spec.ts`において、操作したいタグを探すためのコツを列挙します。
+Next.js＋現状のコードは無名・ロール無しのタグが多く、タグの親子関係の構造を使いこなさないと検索が難しいです。
+
+- 画面内の要素を`getByRole`で検索するには、ChromeブラウザのFull Accessibility Treeを使うと対象のタグのロールを探しやすいです。
+- 例えば、'button'ロールの子を持つ`link`ロールのタグは`page.getByRole('link').filter({ has: page.getByRole('button') })`で取得できます。
+- 直下にラベルを持つボタンについては`page.getByRole('button', { name: 'Next' })`のように指定することで、ラベルが"Next"を部分文字列として含むボタンを検索できます。

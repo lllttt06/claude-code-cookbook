@@ -1,0 +1,494 @@
+/// {@category Containers}
+library;
+
+// Dart imports:
+import 'dart:async';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/resource_data_detail_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/platform.dart';
+import 'package:baseball_detector_flutter/views/components/custom_app_bar.dart';
+import 'package:baseball_detector_flutter/views/components/custom_loading_indicator.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_access_denied_navigation.dart';
+import 'package:baseball_detector_flutter/views/pages/home/home_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/pitch_type_dropdown_button.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/session_meta_data_menu_anchor.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/hooks/use_session_edit_access.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/analysis_result_card.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/ball_dropdown_menu.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/ball_trajectory_graph.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/message_card.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/resource_details_info_card.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/resource_details_snackbar.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/provider/ball_video_provider.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/video/components/video_player_container.dart';
+
+/// Main resource details page
+class ResourceDetailsPage extends HookConsumerWidget {
+  const ResourceDetailsPage({
+    required this.teamId,
+    required this.resourceId,
+    required this.session,
+    super.key,
+  });
+
+  final String teamId;
+  final String resourceId;
+  final Session session;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Use ResourceDataDetailController which now handles both local and remote resources
+    final resourceState = ref.watch(resourceDataDetailControllerProvider(
+      teamId: teamId,
+      sessionId: session.id!,
+      resourceId: resourceId,
+    ));
+
+    return resourceState.when(
+      loading: () => Scaffold(
+        appBar: CustomAppBar(
+          isBackNavigation: true,
+          title: context.l10n.resource_details_page__loading,
+        ),
+        body: Center(child: CustomLoadingIndicator()),
+      ),
+      error: (error, stackTrace) => _ResourceDetailsErrorView(
+        error: error,
+        teamId: teamId,
+        session: session,
+        resourceId: resourceId,
+      ),
+      data: (resource) {
+        return _ResourceDetailsPageContent(
+          teamId: teamId,
+          session: session,
+          resource: resource,
+        );
+      },
+    );
+  }
+}
+
+class _ResourceDetailsErrorView extends HookConsumerWidget {
+  const _ResourceDetailsErrorView({
+    required this.error,
+    required this.teamId,
+    required this.session,
+    required this.resourceId,
+  });
+
+  final Object error;
+  final String teamId;
+  final String resourceId;
+  final Session session;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final handleAccessDenied = useAccessDeniedNavigation();
+
+    if (error is ForbiddenFailure) {
+      ref.read(userAccessibleContentsControllerProvider.notifier).refresh();
+
+      handleAccessDenied();
+      return const SizedBox.shrink();
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          tooltip: "Back",
+          icon: Icon(
+            isIos ? Icons.arrow_back_ios_new : Icons.arrow_back,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+        title: SessionMetaDataMenuAnchor(session: session),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              onPressed: () {
+                _onRefresh(
+                  ref,
+                  teamId,
+                  session.id!,
+                  resourceId,
+                );
+              },
+              icon: const Icon(Icons.refresh),
+            ),
+            Text(context.l10n.get_data_failed),
+            const Gap(8),
+            Text(
+              (error is Failure)
+                  ? (error as Failure).translate(context.l10n)
+                  : error.toString(),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Content widget for resource details page
+class _ResourceDetailsPageContent extends HookConsumerWidget {
+  const _ResourceDetailsPageContent({
+    required this.teamId,
+    required this.session,
+    required this.resource,
+  });
+
+  final String teamId;
+  final Session session;
+  final ResourceData resource;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedBallIndex = useState(0);
+
+    // Only use BallVideoProvider when ballInfoList is not empty
+    final hasBalls = (resource.ballInfoList?.length ?? 0) > 0;
+
+    final videoPlayerContainer = hasBalls
+        ? _buildVideoPlayerWithBallProvider(ref, selectedBallIndex)
+        : _buildVideoPlayerWithResourceUrl();
+
+    final child = ListView(
+      children: [
+        ResourceDetailsSnackbar(resource: resource),
+        resource.statusType == ResourceStatusType.analysisSucceeded && hasBalls
+            ? _ResourceDetailsSuccessView(
+                resource: resource,
+                updatedResource: resource,
+                session: session,
+                teamId: teamId,
+                selectedBallIndex: selectedBallIndex,
+                videoPlayerContainer: videoPlayerContainer,
+              )
+            : _ResourceDetailsOtherView(
+                resource: resource,
+                videoPlayerContainer: videoPlayerContainer,
+              ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          tooltip: "Back",
+          icon: Icon(
+            isIos ? Icons.arrow_back_ios_new : Icons.arrow_back,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+        title: SessionMetaDataMenuAnchor(session: session),
+      ),
+      body: Padding(
+        padding: HomePage.bodyPadding,
+        child: resource.statusType == ResourceStatusType.onLocalStorage
+            ? child
+            : RefreshIndicator(
+                onRefresh: () => _onRefresh(
+                  ref,
+                  resource.teamId!,
+                  resource.sessionId!,
+                  resource.id!,
+                ),
+                child: child,
+              ),
+      ),
+    );
+  }
+
+  Widget _buildVideoPlayerWithBallProvider(
+    WidgetRef ref,
+    ValueNotifier<int> selectedBallIndex,
+  ) {
+    final selectedBallVideoAsync = ref.watch(ballVideoProvider(
+      teamId: teamId,
+      sessionId: session.id!,
+      resourceId: resource.id!,
+      ballIndex: selectedBallIndex.value,
+    ));
+
+    return selectedBallVideoAsync.when(
+      data: (videoURL) => VideoPlayerContainer(
+        resource: resource,
+        sessionId: session.id!,
+        selectedBallIndex: selectedBallIndex,
+        videoURL: videoURL,
+        session: session,
+        hasError: false,
+      ),
+      loading: () => VideoPlayerContainer(
+        resource: resource,
+        sessionId: session.id!,
+        selectedBallIndex: selectedBallIndex,
+        videoURL: null,
+        session: session,
+        hasError: false,
+      ),
+      error: (error, stackTrace) {
+        return VideoPlayerContainer(
+          resource: resource,
+          sessionId: session.id!,
+          selectedBallIndex: selectedBallIndex,
+          videoURL: null,
+          session: session,
+          hasError: true,
+        );
+      },
+    );
+  }
+
+  Widget _buildVideoPlayerWithResourceUrl() {
+    // For local resources, use pathVideoOnLocal; for remote resources, use presigned URLs
+    final videoUrl =
+        resource.pathVideoOnLocal ?? resource.presignedOriginalVideoUrl;
+    return VideoPlayerContainer(
+      resource: resource,
+      sessionId: session.id!,
+      videoURL: videoUrl,
+      session: session,
+      hasError: false,
+    );
+  }
+}
+
+/// View for successful analysis state
+class _ResourceDetailsSuccessView extends HookConsumerWidget {
+  const _ResourceDetailsSuccessView({
+    required this.resource,
+    required this.updatedResource,
+    required this.session,
+    required this.teamId,
+    required this.selectedBallIndex,
+    required this.videoPlayerContainer,
+  });
+
+  final ResourceData resource;
+  final ResourceData updatedResource;
+  final Session session;
+  final String teamId;
+  final ValueNotifier<int> selectedBallIndex;
+  final Widget videoPlayerContainer;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final checkSessionEditAccess = useSessionEditAccess();
+
+    return switch (MediaQuery.of(context).orientation) {
+      Orientation.portrait => Column(
+          children: [
+            videoPlayerContainer,
+            _buildBallControls(context, ref, checkSessionEditAccess),
+            const Gap(8),
+            _buildAnalysisContent(context, ref),
+            const Gap(8),
+            ResourceDetailsInfoCard(resource: resource),
+          ],
+        ),
+      Orientation.landscape => Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  videoPlayerContainer,
+                  _buildBallControls(context, ref, checkSessionEditAccess),
+                  _buildTrajectoryGraphs(context, ref),
+                ],
+              ),
+            ),
+            const Gap(16),
+            Expanded(
+              child: Column(
+                children: [
+                  _buildAnalysisCards(context),
+                  const Gap(8),
+                  ResourceDetailsInfoCard(resource: resource),
+                ],
+              ),
+            ),
+          ],
+        ),
+    };
+  }
+
+  Widget _buildBallControls(
+      BuildContext context,
+      WidgetRef ref,
+      Future<bool> Function(Session session, String userId)
+          checkSessionEditAccess) {
+    return Row(
+      children: [
+        Expanded(
+          child: BallDropdownMenu(
+            resource: resource,
+            selectedBallIndex: selectedBallIndex.value,
+            onBallSelected: (index) => selectedBallIndex.value = index,
+          ),
+        ),
+        if (resource.ballInfoList![selectedBallIndex.value].ball.isPitched ??
+            false) ...[
+          const Gap(16),
+          SizedBox(
+            width: 128,
+            child: PitchTypeDropdownButton(
+              ball: resource.ballInfoList![selectedBallIndex.value].ball,
+              session: session,
+              onEditPitchType: (ballId, pitchTypeId) => ref
+                  .read(resourceDataDetailControllerProvider(
+                    teamId: teamId,
+                    sessionId: session.id!,
+                    resourceId: resource.id!,
+                  ).notifier)
+                  .editPitchType(
+                    ballId,
+                    pitchTypeId,
+                  ),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildAnalysisContent(BuildContext context, WidgetRef ref) {
+    return IndexedStack(
+      index: selectedBallIndex.value,
+      children: updatedResource.ballInfoList!.asMap().entries.map((entry) {
+        final ballInfo = entry.value;
+
+        return Column(
+          children: [
+            AnalysisResultCard(
+              teamId: teamId,
+              sessionId: session.id!,
+              resource: resource,
+              ball: ballInfo.ball,
+            ),
+            const Gap(8),
+            BallTrajectoryGraph(
+              ballInfo: ballInfo,
+            ),
+          ],
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildTrajectoryGraphs(BuildContext context, WidgetRef ref) {
+    return IndexedStack(
+      index: selectedBallIndex.value,
+      children: updatedResource.ballInfoList!.map((ballInfo) {
+        return BallTrajectoryGraph(
+          ballInfo: ballInfo,
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildAnalysisCards(BuildContext context) {
+    return IndexedStack(
+      index: selectedBallIndex.value,
+      children: resource.ballInfoList!.map((ballInfo) {
+        return AnalysisResultCard(
+          teamId: teamId,
+          sessionId: session.id!,
+          resource: resource,
+          ball: ballInfo.ball,
+        );
+      }).toList(),
+    );
+  }
+}
+
+/// View for other resource states
+class _ResourceDetailsOtherView extends StatelessWidget {
+  const _ResourceDetailsOtherView({
+    required this.resource,
+    required this.videoPlayerContainer,
+  });
+
+  final ResourceData resource;
+  final Widget videoPlayerContainer;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (MediaQuery.of(context).orientation) {
+      Orientation.portrait => Column(
+          children: [
+            videoPlayerContainer,
+            const Gap(24),
+            MessageCard(resource: resource),
+            const Gap(16),
+            ResourceDetailsInfoCard(resource: resource),
+          ],
+        ),
+      Orientation.landscape => Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  videoPlayerContainer,
+                  const Gap(16),
+                  ResourceDetailsInfoCard(resource: resource),
+                ],
+              ),
+            ),
+            const Gap(16),
+            Expanded(child: MessageCard(resource: resource)),
+          ],
+        ),
+    };
+  }
+}
+
+/// Refresh handler for resource details
+Future<void> _onRefresh(
+  WidgetRef ref,
+  String teamId,
+  String sessionId,
+  String resourceId,
+) async {
+  // Invalidate the detail controller (it will handle local vs remote logic internally)
+  ref.invalidate(resourceDataDetailControllerProvider(
+    teamId: teamId,
+    sessionId: sessionId,
+    resourceId: resourceId,
+  ));
+  // Also invalidate the list controller to keep them in sync
+  ref.invalidate(resourceDataListControllerProvider(
+    teamId: teamId,
+    sessionId: sessionId,
+  ));
+  ref.invalidate(teamListControllerProvider);
+}

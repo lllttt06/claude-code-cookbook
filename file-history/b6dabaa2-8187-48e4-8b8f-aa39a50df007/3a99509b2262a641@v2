@@ -1,0 +1,1158 @@
+# SmartScout Web リファクタリング計画
+
+## 概要
+
+このドキュメントは、現在の Pages Router ベースの Next.js アプリケーションを、React および Next.js のベストプラクティスに基づいてモダン化するためのリファクタリング計画です。
+
+---
+
+## Phase 1: 基盤整備と技術的負債の解消
+
+### 1.1 依存関係のモダン化
+
+**優先度: 高**
+
+#### 目的
+- メンテナンス終了・非推奨パッケージの置き換え
+- セキュリティリスクの軽減
+- モダンな API への移行
+
+#### 実施項目
+
+1. **Moment.js → date-fns への完全移行**
+   ```
+   - [ ] Moment.js の使用箇所を全て特定（grep）
+   - [ ] date-fns の代替関数マッピング作成
+   - [ ] タイムゾーン処理の移行戦略策定（date-fns-tz 使用）
+   - [ ] 段階的移行（ファイル単位）
+   - [ ] テストケース追加（特に日時フォーマット周り）
+   - [ ] Moment.js 削除
+   ```
+
+2. **Class Components → Function Components への移行**
+   ```
+   - [ ] Class Component の使用箇所を特定
+   - [ ] Lifecycle メソッドを useEffect に変換
+   - [ ] State を useState/useReducer に変換
+   - [ ] 各コンポーネントのテスト追加
+   ```
+
+3. **Redux Toolkit の最適化**
+   ```
+   - [ ] 不要な Redux 状態の特定（ローカル状態で十分なもの）
+   - [ ] RTK Query の導入検討（API 通信の簡素化）
+   - [ ] Slice の責務整理（肥大化したものを分割）
+   ```
+
+#### 成果物
+- 依存関係移行レポート
+- 更新された package.json
+- 移行ガイドドキュメント
+
+---
+
+### 1.2 TypeScript の型安全性強化
+
+**優先度: 高**
+
+#### 目的
+- ランタイムエラーの事前検出
+- 開発者体験の向上
+- リファクタリングの安全性確保
+
+#### 実施項目
+
+1. **tsconfig.json の厳格化**
+   ```json
+   {
+     "compilerOptions": {
+       "strict": true,
+       "noUncheckedIndexedAccess": true,
+       "noImplicitOverride": true,
+       "exactOptionalPropertyTypes": true
+     }
+   }
+   ```
+
+2. **API レスポンス型の自動生成**
+   ```
+   - [ ] OpenAPI スキーマの取得（baseball_detector_api から）
+   - [ ] openapi-typescript-codegen または @rtk-query/codegen-openapi の導入
+   - [ ] 型定義の自動生成スクリプト作成
+   - [ ] CI/CD パイプラインへの組み込み
+   ```
+
+3. **any 型の撲滅**
+   ```
+   - [ ] any 型の使用箇所を特定（ESLint ルール追加）
+   - [ ] unknown または適切な型への置き換え
+   - [ ] Type Guard 関数の実装
+   ```
+
+4. **Zod スキーマの活用拡大**
+   ```
+   - [ ] API レスポンスのランタイムバリデーション
+   - [ ] フォーム入力値の型安全なバリデーション
+   - [ ] 環境変数の型定義（@t3-oss/env-nextjs 導入検討）
+   ```
+
+#### 成果物
+- 型安全性チェックリスト
+- 型定義自動生成パイプライン
+- Type Guard ライブラリ
+
+---
+
+### 1.3 コードスタイルとフォーマットの統一
+
+**優先度: 中**
+
+#### 目的
+- コードレビューの効率化
+- マージコンフリクトの削減
+- チーム全体の開発速度向上
+
+#### 実施項目
+
+1. **ESLint ルールの強化**
+   ```javascript
+   // .eslintrc.json
+   {
+     "extends": [
+       "next/core-web-vitals",
+       "plugin:@typescript-eslint/recommended-type-checked",
+       "plugin:react/recommended",
+       "plugin:react-hooks/recommended",
+       "prettier"
+     ],
+     "rules": {
+       "@typescript-eslint/no-unused-vars": "error",
+       "@typescript-eslint/no-explicit-any": "error",
+       "react/prop-types": "off", // TypeScript 使用時
+       "react/react-in-jsx-scope": "off" // Next.js 不要
+     }
+   }
+   ```
+
+2. **Import 順序の統一**
+   ```
+   - [ ] eslint-plugin-import の導入
+   - [ ] import 順序ルールの定義（外部 → 内部 → 相対パス）
+   - [ ] 自動整形の設定
+   ```
+
+3. **Husky + lint-staged 導入**
+   ```
+   - [ ] pre-commit フックの設定
+   - [ ] コミット前の自動 lint/format 実行
+   - [ ] コミットメッセージ規約の強制（commitlint）
+   ```
+
+#### 成果物
+- 統一された ESLint/Prettier 設定
+- Git Hooks 設定
+- コーディング規約ドキュメント
+
+---
+
+## Phase 2: アーキテクチャのモダン化
+
+### 2.1 Pages Router から App Router への段階的移行
+
+**優先度: 中〜高**
+
+#### 目的
+- React Server Components（RSC）の活用
+- ストリーミング SSR によるパフォーマンス向上
+- レイアウトの効率化
+
+#### 実施項目
+
+1. **移行計画の策定**
+   ```
+   - [ ] App Router と Pages Router の共存設定
+   - [ ] 移行優先順位の決定（影響範囲の小さいページから）
+   - [ ] パフォーマンス測定基準の設定
+   ```
+
+2. **段階的移行（Incremental Adoption）**
+   ```
+   移行順序案:
+   1. 静的ページ（利用規約、プライバシーポリシーなど）
+   2. 認証不要の公開ページ
+   3. 認証が必要な簡易ページ
+   4. 複雑な状態管理を持つページ
+   5. 動的ルーティングページ
+   ```
+
+3. **Server Components と Client Components の設計**
+   ```typescript
+   // app/layout.tsx (Server Component)
+   export default function RootLayout({ children }: { children: React.ReactNode }) {
+     // サーバーサイドでデータ取得
+     return (
+       <html>
+         <body>
+           <Header /> {/* Server Component */}
+           {children}
+         </body>
+       </html>
+     );
+   }
+
+   // app/teams/[team_id]/page.tsx
+   async function TeamPage({ params }: { params: { team_id: string } }) {
+     const team = await fetchTeam(params.team_id); // Server-side
+     return <TeamClient team={team} />; // Client Component に渡す
+   }
+   ```
+
+4. **データフェッチング戦略の再設計**
+   ```
+   - [ ] Server Components でのデータ取得パターン確立
+   - [ ] SWR/React Query との併用戦略
+   - [ ] Streaming SSR の活用（Suspense）
+   - [ ] キャッシュ戦略の最適化（fetch の cache オプション）
+   ```
+
+5. **認証フローの再設計**
+   ```
+   - [ ] Middleware での認証チェック
+   - [ ] Server Actions の活用（フォーム送信など）
+   - [ ] セッション管理の見直し
+   ```
+
+#### 注意点
+- 静的エクスポート（`output: 'export'`）を継続する場合、App Router の一部機能が制限される
+- CloudFront + S3 のホスティング形態を維持するか、Vercel などへの移行を検討するか判断が必要
+
+#### 成果物
+- App Router 移行ガイドライン
+- Server/Client Components 設計パターン集
+- パフォーマンス比較レポート
+
+---
+
+### 2.2 コンポーネント設計の最適化
+
+**優先度: 高**
+
+#### 目的
+- 再利用性の向上
+- パフォーマンスの最適化
+- テストのしやすさ向上
+
+#### 実施項目
+
+1. **Atomic Design の導入**
+   ```
+   web/src/components/
+   ├── atoms/          # 最小単位（Button, Input, Icon など）
+   ├── molecules/      # 組み合わせ（SearchBox, FormField など）
+   ├── organisms/      # 複雑な UI（Header, Sidebar, DataTable など）
+   ├── templates/      # ページテンプレート
+   └── pages/          # 実際のページコンポーネント（pages/ から移動）
+   ```
+
+2. **コンポーネント分割の基準策定**
+   ```
+   - 単一責任の原則（SRP）の徹底
+   - 100 行を超えるコンポーネントは分割候補
+   - Props が 5 つを超える場合は設計見直し
+   - Custom Hooks への責務移譲
+   ```
+
+3. **Compound Components パターンの活用**
+   ```typescript
+   // Before: Props 地獄
+   <DataTable
+     columns={columns}
+     data={data}
+     pagination={true}
+     pageSize={10}
+     onPageChange={handlePageChange}
+     sortable={true}
+     onSort={handleSort}
+     // ... 無限に続く Props
+   />
+
+   // After: Compound Components
+   <DataTable data={data}>
+     <DataTable.Header>
+       <DataTable.Column sortable>名前</DataTable.Column>
+       <DataTable.Column>メール</DataTable.Column>
+     </DataTable.Header>
+     <DataTable.Body />
+     <DataTable.Pagination pageSize={10} />
+   </DataTable>
+   ```
+
+4. **パフォーマンス最適化**
+   ```
+   - [ ] React.memo の適切な使用
+   - [ ] useMemo/useCallback の過剰使用を避ける
+   - [ ] 仮想化リストの導入（react-window/react-virtualized）
+   - [ ] 画像遅延読み込みの徹底
+   - [ ] コード分割（dynamic import）の活用
+   ```
+
+5. **Custom Hooks の整理**
+   ```
+   web/src/hooks/
+   ├── api/            # API 通信関連
+   │   ├── useTeam.ts
+   │   └── usePlayer.ts
+   ├── ui/             # UI ロジック
+   │   ├── useModal.ts
+   │   └── usePagination.ts
+   └── utils/          # ユーティリティ
+       └── useDebounce.ts
+   ```
+
+#### 成果物
+- コンポーネント設計ガイドライン
+- Atomic Design ディレクトリ構造
+- パフォーマンスチェックリスト
+
+---
+
+### 2.3 状態管理の再設計
+
+**優先度: 中**
+
+#### 目的
+- グローバル状態の最小化
+- サーバー状態とクライアント状態の明確な分離
+- ボイラープレートの削減
+
+#### 実施項目
+
+1. **状態の分類と整理**
+   ```
+   サーバー状態（API から取得）:
+   - ユーザー情報
+   - チームデータ
+   - セッションデータ
+   → SWR/React Query/RTK Query で管理
+
+   グローバルクライアント状態（アプリ全体で共有）:
+   - 認証状態
+   - 言語設定
+   - テーマ設定
+   → Redux Toolkit で管理
+
+   ローカルクライアント状態（コンポーネント内で完結）:
+   - フォーム入力値
+   - モーダル開閉状態
+   - タブ選択状態
+   → useState で管理
+   ```
+
+2. **SWR または React Query の導入**
+   ```typescript
+   // Before: Redux でサーバーデータを管理
+   const dispatch = useDispatch();
+   useEffect(() => {
+     dispatch(fetchTeams());
+   }, []);
+   const teams = useSelector(state => state.teams.data);
+
+   // After: SWR でサーバーデータを管理
+   const { data: teams, error, isLoading } = useSWR('/api/teams', fetcher, {
+     revalidateOnFocus: false,
+     dedupingInterval: 60000
+   });
+   ```
+
+3. **RTK Query の導入検討**
+   ```typescript
+   // API エンドポイントの自動生成
+   import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+   export const api = createApi({
+     reducerPath: 'api',
+     baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+     endpoints: (builder) => ({
+       getTeams: builder.query<Team[], void>({
+         query: () => 'teams',
+       }),
+       getTeam: builder.query<Team, string>({
+         query: (id) => `teams/${id}`,
+       }),
+     }),
+   });
+
+   // 自動生成されたフック
+   export const { useGetTeamsQuery, useGetTeamQuery } = api;
+   ```
+
+4. **Context API の適切な活用**
+   ```typescript
+   // テーマやロケールなど、変更頻度の低いグローバル状態
+   const ThemeContext = createContext<ThemeContextType | null>(null);
+
+   export function ThemeProvider({ children }: { children: React.ReactNode }) {
+     const [theme, setTheme] = useState<'light' | 'dark'>('light');
+     return (
+       <ThemeContext.Provider value={{ theme, setTheme }}>
+         {children}
+       </ThemeContext.Provider>
+     );
+   }
+   ```
+
+5. **Zustand の導入検討**
+   ```typescript
+   // Redux の代替として検討（よりシンプル）
+   import create from 'zustand';
+
+   interface AppState {
+     language: string;
+     setLanguage: (lang: string) => void;
+   }
+
+   export const useAppStore = create<AppState>((set) => ({
+     language: 'ja',
+     setLanguage: (lang) => set({ language: lang }),
+   }));
+   ```
+
+#### 成果物
+- 状態管理戦略ドキュメント
+- データフェッチングパターン集
+- 移行ガイドライン
+
+---
+
+### 2.4 ディレクトリ構造の再編成
+
+**優先度: 中**
+
+#### 目的
+- Feature-based な構造への移行
+- 関連ファイルのコロケーション
+- スケーラビリティの向上
+
+#### 実施項目
+
+1. **現状分析**
+   ```
+   現在: 技術別の分類（components, services, hooks など）
+   問題点:
+   - 関連ファイルが分散
+   - 機能追加時の影響範囲が不明確
+   - 大規模化に伴う管理困難
+   ```
+
+2. **Feature-based 構造への移行案**
+   ```
+   web/src/
+   ├── app/                    # App Router ページ
+   ├── features/               # 機能単位でディレクトリ分割
+   │   ├── auth/
+   │   │   ├── components/
+   │   │   ├── hooks/
+   │   │   ├── services/
+   │   │   ├── types/
+   │   │   └── index.ts
+   │   ├── teams/
+   │   │   ├── components/
+   │   │   ├── hooks/
+   │   │   ├── services/
+   │   │   └── index.ts
+   │   ├── sessions/
+   │   └── players/
+   ├── shared/                 # 機能横断的な共通コード
+   │   ├── components/         # 共通 UI コンポーネント
+   │   │   ├── ui/            # Button, Input などのプリミティブ
+   │   │   └── layouts/       # Layout コンポーネント
+   │   ├── hooks/
+   │   ├── utils/
+   │   ├── types/
+   │   └── constants/
+   ├── services/               # インフラ層（API クライアント、認証など）
+   │   ├── api/
+   │   ├── auth/
+   │   └── storage/
+   └── store/                  # グローバル状態管理
+   ```
+
+3. **段階的移行計画**
+   ```
+   Phase 1: 新機能は新構造で実装
+   Phase 2: 既存機能を少しずつ移行（影響範囲の小さいものから）
+   Phase 3: 完全移行後に旧ディレクトリを削除
+   ```
+
+4. **パスエイリアスの設定**
+   ```typescript
+   // tsconfig.json
+   {
+     "compilerOptions": {
+       "paths": {
+         "@/*": ["./src/*"],
+         "@/features/*": ["./src/features/*"],
+         "@/shared/*": ["./src/shared/*"],
+         "@/services/*": ["./src/services/*"]
+       }
+     }
+   }
+   ```
+
+#### 成果物
+- 新ディレクトリ構造ドキュメント
+- 移行チェックリスト
+- Import パス変換スクリプト
+
+---
+
+## Phase 3: パフォーマンス最適化
+
+### 3.1 バンドルサイズの最適化
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **Bundle Analyzer による分析**
+   ```bash
+   npm install --save-dev @next/bundle-analyzer
+   ```
+   ```javascript
+   // next.config.mjs
+   const withBundleAnalyzer = require('@next/bundle-analyzer')({
+     enabled: process.env.ANALYZE === 'true',
+   });
+   ```
+
+2. **Tree Shaking の最適化**
+   ```
+   - [ ] Lodash → lodash-es への移行（名前付きインポート）
+   - [ ] Material UI のインポート最適化
+   - [ ] 未使用コードの削除
+   ```
+
+3. **コード分割戦略**
+   ```typescript
+   // Dynamic Import の活用
+   import dynamic from 'next/dynamic';
+
+   const HeavyComponent = dynamic(() => import('@/components/HeavyComponent'), {
+     loading: () => <Skeleton />,
+     ssr: false, // クライアントサイドのみで必要な場合
+   });
+   ```
+
+4. **依存関係の見直し**
+   ```
+   - Chart.js と @mui/x-charts の重複 → 統一
+   - Three.js の使用箇所確認 → 必要性の検証
+   - 巨大なライブラリの軽量版検討
+   ```
+
+#### 成果物
+- バンドルサイズレポート
+- 最適化実施リスト
+- 継続的モニタリング設定
+
+---
+
+### 3.2 画像・メディア最適化
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **Next.js Image コンポーネントの活用**
+   ```typescript
+   // 静的エクスポート時の制約を考慮しつつ最適化
+   import Image from 'next/image';
+
+   // loader を使ってカスタム最適化
+   const customLoader = ({ src, width, quality }) => {
+     return `${src}?w=${width}&q=${quality || 75}`;
+   };
+
+   <Image
+     loader={customLoader}
+     src="/images/example.jpg"
+     alt="Example"
+     width={500}
+     height={300}
+   />
+   ```
+
+2. **WebP/AVIF 形式への移行**
+   ```
+   - [ ] ビルド時の画像変換パイプライン構築
+   - [ ] picture タグでフォールバック対応
+   - [ ] CloudFront での画像最適化検討
+   ```
+
+3. **動画最適化**
+   ```
+   - [ ] mp4-muxer の最適化設定見直し
+   - [ ] プログレッシブダウンロード対応
+   - [ ] サムネイル生成の最適化
+   ```
+
+#### 成果物
+- 画像最適化ガイドライン
+- メディアファイル命名規則
+- 自動変換スクリプト
+
+---
+
+### 3.3 レンダリングパフォーマンス
+
+**優先度: 高**
+
+#### 実施項目
+
+1. **React DevTools Profiler による分析**
+   ```
+   - [ ] 不要な再レンダリングの特定
+   - [ ] 重い計算処理の特定
+   - [ ] コンポーネント階層の最適化
+   ```
+
+2. **最適化手法の適用**
+   ```typescript
+   // 1. メモ化（必要な箇所のみ）
+   const MemoizedComponent = React.memo(ExpensiveComponent, (prevProps, nextProps) => {
+     // カスタム比較関数
+     return prevProps.data.id === nextProps.data.id;
+   });
+
+   // 2. 計算結果のキャッシュ
+   const expensiveValue = useMemo(() => {
+     return computeExpensiveValue(data);
+   }, [data]);
+
+   // 3. コールバックの安定化
+   const handleClick = useCallback(() => {
+     doSomething(value);
+   }, [value]);
+
+   // 4. 仮想化リスト（大量データ）
+   import { FixedSizeList } from 'react-window';
+
+   <FixedSizeList
+     height={600}
+     itemCount={items.length}
+     itemSize={50}
+     width="100%"
+   >
+     {Row}
+   </FixedSizeList>
+   ```
+
+3. **Web Vitals の継続的モニタリング**
+   ```typescript
+   // _app.tsx
+   import { Analytics } from '@vercel/analytics/react';
+
+   export function reportWebVitals(metric) {
+     console.log(metric);
+     // カスタム分析サービスへ送信
+   }
+   ```
+
+#### 成果物
+- パフォーマンスレポート
+- Core Web Vitals 改善ログ
+- 最適化チェックリスト
+
+---
+
+## Phase 4: テスト戦略の強化
+
+### 4.1 テストピラミッドの構築
+
+**優先度: 高**
+
+#### 目的
+- バグの早期発見
+- リファクタリングの安全性確保
+- ドキュメントとしてのテスト
+
+#### 実施項目
+
+1. **テスト構成**
+   ```
+   ┌─────────────────┐
+   │   E2E (少)      │ ← Playwright（既存）
+   ├─────────────────┤
+   │ Integration (中) │ ← React Testing Library
+   ├─────────────────┤
+   │   Unit (多)     │ ← Jest + Vitest
+   └─────────────────┘
+   ```
+
+2. **Unit Test の導入（Jest/Vitest）**
+   ```bash
+   npm install --save-dev vitest @testing-library/react @testing-library/jest-dom
+   ```
+
+   ```typescript
+   // utils/formatDate.test.ts
+   import { formatDate } from './formatDate';
+
+   describe('formatDate', () => {
+     it('YYYY-MM-DD 形式でフォーマットする', () => {
+       const date = new Date('2024-01-15');
+       expect(formatDate(date)).toBe('2024-01-15');
+     });
+   });
+   ```
+
+3. **Integration Test（React Testing Library）**
+   ```typescript
+   // features/teams/components/TeamList.test.tsx
+   import { render, screen, waitFor } from '@testing-library/react';
+   import userEvent from '@testing-library/user-event';
+   import { TeamList } from './TeamList';
+
+   describe('TeamList', () => {
+     it('チーム一覧を表示する', async () => {
+       render(<TeamList />);
+
+       await waitFor(() => {
+         expect(screen.getByText('チーム A')).toBeInTheDocument();
+       });
+     });
+
+     it('チームをクリックすると詳細ページに遷移する', async () => {
+       const user = userEvent.setup();
+       render(<TeamList />);
+
+       await user.click(screen.getByText('チーム A'));
+       expect(mockRouter.push).toHaveBeenCalledWith('/teams/1');
+     });
+   });
+   ```
+
+4. **E2E Test の拡充（Playwright）**
+   ```
+   - [ ] クリティカルパスの E2E カバレッジ向上
+   - [ ] CI/CD パイプラインでの自動実行
+   - [ ] 失敗時のスクリーンショット/動画保存
+   ```
+
+5. **テストカバレッジ目標設定**
+   ```
+   - Unit Test: 80% 以上
+   - Integration Test: 主要機能の 70% 以上
+   - E2E Test: クリティカルパスの 100%
+   ```
+
+#### 成果物
+- テスト戦略ドキュメント
+- テストヘルパー/モックライブラリ
+- CI/CD テスト自動化パイプライン
+
+---
+
+### 4.2 ビジュアルリグレッションテストの強化
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **Storybook の導入**
+   ```bash
+   npx storybook@latest init
+   ```
+
+   ```typescript
+   // components/Button.stories.tsx
+   import type { Meta, StoryObj } from '@storybook/react';
+   import { Button } from './Button';
+
+   const meta: Meta<typeof Button> = {
+     title: 'UI/Button',
+     component: Button,
+   };
+
+   export default meta;
+   type Story = StoryObj<typeof Button>;
+
+   export const Primary: Story = {
+     args: {
+       variant: 'primary',
+       children: 'ボタン',
+     },
+   };
+   ```
+
+2. **Chromatic の導入検討**
+   ```
+   - [ ] Storybook のビジュアルリグレッションテスト
+   - [ ] PR ごとの自動チェック
+   - [ ] デザインレビューフローの確立
+   ```
+
+#### 成果物
+- Storybook 環境
+- コンポーネントカタログ
+- ビジュアルテスト自動化
+
+---
+
+## Phase 5: 開発者体験（DX）の向上
+
+### 5.1 開発環境の改善
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **Hot Reload の高速化**
+   ```javascript
+   // next.config.mjs
+   {
+     experimental: {
+       turbo: true, // Turbopack の有効化（Next.js 14+）
+     },
+   }
+   ```
+
+2. **型チェックの高速化**
+   ```json
+   // tsconfig.json
+   {
+     "compilerOptions": {
+       "incremental": true,
+       "tsBuildInfoFile": ".tsbuildinfo"
+     }
+   }
+   ```
+
+3. **開発用スクリプトの拡充**
+   ```json
+   {
+     "scripts": {
+       "dev": "next dev",
+       "dev:turbo": "next dev --turbo",
+       "type-check": "tsc --noEmit",
+       "lint:fix": "eslint --fix .",
+       "test": "vitest",
+       "test:e2e": "playwright test",
+       "storybook": "storybook dev -p 6006"
+     }
+   }
+   ```
+
+#### 成果物
+- 最適化された開発環境
+- 開発セットアップガイド
+
+---
+
+### 5.2 ドキュメントの充実
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **ADR（Architecture Decision Records）の導入**
+   ```
+   docs/adr/
+   ├── 0001-use-app-router.md
+   ├── 0002-adopt-swr-for-data-fetching.md
+   └── 0003-migrate-to-date-fns.md
+   ```
+
+2. **コンポーネントドキュメント**
+   ```
+   - [ ] Storybook の MDX ドキュメント
+   - [ ] 使用例の追加
+   - [ ] Props のドキュメント自動生成（react-docgen）
+   ```
+
+3. **オンボーディングドキュメント**
+   ```
+   - [ ] 新規開発者向けガイド
+   - [ ] アーキテクチャ図の作成
+   - [ ] トラブルシューティングガイド
+   ```
+
+#### 成果物
+- 包括的なドキュメントセット
+- オンボーディングチェックリスト
+
+---
+
+## Phase 6: セキュリティとアクセシビリティ
+
+### 6.1 セキュリティ強化
+
+**優先度: 高**
+
+#### 実施項目
+
+1. **依存関係の脆弱性チェック**
+   ```bash
+   npm audit
+   npm install --save-dev npm-check-updates
+   ncu -u
+   ```
+
+2. **CSP（Content Security Policy）の設定**
+   ```javascript
+   // next.config.mjs
+   {
+     headers: async () => [
+       {
+         source: '/:path*',
+         headers: [
+           {
+             key: 'Content-Security-Policy',
+             value: "default-src 'self'; script-src 'self' 'unsafe-inline';"
+           }
+         ]
+       }
+     ]
+   }
+   ```
+
+3. **環境変数の安全な管理**
+   ```typescript
+   // @t3-oss/env-nextjs を使用
+   import { createEnv } from '@t3-oss/env-nextjs';
+   import { z } from 'zod';
+
+   export const env = createEnv({
+     server: {
+       DATABASE_URL: z.string().url(),
+     },
+     client: {
+       NEXT_PUBLIC_API_URL: z.string().url(),
+     },
+     runtimeEnv: {
+       DATABASE_URL: process.env.DATABASE_URL,
+       NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+     },
+   });
+   ```
+
+#### 成果物
+- セキュリティチェックリスト
+- 脆弱性対応ログ
+
+---
+
+### 6.2 アクセシビリティ（a11y）対応
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **eslint-plugin-jsx-a11y の導入**
+   ```bash
+   npm install --save-dev eslint-plugin-jsx-a11y
+   ```
+
+2. **WCAG 2.1 AA 準拠**
+   ```
+   - [ ] キーボードナビゲーション対応
+   - [ ] ARIA 属性の適切な使用
+   - [ ] カラーコントラスト比の確保
+   - [ ] フォーカス管理の最適化
+   ```
+
+3. **自動テストの導入**
+   ```bash
+   npm install --save-dev @axe-core/playwright
+   ```
+
+   ```typescript
+   // tests/a11y.spec.ts
+   import { test, expect } from '@playwright/test';
+   import { injectAxe, checkA11y } from 'axe-playwright';
+
+   test('アクセシビリティチェック', async ({ page }) => {
+     await page.goto('/');
+     await injectAxe(page);
+     await checkA11y(page);
+   });
+   ```
+
+#### 成果物
+- アクセシビリティガイドライン
+- a11y チェックリスト
+
+---
+
+## Phase 7: モニタリングと継続的改善
+
+### 7.1 パフォーマンスモニタリング
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **Real User Monitoring（RUM）**
+   ```typescript
+   // Vercel Analytics または Google Analytics 4
+   import { Analytics } from '@vercel/analytics/react';
+
+   export default function App({ Component, pageProps }) {
+     return (
+       <>
+         <Component {...pageProps} />
+         <Analytics />
+       </>
+     );
+   }
+   ```
+
+2. **エラートラッキング**
+   ```bash
+   npm install @sentry/nextjs
+   npx @sentry/wizard@latest -i nextjs
+   ```
+
+3. **カスタムメトリクスの収集**
+   ```typescript
+   // API レスポンスタイム、ユーザー操作時間など
+   export function reportMetric(metric: CustomMetric) {
+     if (typeof window !== 'undefined') {
+       // 分析サービスへ送信
+     }
+   }
+   ```
+
+#### 成果物
+- モニタリングダッシュボード
+- アラート設定
+- パフォーマンス改善ログ
+
+---
+
+### 7.2 CI/CD パイプラインの強化
+
+**優先度: 中**
+
+#### 実施項目
+
+1. **GitHub Actions ワークフローの最適化**
+   ```yaml
+   # .github/workflows/ci.yml
+   name: CI
+   on: [push, pull_request]
+   jobs:
+     test:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-node@v4
+         - run: npm ci
+         - run: npm run type-check
+         - run: npm run lint
+         - run: npm test
+         - run: npm run build
+
+     e2e:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v4
+         - uses: actions/setup-node@v4
+         - run: npm ci
+         - run: npx playwright install --with-deps
+         - run: npm run test:e2e
+   ```
+
+2. **Lighthouse CI の導入**
+   ```bash
+   npm install --save-dev @lhci/cli
+   ```
+
+3. **自動デプロイの安全性向上**
+   ```
+   - [ ] ステージング環境での自動テスト
+   - [ ] Canary デプロイの検討
+   - [ ] ロールバック手順の自動化
+   ```
+
+#### 成果物
+- 最適化された CI/CD パイプライン
+- デプロイメントドキュメント
+
+---
+
+## 実施スケジュール案
+
+### 短期（1〜3 ヶ月）
+- ✅ Phase 1: 基盤整備（依存関係更新、TypeScript 強化）
+- ✅ Phase 4: 基本的なテスト導入（Unit/Integration）
+- ✅ Phase 6.1: セキュリティ強化
+
+### 中期（3〜6 ヶ月）
+- ✅ Phase 2.2: コンポーネント設計最適化
+- ✅ Phase 2.3: 状態管理再設計
+- ✅ Phase 3: パフォーマンス最適化
+- ✅ Phase 5: DX 向上
+
+### 長期（6〜12 ヶ月）
+- ✅ Phase 2.1: App Router への段階的移行
+- ✅ Phase 2.4: ディレクトリ構造再編成
+- ✅ Phase 7: モニタリング・継続的改善
+
+---
+
+## 成功指標（KPI）
+
+### 技術的指標
+- **TypeScript エラー数**: 0 を維持
+- **テストカバレッジ**: 80% 以上
+- **バンドルサイズ**: 30% 削減
+- **Lighthouse スコア**: 全項目 90 以上
+- **ビルド時間**: 50% 短縮
+
+### 開発者体験指標
+- **Hot Reload 時間**: 1 秒以内
+- **型チェック時間**: 10 秒以内
+- **PR マージまでの時間**: 平均 24 時間以内
+
+### ユーザー体験指標
+- **First Contentful Paint (FCP)**: 1.8 秒以内
+- **Largest Contentful Paint (LCP)**: 2.5 秒以内
+- **Cumulative Layout Shift (CLS)**: 0.1 以下
+- **Time to Interactive (TTI)**: 3.8 秒以内
+
+---
+
+## リスクと対策
+
+### リスク 1: 大規模リファクタリングによる機能停止
+**対策**:
+- 段階的移行（Incremental Adoption）
+- Feature Flag の活用
+- 十分なテストカバレッジ確保
+
+### リスク 2: 学習コストによる開発速度低下
+**対策**:
+- ペアプログラミング/モブプログラミング
+- 社内勉強会の実施
+- 詳細なドキュメント整備
+
+### リスク 3: 静的エクスポート制約による App Router の制限
+**対策**:
+- ホスティング方式の見直し検討（Vercel への移行など）
+- 段階的な機能検証
+- ハイブリッドアプローチ（Pages Router と App Router の共存）
+
+---
+
+## まとめ
+
+本リファクタリング計画は、現行システムの安定稼働を維持しながら、段階的にモダンなアーキテクチャへ移行することを目的としています。
+
+**重要な原則**:
+1. **段階的な移行** - ビッグバン方式ではなく、小さく頻繁にリリース
+2. **テストファースト** - リファクタリング前に既存機能のテストを整備
+3. **チーム全体の合意** - 各フェーズの開始前にチームで方向性を確認
+4. **継続的な改善** - 一度に完璧を目指さず、継続的に改善
+
+この計画に沿って進めることで、保守性・拡張性・パフォーマンスの全てが向上した、モダンで持続可能な Web アプリケーションを実現できます。

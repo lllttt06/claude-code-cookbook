@@ -1,0 +1,78 @@
+/// {@category Containers}
+library;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/pitch_type.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/hooks/use_pitch_type_map.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+
+/// A badge widget for [PitchType].
+class PitchTypeBadge extends HookWidget {
+  const PitchTypeBadge({
+    required this.pitchType,
+    required this.emptyBadgeWhenNull,
+    this.textStyle = TextStyleManager.subtitle4,
+    this.showDropdownIndicator = true,
+    super.key,
+  });
+
+  final PitchType? pitchType;
+  final bool emptyBadgeWhenNull;
+  final TextStyle textStyle;
+  final bool showDropdownIndicator;
+
+  static const double width = 90;
+
+  @override
+  Widget build(BuildContext context) {
+    final translatePitchType = useTranslatePitchType();
+    final pitchTypeColor = usePitchTypeColor();
+
+    if (!emptyBadgeWhenNull && pitchType == null) {
+      return const SizedBox.shrink();
+    }
+
+    final pitchTypeText = translatePitchType(pitchType?.pitchType);
+    final color = pitchTypeColor(pitchType?.pitchType);
+
+    return Container(
+      width: width,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: const BorderRadius.all(Radius.circular(8)),
+      ),
+      child: Padding(
+        padding: const EdgeInsetsDirectional.all(4),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            // 中央にテキスト
+            Text(
+              pitchTypeText,
+              textAlign: TextAlign.center,
+              style: textStyle.copyWith(color: Colors.white),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            // 右側に下向きアイコン（必要に応じて）
+            if (showDropdownIndicator)
+              const Positioned(
+                right: 2,
+                child: Icon(
+                  Icons.arrow_drop_down,
+                  size: 16,
+                  color: Colors.white,
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}

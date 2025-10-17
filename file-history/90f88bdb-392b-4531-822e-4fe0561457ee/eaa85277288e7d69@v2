@@ -1,0 +1,48 @@
+import React, { createContext, ReactNode, useContext, useState } from 'react';
+
+interface AccessDeniedContextType {
+  hasForbiddenError: boolean;
+  setForbiddenError: (value: boolean) => void;
+}
+
+const AccessDeniedContext = createContext<AccessDeniedContextType | undefined>(
+  undefined,
+);
+
+export function AccessDeniedProvider({ children }: { children: ReactNode }) {
+  const [hasForbiddenError, setHasForbiddenError] = useState(false);
+
+  return (
+    <AccessDeniedContext.Provider
+      value={{
+        hasForbiddenError,
+        setForbiddenError: setHasForbiddenError,
+      }}
+    >
+      {children}
+    </AccessDeniedContext.Provider>
+  );
+}
+
+export function useAccessDenied() {
+  const context = useContext(AccessDeniedContext);
+  if (context === undefined) {
+    throw new Error(
+      'useAccessDenied must be used within an AccessDeniedProvider',
+    );
+  }
+  return context;
+}
+
+// グローバルな setter を保持（Axios インターセプターで使用）
+let globalSetForbiddenError: ((value: boolean) => void) | null = null;
+
+export function setGlobalAccessDeniedSetter(
+  setter: (value: boolean) => void,
+) {
+  globalSetForbiddenError = setter;
+}
+
+export function getGlobalAccessDeniedSetter() {
+  return globalSetForbiddenError;
+}

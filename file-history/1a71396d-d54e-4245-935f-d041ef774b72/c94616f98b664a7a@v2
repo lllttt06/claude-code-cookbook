@@ -1,0 +1,217 @@
+# AI コーチバリデーション統合実装計画
+
+## 概要
+
+現在、AI コーチレポート生成前のバリデーションにおいて、Player の「投球利き腕」と「誕生日」のチェックが別々のバリデーションケースとして実装されています。これらを統合して単一のバリデーションとし、エラーメッセージも適切に変更します。
+
+## 現状分析
+
+### 現在のバリデーションケース
+
+```dart
+enum AICoachValidator {
+  ok,
+  notEnoughPitchingData,
+  missingPitchTypes,
+  missingPitchingHand,      // ← 投球利き腕チェック
+  missingBirthday,          // ← 誕生日チェック
+  usageLimitReached,
+}
+```
+
+### 現在の検証ロジック
+
+```dart
+// 利き手が設定されているか
+final pitchingHand = player?.pitchingHand ?? Handedness.none;
+if (pitchingHand == Handedness.none) {
+  return AICoachValidator.missingPitchingHand;
+}
+
+// 誕生日が設定されているか
+final hasBirthday = player?.birthday != null;
+if (!hasBirthday) {
+  return AICoachValidator.missingBirthday;
+}
+```
+
+### 現在のエラーメッセージ
+
+- `ai_coach_report__request_need_player_pitching_hand`: "選手の投球利き腕を設定してください。"
+- `ai_coach_report__request_need_player_birthday`: "選手の生年月日を設定してください。"
+
+## 実装変更内容
+
+### 1. バリデーション Enum の変更
+
+**ファイル**: `lib/views/pages/home/sessions/session_details/ai_coach_report/hooks/use_ai_coach_validation.dart`
+
+```dart
+enum AICoachValidator {
+  ok,
+  notEnoughPitchingData,
+  missingPitchTypes,
+  missingPlayerInfo,        // ← 新規: 統合されたケース
+  usageLimitReached,
+}
+```
+
+**変更点**:
+- `missingPitchingHand` を削除
+- `missingBirthday` を削除
+- `missingPlayerInfo` を追加（投球利き腕と誕生日の両方をカバー）
+
+### 2. バリデーションロジックの変更
+
+**ファイル**: `lib/views/pages/home/sessions/session_details/ai_coach_report/hooks/use_ai_coach_validation.dart`
+
+```dart
+return ({required Player? player, required List<Ball> pitchingBalls}) {
+  final hasEnoughPitchingData = pitchingBalls.length >= 10;
+  final hasAllPitchTypes = hasEnoughPitchingData &&
+      !pitchingBalls.any(
+        (ball) =>
+            ball.pitchType == null || ball.pitchType?.pitchType == 'none',
+      );
+
+  // 投球データ 10 個以上存在するか
+  if (!hasEnoughPitchingData) {
+    return AICoachValidator.notEnoughPitchingData;
+  }
+
+  // すべてに球種タグがついているか
+  if (!hasAllPitchTypes) {
+    return AICoachValidator.missingPitchTypes;
+  }
+
+  // 投球利き腕と誕生日が設定されているか（統合）
+  final pitchingHand = player?.pitchingHand ?? Handedness.none;
+  final hasBirthday = player?.birthday != null;
+
+  if (pitchingHand == Handedness.none || !hasBirthday) {
+    return AICoachValidator.missingPlayerInfo;
+  }
+
+  // AI コーチの利用回数上限に達していないか
+  if (usage.maxUsage != null &&
+      usage.currentUsage != null &&
+      usage.currentUsage! >= usage.maxUsage!) {
+    return AICoachValidator.usageLimitReached;
+  }
+
+  return AICoachValidator.ok;
+};
+```
+
+**変更点**:
+- 2 つの独立したチェックを 1 つの統合チェックに変更
+- OR 条件 (`||`) で両方の条件を評価
+- 単一の `missingPlayerInfo` ケースを返す
+
+### 3. エラーメッセージ表示の変更
+
+**ファイル**: `lib/views/pages/home/sessions/session_details/ai_coach_report/hooks/use_ai_report_generation.dart`
+
+**変更前**:
+```dart
+case AICoachValidator.missingPitchingHand:
+  context.showErrorSnackBar(
+    context.l10n.ai_coach_report__request_need_player_pitching_hand,
+  );
+  return;
+case AICoachValidator.missingBirthday:
+  context.showErrorSnackBar(
+    context.l10n.ai_coach_report__request_need_player_birthday,
+  );
+  return;
+```
+
+**変更後**:
+```dart
+case AICoachValidator.missingPlayerInfo:
+  context.showErrorSnackBar(
+    context.l10n.ai_coach_report__request_need_player_info,
+  );
+  return;
+```
+
+### 4. ローカライゼーションファイルの変更
+
+**ファイル**: `lib/l10n/app_ja.arb`
+
+**追加するキー**:
+```json
+"ai_coach_report__request_need_player_info": "選手の投球利き腕と生年月日を設定してください。",
+```
+
+**注意**: ARB ファイルは並び順を変更してはいけないため、ファイルの末尾に追加します。
+
+**ファイル**: `lib/l10n/app_en.arb`
+
+**追加するキー**:
+```json
+"ai_coach_report__request_need_player_info": "Please set the player's pitching hand and birthday.",
+```
+
+### 5. 削除される（使用されなくなる）キー
+
+以下のキーは使用されなくなりますが、ARB ファイルからは削除しません（後方互換性のため残す）:
+- `ai_coach_report__request_need_player_pitching_hand`
+- `ai_coach_report__request_need_player_birthday`
+
+## 実装手順
+
+1. ✅ **バリデーション enum の更新**
+   - `use_ai_coach_validation.dart` の `AICoachValidator` enum を変更
+
+2. ✅ **バリデーションロジックの統合**
+   - `use_ai_coach_validation.dart` の `useAICoachValidation()` 関数内のロジックを統合
+
+3. ✅ **エラー表示処理の更新**
+   - `use_ai_report_generation.dart` の switch 文を更新
+
+4. ✅ **ローカライゼーションキーの追加**
+   - `app_ja.arb` に新しいメッセージを末尾に追加
+   - `app_en.arb` に新しいメッセージを末尾に追加
+
+5. ✅ **コード生成の実行**
+   - `mise l10n` コマンドを実行して l10n ファイルを再生成
+
+6. ✅ **静的解析とフォーマット**
+   - `mise analyze` でエラーチェック
+   - `mise format_dart && mise format_import` でフォーマット
+
+7. ✅ **動作確認**
+   - 投球利き腕のみ未設定のケースをテスト
+   - 誕生日のみ未設定のケースをテスト
+   - 両方未設定のケースをテスト
+   - 両方設定済みのケースをテスト
+
+## 期待される結果
+
+### Before（統合前）
+
+- 投球利き腕が未設定 → 「選手の投球利き腕を設定してください。」
+- 誕生日が未設定 → 「選手の生年月日を設定してください。」
+- 両方未設定の場合 → 投球利き腕のエラーが先に表示される
+
+### After（統合後）
+
+- 投球利き腕が未設定 → 「選手の投球利き腕と生年月日を設定してください。」
+- 誕生日が未設定 → 「選手の投球利き腕と生年月日を設定してください。」
+- 両方未設定 → 「選手の投球利き腕と生年月日を設定してください。」
+- 両方設定済み → バリデーション通過
+
+## メリット
+
+1. **シンプル化**: バリデーションケースが 2 つ減り、コードがシンプルになる
+2. **一貫性**: ユーザーに対して一度で必要な情報をすべて伝えられる
+3. **保守性向上**: 関連するバリデーションが統合され、変更時の修正箇所が減る
+4. **UX 改善**: ユーザーが複数回エラーに遭遇することを防ぐ
+
+## 注意事項
+
+- ARB ファイルの並び順は変更しない（新規追加は末尾に）
+- 古いローカライゼーションキーは後方互換性のため残す
+- l10n コード生成を忘れずに実行する
+- 各バリデーションケースが正しく動作することを確認する

@@ -1,0 +1,53 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          field_rename: snake
+        generate_for:
+          include:
+            - lib/data/models/**
+            - lib/modules/**
+          exclude:
+            - lib/**/*.freezed.dart
+            - lib/**/*.g.dart
+
+      freezed:
+        options:
+          map: false  # map関連のメソッドを生成しない
+          when: false # when関連のメソッドを生成しない
+          format: false # フォーマットを行わない
+        generate_for:
+          include:
+            - lib/data/models/**
+            - lib/views/pages/**
+            - lib/modules/**
+          exclude:
+            - lib/**/*.freezed.dart
+            - lib/**/*.g.dart
+
+      riverpod_generator:
+        generate_for:
+          include:
+            - lib/controllers/**
+            - lib/providers/**
+            - lib/views/**
+            - lib/data/**
+          exclude:
+            - lib/**/*.freezed.dart
+            - lib/**/*.g.dart
+
+      mockito|mockBuilder:
+        generate_for:
+          include:
+            - test/data/query_runner_test.dart
+
+      playbook_generator:stories:
+        options:
+          input: lib/views/**/*_vrt.dart
+
+# See also: https://github.com/dart-lang/build/issues/3509#issuecomment-1549730451
+global_options:
+  playbook_generator:stories:
+    runs_before:
+      - riverpod_generator

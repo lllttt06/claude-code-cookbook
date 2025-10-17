@@ -1,0 +1,126 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/super_admin_team_search_controller.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_effect_once.dart';
+
+/// Search type for super admin team search
+enum TeamSearchType {
+  teamName,
+  ownerEmail,
+}
+
+/// A widget that displays a search bar for super admin team search.
+class SuperAdminTeamSearchBar extends HookConsumerWidget {
+  const SuperAdminTeamSearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final controller = useTextEditingController();
+    final searchType = useState(TeamSearchType.teamName);
+
+    useEffectOnce(
+      () {
+        final params = ref.read(teamSearchFilterParametersNotifierProvider);
+        // 既存の検索パラメータを復元
+        if (params.keyword != null && controller.text != params.keyword) {
+          controller.text = params.keyword!;
+          searchType.value = TeamSearchType.teamName;
+        } else if (params.ownerEmail != null &&
+            controller.text != params.ownerEmail) {
+          controller.text = params.ownerEmail!;
+          searchType.value = TeamSearchType.ownerEmail;
+        }
+        return null;
+      },
+    );
+
+    void performSearch() {
+      final notifier =
+          ref.read(teamSearchFilterParametersNotifierProvider.notifier);
+      final searchText = controller.text.isEmpty ? null : controller.text;
+
+      // 検索タイプに応じて適切なパラメータを更新
+      if (searchType.value == TeamSearchType.teamName) {
+        notifier.updateKeyword(searchText);
+        // ownerEmail をクリア
+        if (ref.read(teamSearchFilterParametersNotifierProvider).ownerEmail !=
+            null) {
+          notifier.updateFilters(ownerEmail: null);
+        }
+      } else {
+        notifier.updateFilters(ownerEmail: searchText);
+        // keyword をクリア
+        if (ref.read(teamSearchFilterParametersNotifierProvider).keyword !=
+            null) {
+          notifier.updateKeyword(null);
+        }
+      }
+      ref.invalidate(superAdminTeamSearchControllerProvider);
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          TextField(
+            controller: controller,
+            onSubmitted: (_) => performSearch(),
+            decoration: InputDecoration(
+              hintText: searchType.value == TeamSearchType.teamName
+                  ? context
+                      .l10n.super_admin_team_switcher__search_hint_team_name
+                  : context
+                      .l10n.super_admin_team_switcher__search_hint_owner_email,
+              prefixIcon: Icon(Icons.search, color: colorScheme.primary),
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  controller.clear();
+                  performSearch();
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+          const Gap(8),
+          SegmentedButton<TeamSearchType>(
+            segments: [
+              ButtonSegment<TeamSearchType>(
+                value: TeamSearchType.teamName,
+                label: Text(context
+                    .l10n.super_admin_team_switcher__search_type_team_name),
+                icon: const Icon(Icons.group),
+              ),
+              ButtonSegment<TeamSearchType>(
+                value: TeamSearchType.ownerEmail,
+                label: Text(context
+                    .l10n.super_admin_team_switcher__search_type_owner_email),
+                icon: const Icon(Icons.email),
+              ),
+            ],
+            selected: {searchType.value},
+            onSelectionChanged: (Set<TeamSearchType> newSelection) {
+              searchType.value = newSelection.first;
+              // 検索タイプ切り替え時に既存のテキストをクリア
+              controller.clear();
+              // 検索タイプ変更時にも検索を実行
+              performSearch();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}

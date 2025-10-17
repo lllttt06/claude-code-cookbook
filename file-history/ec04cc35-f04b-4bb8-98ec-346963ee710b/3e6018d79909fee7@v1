@@ -1,0 +1,41 @@
+// Project imports:
+import 'data/ball_positions.dart';
+import 'data/balls.dart';
+import 'data/notification.dart';
+import 'data/pitch_types.dart';
+import 'data/plans.dart';
+import 'data/players.dart';
+import 'data/resources.dart';
+import 'data/roles.dart';
+import 'data/sessions.dart';
+import 'data/team_plans.dart';
+import 'data/teams.dart';
+import 'data/users.dart';
+import 'file_writer.dart';
+
+void main() async {
+  final writer = SqlFileWriter();
+  await writer.cleanup();
+
+  // NOTE: Seeders will be executed in the order below.
+
+  // public schema sql files
+  await writer.writeToFile(roleGroupRecords);
+  await writer.writeToFile(roleRecords);
+  await writer.writeToFile(teamRecords);
+  await writer.writeToFile(userRecords);
+  await writer.writeToFile(profileRecords);
+  await writer.writeToFile(userRoleRecords);
+  await writer.writeToFile(planRecords);
+  await writer.writeToFile(teamPlanRecords);
+  await writer.writeToFile(playerRecords);
+  await writer.writeToFile(sessionRecords);
+  await writer.writeToFile(resourceRecords); // refered by ballRecords.
+  await writer.writeToFile(pitchTypeRecords); // refered by ballRecords.
+  await writer.writeToFile(ballRecords);
+  await writer.writeToFile(ballPositionRecords);
+  await writer.writeToFile(notificationsRecords);
+
+  // json file for cognito user pool emulator
+  await writeUserJsonToFile(userRecords);
+}

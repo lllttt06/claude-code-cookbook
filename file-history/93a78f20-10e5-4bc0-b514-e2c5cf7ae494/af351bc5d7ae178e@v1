@@ -1,0 +1,126 @@
+/// {@category Containers}
+library;
+
+// Flutter imports:
+import 'package:flutter/widgets.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/bad_request_failure.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_operation.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_widget_ref.dart';
+import 'package:baseball_detector_flutter/views/routers/app_router.dart';
+
+typedef AuthCodeOperations = ({
+  Future<bool> Function(String code) confirmCode,
+  Future<void> Function() resendCode,
+});
+
+enum _ConfirmCodeProgress {
+  verifyCode,
+  completeSignUp,
+  signIn,
+}
+
+AuthCodeOperations useAuthCodeOperations() {
+  final context = useContext();
+  final ref = useWidgetRef();
+  final handleOperation = useOperation();
+
+  Future<void> resendCode([bool internal = false]) async {
+    await handleOperation(
+      operation: ref.read(loginStateControllerProvider.notifier).resendCode(),
+      onSucceeded: (_) {
+        if (internal) {
+          return context.l10n.confirm_code_page__sign_up_failed_resend;
+        }
+        return context.l10n.confirm_code_page__resend_code_completed;
+      },
+      onFailed: (err) {
+        return err.translate(context.l10n);
+      },
+    );
+  }
+
+  Future<bool> confirmCode(String code) async {
+    var progress = _ConfirmCodeProgress.verifyCode;
+    var result = true;
+
+    await handleOperation(
+      operation: (() async {
+        final ctrl = ref.read(loginStateControllerProvider.notifier);
+
+        progress = _ConfirmCodeProgress.verifyCode;
+        final verifyCodeRes = await ctrl.verifyCode(code);
+        if (!verifyCodeRes.hasRight) {
+          return verifyCodeRes;
+        }
+        final token = verifyCodeRes.right;
+
+        progress = _ConfirmCodeProgress.completeSignUp;
+        final completeSignUpRes = await ctrl.completeSignUp(token);
+        if (!completeSignUpRes.hasRight) {
+          return completeSignUpRes;
+        }
+
+        progress = _ConfirmCodeProgress.signIn;
+        final profileStorage = ref.read(profileStorageProvider);
+        final email = await profileStorage.getEmail();
+        final password = await profileStorage.getPassword();
+        return await ctrl.signInWithPassword(email!, password!, true);
+      })(),
+      onSucceeded: (_) async {
+        result = true;
+
+        // Clear pendingUserId before navigating to HomePage
+        await ref.read(profileStorageProvider).setPendingSignUpUserId(null);
+
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          AppRouter.homePage,
+          (_) => false,
+        );
+
+        return context.l10n.confirm_code_page__sign_up_completed;
+      },
+      onFailed: (err) async {
+        result = false;
+
+        switch (progress) {
+          case _ConfirmCodeProgress.verifyCode:
+            if (err is! HttpResponseFailure ||
+                !{'invalid_url', 'link_expired'}.contains(err.title)) {
+              return err.translate(context.l10n);
+            }
+            continue resendCode;
+
+          resendCode:
+          case _ConfirmCodeProgress.completeSignUp:
+            await resendCode(true);
+            return null;
+
+          case _ConfirmCodeProgress.signIn:
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRouter.loginPage,
+              (_) => false,
+            );
+            return context.l10n.confirm_code_page__sign_in_failed;
+        }
+      },
+      // 確認コードの間違いのエラーは実装の不備ではないので、エラーログを送信しない
+      shouldSendErrorLog: (failure) => failure is! InvalidCodeFailure,
+    );
+
+    return result;
+  }
+
+  return (
+    confirmCode: confirmCode,
+    resendCode: resendCode,
+  );
+}

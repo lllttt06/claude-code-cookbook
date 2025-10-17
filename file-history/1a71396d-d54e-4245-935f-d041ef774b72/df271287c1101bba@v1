@@ -1,0 +1,65 @@
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/ball.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/handedness.dart';
+import 'package:baseball_detector_flutter/data/models/player.dart';
+import 'package:baseball_detector_flutter/views/pages/home/hooks/use_ai_coach_count.dart';
+
+/// AI コーチレポート生成前のバリデーション結果
+enum AICoachValidator {
+  ok,
+  notEnoughPitchingData,
+  missingPitchTypes,
+  missingPitchingHand,
+  missingBirthday,
+  usageLimitReached,
+}
+
+
+/// AI コーチレポート生成前のバリデーションロジック
+AICoachValidator Function({
+  required List<Ball> pitchingBalls,
+  required Player? player,
+}) useAICoachValidation() {
+  final usage = useAICoachCount();
+
+  return ({required Player? player, required List<Ball> pitchingBalls}) {
+    final hasEnoughPitchingData = pitchingBalls.length >= 10;
+    final hasAllPitchTypes = hasEnoughPitchingData &&
+        !pitchingBalls.any(
+          (ball) =>
+              ball.pitchType == null || ball.pitchType?.pitchType == 'none',
+        );
+
+    // 投球データ 10 個以上存在するか
+    if (!hasEnoughPitchingData) {
+      return AICoachValidator.notEnoughPitchingData;
+    }
+
+    // すべてに球種タグがついているか
+    if (!hasAllPitchTypes) {
+      return AICoachValidator.missingPitchTypes;
+    }
+
+    // 利き手が設定されているか
+    final pitchingHand = player?.pitchingHand ?? Handedness.none;
+    if (pitchingHand == Handedness.none) {
+      return AICoachValidator.missingPitchingHand;
+    }
+
+    // 誕生日が設定されているか
+    final hasBirthday = player?.birthday != null;
+    if (!hasBirthday) {
+      return AICoachValidator.missingBirthday;
+    }
+
+    // AI コーチの利用回数上限に達していないか
+    if (usage.maxUsage != null &&
+        usage.currentUsage != null &&
+        usage.currentUsage! >= usage.maxUsage!) {
+      return AICoachValidator.usageLimitReached;
+    }
+
+    return AICoachValidator.ok;
+  };
+}
+

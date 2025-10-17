@@ -1,0 +1,368 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sprintf/sprintf.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/locale_controller.dart';
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+import 'package:baseball_detector_flutter/data/upload_queue.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/app_unit_provider.dart';
+import 'package:baseball_detector_flutter/providers/custom_provider_observer.dart';
+import 'package:baseball_detector_flutter/providers/dark_mode_provider.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/utils/locale_ext.dart';
+import 'package:baseball_detector_flutter/views/components/custom_dropdown_menu.dart';
+import 'package:baseball_detector_flutter/views/components/custom_switch.dart';
+import 'package:baseball_detector_flutter/views/components/searchable_dropdown_menu.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_operation.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+
+class PreferencesCard extends HookConsumerWidget {
+  const PreferencesCard({
+    required this.teamList,
+    required this.userInfo,
+    super.key,
+  });
+
+  final List<Team> teamList;
+  final UserInfo userInfo;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final handleOperation = useOperation();
+    final isDarkMode = ref.watch(darkModeProvider);
+    final unitType = ref.watch(appUnitProvider);
+    final localeLanguage = ref.watch(localeControllerProvider);
+
+    return Card(
+      child: Column(
+        children: [
+          _buildSwitchItem(
+            context,
+            icon: Icons.straighten_outlined,
+            text: context.l10n.settings_page__change_units_button,
+            leftLabel: context.l10n.change_unit_page__meters,
+            rightLabel: context.l10n.change_unit_page__miles,
+            value: unitType == UnitType.mphInch,
+            onChanged: (isMphInch) async {
+              ref
+                  .read(appUnitProvider.notifier)
+                  .update(isMphInch ? UnitType.mphInch : UnitType.kmhCm);
+            },
+          ),
+          _buildSwitchItem(
+            context,
+            icon: Icons.dark_mode_outlined,
+            text: context.l10n.settings_page__dark_mode,
+            leftLabel: context.l10n.change_dark_mode_page__light_mode,
+            rightLabel: context.l10n.change_dark_mode_page__dark_mode,
+            value: isDarkMode,
+            onChanged: (isDark) {
+              ref.read(darkModeProvider.notifier).update(isDark);
+            },
+          ),
+          _buildLanguageDropdownItem(
+            context,
+            ref,
+            localeLanguage,
+          ),
+          if (teamList.length >= 2)
+            _buildTeamDropdownItem(
+              context,
+              ref,
+              teamList,
+              userInfo,
+              handleOperation,
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSwitchItem(
+    BuildContext context, {
+    required IconData icon,
+    required String text,
+    required String leftLabel,
+    required String rightLabel,
+    required bool value,
+    required ValueChanged<bool> onChanged,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 24,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              const Gap(16),
+              Expanded(
+                child: Text(
+                  text,
+                  style: TextStyleManager.body1,
+                ),
+              ),
+            ],
+          ),
+          const Gap(16),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: Theme.of(context)
+                  .colorScheme
+                  .surfaceContainerHighest
+                  .withAlpha(100),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    leftLabel,
+                    style: TextStyleManager.caption.copyWith(
+                      color: !value
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: !value ? FontWeight.w600 : FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const Gap(16),
+                CustomSwitch(
+                  initialValue: value,
+                  onChanged: onChanged,
+                ),
+                const Gap(16),
+                Expanded(
+                  child: Text(
+                    rightLabel,
+                    style: TextStyleManager.caption.copyWith(
+                      color: value
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: value ? FontWeight.w600 : FontWeight.normal,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTeamDropdownItem(
+    BuildContext context,
+    WidgetRef ref,
+    List<Team> teams,
+    UserInfo userInfo,
+    OperationCallback handleOperation,
+  ) {
+    // Capture the container while the widget is mounted
+    final container = ProviderScope.containerOf(context, listen: false);
+    final currentTeamId =
+        ref.watch(profileStorageProvider.select((p) => p.getTeamId()));
+
+    // Find current team for SearchableDropdownMenu value
+    final currentTeam = teams.firstWhereOrNull((t) => t.id == currentTeamId);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.groups_outlined,
+                size: 24,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              const Gap(16),
+              Expanded(
+                child: Text(
+                  context.l10n.settings_page__team,
+                  style: TextStyleManager.body1,
+                ),
+              ),
+            ],
+          ),
+          const Gap(12),
+          SizedBox(
+            height: 48,
+            child: SearchableDropdownMenu<Team>(
+              value: currentTeam,
+              onChanged: (team) {
+                if (team == null) return;
+                final teamId = team.id;
+                if (teamId == currentTeamId) return;
+                if (teamId == null) return;
+                // Clear the upload queue
+                ref.read(uploadQueueProvider).clearAwaiting();
+                // Invalidate all providers using container (avoid disposed ref)
+                AppProviders.instance.invalidateAllProviders(container);
+                handleOperation(
+                  loadingDialogIsVisible: false,
+                  operation: ref
+                      .read(loginStateControllerProvider.notifier)
+                      .switchTeam(teamId),
+                );
+              },
+              itemList: teams,
+              itemBuilder: (team) {
+                final text =
+                    (team.name ?? '').isNotEmpty ? team.name! : '(${team.id})';
+                final isSelectable = _isTeamSelectable(userInfo, team.id!);
+                final isCurrentTeam = team.id == currentTeamId;
+                return Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        isSelectable
+                            ? text
+                            : sprintf(
+                                context
+                                    .l10n.switch_team_page__deactivated_format,
+                                [text]),
+                        style: isSelectable
+                            ? null
+                            : const TextStyle(
+                                color: ColorManager.error,
+                              ),
+                      ),
+                    ),
+                    if (isCurrentTeam) ...[
+                      const Gap(8),
+                      const Icon(
+                        Icons.check_circle,
+                        color: ColorManager.main,
+                        size: 16,
+                      ),
+                    ],
+                  ],
+                );
+              },
+              displayString: (team) =>
+                  (team.name ?? '').isNotEmpty ? team.name! : '(${team.id})',
+              hintText: context.l10n.settings_page__team,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 12,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageDropdownItem(
+    BuildContext context,
+    WidgetRef ref,
+    Locale currentLocale,
+  ) {
+    final locales = [const Locale('en'), const Locale('ja')];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.language_outlined,
+                size: 24,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              const Gap(16),
+              Expanded(
+                child: Text(
+                  context.l10n.settings_page__change_language_button,
+                  style: TextStyleManager.body1,
+                ),
+              ),
+            ],
+          ),
+          const Gap(12),
+          CustomDropdownMenu<Locale>(
+            value: currentLocale,
+            itemList: locales,
+            itemBuilder: (locale) {
+              final isCurrentLocale = locale == currentLocale;
+              return Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      locale.isEnglish
+                          ? context.l10n.locale_language_english_title
+                          : context.l10n.locale_language_japan_title,
+                    ),
+                  ),
+                  if (isCurrentLocale) ...[
+                    const Gap(8),
+                    const Icon(
+                      Icons.check_circle,
+                      color: ColorManager.main,
+                      size: 16,
+                    ),
+                  ],
+                ],
+              );
+            },
+            onChanged: (locale) async {
+              if (locale == null) return;
+              ref.read(localeControllerProvider.notifier).update(locale);
+
+              // When locale changes, UI is refreshed. But userAccessibleContentsControllerProvider is set to keepAlive,
+              // so we need to manually refresh it to ensure the UI reflects the new locale.
+              await ref
+                  .read(userAccessibleContentsControllerProvider.notifier)
+                  .refresh();
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 12,
+                horizontal: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _isTeamSelectable(UserInfo userInfo, String teamId) {
+    return userInfo.givenUserRoles[teamId]
+            ?.where((u) => !u.deleteFlag)
+            .isNotEmpty ??
+        userInfo.accessibleContents[allTeams] != null;
+  }
+}

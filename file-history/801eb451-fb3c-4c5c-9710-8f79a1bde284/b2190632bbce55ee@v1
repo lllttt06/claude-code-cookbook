@@ -1,0 +1,569 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/app_store_product_controller.dart';
+import 'package:baseball_detector_flutter/controllers/subscription_controller.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/utils/date.dart';
+import 'package:baseball_detector_flutter/views/pages/home/hooks/use_subscription.dart';
+import 'package:baseball_detector_flutter/views/pages/home/hooks/use_subscription_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/hooks/use_plan_name.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+
+class PlanCard extends HookConsumerWidget {
+  const PlanCard({required this.teamList, super.key});
+
+  final List<Team> teamList;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final now = DateTime.now();
+    ref.watch(appStoreProductControllerProvider);
+    final teamId = ref.watch(profileStorageProvider).getTeamId();
+    final (canSubscribe, subscriptionStatus, restrictionMessage) =
+        useSubscription();
+    final showSubscriptionPage = useSubscriptionPage();
+    final isInPurchaseFlow = ref.watch(purchaseFlowLoadingProvider);
+    final isUpdating = subscriptionStatus != null &&
+        subscriptionStatus.isUpdating &&
+        isInPurchaseFlow;
+
+    final team = teamList.firstWhereOrNull((team) => team.id == teamId);
+    final isSingleUserTeam = team?.isSingleUserTeam == true;
+    final downgradePlanName = usePlanNameFromPlanId(team?.downgradePlanId);
+
+    String formatDateTimeWithSeconds(DateTime? dateTime) {
+      if (dateTime == null) return '';
+      return dateTimeToString(
+        timestamp: dateTime,
+        locale: Localizations.localeOf(context).languageCode,
+        template: context.l10n.date_time_with_seconds_format,
+      );
+    }
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _CurrentPlanSection(
+              teamPlan: team?.teamPlan,
+              formatDateTimeWithSeconds: formatDateTimeWithSeconds,
+              billingFailureReason: team?.billingFailureReason,
+              isUpdating: isUpdating,
+            ),
+            if (!isUpdating && team?.nextTeamPlan != null) ...[
+              const Gap(16),
+              _NextPlanSection(
+                nextTeamPlan: team!.nextTeamPlan!,
+                formatDateTimeWithSeconds: formatDateTimeWithSeconds,
+              ),
+            ] else if (!isUpdating &&
+                isSingleUserTeam &&
+                (team?.teamPlanDowngradeAt?.isAfter(now) ?? false)) ...[
+              const Gap(16),
+              _RestrictionBanner(
+                message: downgradePlanName != null
+                    ? context.l10n
+                        .settings_page__subscription_downgrade_scheduled_with_plan(
+                        formatDateTimeWithSeconds(team?.teamPlanDowngradeAt),
+                        downgradePlanName,
+                      )
+                    : context.l10n
+                        .settings_page__subscription_downgrade_scheduled_without_plan(
+                        formatDateTimeWithSeconds(team?.teamPlanDowngradeAt),
+                      ),
+              ),
+            ],
+            if (!isUpdating &&
+                isSingleUserTeam &&
+                (team?.teamPlanCancelAt?.isAfter(now) ?? false)) ...[
+              const Gap(16),
+              _RestrictionBanner(
+                message:
+                    context.l10n.settings_page__subscription_cancel_scheduled(
+                  formatDateTimeWithSeconds(team?.teamPlanCancelAt),
+                ),
+              ),
+            ],
+            if (!isUpdating &&
+                isSingleUserTeam &&
+                restrictionMessage != null) ...[
+              const Gap(16),
+              _RestrictionBanner(message: restrictionMessage),
+            ],
+            if (!isUpdating && canSubscribe) ...[
+              const Gap(16),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () => showSubscriptionPage(team),
+                  icon: const Icon(Icons.workspace_premium),
+                  label: Text(context.l10n.subscription_page__upgrade_button),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            _ItemUsage(team: team),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PlanSection extends StatelessWidget {
+  const _PlanSection({
+    required this.icon,
+    required this.title,
+    required this.backgroundColor,
+    required this.child,
+  });
+
+  final IconData icon;
+  final String title;
+  final Color backgroundColor;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              icon,
+              size: 24,
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: TextStyleManager.body1,
+            ),
+          ],
+        ),
+        const Gap(12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: child,
+        ),
+      ],
+    );
+  }
+}
+
+class _ItemUsage extends HookConsumerWidget {
+  const _ItemUsage({required this.team});
+
+  final Team? team;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (team == null) return SizedBox.shrink();
+
+    final usageFormatter = NumberFormat('#,###');
+    final usagePercentage = team!.maxBalls > 0
+        ? (team!.ballUsage / team!.maxBalls).clamp(0.0, 1.0)
+        : 0.0;
+
+    final aiCoachUsagePercentage = team!.maxAiCoachCount > 0
+        ? (team!.aiCoachUsage / team!.maxAiCoachCount).clamp(0.0, 1.0)
+        : 0.0;
+
+    return Column(
+      children: [
+        _PlanRow(
+          title: context.l10n.settings_page__analysis_usage,
+          value:
+              '${usageFormatter.format(team!.ballUsage)}/${usageFormatter.format(team!.maxBalls)}',
+          child: Column(
+            children: [
+              const Gap(8),
+              LinearProgressIndicator(
+                value: usagePercentage,
+                backgroundColor:
+                    Theme.of(context).colorScheme.outline.withAlpha(50),
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  usagePercentage > 0.8
+                      ? Theme.of(context).colorScheme.error
+                      : Theme.of(context).colorScheme.primary,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (team!.aiCoachUsage > 0) ...[
+          const Gap(8),
+          _PlanRow(
+            title: context.l10n.settings_page__ai_coach_usage,
+            value:
+                '${usageFormatter.format(team!.aiCoachUsage)}/${usageFormatter.format(team!.maxAiCoachCount)}',
+            child: Column(
+              children: [
+                const Gap(8),
+                LinearProgressIndicator(
+                  value: aiCoachUsagePercentage,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.outline.withAlpha(50),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    aiCoachUsagePercentage > 0.8
+                        ? Theme.of(context).colorScheme.error
+                        : Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _CurrentPlanSection extends HookConsumerWidget {
+  const _CurrentPlanSection({
+    required this.teamPlan,
+    required this.formatDateTimeWithSeconds,
+    this.billingFailureReason,
+    this.isUpdating = false,
+  });
+
+  final TeamPlan? teamPlan;
+  final String? billingFailureReason;
+  final bool isUpdating;
+  final String Function(DateTime?) formatDateTimeWithSeconds;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hasActive = teamPlan?.withinPeriod == true;
+    final planName = usePlanNameFromTeamPlan(teamPlan);
+    final usageFormatter = NumberFormat('#,###');
+    final maxUsage = (teamPlan?.plan?.maxBalls ?? 0);
+    final currentUsage = teamPlan?.currentUsage ?? 0;
+    final usagePercentage =
+        maxUsage > 0 ? (currentUsage / maxUsage).clamp(0.0, 1.0) : 0.0;
+    final aiCoachCurrentUsage = teamPlan?.currentAiCoachUsage ?? 0;
+    final aiCoachMaxUsage = teamPlan?.plan?.maxAiCoachs ?? 0;
+    final aiCoachUsagePercentage = aiCoachMaxUsage > 0
+        ? (aiCoachCurrentUsage / aiCoachMaxUsage).clamp(0.0, 1.0)
+        : 0.0;
+
+    return _PlanSection(
+      icon: Icons.star_outline,
+      title: context.l10n.settings_page__current_plan,
+      backgroundColor:
+          Theme.of(context).colorScheme.surfaceContainerHighest.withAlpha(100),
+      child: isUpdating
+          // 購入操作後のアップデート中
+          ? Row(
+              children: [
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                const Gap(8),
+                Text(
+                  context.l10n.settings_page__plan_updating_inline,
+                  style: TextStyleManager.caption
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (billingFailureReason != null &&
+                    billingFailureReason!.isNotEmpty) ...[
+                  _BillingWarningBanner(
+                    billingFailureReason: billingFailureReason!,
+                  ),
+                  const Gap(12),
+                ],
+                if (hasActive) ...[
+                  _PlanRow(
+                    title: context.l10n.settings_page__plan,
+                    value: planName,
+                  ),
+                  const Gap(8),
+                  _PlanRow(
+                    title: context.l10n.settings_page__valid_period,
+                    value: (teamPlan?.startDate == null &&
+                            teamPlan?.endDate == null)
+                        ? context.l10n.settings_page__no_expiration
+                        : '${formatDateTimeWithSeconds(teamPlan?.startDate)} ~ ${formatDateTimeWithSeconds(teamPlan?.endDate)}',
+                  ),
+                  const Gap(8),
+                  _PlanRow(
+                    title: context.l10n.settings_page__analysis_usage,
+                    value:
+                        '${usageFormatter.format(currentUsage)}/${usageFormatter.format(maxUsage)}',
+                    child: Column(
+                      children: [
+                        const Gap(8),
+                        LinearProgressIndicator(
+                          value: usagePercentage,
+                          backgroundColor: Theme.of(context)
+                              .colorScheme
+                              .outline
+                              .withAlpha(50),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            usagePercentage > 0.8
+                                ? Theme.of(context).colorScheme.error
+                                : Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  if (aiCoachMaxUsage > 0) ...[
+                    const Gap(8),
+                    _PlanRow(
+                      title: context.l10n.settings_page__ai_coach_usage,
+                      value:
+                          '${usageFormatter.format(aiCoachCurrentUsage)}/${usageFormatter.format(aiCoachMaxUsage)}',
+                      child: Column(
+                        children: [
+                          const Gap(8),
+                          LinearProgressIndicator(
+                            value: aiCoachUsagePercentage,
+                            backgroundColor: Theme.of(context)
+                                .colorScheme
+                                .outline
+                                .withAlpha(50),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              aiCoachUsagePercentage > 0.8
+                                  ? Theme.of(context).colorScheme.error
+                                  : Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ] else
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 20,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                      const Gap(8),
+                      Expanded(
+                        child: Text(
+                          context
+                              .l10n.settings_page__no_active_team_plan_message,
+                          style: TextStyleManager.caption.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+    );
+  }
+}
+
+class _NextPlanSection extends HookWidget {
+  const _NextPlanSection({
+    required this.nextTeamPlan,
+    required this.formatDateTimeWithSeconds,
+  });
+
+  final TeamPlan nextTeamPlan;
+  final String Function(DateTime?) formatDateTimeWithSeconds;
+
+  @override
+  Widget build(BuildContext context) {
+    final planName = usePlanNameFromTeamPlan(nextTeamPlan);
+    final usageFormatter = NumberFormat('#,###');
+
+    return _PlanSection(
+      icon: Icons.schedule_outlined,
+      title: context.l10n.settings_page__next_plan,
+      backgroundColor:
+          Theme.of(context).colorScheme.secondaryContainer.withAlpha(75),
+      child: Column(
+        children: [
+          _PlanRow(
+            title: context.l10n.settings_page__plan,
+            value: planName,
+          ),
+          const Gap(8),
+          _PlanRow(
+            title: context.l10n.settings_page__available,
+            value: usageFormatter.format((nextTeamPlan.plan?.maxBalls ?? 0)),
+          ),
+          const Gap(8),
+          _PlanRow(
+            title: context.l10n.settings_page__valid_period,
+            value: (nextTeamPlan.startDate == null &&
+                    nextTeamPlan.endDate == null)
+                ? context.l10n.settings_page__no_expiration
+                : '${formatDateTimeWithSeconds(nextTeamPlan.startDate)} ~ ${formatDateTimeWithSeconds(nextTeamPlan.endDate)}',
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PlanRow extends StatelessWidget {
+  const _PlanRow({
+    required this.title,
+    required this.value,
+    this.child,
+  });
+
+  final String title;
+  final String value;
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              width: 80,
+              child: Text(
+                title,
+                style: TextStyleManager.caption.copyWith(
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            const Text(
+              ':  ',
+              style: TextStyleManager.caption,
+            ),
+            Expanded(
+              child: Text(
+                value,
+                style: TextStyleManager.caption.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+        if (child != null) child!,
+      ],
+    );
+  }
+}
+
+class _RestrictionBanner extends StatelessWidget {
+  const _RestrictionBanner({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerHighest.withAlpha(80),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.info_outline,
+              color: colorScheme.onSurfaceVariant, size: 20),
+          const Gap(8),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyleManager.caption.copyWith(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BillingWarningBanner extends StatelessWidget {
+  const _BillingWarningBanner({required this.billingFailureReason});
+
+  final String billingFailureReason;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final message = _resolveMessage(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.warning,
+              color: colorScheme.error,
+              size: 18,
+            ),
+            const Gap(8),
+            Expanded(
+              child: Text(
+                message,
+                style: TextStyleManager.caption.copyWith(
+                  color: colorScheme.error,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  String _resolveMessage(BuildContext context) {
+    switch (billingFailureReason) {
+      case 'stripe_payment_failed':
+        return context.l10n.settings_page__billing_failure_message_stripe;
+      case 'apple_payment_failed':
+      default:
+        return context.l10n.settings_page__billing_failure_message;
+    }
+  }
+}

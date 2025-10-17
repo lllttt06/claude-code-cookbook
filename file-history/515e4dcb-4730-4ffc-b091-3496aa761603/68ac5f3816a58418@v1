@@ -1,0 +1,283 @@
+/// {@category Data}
+library;
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/ai_coach/ai_coach_report.dart';
+import 'package:baseball_detector_flutter/data/models/ball.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/handedness.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/player_create_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/player_delete_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/player_search_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/player_update_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/resource/pitch_type_update_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/resource/resource_delete_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/resource/resource_search_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/session/session_add_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/session/session_delete_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/session/session_search_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/session/session_update_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/team/team_deactivate_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/team/verify_transaction_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/user/deactivate_member_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/user/edit_member_role_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/user/reactivate_member_response.dart';
+import 'package:baseball_detector_flutter/data/models/dto/user/user_search_response.dart';
+import 'package:baseball_detector_flutter/data/models/enums/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/notification.dart';
+import 'package:baseball_detector_flutter/data/models/pitch_type.dart';
+import 'package:baseball_detector_flutter/data/models/player.dart';
+import 'package:baseball_detector_flutter/data/models/profile.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/data/models/subscription_group.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+
+abstract class Repository {
+  /// Get a list of [Session]s.
+  Future<Result<Failure, SessionSearchResponse>> getSessions({
+    required int page,
+    required int pageSize,
+    required bool isTeamCrossing,
+    String? playerId,
+    String? location,
+    DateTime? startDate,
+    DateTime? endDate,
+  });
+
+  /// Get a list of available locations for sessions.
+  Future<Result<Failure, List<String>>> getSessionLocations({
+    required bool isTeamCrossing,
+  });
+
+  /// Get detail information of a [Session].
+  Future<Result<Failure, Session>> getSessionDetail({
+    required String teamId,
+    required String sessionId,
+  });
+
+  /// Get a list of [Player]s.
+  Future<Result<Failure, PlayerSearchResponse>> getPlayers({
+    required int page,
+    required int pageSize,
+    required bool isTeamCrossing,
+  });
+
+  /// Get a list of [Resource]s.
+  Future<Result<Failure, ResourceSearchResponse>> getResources({
+    required String teamId,
+    required String sessionId,
+    required int page,
+    required int pageSize,
+    required bool isTeamCrossing,
+  });
+
+  /// Get detail information of a [ResourceData].
+  Future<Result<Failure, ResourceData>> getResourceDetail({
+    required String teamId,
+    required String sessionId,
+    required String resourceId,
+  });
+
+  /// Get detail information of a [Ball].
+  Future<Result<Failure, Ball>> getBall({
+    required String teamId,
+    required String sessionId,
+    required String resourceId,
+    required int ballId,
+  });
+
+  /// Get the list of [PitchType]s.
+  Future<Result<Failure, List<PitchType>>> getPitchTypes();
+
+  /// Get a [UserInfo] of the current user.
+  Future<Result<Failure, UserInfo>> getUserInfo();
+
+  /// Get user's accessible contents for the current team
+  Future<Result<Failure, UserAccessibleContents>> getAccessibleContents();
+
+  /// Get a list of user [UserInfo]s to which the current user belongs.
+  Future<Result<Failure, UserSearchResponse>> getTeamMembers({
+    required int page,
+    required int pageSize,
+  });
+
+  /// Get a list of [Team]s. (super_admin only)
+  Future<Result<Failure, List<Team>>> getTeams();
+
+  /// Get UserNotifications of the current user.
+  Future<Result<Failure, List<Notification>>> getNotifications({
+    String? keyword,
+    int page = 0,
+    int? pageSize = 10,
+  });
+
+  /// Set a [Notification] as read.
+  Future<Result<Failure, void>> setNotificationRead({
+    required String notificationId,
+  });
+
+  /// Add a [Session].
+  Future<Result<Failure, SessionAddResponse>> addSession({
+    required String playerId,
+    required String location,
+    required String note,
+    required String title,
+  });
+
+  /// Add a [Player].
+  Future<Result<Failure, PlayerCreateResponse>> addPlayer({
+    required String playerName,
+    required String note,
+    required Handedness pitchingHand,
+    required Handedness hittingHand,
+    DateTime? birthday,
+  });
+
+  /// Delete a [Session].
+  Future<Result<Failure, SessionDeleteResponse>> deleteSession({
+    required String sessionId,
+  });
+
+  /// Delete a [Player].
+  Future<Result<Failure, PlayerDeleteResponse>> deletePlayer({
+    required String playerId,
+  });
+
+  /// Delete a [Resource].
+  Future<Result<Failure, ResourceDeleteResponse>> deleteResource({
+    required String sessionId,
+    required String resourceId,
+  });
+
+  /// Delete a [Ball].
+  Future<Result<Failure, void>> deleteBall({
+    required String sessionId,
+    required String resourceId,
+    required int ballId,
+  });
+
+  /// Edit a [PitchType].
+  Future<Result<Failure, PitchTypeUpdateResponse>> editPitchType({
+    required String sessionId,
+    required String resourceId,
+    required int ballId,
+    required String? pitchTypeId,
+  });
+
+  /// Edit a [Session].
+  Future<Result<Failure, SessionUpdateResponse>> editSession({
+    required String playerId,
+    required String sessionId,
+    required String location,
+    required String note,
+    required String title,
+  });
+
+  /// Edit a [Player].
+  Future<Result<Failure, PlayerUpdateResponse>> editPlayer({
+    required String playerId,
+    required String name,
+    required String note,
+    required Handedness pitchingHand,
+    required Handedness hittingHand,
+    String? imageUrl,
+    DateTime? birthday,
+  });
+
+  /// Edit a [Profile].
+  Future<Result<Failure, void>> editProfile({
+    required String name,
+    String? imageUrl,
+  });
+
+  /// Edit a [Team] that current user belongs to.
+  Future<Result<Failure, void>> editTeam({
+    required String name,
+    String? imageUrl,
+  });
+
+  Future<Result<Failure, String>> uploadProfileImage({
+    required String filePath,
+  });
+
+  Future<Result<Failure, String>> uploadTeamImage({
+    required String filePath,
+  });
+
+  Future<Result<Failure, String>> uploadPlayerImage({
+    required String playerId,
+    required String filePath,
+  });
+
+  Future<Result<Failure, String>> uploadVideo({
+    required String sessionId,
+    required String resourceId,
+    required String filePath,
+    required UnitType unit,
+    required int analyzeType,
+    required String? cameraMode,
+    required double? focalLengthIn35mmEquivalent,
+    required double? longsideAngleOfView,
+    required double? accX,
+    required double? accY,
+    required double? accZ,
+    required String? lens,
+    required double? focus,
+    required bool? isAutoFocus,
+    required double? zoom,
+    required double? iso,
+    required double? shutterSpeed,
+    required String? device,
+    required DateTime? recordedAt,
+  });
+
+  Future<Result<Failure, void>> reAnalyzeVideo({
+    required String sessionId,
+    required String resourceId,
+  });
+
+  Future<Result<Failure, EditMemberRoleResponse>> editMemberRole({
+    required String userId,
+    required AppRole role,
+  });
+
+  Future<Result<Failure, void>> inviteMember({
+    required String name,
+    required String email,
+    required AppRole role,
+  });
+
+  Future<Result<Failure, DeactivateMemberResponse>> deactivateMember({
+    required String userId,
+  });
+
+  Future<Result<Failure, ReactivateMemberResponse>> reactivateMember({
+    required String userId,
+  });
+
+  Future<Result<Failure, VerifyTransactionResponse>> verifyTransaction({
+    required String transactionId,
+    required String webOrderLineItemId,
+  });
+
+  Future<Result<Failure, TeamDeactivateResponse>> deactivateTeam({
+    required String teamId,
+  });
+
+  Future<Result<Failure, String>> createAIReport({
+    required String teamId,
+    required String sessionId,
+  });
+
+  Future<Result<Failure, AICoachReport>> getAIReport({
+    required String teamId,
+    required String reportId,
+  });
+
+  /// Get a list of [SubscriptionGroup]s with their plans.
+  Future<Result<Failure, List<SubscriptionGroup>>> getSubscriptionGroups();
+}

@@ -1,0 +1,15 @@
+import { Dispatch } from '@reduxjs/toolkit';
+
+/**
+ * グローバルな dispatch を保持するための変数
+ * Axios インターセプターなど、React コンポーネント外から Redux の action を dispatch する際に使用
+ */
+let globalDispatch: Dispatch | null = null;
+
+export const setGlobalDispatch = (dispatch: Dispatch) => {
+  globalDispatch = dispatch;
+};
+
+export const getGlobalDispatch = (): Dispatch | null => {
+  return globalDispatch;
+};

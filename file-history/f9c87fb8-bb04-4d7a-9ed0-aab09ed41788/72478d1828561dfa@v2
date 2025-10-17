@@ -1,0 +1,98 @@
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Stack,
+  Typography,
+} from '@mui/material';
+import React from 'react';
+
+import { translate } from '@/utils/i18n';
+
+interface SingleTeamPlanCardProps {
+  open: boolean;
+}
+
+const TEAM_PLAN_URL = 'https://tether-a87.pages.dev/jp/';
+
+export default function SingleTeamPlanCard({
+  open,
+}: SingleTeamPlanCardProps) {
+  if (!open) {
+    return null;
+  }
+
+  const handleUpgrade = () => {
+    window.open(TEAM_PLAN_URL, '_blank', 'noopener,noreferrer');
+  };
+
+  return (
+    <Card
+      sx={{
+        position: 'relative',
+        mx: 2,
+        mb: 2,
+        mt: 1,
+        boxShadow: 4,
+        borderRadius: 2,
+        maxWidth: '100%',
+        width: 'calc(100% - 32px)',
+        backgroundColor: 'white',
+      }}
+    >
+      <CardContent
+        sx={{
+          p: 2,
+          textAlign: 'center',
+          width: '100%',
+          boxSizing: 'border-box',
+        }}
+      >
+        <Stack spacing={2} alignItems="center" sx={{ width: '100%' }}>
+          <Typography variant="body2" color="primary" sx={{ mb: -1 }}>
+            {translate('plan_upgrade_prompt_title')}
+          </Typography>
+
+          <Box
+            sx={{
+              width: 48,
+              height: 48,
+              bgcolor: 'primary.main',
+              borderRadius: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+            }}
+          >
+            <ArrowUpwardIcon sx={{ fontSize: '1.5rem' }} />
+          </Box>
+
+          <Typography
+            variant="body2"
+            sx={{
+              lineHeight: 1.4,
+              wordBreak: 'break-word',
+              whiteSpace: 'normal',
+              textAlign: 'center',
+            }}
+          >
+            {translate('plan_upgrade_message')}
+          </Typography>
+
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={handleUpgrade}
+            sx={{ py: 1, fontWeight: 600 }}
+          >
+            {translate('plan_upgrade_button')}
+          </Button>
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+}

@@ -1,0 +1,115 @@
+import { Box, Button, Stack, Typography } from '@mui/material';
+import _ from 'lodash';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
+
+import CriticalError from '@/components/common/critical-error';
+import useServicesHook from '@/hooks';
+import { useSubmitGuard } from '@/hooks/useSubmitGuard';
+import { ServiceError } from '@/services/errors/service-error';
+import { useSelector } from '@/store';
+import { translate } from '@/utils/i18n';
+
+import { CommonModal } from '../common-modal';
+
+export type DeletePlayerModalParam = {
+  teamId: string;
+  isOpen: boolean;
+  targetPlayer: {
+    id: string;
+    name: string;
+  } | null;
+};
+
+export const DeletePlayerModalParamDefault = (
+  teamId: string,
+): DeletePlayerModalParam => {
+  return {
+    teamId,
+    isOpen: false,
+    targetPlayer: null,
+  };
+};
+
+export const DeletePlayerModal: FC<{
+  param: DeletePlayerModalParam;
+  setParam: Dispatch<SetStateAction<DeletePlayerModalParam>>;
+  onDeleted: Function;
+}> = ({ param, setParam, onDeleted }) => {
+  const { services } = useServicesHook();
+  const currentUser = useSelector((state) => state.user.me);
+  const { isSubmitting, executeWithGuard } = useSubmitGuard();
+  const [error, setError] = useState<ServiceError | null>(null);
+
+  const resetData = () => {
+    setParam({
+      ...DeletePlayerModalParamDefault(param.teamId),
+    });
+  };
+
+  const removePlayer = async (): Promise<void> => {
+    if (_.isNil(param.targetPlayer?.id) || !currentUser) {
+      return;
+    }
+
+    await executeWithGuard(async () => {
+      const result1 = await services.default.player.deletePlayer(
+        param.teamId,
+        param.targetPlayer.id,
+      );
+
+      if (result1.error) {
+        setError(result1.error);
+        return;
+      }
+
+      resetData();
+      onDeleted();
+    });
+  };
+
+  useEffect(() => {
+    setError(null);
+  }, [param.isOpen]);
+
+  return (
+    <CommonModal
+      isOpen={param.isOpen}
+      onClose={resetData}
+      setIsOpen={resetData}
+      sx={{
+        '.modal-inner-box': {
+          maxWidth: '30rem',
+        },
+      }}
+    >
+      <Typography variant="h4">{translate('delete_player')}</Typography>
+      <Typography sx={{ mb: 2 }}>
+        {translate('are_you_sure_you_want_to_delete_this_player')}
+      </Typography>
+
+      <Stack direction="column" spacing={2} sx={{ mt: 1 }} alignItems="center">
+        <Box>{param.targetPlayer?.name}</Box>
+
+        <Button
+          fullWidth
+          color="error"
+          variant="contained"
+          disabled={isSubmitting}
+          loading={isSubmitting}
+          onClick={removePlayer}
+        >
+          {translate('button_delete')}
+        </Button>
+        <Button fullWidth color="neutral" onClick={resetData}>
+          {translate('button_cancel')}
+        </Button>
+      </Stack>
+      <CriticalError
+        error={error}
+        sx={{
+          mt: 2,
+        }}
+      />
+    </CommonModal>
+  );
+};

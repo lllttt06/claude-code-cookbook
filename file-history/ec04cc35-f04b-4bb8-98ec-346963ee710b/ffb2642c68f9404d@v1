@@ -1,0 +1,308 @@
+# Architecture Guide
+
+This document explains the project architecture and development guidelines.
+
+## Layer Structure
+
+```
+lib/
+├── views/              # UI Layer
+│   ├── pages/         # Screen-based directory structure
+│   ├── components/    # Reusable UI components
+│   ├── hooks/         # Custom Flutter Hooks
+│   ├── routers/       # Routing
+│   ├── themes/        # Theme definitions
+│   └── validators/    # Input validation
+├── controllers/       # Business Logic Layer (Riverpod Notifier)
+├── data/             # Data Layer
+│   ├── models/       # Immutable data models
+│   ├── repositories/ # API & local storage access
+│   └── clients/      # API client implementations
+├── providers/        # Riverpod provider definitions
+├── modules/          # External integrations (AWS Amplify, etc.)
+├── l10n/            # Internationalization files (ARB format)
+└── utils/           # Utility functions
+```
+
+### pages Directory Structure
+
+Each page has its own directory with recursive structure:
+
+```
+pages/
+└── home/
+    └── sessions/
+        ├── components/      # Page-specific components
+        ├── hooks/          # Page-specific hooks
+        ├── edit_session/   # Child pages
+        └── session_details/
+            ├── components/
+            ├── hooks/
+            └── resource_details/  # Further nested pages
+```
+
+## State Management
+
+### State Management with Riverpod
+- Used for global state management
+- Utilizes `Provider`, `StateProvider`, `StateNotifierProvider`, `AsyncNotifierProvider`
+- Page-scoped state is overridden with `ProviderScope`
+
+### Local State with flutter_hooks
+- Local state management within widgets
+- Utilizes `useState`, `useEffect`, `useMemoized`, etc.
+
+## Data Models
+
+### Basic Entities
+
+```
+User
+ ├── Sessions[]        # Sessions (recording units)
+ │    └── Resources[]  # Resources (videos and analysis results)
+ │         └── Balls[] # Individual ball analysis data
+ ├── Players[]         # Player information
+ └── Team              # Team information
+```
+
+### Video Data Types
+
+1. **LocalVideoData**: Device-local recorded videos
+2. **ResourceData**: Videos and analysis results from API server
+3. **Ball-Specific Video**: Individual ball-optimized videos
+4. **Cached Video**: Locally cached remote videos
+
+For details, see [Video Data Management](./video-data-management.md).
+
+## Authentication and Role Management
+
+### AppRole System
+
+Hierarchical permission management with 6 roles:
+
+| AppRole | Basic Domain | Management Domain | Cross-Team | All Teams |
+|---------|-------------|-------------------|-----------|-----------|
+| team_member | Write | None | × | × |
+| team_manager | Write | None | ○ | × |
+| team_admin | Admin | Admin | ○ | × |
+| personal_user | Admin | None | ○ | × |
+| super_admin | Admin | Admin | ○ | ○ |
+| super_reader | Read | Read | ○ | ○ |
+
+### RoleDomain and RoleLevel
+
+**Basic Domain (basic)**
+- `read`: Data read permissions
+- `write`: CRUD permissions
+- `admin`: Currently equivalent to write
+
+**Management Domain (management)**
+- `read`: Team user information reading
+- `write`: Team information editing
+- `admin`: User invitation and deactivation
+
+## Network Layer
+
+### Repository Pattern
+- All network calls are placed in `lib/data/repository/*.dart`
+- Direct imports of Amplify or Dio are not allowed in `lib/view/*`
+- Hides API client implementation details
+
+### Error Handling
+
+Error representation with Failure class:
+
+```
+EM-[XXXX]-[YYYY]-[NNN]
+    ^^^^   ^^^^   ^^^
+    File  Func   Position
+```
+
+Example: `EM-DQR-RQ-001`
+- `DQR`: Data-QueryRunner
+- `RQ`: RunQuery
+- `001`: Occurrence position
+
+## Camera Module
+
+Managed independently as [knowhere_configurable_camera](https://github.com/Knowhere-inc/knowhere_configurable_camera):
+- Native implementation in Swift (iOS) and Kotlin (Android)
+- Exposed to Flutter via MethodChannel
+- Flutter side has minimal interface only
+
+## Basic Development Principles
+
+### 1. Widget Types
+
+| Situation | Widget to Use |
+|-----------|---------------|
+| No state | `StatelessWidget` / `ConsumerWidget` |
+| With local state | `HookWidget` / `HookConsumerWidget` |
+| Avoid | `StatefulWidget` / `ConsumerStatefulWidget` |
+
+### 2. Data Flow
+
+- **Small-scale, single page**: Pass props directly
+- **Shared across multiple pages**: Use Riverpod providers
+
+```dart
+// Small-scale example
+class DetailTile extends StatelessWidget {
+  const DetailTile(this.item, {super.key});
+  final Item item;
+  
+  @override
+  Widget build(BuildContext context) => Text(item.name);
+}
+
+// Shared state example
+final itemProvider = StateProvider<Item>((ref) => Item());
+```
+
+### 3. Immutability
+
+- Use `final` / `const` for variables
+- Model classes are completely immutable
+- Utilize `@freezed` or `@JsonSerializable`
+
+### 4. Coding Style
+
+- **Write declaratively**: Minimize imperative boilerplate
+- **Inline**: Inline single-use helpers
+- **Reduce nesting**: Split deep hierarchies into dedicated widget classes
+
+### 5. Error Handling
+
+```dart
+// Example of using Failure class
+throw Failure(
+  code: failureCodeBuilder('DQR', 'RQ', '001'),
+  message: 'Query execution failed',
+);
+```
+
+### 6. Comments and TODO
+
+- Mark pending work with `TODO: ...`
+- All comments are written in English
+
+## Development Workflow
+
+### Command Reference
+
+#### Daily Use Commands
+
+```bash
+# Initialize development environment
+mise install
+
+# Update dependencies and code generation
+mise run refresh
+
+# Static analysis
+mise run analyze
+
+# Auto-fix
+mise run fix
+
+# Format
+mise run format_dart    # Dart code
+mise run format_import  # Import statement organization
+mise run format_arb     # Translation files
+```
+
+#### Required Checks Upon Completion
+
+1. **When editing ARB files**: `mise run l10n`
+2. **When changing models/providers**: `mise run br_clean`
+3. **When changing code**: `mise run format_dart && mise run format_import`
+4. **Error check**: `mise run analyze`
+5. **Run tests**: `mise run test`
+
+### Internationalization (i18n)
+
+#### Editing ARB Files
+
+1. Add strings to `lib/l10n/app_{locale}.arb`
+2. **Important**: Do not change existing order, add new items at the end
+3. Run command:
+
+```bash
+mise run l10n
+```
+
+#### Usage Example
+
+```dart
+Text(context.l10n.welcomeMessage)
+```
+
+## TDD Cycle
+
+### 1. Red (Fail)
+Write the simplest failing test
+
+### 2. Green (Pass)
+Implement minimal code to pass the test
+
+### 3. Refactor (Improve)
+Refactor after tests pass
+
+## Change Management
+
+### Structural Changes
+- Code placement, organization, formatting
+- No behavioral changes
+
+### Behavioral Changes
+- Feature addition, modification, deletion
+- Changes that affect test results
+
+**Important**: Do not include structural and behavioral changes in the same commit
+
+## Commit Conventions
+
+### Prerequisites
+- ✅ All tests pass
+- ✅ Zero linter warnings
+- ✅ Single logical work unit
+- ✅ Clear commit message
+
+### Recommendations
+- Small, frequent commits
+- Each commit should be meaningful independently
+- Granularity that makes history traceable
+
+## Refactoring
+
+### Prerequisites
+- All tests are passing
+- Do not mix behavioral changes with refactoring
+
+### Common Patterns
+- Extract Method
+- Rename
+- Move Method
+- Extract Variable
+
+## Efficient Implementation
+
+### Priority Order
+1. Start with the simplest case
+2. Prioritize "working" first
+3. Eliminate duplication immediately when found
+4. Handle edge cases after basic cases work
+
+### Quality Assurance
+- Single Responsibility Principle
+- Loose coupling through interfaces
+- Improve readability with early returns
+- Avoid excessive abstractions
+
+## Flutter Version Upgrades
+
+Update the following files:
+- `pubspec.yaml`
+- `.github/actions/setup-flutter/action.yml`
+- `.fvmrc`
+- `mise.toml`

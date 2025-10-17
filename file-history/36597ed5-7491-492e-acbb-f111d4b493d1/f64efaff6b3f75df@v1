@@ -1,0 +1,20 @@
+{
+    "webURL": "https://web.dev.smart-scout.knowhere-japan.dev",
+    "apiServerURL": "https://api.dev.smart-scout.knowhere-japan.dev/api",
+    "amplifyAuthIdentityPoolId": "us-east-1:9eefde9d-53ae-4a36-b92e-98650ab09de9",
+    "amplifyAuthRegion": "us-east-1",
+    "amplifyAuthUserPoolId": "us-east-1_LQHCYwnmU",
+    "amplifyAuthUserPoolClientId": "ndasbgunqpf4k64nuc3of653m",
+    "amplifyLoggingLogGroupName": "dev-SmartScout-FoundationMobileLogGroup9F29328C-gZhtWBOgyk0R",
+    "amplifyLoggingRegion": "us-east-1",
+    "maintenanceInfoURL": "https://dev-smartscout-foundationenvinfobucket50589c0e-fizuzu6kfcz8.s3.amazonaws.com/maintenance-dev.json",
+    "versionInfoURL": "https://dev-smartscout-foundationenvinfobucket50589c0e-fizuzu6kfcz8.s3.amazonaws.com/app-version-dev.json",
+    "appleAppURL": "itms-beta://testflight.apple.com/v1/app/6744082478",
+    "appleSubscriptionURL": "https://apps.apple.com/account/subscriptions",
+    "appStoreProductIdLight": "monthly.test",
+    "appStoreProductIdStandard": "monthly.test.2",
+    "appStoreProductIdPremium": "monthly.test.3",
+    "contactFormJaURL": "forms/d/e/1FAIpQLSfGSkLY7kUmK45F0uNiKslOt-MU0U-APUgCR4OVJ2Kdhnc-vg/viewform",
+    "contactFormEnURL": "forms/d/e/1FAIpQLSdiH9KqbAf4iMoWcG-11KjnGw1IxZLNMHqryli61_KDoCMCaQ/viewform",
+    "isDeprecated": "false"
+}

@@ -1,0 +1,209 @@
+// Dart imports:
+import 'dart:convert';
+import 'dart:io';
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:mutex/mutex.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+
+part 'local_video.freezed.dart';
+part 'local_video.g.dart';
+
+/// Classes to manage local video data files in smartphone.
+///
+/// TODO: Separate model and control.
+///
+/// A data model class of local video.
+@unfreezed
+abstract class LocalVideoData with _$LocalVideoData {
+  LocalVideoData._();
+
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  factory LocalVideoData({
+    required String id,
+    required String sessionId,
+    required String teamId,
+    required String path,
+    required int analyzeType,
+    required DateTime createdAt,
+    required double? focalLengthIn35mmEquivalent,
+    required double? longsideAngleOfView,
+    double? accX,
+    double? accY,
+    double? accZ,
+    String? lens,
+    String? cameraMode,
+    double? focus,
+    bool? isAutoFocus,
+    double? shutterSpeed,
+    double? zoom,
+    double? iso,
+    String? device,
+    bool? hasEverUploaded,
+    @JsonKey(includeToJson: false, includeFromJson: false) String? absolutePath,
+  }) = _LocalVideoData;
+
+  factory LocalVideoData.fromJson(Map<String, dynamic> json) =>
+      _$LocalVideoDataFromJson(json);
+
+  ResourceData transformToResourceData() {
+    return ResourceData(
+        id: id,
+        sessionId: sessionId,
+        teamId: teamId,
+        // -1 is equal to [ResourceStatusType.onLocalStorage]. See `resource.dart`.
+        status: -1,
+        pathVideoOnLocal: absolutePath,
+        createdAt: createdAt); // TODO: Use recordedAt.
+  }
+
+  void _fillFields(String dirPath) {
+    if (isAbsolute(path)) {
+      // Old apps store files directly under dirPath (getBaseDirectory())
+      // NOTE: The UUID of the app changes when the app is updated (even if it is without uninstalling).
+      // This method overwrite the file paths of the videos on the local storage.
+      path = basename(path);
+    }
+    // The new app records paths relative to dirPath.
+    absolutePath = join(dirPath, path);
+    hasEverUploaded ??= false;
+  }
+
+  static Future<String> getBaseDirectory() async {
+    return (await getApplicationDocumentsDirectory()).path;
+  }
+}
+
+/// A data list model singleton class of [LocalVideoData].
+@JsonSerializable(constructor: '_privateConstructor', explicitToJson: true)
+class LocalVideoStorage {
+  // NOTE: Do not add an underscore to the identifier of the field.
+  // JsonSerializable ignores the field when an underscore added.
+  var localVideoList = <LocalVideoData>[];
+
+  //////////////////////////////////////////////////////////////////////////////////
+  // Instance handling functions
+  //////////////////////////////////////////////////////////////////////////////////
+
+  LocalVideoStorage._privateConstructor();
+
+  static LocalVideoStorage _singletonInstance =
+      LocalVideoStorage._privateConstructor();
+
+  static LocalVideoStorage getInstance() {
+    return _singletonInstance;
+  }
+
+  factory LocalVideoStorage._fromJson(Map<String, dynamic> json) =>
+      _$LocalVideoStorageFromJson(json);
+
+  Map<String, dynamic> _toJson() => _$LocalVideoStorageToJson(this);
+
+  static Future<String> _getLocalVideoDataPath() async {
+    final applicationSupportDirectory =
+        await getApplicationSupportDirectory(); // Users cannot access to it.
+    return '${applicationSupportDirectory.path}/${Constants.relLocalVideoDataPath}';
+  }
+
+  static Future<void> loadSingleton() async {
+    final dataPath = await _getLocalVideoDataPath();
+    final file = File(dataPath);
+    if (await file.exists()) {
+      final buf = await file.readAsString();
+      try {
+        // NOTE: A mismatch occurs when the model is updated and then a new app deployed.
+        _singletonInstance = LocalVideoStorage._fromJson(json.decode(buf));
+
+        // NOTE: If you change this directory, change camera_controller.dart too.
+        final dirPath = await LocalVideoData.getBaseDirectory();
+        for (final localVideoData in _singletonInstance.localVideoList) {
+          localVideoData._fillFields(dirPath);
+        }
+      } catch (e) {
+        // noop
+      }
+    }
+  }
+
+  Future<void> save() async {
+    final dataPath = await _getLocalVideoDataPath();
+    final buf = json.encode(_toJson());
+
+    // ディレクトリが存在しない場合は作成する
+    final parentDir = Directory(dirname(dataPath));
+    if (!await parentDir.exists()) {
+      await parentDir.create(recursive: true);
+    }
+
+    // NOTE: In order to handle file corruption, the process involves saving
+    // the file as a temporary file and subsequently renaming it.
+    final tmpDataPath = '$dataPath.tmp';
+    final file = File(tmpDataPath);
+    await file.writeAsString(buf);
+    await file.rename(dataPath);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////
+  // List handling functions
+  //////////////////////////////////////////////////////////////////////////////////
+
+  final Mutex _mutex = Mutex();
+
+  List<LocalVideoData> getLocalVideoList(String sessionId) {
+    return localVideoList
+        .where((localVideoData) => localVideoData.sessionId == sessionId)
+        .toList();
+  }
+
+  /// This method adds an instance of [LocalVideoData], and then call [save] to make it permanent.
+  Future<void> add(LocalVideoData localVideoData) async {
+    await _mutex.acquire();
+    try {
+      final newList = [...localVideoList];
+      newList.add(localVideoData);
+      localVideoList = newList;
+      await save();
+    } catch (e) {
+      rethrow;
+    } finally {
+      _mutex.release();
+    }
+  }
+
+  /// This method removes from the list an instance of [LocalVideoData] that matches the given id,
+  /// and then call [save] to make it permanent.
+  /// Returns whether the video has been deleted.
+  /// Note that this method does not delete the file at the path.
+  Future<bool> removeById(String id) async {
+    await _mutex.acquire();
+
+    var deleted = false;
+    try {
+      final newList = <LocalVideoData>[];
+      for (final localVideo in localVideoList) {
+        if (localVideo.id != id) {
+          newList.add(localVideo);
+          continue;
+        }
+        deleted = true;
+      }
+      localVideoList = newList;
+      await save();
+    } catch (e) {
+      rethrow;
+    } finally {
+      _mutex.release();
+    }
+    return deleted;
+  }
+
+  LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {
+    return localVideoList.where((element) => element.id == id).toList().first;
+  }
+}

@@ -1,0 +1,267 @@
+/// {@category Containers}
+library;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/upload_queue.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/custom_provider_observer.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/components/custom_app_bar.dart';
+import 'package:baseball_detector_flutter/views/components/custom_button.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_operation.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_single_action.dart';
+import 'package:baseball_detector_flutter/views/routers/app_router.dart';
+import 'package:baseball_detector_flutter/views/routers/navigation_state_extension.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+
+class DeleteAccountPage extends HookConsumerWidget {
+  const DeleteAccountPage({
+    this.shouldShowCancelSubscriptionMessage = false,
+    super.key,
+  });
+
+  final bool shouldShowCancelSubscriptionMessage;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Capture a stable ProviderContainer while context is mounted
+    final container = ProviderScope.containerOf(context, listen: false);
+    final handleOperation = useOperation();
+    final isAgreed = useState(false);
+    final isLoading = useState(false);
+    final deleteAccount = useSingleAction(asyncCallback: (_) async {
+      isLoading.value = true;
+
+      // Prevent various providers from reloading before splash page transition
+      final profileStorage = ref.read(profileStorageProvider);
+      final teamId = profileStorage.getTeamId();
+      if (teamId == null) return;
+
+      ref.read(uploadQueueProvider).clearAwaiting();
+
+      await handleOperation(
+        operation:
+            ref.read(teamControllerProvider.notifier).deactivateTeam(teamId),
+        onSucceeded: (data) async {
+          // Prevent various providers from reloading before splash page transition
+          // ignore: use_build_context_synchronously
+          final navigatorState = Navigator.of(context);
+          navigatorState.removeAllRouteBelow(navigatorState.currentRoute!);
+
+          await Future.wait([
+            profileStorage.setUserId(null),
+            profileStorage.setTeamId(null),
+            profileStorage.setEmail(null),
+            profileStorage.setPassword(null),
+            profileStorage.setIsInSignUpFlow(false),
+          ]);
+
+          await ref.read(loginStateControllerProvider.notifier).signOut();
+
+          // Invalidate using container to avoid using a disposed ref
+          AppProviders.instance.invalidateAllProviders(container);
+
+          // ignore: use_build_context_synchronously
+          Navigator.of(context, rootNavigator: true)
+              .pushNamedAndRemoveUntil(AppRouter.loginPage, (_) => false);
+          isLoading.value = false;
+          // ignore: use_build_context_synchronously
+          return context.l10n.delete_account_page__success_message;
+        },
+        onFailed: (error) {
+          isLoading.value = false;
+          return '${context.l10n.delete_account_page__error_message}: ${error.translate(context.l10n)}';
+        },
+        shouldSendErrorLog: (failure) => failure is! NetworkFailure,
+      );
+    });
+
+    return Scaffold(
+      appBar: CustomAppBar(isBackNavigation: true),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const Gap(16),
+              Text(
+                context.l10n.delete_account_page__warning_title,
+                style: TextStyleManager.headline6.copyWith(
+                  color: ColorManager.error,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const Gap(32),
+              // Consequences Card
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              margin: const EdgeInsets.only(top: 8, right: 12),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.error,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                context
+                                    .l10n.delete_account_page__caution_list_1,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.7),
+                                      height: 1.4,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Gap(16),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 6,
+                              height: 6,
+                              margin: const EdgeInsets.only(top: 8, right: 12),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.error,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                context
+                                    .l10n.delete_account_page__caution_list_2,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withValues(alpha: 0.7),
+                                      height: 1.4,
+                                    ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (shouldShowCancelSubscriptionMessage) ...[
+                        const Gap(16),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                margin:
+                                    const EdgeInsets.only(top: 8, right: 12),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.error,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  context
+                                      .l10n.delete_account_page__caution_list_3,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface
+                                            .withValues(alpha: 0.7),
+                                        height: 1.4,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+              const Gap(33),
+              GestureDetector(
+                onTap: () {
+                  isAgreed.value = !isAgreed.value;
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      value: isAgreed.value,
+                      onChanged: (bool? checked) {
+                        isAgreed.value = checked!;
+                      },
+                      activeColor: ColorManager.error,
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      visualDensity: VisualDensity.compact,
+                    ),
+                    const Gap(8),
+                    Text(
+                      context.l10n.delete_account_page__agree_to_delete,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ),
+
+              const Gap(32),
+              CustomButton(
+                enabled: isAgreed.value,
+                variant: CustomButtonVariant.caution,
+                onPressed: isLoading.value ? null : deleteAccount,
+                text: context.l10n.delete_account__button_text,
+                loading: isLoading.value,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

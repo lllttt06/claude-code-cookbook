@@ -1,0 +1,80 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/notification_list_controller.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/environment.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_privacy_policy.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_terms_of_use.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/components/navigation_item.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/hooks/use_contact_form_url.dart';
+import 'package:baseball_detector_flutter/views/routers/home_router.dart';
+
+class LegalAndSupportCard extends HookConsumerWidget {
+  const LegalAndSupportCard({required this.userInfo, super.key});
+
+  final UserInfo userInfo;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final launchContactForm = useContactFormUrl();
+    final openTermsOfUse = useTermsOfUse();
+    final openPrivacyPolicy = usePrivacyPolicy();
+    final showNoti = ref.watch(showNotiBadgeProvider);
+
+    return Card(
+      child: Column(
+        children: [
+          NavigationItem(
+            icon: Icons.notifications_outlined,
+            text: context.l10n.settings_page__notifications,
+            showNoti: showNoti.value == true,
+            onTap: () {
+              ref.read(showNotiBadgeProvider.notifier).setShowNotiBadge(false);
+              Navigator.of(context).pushNamed(
+                HomeRouter.notificationListPage,
+              );
+            },
+          ),
+          NavigationItem(
+            icon: Icons.description_outlined,
+            text: context.l10n.settings_page__terms,
+            onTap: openTermsOfUse,
+          ),
+          NavigationItem(
+            icon: Icons.privacy_tip_outlined,
+            text: context.l10n.settings_page__privacy,
+            onTap: openPrivacyPolicy,
+          ),
+          NavigationItem(
+            icon: Icons.code_outlined,
+            text: context.l10n.settings_page__license,
+            onTap: () {
+              Navigator.of(context).pushNamed(HomeRouter.licensePage);
+            },
+          ),
+          if (isDevOrTest)
+            NavigationItem(
+              icon: Icons.analytics_outlined,
+              text: 'License Checker',
+              onTap: () {
+                Navigator.of(context).pushNamed(HomeRouter.licenseCheckerPage);
+              },
+            ),
+          // TODO: Remove this environmental condition
+          if (!isPrd)
+            NavigationItem(
+              icon: Icons.support_agent_outlined,
+              text: context.l10n.settings_page__contact_us,
+              onTap: () => launchContactForm(userInfo),
+            ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,0 +1,209 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:app_links/app_links.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:playbook/playbook.dart';
+import 'package:playbook_snapshot/playbook_snapshot.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/app_store_product_controller.dart';
+import 'package:baseball_detector_flutter/controllers/locale_controller.dart';
+import 'package:baseball_detector_flutter/controllers/locale_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/maintenance_controller.dart';
+import 'package:baseball_detector_flutter/controllers/maintenance_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/member_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/member_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/pitch_type_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/pitch_type_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/player_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/player_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_detail_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_detail_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/subscription_controller.dart';
+import 'package:baseball_detector_flutter/controllers/subscription_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/user_info_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_info_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/version_controller.dart';
+import 'package:baseball_detector_flutter/controllers/version_controller_fake.dart';
+import 'package:baseball_detector_flutter/data/clients/auth/auth_client_fake.dart';
+import 'package:baseball_detector_flutter/data/models/app_store_plan_fake.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/profile_storage_fake.dart';
+import 'package:baseball_detector_flutter/data/repositories/repository_fake.dart';
+import 'package:baseball_detector_flutter/generated_playbook.dart';
+import 'package:baseball_detector_flutter/l10n/l10n.dart';
+import 'package:baseball_detector_flutter/providers/app_links_provider.dart';
+import 'package:baseball_detector_flutter/providers/app_links_provider_fake.dart';
+import 'package:baseball_detector_flutter/providers/app_unit_provider.dart';
+import 'package:baseball_detector_flutter/providers/app_unit_provider_fake.dart';
+import 'package:baseball_detector_flutter/providers/auth_client_provider.dart';
+import 'package:baseball_detector_flutter/providers/dark_mode_provider.dart';
+import 'package:baseball_detector_flutter/providers/dark_mode_provider_fake.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/providers/repository_provider.dart';
+import 'package:baseball_detector_flutter/utils/locale_ext.dart';
+import 'package:baseball_detector_flutter/views/themes/app_theme.dart';
+
+Future<void> main() async {
+  testWidgets(
+    'Take snapshots for iPhone',
+    (tester) async {
+      TestWidgetsFlutterBinding.ensureInitialized();
+
+      await _runScreenshotTest(
+        tester,
+        device: SnapshotDevice.iPhone15,
+      );
+
+      await _runScreenshotTest(
+        tester,
+        device: SnapshotDevice.iPhone15,
+        locale: const Locale('ja'),
+        isDarkMode: true,
+      );
+    },
+    tags: ['vrt'],
+  );
+
+  // testWidgets(
+  //   'Take snapshots for Android',
+  //   (tester) async {
+  //     TestWidgetsFlutterBinding.ensureInitialized();
+  //
+  //     await _runScreenshotTest(
+  //       tester,
+  //       device: SnapshotDevice.pixel6,
+  //     );
+  //
+  //     await _runScreenshotTest(
+  //       tester,
+  //       device: SnapshotDevice.pixel6,
+  //       locale: const Locale('ja'),
+  //       isDarkMode: true,
+  //     );
+  //   },
+  //   tags: ['vrt'],
+  // );
+}
+
+Future<void> _runScreenshotTest(
+  WidgetTester tester, {
+  required SnapshotDevice device,
+  Locale locale = const Locale('en'),
+  bool isDarkMode = false,
+}) async {
+  const storyTitle = String.fromEnvironment('STORY_TITLE');
+  final story =
+      stories.where((element) => element.title == storyTitle).toList();
+
+  await Playbook(stories: story.isNotEmpty ? story : stories).run(
+    Snapshot(
+      devices: [device],
+      checkeredRectSize: 4,
+      subDir: locale.languageCode,
+    ),
+    tester,
+    (widget, device) {
+      return ProviderScope(
+        overrides: [
+          profileStorageProvider.overrideWithValue(
+            FakeProfileStorage(isDarkMode: isDarkMode),
+          ),
+          teamListControllerProvider
+              .overrideWith(() => FakeTeamListController()),
+          darkModeProvider.overrideWith(
+            () => FakeDarkMode(isDarkMode: isDarkMode),
+          ),
+          authClientProvider.overrideWithValue(FakeAuthClient()),
+          repositoryProvider.overrideWithValue(FakeRepository()),
+          userInfoControllerProvider
+              .overrideWith(() => FakeUserInfoController()),
+          appLinksProvider
+              .overrideWithValue(FakeAppLinks(appLinks: AppLinks())),
+          maintenanceControllerProvider.overrideWith(
+            () => FakeMaintenanceController(),
+          ),
+          versionControllerProvider.overrideWith(
+            () => FakeVersionController(),
+          ),
+          resourceDataListControllerProvider(
+            teamId: 'teamId',
+            sessionId: 'sessionId',
+          ).overrideWith(
+            () => FakeResourceDataListController(),
+          ),
+          playerListControllerProvider
+              .overrideWith(() => FakePlayerListController()),
+          resourceDataDetailControllerProvider(
+            teamId: 'teamId',
+            sessionId: 'sessionId',
+            resourceId: 'pitching',
+          ).overrideWith(
+            () => FakeResourceDataDetailController(isPitching: true),
+          ),
+          resourceDataDetailControllerProvider(
+            teamId: 'teamId',
+            sessionId: 'sessionId',
+            resourceId: 'hitting',
+          ).overrideWith(
+            () => FakeResourceDataDetailController(isPitching: false),
+          ),
+          pitchTypeListControllerProvider.overrideWith(
+            () => FakePitchTypeListController(),
+          ),
+          memberListControllerProvider.overrideWith(
+            () => FakeMemberListController(),
+          ),
+          localeControllerProvider.overrideWith(
+            () => FakeLocaleController(locale: locale),
+          ),
+          userAccessibleContentsControllerProvider.overrideWith(
+            () => FakeUserAccessibleContentsController(),
+          ),
+          subscriptionControllerProvider
+              .overrideWith(() => FakeSubscriptionController()),
+          appStoreProductControllerProvider.overrideWith(
+            (ref) async => locale.isJapanese ? jaPlans : enPlans,
+          ),
+          appUnitProvider.overrideWith(
+            () => FakeAppUnit(
+              unit: locale.isJapanese ? UnitType.kmhCm : UnitType.mphInch,
+            ),
+          )
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          locale: locale,
+          localizationsDelegates: L10n.localizationsDelegates,
+          supportedLocales: L10n.supportedLocales,
+          theme: AppTheme.light.data,
+          darkTheme: AppTheme.dark.data,
+          themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          home: Builder(
+            builder: (context) {
+              // Playbook 側が MediaQuery の値を差し込むため、影響を受けないようにする
+              // See also: https://github.com/playbook-ui/playbook-flutter/blob/playbook_snapshot-v1.0.0/packages/playbook_snapshot/lib/src/snapshot.dart#L91-L96
+              return MediaQuery.removePadding(
+                context: context,
+                removeLeft: true,
+                removeTop: true,
+                removeRight: true,
+                removeBottom: true,
+                child: widget,
+              );
+            },
+          ),
+        ),
+      );
+    },
+  );
+}

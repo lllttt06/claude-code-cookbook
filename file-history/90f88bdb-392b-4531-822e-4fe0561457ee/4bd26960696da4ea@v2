@@ -1,0 +1,301 @@
+import { Alert, Container, Divider, Stack, Typography } from '@mui/material';
+import React, { ReactElement, useEffect, useState } from 'react';
+
+import AccessDenied from '@/components/common/access-denied';
+import DefaultBreadCrumbs from '@/components/common/default-breadcrumb';
+import { PAGE_INFO } from '@/constants/page.constants';
+import useServicesHook from '@/hooks';
+import ConsoleLayout from '@/layouts/console.layout';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import { PromptTemplate } from '@/services/interfaces/ai-coach-reports-api.interface';
+import { useSelector } from '@/store';
+
+import PromptEditor from './PromptEditor';
+import PromptHistory from './PromptHistory';
+import PromptViewModal from './PromptViewModal';
+
+function PageInner({ currentUser }: { currentUser: User }) {
+  const { services } = useServicesHook();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSaving, setIsSaving] = useState<boolean>(false);
+  const [loadError, setLoadError] = useState<ServiceError | null>(null);
+  const [saveError, setSaveError] = useState<ServiceError | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string>('');
+  const [userPromptContent, setUserPromptContent] = useState<string>('');
+  const [systemPromptJaContent, setSystemPromptJaContent] =
+    useState<string>('');
+  const [systemPromptEnContent, setSystemPromptEnContent] =
+    useState<string>('');
+  const [topK, setTopK] = useState<number | undefined>(undefined);
+  const [topP, setTopP] = useState<number>(0.999);
+  const [temperature, setTemperature] = useState<number>(1);
+  const [originalUserPrompt, setOriginalUserPrompt] = useState<string>('');
+  const [originalSystemPromptJa, setOriginalSystemPromptJa] =
+    useState<string>('');
+  const [originalSystemPromptEn, setOriginalSystemPromptEn] =
+    useState<string>('');
+  const [originalTopK, setOriginalTopK] = useState<number | undefined>(
+    undefined,
+  );
+  const [originalTopP, setOriginalTopP] = useState<number>(0.999);
+  const [originalTemperature, setOriginalTemperature] = useState<number>(1);
+  const [historyPage, setHistoryPage] = useState<number>(0);
+  const [historyRowsPerPage] = useState<number>(10);
+  const [historyData, setHistoryData] = useState<PromptTemplate[]>([]);
+  const [historyTotal, setHistoryTotal] = useState<number>(0);
+  const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false);
+  const [selectedPrompt, setSelectedPrompt] = useState<PromptTemplate | null>(
+    null,
+  );
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const hasSuperUserReadAccess = User.isAccessible(
+    currentUser,
+    'all',
+    'admin',
+    'read',
+    false,
+  );
+
+  const hasSuperUserWriteAccess = User.isAccessible(
+    currentUser,
+    'all',
+    'admin',
+    'write',
+    false,
+  );
+
+  const loadTemplates = async () => {
+    setIsLoading(true);
+    setLoadError(null);
+    try {
+      const response =
+        await services.default.aiCoachReports.searchPrompts(true);
+      if (response.error) {
+        setLoadError(response.error);
+        return;
+      }
+
+      const template = response.templates.items[0];
+      if (template) {
+        setUserPromptContent(template.userPromptJa || '');
+        setSystemPromptJaContent(template.systemPromptJa || '');
+        setSystemPromptEnContent(template.systemPromptEn || '');
+        setTopK(template.params?.topK);
+        setTopP(template.params?.topP ?? 0.999);
+        setTemperature(template.params?.temperature ?? 1);
+        setOriginalUserPrompt(template.userPromptJa || '');
+        setOriginalSystemPromptJa(template.systemPromptJa || '');
+        setOriginalSystemPromptEn(template.systemPromptEn || '');
+        setOriginalTopK(template.params?.topK);
+        setOriginalTopP(template.params?.topP ?? 0.999);
+        setOriginalTemperature(template.params?.temperature ?? 1);
+      }
+    } catch (error) {
+      setLoadError(
+        new ServiceError(new Error('テンプレートの読み込みに失敗しました')),
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const loadHistory = async () => {
+    setIsLoadingHistory(true);
+    try {
+      const response = await services.default.aiCoachReports.searchPrompts(
+        false,
+        {
+          page: historyPage,
+          pageSize: historyRowsPerPage,
+        },
+      );
+      if (response.error) {
+        setLoadError(response.error);
+        return;
+      }
+      const templates = (response as any).templates;
+      if (templates && typeof templates === 'object' && 'items' in templates) {
+        setHistoryData(templates.items);
+        setHistoryTotal(templates.total);
+      }
+    } catch (error) {
+      setLoadError(new ServiceError(new Error('履歴の読み込みに失敗しました')));
+    } finally {
+      setIsLoadingHistory(false);
+    }
+  };
+
+  const handleViewPrompt = (prompt: PromptTemplate) => {
+    setSelectedPrompt(prompt);
+    setIsModalOpen(true);
+  };
+
+  const handleSave = async () => {
+    setIsSaving(true);
+    setSaveError(null);
+    setSuccessMessage('');
+
+    try {
+      const { error } = await services.default.aiCoachReports.registerPrompt({
+        userPromptJa: userPromptContent,
+        userPromptEn: '',
+        systemPromptJa: systemPromptJaContent,
+        systemPromptEn: systemPromptEnContent,
+        params: {
+          topK: topK,
+          topP: topP,
+          temperature: temperature,
+        },
+      });
+
+      if (error) {
+        setSaveError(error);
+      } else {
+        setSuccessMessage('テンプレートが正常に保存されました');
+        setOriginalUserPrompt(userPromptContent);
+        setOriginalSystemPromptJa(systemPromptJaContent);
+        setOriginalSystemPromptEn(systemPromptEnContent);
+        setOriginalTopK(topK);
+        setOriginalTopP(topP);
+        setOriginalTemperature(temperature);
+        await loadHistory();
+        setTimeout(() => setSuccessMessage(''), 3000);
+      }
+    } catch (error) {
+      setSaveError(
+        new ServiceError(new Error('テンプレートの保存に失敗しました')),
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setUserPromptContent(originalUserPrompt);
+    setSystemPromptJaContent(originalSystemPromptJa);
+    setSystemPromptEnContent(originalSystemPromptEn);
+    setTopK(originalTopK);
+    setTopP(originalTopP);
+    setTemperature(originalTemperature);
+    setSaveError(null);
+  };
+
+  const hasUnsavedChanges = () => {
+    return (
+      userPromptContent !== originalUserPrompt ||
+      systemPromptJaContent !== originalSystemPromptJa ||
+      systemPromptEnContent !== originalSystemPromptEn ||
+      topK !== originalTopK ||
+      topP !== originalTopP ||
+      temperature !== originalTemperature
+    );
+  };
+
+  useEffect(() => {
+    if (hasSuperUserReadAccess) {
+      loadTemplates();
+      loadHistory();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (hasSuperUserReadAccess) {
+      loadHistory();
+    }
+  }, [historyPage]);
+
+  if (!hasSuperUserReadAccess) {
+    return <AccessDenied />;
+  }
+
+  return (
+    <Container sx={{ position: 'relative', mb: 10 }}>
+      <DefaultBreadCrumbs
+        breadcrumbs={[
+          {
+            name: 'AIコーチ管理',
+            link: PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),
+          },
+        ]}
+      />
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h1">AIコーチ テンプレート管理</Typography>
+      </Stack>
+      <Divider sx={{ mt: 1, mb: 3 }} />
+
+      <Alert severity="info" sx={{ mb: 3 }}>
+        <Typography variant="body2">
+          <strong>注意事項：</strong>
+        </Typography>
+        <Typography variant="body2">
+          •
+          ユーザプロンプト、ユーザのリクエスト時の言語設定により切り替わるシステムプロンプト、LLMリクエスト実行時のパラメータを管理できます。
+        </Typography>
+        <Typography variant="body2">
+          • プロンプト内で <code>$INPUT_DATA</code>{' '}
+          を記載すると、自動的に実際の投球データに置き換えられます。
+        </Typography>
+        <Typography variant="body2">
+          • 保存ボタンをクリックすると変更が反映されます。
+        </Typography>
+      </Alert>
+
+      {loadError && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {loadError.message}
+        </Alert>
+      )}
+
+      <PromptEditor
+        isLoading={isLoading}
+        isSaving={isSaving}
+        saveError={saveError}
+        successMessage={successMessage}
+        userPromptContent={userPromptContent}
+        systemPromptJaContent={systemPromptJaContent}
+        systemPromptEnContent={systemPromptEnContent}
+        topK={topK}
+        topP={topP}
+        temperature={temperature}
+        hasSuperUserWriteAccess={hasSuperUserWriteAccess}
+        onSave={handleSave}
+        onCancel={handleCancel}
+        onUserPromptChange={setUserPromptContent}
+        onSystemPromptJaChange={setSystemPromptJaContent}
+        onSystemPromptEnChange={setSystemPromptEnContent}
+        onTopKChange={setTopK}
+        onTopPChange={setTopP}
+        onTemperatureChange={setTemperature}
+        hasUnsavedChanges={hasUnsavedChanges()}
+      />
+
+      <PromptHistory
+        historyData={historyData}
+        historyTotal={historyTotal}
+        historyPage={historyPage}
+        historyRowsPerPage={historyRowsPerPage}
+        isLoadingHistory={isLoadingHistory}
+        onPageChange={setHistoryPage}
+        onViewPrompt={handleViewPrompt}
+      />
+
+      <PromptViewModal
+        open={isModalOpen}
+        prompt={selectedPrompt}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </Container>
+  );
+}
+
+export default function Page() {
+  const currentUser = useSelector((state) => state.user.me);
+  return currentUser && <PageInner currentUser={currentUser} />;
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <ConsoleLayout>{page}</ConsoleLayout>;
+};

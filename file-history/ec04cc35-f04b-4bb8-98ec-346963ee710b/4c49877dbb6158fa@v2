@@ -1,0 +1,151 @@
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/enums/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_domain.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_level.dart';
+import 'package:baseball_detector_flutter/data/models/short_role_info.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+
+TeamAccessibleContents _createBaseTeamAccessibleContents() {
+  return {
+    for (final domain in RoleDomain.values)
+      if (domain != RoleDomain.unknown)
+        domain: _createDomainAccessibleContents(null, false),
+  };
+}
+
+UserAccessibleContents _createTeamAccessibleContents(
+    String teamId, AppRole role) {
+  switch (role) {
+    case AppRole.teamAdmin:
+      final contents = _createBaseTeamAccessibleContents();
+      contents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      contents[RoleDomain.management] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      return {teamId: contents};
+    case AppRole.teamManager:
+      final contents = _createBaseTeamAccessibleContents();
+      contents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.write, true);
+      return {teamId: contents};
+    case AppRole.teamMember:
+      final contents = _createBaseTeamAccessibleContents();
+      contents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.write, false);
+      return {teamId: contents};
+    case AppRole.personalUser:
+      final contents = _createBaseTeamAccessibleContents();
+      contents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.write, true);
+      return {teamId: contents};
+    case AppRole.superReader:
+      final teamContents = _createBaseTeamAccessibleContents();
+      teamContents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.read, true);
+      teamContents[RoleDomain.management] =
+          _createDomainAccessibleContents(RoleLevel.read, true);
+      final allTeamsContents = _createBaseTeamAccessibleContents();
+      allTeamsContents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.read, true);
+      allTeamsContents[RoleDomain.management] =
+          _createDomainAccessibleContents(RoleLevel.read, true);
+      return {teamId: teamContents, allTeams: allTeamsContents};
+    case AppRole.superAdmin:
+      final teamContents = _createBaseTeamAccessibleContents();
+      teamContents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      teamContents[RoleDomain.management] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      teamContents[RoleDomain.admin] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      final allTeamsContents = _createBaseTeamAccessibleContents();
+      allTeamsContents[RoleDomain.basic] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      allTeamsContents[RoleDomain.management] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      allTeamsContents[RoleDomain.admin] =
+          _createDomainAccessibleContents(RoleLevel.admin, true);
+      return {teamId: teamContents, allTeams: allTeamsContents};
+    default:
+      throw Exception('unexpected AppRole: $role');
+  }
+}
+
+DomainAccessibleContents _createDomainAccessibleContents(
+    RoleLevel? level, bool isTeamCrossing) {
+  final allow =
+      ShortRoleInfo(isAccessible: true, isTeamCrossing: isTeamCrossing);
+  const deny = ShortRoleInfo(isAccessible: false, isTeamCrossing: false);
+
+  switch (level) {
+    case RoleLevel.admin:
+      return {
+        RoleLevel.read: allow,
+        RoleLevel.write: allow,
+        RoleLevel.admin: allow,
+      };
+    case RoleLevel.write:
+      return {
+        RoleLevel.read: allow,
+        RoleLevel.write: allow,
+        RoleLevel.admin: deny,
+      };
+    case RoleLevel.read:
+      return {
+        RoleLevel.read: allow,
+        RoleLevel.write: deny,
+        RoleLevel.admin: deny,
+      };
+    default:
+      return {
+        RoleLevel.read: deny,
+        RoleLevel.write: deny,
+        RoleLevel.admin: deny,
+      };
+  }
+}
+
+void _mergeTeamAccessibleContents(
+    TeamAccessibleContents dst, TeamAccessibleContents src) {
+  for (final domain in RoleDomain.values) {
+    final dstDomain = dst[domain]!;
+    final srcDomain = src[domain]!;
+    for (final level in [RoleLevel.read, RoleLevel.write, RoleLevel.admin]) {
+      final dstLevel = dstDomain[level]!;
+      final srcLevel = srcDomain[level]!;
+      dstDomain[level] = ShortRoleInfo(
+        isAccessible: dstLevel.isAccessible | srcLevel.isAccessible,
+        isTeamCrossing: dstLevel.isTeamCrossing | srcLevel.isTeamCrossing,
+      );
+    }
+  }
+}
+
+void _mergeUserAccessibleContents(
+    UserAccessibleContents dst, UserAccessibleContents src) {
+  for (final teamId in src.keys) {
+    dst[teamId] ??= _createBaseTeamAccessibleContents();
+    _mergeTeamAccessibleContents(dst[teamId]!, src[teamId]!);
+  }
+  if (dst.containsKey(allTeams)) {
+    for (final teamId in dst.keys.where((key) => key != allTeams)) {
+      _mergeTeamAccessibleContents(dst[teamId]!, dst[allTeams]!);
+    }
+  }
+}
+
+UserAccessibleContents createAccessibleContents(
+    Map<String, List<AppRole>> roles) {
+  UserAccessibleContents result = {};
+  for (final entry in roles.entries) {
+    final teamId = entry.key;
+    final appRoles = entry.value;
+    for (final appRole in appRoles) {
+      _mergeUserAccessibleContents(
+        result,
+        _createTeamAccessibleContents(teamId, appRole),
+      );
+    }
+  }
+  return result;
+}

@@ -1,0 +1,1507 @@
+# GoRouter 移行計画
+
+## 目次
+1. [概要](#概要)
+2. [現在のルーティング構造](#現在のルーティング構造)
+3. [移行の目的とメリット](#移行の目的とメリット)
+4. [技術的な課題と解決策](#技術的な課題と解決策)
+5. [新しいルーティング構造](#新しいルーティング構造)
+6. [実装計画](#実装計画)
+7. [テスト戦略](#テスト戦略)
+8. [リスクと緩和策](#リスクと緩和策)
+
+---
+
+## 概要
+
+Baseball Detector Flutter アプリのルーティングシステムを、現在のカスタム実装から GoRouter ベースの実装に移行します。
+
+### スコープ
+- **対象**: `AppRouter` と `HomeRouter` の完全な置き換え
+- **期間**: 約 2〜3 週間（実装 1〜2 週間、テスト・調整 1 週間）
+- **影響範囲**: ナビゲーション関連のコード全体（約 30 ファイル）
+
+---
+
+## 現在のルーティング構造
+
+### アーキテクチャ
+```
+MaterialApp
+└── Navigator (AppRouter)
+    ├── SplashPage
+    ├── ForceMigrationPage
+    ├── MaintenancePage
+    ├── UpdateRequiredPage
+    ├── OnboardingPage
+    ├── LoginPage / SignUpPage / ConfirmCodePage / ForgotPasswordPage
+    ├── HomePage
+    │   └── Navigator (HomeRouter) ← ネストされた Navigator
+    │       ├── SessionsPage (Tab 1)
+    │       ├── PlayersPage / SingleTeamPlayerPage (Tab 2)
+    │       ├── AdminPage (Tab 3 - 権限ベース)
+    │       └── SettingsPage (Tab 4)
+    ├── RecordingPage
+    ├── VideoPlayerFullScreenPage
+    ├── SubscriptionPage (特別なトランジション)
+    ├── CancelSubscriptionPage
+    ├── DeleteAccountPage
+    └── InAppPurchaseDebugPage
+```
+
+### 主要コンポーネント
+
+#### 1. AppRouter (`lib/views/routers/app_router.dart`)
+- **役割**: アプリケーション全体のルーティング
+- **実装**: `PageRouteBuilder` でカスタムルート生成
+- **特徴**:
+  - `generateRoute()`: RouteSettings を受け取りルート生成
+  - `getPage()`: ルート名から Widget を返す
+  - `subscriptionPage` のみカスタムトランジション（下からスライドイン）
+
+#### 2. HomeRouter (`lib/views/routers/home_router.dart`)
+- **役割**: ホーム画面内のネストされたナビゲーション
+- **実装**: HomePage 内で独自の Navigator を管理
+- **特徴**:
+  - タブベースのナビゲーション（BottomNavigationBar / NavigationRail）
+  - `HomeTabs` enum で 4 つのタブを管理
+  - `getTab()`: パスから対応するタブを特定
+
+#### 3. NavigationStreamer (`lib/views/routers/navigation_streamer.dart`)
+- **役割**: ナビゲーションイベントの Stream 公開
+- **実装**: `NavigatorObserver` を拡張
+- **用途**: `popLoadingDialog()` でローディングダイアログの閉じるタイミングを検知
+
+#### 4. NavigationLogger (`lib/views/routers/navigation_logger.dart`)
+- **役割**: ナビゲーションイベントのログ記録
+- **実装**: `NavigatorObserver` を拡張
+- **用途**: デバッグとアナリティクス
+
+### 認証フロー
+```
+SplashPage
+  ├─ 非推奨チェック → ForceMigrationPage
+  ├─ メンテナンスチェック → MaintenancePage
+  ├─ バージョンチェック → UpdateRequiredPage
+  └─ 認証状態チェック
+      ├─ ログイン済み → HomePage
+      │   └─ userAccessibleContents 取得失敗 → LoginPage
+      ├─ 初回起動 → OnboardingPage
+      └─ 未ログイン → useAuthNavigation()
+          ├─ サインアップ未開始 → SignUpPage
+          ├─ サインアップ中 → SignUpPage → ConfirmCodePage
+          └─ サインアップ完了 → LoginPage
+```
+
+### ロールベースアクセス制御
+- **実装場所**: `HomePage._getAvailableTabs()`
+- **制御内容**:
+  - Admin タブ: `RoleDomain.management` の `RoleLevel.read` 以上が必要
+  - タブの動的表示/非表示
+  - シングルチームモードでの Player タブの切り替え
+
+---
+
+## 移行の目的とメリット
+
+### 目的
+1. **宣言的ルーティング**: 複雑なナビゲーションロジックを簡潔に記述
+2. **ディープリンク対応**: URL ベースのナビゲーションをネイティブにサポート
+3. **型安全性の向上**: ルートパラメータの型安全な受け渡し
+4. **保守性の向上**: 標準化されたルーティングパターンの採用
+
+### メリット
+
+#### 1. 宣言的ルーティング
+**Before**:
+```dart
+Navigator.of(context).pushNamed(
+  AppRouter.recordingPage,
+  arguments: {
+    'sessionId': sessionId,
+    'sessionCreatedAt': sessionCreatedAt,
+    'teamId': teamId,
+  },
+);
+```
+
+**After**:
+```dart
+context.go('/home/recording', extra: RecordingPageParams(
+  sessionId: sessionId,
+  sessionCreatedAt: sessionCreatedAt,
+  teamId: teamId,
+));
+```
+
+#### 2. ネストされたナビゲーションの簡素化
+- 現在: HomePage 内で手動で Navigator を管理
+- GoRouter: `ShellRoute` で自動的にネスト管理
+
+#### 3. ディープリンク対応
+- URL パターン定義だけでディープリンク対応が可能
+- Web 版への拡張が容易
+
+#### 4. リダイレクトとガードの統一
+- 認証ガード、メンテナンスチェック、バージョンチェックを統一的に記述
+- 複数の条件を優先順位付けて処理
+
+---
+
+## 技術的な課題と解決策
+
+### 課題 1: NavigationStreamer の代替
+
+**現在の用途**:
+```dart
+// popLoadingDialog() でローディングダイアログの閉じるタイミングを検知
+await for (final _ in appRouterStreamer.stream) {
+  if (dialog.isCurrent) {
+    Navigator.of(context, rootNavigator: true).pop();
+    return true;
+  }
+}
+```
+
+**解決策**:
+GoRouter は `GoRouterDelegate` を通じてルート変更を監視できます。
+
+```dart
+class LoadingDialogManager {
+  final GoRouter _router;
+  StreamSubscription? _subscription;
+
+  LoadingDialogManager(this._router);
+
+  void listen(VoidCallback onRouteChange) {
+    // GoRouter の routerDelegate.addListener() を使用
+    _router.routerDelegate.addListener(onRouteChange);
+  }
+
+  void dispose() {
+    _router.routerDelegate.removeListener(() {});
+  }
+}
+```
+
+**代替案**:
+より単純なアプローチとして、`Navigator.of(context).canPop()` のポーリングを検討。
+
+### 課題 2: ロールベースアクセス制御
+
+**現在の実装**:
+- HomePage で動的にタブを生成
+- Admin タブは権限チェック後に表示
+
+**解決策**:
+GoRouter の `redirect` で権限チェックを実装。
+
+```dart
+GoRoute(
+  path: 'admin',
+  redirect: (context, state) {
+    final ref = ProviderScope.containerOf(context);
+    final accessibleContents = ref.read(userAccessibleContentsControllerProvider);
+    final teamId = ref.read(profileStorageProvider).getTeamId();
+
+    if (accessibleContents == null || teamId == null) {
+      return '/home/sessions'; // デフォルトタブへ
+    }
+
+    if (!accessibleContents.hasPrivilegesFor(
+        teamId, RoleDomain.management, RoleLevel.read, true)) {
+      return '/home/sessions'; // 権限なし
+    }
+
+    return null; // アクセス許可
+  },
+  builder: (context, state) => const AdminPage(),
+)
+```
+
+タブの表示/非表示は引き続き `_getAvailableTabs()` で制御。
+
+### 課題 3: カスタムトランジション（SubscriptionPage）
+
+**現在の実装**:
+```dart
+// 下からスライドインするトランジション
+transitionsBuilder: (context, animation, secondaryAnimation, child) {
+  const begin = Offset(0.0, 1.0);
+  const end = Offset.zero;
+  const curve = Curves.easeOutCubic;
+  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+  return SlideTransition(position: animation.drive(tween), child: child);
+}
+```
+
+**解決策**:
+GoRouter の `pageBuilder` でカスタムトランジションを実装。
+
+```dart
+GoRoute(
+  path: 'subscription',
+  pageBuilder: (context, state) {
+    return CustomTransitionPage(
+      key: state.pageKey,
+      child: SubscriptionPage(
+        team: state.extra['team'] as Team,
+        currentPlan: state.extra['currentPlan'] as PlanType?,
+      ),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.easeOutCubic;
+        var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        return SlideTransition(position: animation.drive(tween), child: child);
+      },
+      transitionDuration: const Duration(milliseconds: 400),
+      reverseTransitionDuration: const Duration(milliseconds: 200),
+    );
+  },
+)
+```
+
+### 課題 4: メンテナンス・バージョンチェックの優先順位
+
+**現在の実装**:
+- `_AppState` が `MaintenanceController` と `VersionController` のハンドラーを実装
+- コールバック経由で強制的にページ遷移
+
+**解決策**:
+GoRouter の `redirect` で優先順位付きのチェックを実装。
+
+```dart
+String? _globalRedirect(BuildContext context, GoRouterState state) {
+  final ref = ProviderScope.containerOf(context);
+
+  // 優先順位 1: 非推奨チェック
+  if (Constants.isDeprecated) {
+    return '/force-migration';
+  }
+
+  // 優先順位 2: メンテナンス
+  final maintenance = ref.read(maintenanceControllerProvider);
+  if (maintenance.value?.isInMaintenance == true) {
+    return '/maintenance';
+  }
+
+  // 優先順位 3: 強制アップデート
+  final version = ref.read(versionControllerProvider);
+  if (version.value?.isRight == true && version.value!.right.isUpdateRequired) {
+    return '/update-required';
+  }
+
+  // 優先順位 4: 認証
+  // (個別ルートの redirect で処理)
+
+  return null; // リダイレクトなし
+}
+```
+
+### 課題 5: ネストされたタブナビゲーション
+
+**現在の実装**:
+- HomePage 内で手動で Navigator を管理
+- `_NavigatorObserver` でパス変更を追跡
+- タブタップ時に `popUntil` + `pushNamed` でバックスタックをクリア
+
+**解決策**:
+GoRouter の `StatefulShellRoute` を使用。
+
+```dart
+StatefulShellRoute.indexedStack(
+  builder: (context, state, navigationShell) {
+    return HomePage(navigationShell: navigationShell);
+  },
+  branches: [
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: 'sessions',
+          builder: (context, state) => const SessionsPage(),
+          routes: [
+            GoRoute(
+              path: 'details/:sessionId',
+              builder: (context, state) => SessionDetailsPage(
+                sessionId: state.pathParameters['sessionId']!,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+    StatefulShellBranch(
+      routes: [
+        GoRoute(
+          path: 'players',
+          builder: (context, state) => const PlayersPage(),
+        ),
+      ],
+    ),
+    // ... 他のタブ
+  ],
+)
+```
+
+HomePage は `NavigationShell` を受け取り、それを使ってタブ切り替えを実装。
+
+---
+
+## 新しいルーティング構造
+
+### ルート定義
+
+```dart
+final goRouter = GoRouter(
+  initialLocation: '/splash',
+  navigatorKey: _rootNavigatorKey,
+  observers: [
+    NavigationLogger(name: 'GoRouter'),
+  ],
+  redirect: _globalRedirect,
+  routes: [
+    // システムページ（認証不要）
+    GoRoute(
+      path: '/splash',
+      builder: (context, state) => const SplashPage(),
+    ),
+    GoRoute(
+      path: '/force-migration',
+      builder: (context, state) => const ForceMigrationPage(),
+    ),
+    GoRoute(
+      path: '/maintenance',
+      builder: (context, state) => const MaintenancePage(),
+    ),
+    GoRoute(
+      path: '/update-required',
+      builder: (context, state) => const UpdateRequiredPage(),
+    ),
+
+    // 認証フロー
+    GoRoute(
+      path: '/onboarding',
+      builder: (context, state) => const OnboardingPage(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginPage(),
+      routes: [
+        GoRoute(
+          path: 'forgot-password',
+          builder: (context, state) => const ForgotPasswordPage(),
+        ),
+      ],
+    ),
+    GoRoute(
+      path: '/signup',
+      builder: (context, state) => const SignUpPage(),
+      routes: [
+        GoRoute(
+          path: 'confirm-code',
+          builder: (context, state) => const ConfirmCodePage(),
+        ),
+      ],
+    ),
+
+    // メインアプリ（認証必要）
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) {
+        return HomePage(navigationShell: navigationShell);
+      },
+      branches: [
+        // Sessions タブ
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home/sessions',
+              builder: (context, state) => const SessionsPage(),
+              routes: [
+                GoRoute(
+                  path: 'add',
+                  builder: (context, state) => const AddSessionPage(),
+                ),
+                GoRoute(
+                  path: 'filter',
+                  builder: (context, state) => const SessionFilterPage(),
+                ),
+                GoRoute(
+                  path: ':sessionId',
+                  builder: (context, state) => SessionDetailsPage(
+                    sessionId: state.pathParameters['sessionId']!,
+                    session: state.extra as Session?,
+                  ),
+                  routes: [
+                    GoRoute(
+                      path: 'edit',
+                      builder: (context, state) => EditSessionPage(
+                        originalSession: state.extra as Session?,
+                      ),
+                    ),
+                    GoRoute(
+                      path: 'resource/:resourceId',
+                      builder: (context, state) => ResourceDetailsPage(
+                        sessionId: state.pathParameters['sessionId']!,
+                        resourceId: state.pathParameters['resourceId']!,
+                        session: (state.extra as Map)['session'] as Session,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        // Players タブ
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home/players',
+              builder: (context, state) {
+                final ref = ProviderScope.containerOf(context);
+                final isSingleTeam = /* check logic */;
+                return isSingleTeam
+                    ? SingleTeamPlayerPage()
+                    : const PlayersPage();
+              },
+              routes: [
+                GoRoute(
+                  path: 'create',
+                  builder: (context, state) => const CreatePlayerPage(),
+                ),
+                GoRoute(
+                  path: 'edit',
+                  builder: (context, state) => EditPlayerPage(
+                    player: state.extra as Player,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        // Admin タブ（権限ベース）
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home/admin',
+              redirect: _adminRedirect, // 権限チェック
+              builder: (context, state) => const AdminPage(),
+              routes: [
+                GoRoute(
+                  path: 'edit-team',
+                  builder: (context, state) => const EditTeamPage(),
+                ),
+                GoRoute(
+                  path: 'edit-member',
+                  builder: (context, state) => EditMemberPage(
+                    member: state.extra,
+                  ),
+                ),
+                GoRoute(
+                  path: 'invite-member',
+                  builder: (context, state) => const InviteMemberPage(),
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        // Settings タブ
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/home/settings',
+              builder: (context, state) => const SettingsPage(),
+              routes: [
+                GoRoute(
+                  path: 'edit-profile',
+                  builder: (context, state) => const EditProfilePage(),
+                ),
+                GoRoute(
+                  path: 'change-password',
+                  builder: (context, state) => const ChangePasswordPage(),
+                ),
+                GoRoute(
+                  path: 'change-units',
+                  builder: (context, state) => const ChangeUnitsPage(),
+                ),
+                GoRoute(
+                  path: 'license',
+                  builder: (context, state) => const CustomLicensePage(),
+                ),
+                GoRoute(
+                  path: 'license-checker',
+                  builder: (context, state) => const LicenseCheckerPage(),
+                ),
+                GoRoute(
+                  path: 'notifications',
+                  builder: (context, state) => const NotificationListPage(),
+                  routes: [
+                    GoRoute(
+                      path: ':notificationId',
+                      builder: (context, state) => NotificationDetailsPage(
+                        notification: state.extra,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+
+    // フルスクリーンページ（タブ外）
+    GoRoute(
+      path: '/recording',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) {
+        final params = state.extra as RecordingPageParams;
+        return RecordingPage(
+          sessionId: params.sessionId,
+          sessionCreatedAt: params.sessionCreatedAt,
+          teamId: params.teamId,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/video-player-fullscreen',
+      parentNavigatorKey: _rootNavigatorKey,
+      builder: (context, state) {
+        final params = state.extra as VideoPlayerParams;
+        return VideoPlayerFullScreenPage(
+          ball: params.ball,
+          videoURL: params.videoURL,
+          fileName: params.fileName,
+          isShareAvailable: params.isShareAvailable,
+        );
+      },
+    ),
+
+    // サブスクリプション関連
+    GoRoute(
+      path: '/subscription',
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (context, state) {
+        final params = state.extra as SubscriptionPageParams;
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: SubscriptionPage(
+            team: params.team,
+            currentPlan: params.currentPlan,
+          ),
+          transitionsBuilder: _slideUpTransition,
+          transitionDuration: const Duration(milliseconds: 400),
+          reverseTransitionDuration: const Duration(milliseconds: 200),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/cancel-subscription',
+      builder: (context, state) => const CancelSubscriptionPage(),
+    ),
+
+    // アカウント管理
+    GoRoute(
+      path: '/delete-account',
+      builder: (context, state) => DeleteAccountPage(
+        shouldShowCancelSubscriptionMessage:
+            (state.extra as Map?)?['shouldShowCancelSubscriptionMessage'] ?? false,
+      ),
+    ),
+
+    // デバッグページ
+    GoRoute(
+      path: '/iap-debug',
+      builder: (context, state) => const InAppPurchaseDebugPage(),
+    ),
+  ],
+);
+```
+
+### リダイレクトロジック
+
+```dart
+String? _globalRedirect(BuildContext context, GoRouterState state) {
+  final ref = ProviderScope.containerOf(context);
+
+  // システムチェック（優先度高）
+  if (Constants.isDeprecated && state.matchedLocation != '/force-migration') {
+    return '/force-migration';
+  }
+
+  final maintenance = ref.read(maintenanceControllerProvider);
+  if (maintenance.value?.isInMaintenance == true &&
+      state.matchedLocation != '/maintenance') {
+    return '/maintenance';
+  }
+
+  final version = ref.read(versionControllerProvider);
+  if (version.value?.isRight == true &&
+      version.value!.right.isUpdateRequired &&
+      state.matchedLocation != '/update-required') {
+    return '/update-required';
+  }
+
+  // 認証チェック（優先度低）
+  final isPublicRoute = [
+    '/splash',
+    '/force-migration',
+    '/maintenance',
+    '/update-required',
+    '/onboarding',
+    '/login',
+    '/signup',
+  ].any((route) => state.matchedLocation.startsWith(route));
+
+  if (!isPublicRoute) {
+    final authClient = ref.read(authClientProvider);
+    final isLoggedIn = authClient.isLoggedIn; // 同期版を用意する必要がある
+
+    if (!isLoggedIn) {
+      return '/login';
+    }
+  }
+
+  return null;
+}
+
+String? _adminRedirect(BuildContext context, GoRouterState state) {
+  final ref = ProviderScope.containerOf(context);
+  final accessibleContents = ref.read(userAccessibleContentsControllerProvider);
+  final teamId = ref.read(profileStorageProvider).getTeamId();
+
+  if (accessibleContents == null || teamId == null) {
+    return '/home/sessions';
+  }
+
+  if (!accessibleContents.hasPrivilegesFor(
+      teamId, RoleDomain.management, RoleLevel.read, true)) {
+    return '/home/sessions';
+  }
+
+  return null;
+}
+```
+
+---
+
+## 実装計画
+
+### Phase 1: 準備（3 日間）
+
+#### タスク 1.1: 依存関係の追加
+```yaml
+# pubspec.yaml
+dependencies:
+  go_router: ^14.0.0
+
+dev_dependencies:
+  go_router_builder: ^2.0.0
+  build_runner: ^2.4.0  # 既存
+```
+
+#### タスク 1.2: ルートクラスの作成（GoRouter Builder）
+型安全なルーティングのためのアノテーション付きクラスを作成。
+
+**ハイブリッド戦略**:
+- **通常のページ（約 35 ルート）**: GoRouter Builder を使用
+- **特殊ページ（約 5 ルート）**: 手動 GoRouter を使用（カスタムトランジション、StatefulShellRoute など）
+
+```dart
+// lib/views/routers/routes/session_routes.dart
+
+part 'session_routes.g.dart';
+
+@TypedGoRoute<SessionsRoute>(
+  path: '/home/sessions',
+  routes: [
+    TypedGoRoute<AddSessionRoute>(path: 'add'),
+    TypedGoRoute<SessionFilterRoute>(path: 'filter'),
+    TypedGoRoute<SessionDetailsRoute>(
+      path: ':sessionId',
+      routes: [
+        TypedGoRoute<EditSessionRoute>(path: 'edit'),
+        TypedGoRoute<ResourceDetailsRoute>(path: 'resource/:resourceId'),
+      ],
+    ),
+  ],
+)
+class SessionsRoute extends GoRouteData {
+  const SessionsRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const SessionsPage();
+  }
+}
+
+class SessionDetailsRoute extends GoRouteData {
+  const SessionDetailsRoute(this.sessionId, {this.$extra});
+
+  final String sessionId;
+  final Session? $extra; // extra パラメータは $ prefix
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SessionDetailsPage(
+      sessionId: sessionId,
+      session: $extra,
+    );
+  }
+}
+
+// 他のルート...
+```
+
+```dart
+// lib/views/routers/routes/subscription_routes.dart
+// カスタムトランジションは手動 GoRouter で実装（GoRouter Builder 非対応）
+
+class SubscriptionPageParams {
+  final Team team;
+  final PlanType? currentPlan;
+
+  SubscriptionPageParams({required this.team, this.currentPlan});
+}
+```
+
+#### タスク 1.3: GoRouter インスタンスの作成
+新しいルーター定義ファイルを作成。
+
+```dart
+// lib/views/routers/app_router_go.dart
+
+import 'routes/session_routes.dart';
+import 'routes/player_routes.dart';
+// ... 他のルート
+
+final goRouter = GoRouter(
+  initialLocation: '/splash',
+  navigatorKey: _rootNavigatorKey,
+  observers: [NavigationLogger(name: 'GoRouter')],
+  redirect: _globalRedirect,
+  routes: [
+    // GoRouter Builder で生成されたルート
+    $sessionsRoute,
+    $playersRoute,
+    // ...
+
+    // 手動定義（カスタムトランジション）
+    GoRoute(
+      path: '/subscription',
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (context, state) {
+        final params = state.extra as SubscriptionPageParams;
+        return CustomTransitionPage(
+          child: SubscriptionPage(team: params.team, currentPlan: params.currentPlan),
+          transitionsBuilder: _slideUpTransition,
+        );
+      },
+    ),
+  ],
+);
+```
+
+#### タスク 1.4: コード生成の実行
+```bash
+mise br_clean  # build_runner によるコード生成
+```
+
+### Phase 2: コア機能の実装（5 日間）
+
+#### タスク 2.1: システムページの移行
+- `/splash`
+- `/force-migration`
+- `/maintenance`
+- `/update-required`
+
+これらのページは単純なルートなので移行が容易。
+
+#### タスク 2.2: 認証フローの移行
+- `/onboarding`
+- `/login`
+- `/signup` → `/signup/confirm-code`
+
+`useAuthNavigation` フックを GoRouter 対応に変更。
+
+```dart
+// Before
+VoidCallback useAuthNavigation() {
+  return useCallback(() {
+    Navigator.of(context).pushReplacementNamed(AppRouter.signUpPage);
+  });
+}
+
+// After（GoRouter Builder）
+VoidCallback useAuthNavigation() {
+  return useCallback(() {
+    const SignUpRoute().go(context); // 型安全！
+  });
+}
+```
+
+#### タスク 2.3: グローバルリダイレクトの実装
+メンテナンス・バージョンチェック・認証チェックを統合。
+
+#### タスク 2.4: HomePage の StatefulShellRoute 化
+- 既存の手動 Navigator 管理を削除
+- `NavigationShell` を使用したタブ切り替えに変更
+
+```dart
+// Before
+class HomePage extends HookConsumerWidget {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final navigator = Navigator(
+      key: homeRouterKey,
+      onGenerateRoute: (settings) => // ...
+    );
+
+    return Scaffold(
+      body: navigator,
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          homeRouterKey.currentState!
+            ..popUntil((route) => route.isFirst)
+            ..pushNamed(tabs[index].path);
+        },
+      ),
+    );
+  }
+}
+
+// After
+class HomePage extends HookConsumerWidget {
+  final StatefulNavigationShell navigationShell;
+
+  const HomePage({required this.navigationShell, super.key});
+
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      body: navigationShell,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: navigationShell.currentIndex,
+        onTap: (index) => navigationShell.goBranch(index),
+      ),
+    );
+  }
+}
+```
+
+### Phase 3: 詳細ページの移行（4 日間）
+
+#### タスク 3.1: Sessions タブのサブルート
+- `/home/sessions/add`
+- `/home/sessions/filter`
+- `/home/sessions/:sessionId`
+- `/home/sessions/:sessionId/edit`
+- `/home/sessions/:sessionId/resource/:resourceId`
+
+#### タスク 3.2: Players タブのサブルート
+- `/home/players/create`
+- `/home/players/edit`
+
+#### タスク 3.3: Admin タブのサブルート
+- `/home/admin/edit-team`
+- `/home/admin/edit-member`
+- `/home/admin/invite-member`
+
+#### タスク 3.4: Settings タブのサブルート
+- `/home/settings/edit-profile`
+- `/home/settings/change-password`
+- `/home/settings/change-units`
+- `/home/settings/license`
+- `/home/settings/license-checker`
+- `/home/settings/notifications`
+- `/home/settings/notifications/:notificationId`
+
+### Phase 4: 特殊ページの移行（3 日間）
+
+#### タスク 4.1: フルスクリーンページ
+- `/recording`
+- `/video-player-fullscreen`
+
+`parentNavigatorKey` を使用してタブナビゲーションをバイパス。
+
+#### タスク 4.2: カスタムトランジションページ
+- `/subscription` (下からスライドイン)
+
+`CustomTransitionPage` を使用してトランジションを実装。
+
+#### タスク 4.3: その他のページ
+- `/cancel-subscription`
+- `/delete-account`
+- `/iap-debug`
+
+### Phase 5: ユーティリティの移行（2 日間）
+
+#### タスク 5.1: NavigationStreamer の代替実装
+`LoadingDialogManager` を作成して `popLoadingDialog()` を GoRouter 対応に変更。
+
+```dart
+class LoadingDialogManager {
+  final GoRouter _router;
+  VoidCallback? _listener;
+
+  LoadingDialogManager(this._router);
+
+  Future<bool> popLoadingDialogWhenRouteChanges({
+    required BuildContext context,
+    required Route dialog,
+  }) async {
+    final completer = Completer<bool>();
+
+    _listener = () {
+      if (!completer.isCompleted) {
+        final result = _tryToPopLoadingDialog(context: context, dialog: dialog);
+        if (result != null) {
+          completer.complete(result);
+          _router.routerDelegate.removeListener(_listener!);
+        }
+      }
+    };
+
+    _router.routerDelegate.addListener(_listener!);
+
+    return completer.future;
+  }
+
+  bool? _tryToPopLoadingDialog({
+    required BuildContext context,
+    required Route dialog,
+  }) {
+    if (dialog.isCurrent) {
+      Navigator.of(context, rootNavigator: true).pop();
+      return true;
+    }
+    if (!dialog.isActive) {
+      return false;
+    }
+    return null;
+  }
+}
+```
+
+#### タスク 5.2: NavigationLogger の統合
+GoRouter の `observers` パラメータに統合。
+
+#### タスク 5.3: ディープリンク対応（オプション）
+URL スキーマの定義とテスト。
+
+### Phase 6: テストと最適化（5 日間）
+
+#### タスク 6.1: 単体テスト
+- リダイレクトロジックのテスト
+- パラメータ受け渡しのテスト
+
+#### タスク 6.2: 統合テスト
+- 認証フローのテスト
+- タブナビゲーションのテスト
+- 権限ベースアクセス制御のテスト
+
+#### タスク 6.3: 手動テスト
+- 全画面遷移パターンの確認
+- バックボタン動作の確認
+- ディープリンクの動作確認
+
+#### タスク 6.4: パフォーマンステスト
+- ページ遷移速度の測定
+- メモリ使用量の確認
+
+### Phase 7: クリーンアップとドキュメント（2 日間）
+
+#### タスク 7.1: 旧コードの削除
+- `AppRouter` クラスの削除
+- `HomeRouter` クラスの削除
+- `NavigationStreamer` の削除（代替実装に置き換え）
+
+#### タスク 7.2: ドキュメント更新
+- `README.md` の更新
+- `docs/readme/architecture.md` の更新
+- ルーティング使用例の追加
+
+---
+
+## テスト戦略
+
+### 単体テスト
+
+#### 1. リダイレクトロジック
+```dart
+// test/views/routers/redirect_test.dart
+
+void main() {
+  group('globalRedirect', () {
+    test('非推奨時は /force-migration にリダイレクト', () {
+      // Setup
+      Constants.isDeprecated = true;
+
+      // Execute
+      final result = _globalRedirect(context, state);
+
+      // Verify
+      expect(result, '/force-migration');
+    });
+
+    test('メンテナンス中は /maintenance にリダイレクト', () {
+      // ...
+    });
+
+    test('未ログイン時は /login にリダイレクト', () {
+      // ...
+    });
+  });
+
+  group('adminRedirect', () {
+    test('権限なしは /home/sessions にリダイレクト', () {
+      // ...
+    });
+
+    test('権限ありはリダイレクトなし', () {
+      // ...
+    });
+  });
+}
+```
+
+#### 2. パラメータ受け渡し
+```dart
+// test/views/routers/route_params_test.dart
+
+void main() {
+  test('RecordingPageParams の正しい受け渡し', () {
+    final params = RecordingPageParams(
+      sessionId: 'session-1',
+      sessionCreatedAt: DateTime.now(),
+      teamId: 'team-1',
+    );
+
+    expect(params.sessionId, 'session-1');
+    expect(params.teamId, 'team-1');
+  });
+}
+```
+
+### 統合テスト
+
+#### 1. 認証フロー
+```dart
+// integration_test/auth_flow_test.dart
+
+void main() {
+  testWidgets('未ログイン → サインアップ → 確認コード → ホーム', (tester) async {
+    await tester.pumpWidget(const App());
+
+    // Splash 画面
+    await tester.pumpAndSettle();
+
+    // SignUp 画面に遷移
+    expect(find.byType(SignUpPage), findsOneWidget);
+
+    // サインアップフォーム入力
+    // ...
+
+    // ConfirmCode 画面に遷移
+    await tester.tap(find.text('Sign Up'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ConfirmCodePage), findsOneWidget);
+
+    // 確認コード入力
+    // ...
+
+    // ホーム画面に遷移
+    await tester.tap(find.text('Confirm'));
+    await tester.pumpAndSettle();
+    expect(find.byType(HomePage), findsOneWidget);
+  });
+}
+```
+
+#### 2. タブナビゲーション
+```dart
+// integration_test/tab_navigation_test.dart
+
+void main() {
+  testWidgets('タブ切り替えとバックスタック管理', (tester) async {
+    await tester.pumpWidget(const App());
+
+    // ログイン済みの状態をセットアップ
+    // ...
+
+    // Sessions タブ
+    expect(find.byType(SessionsPage), findsOneWidget);
+
+    // Players タブに切り替え
+    await tester.tap(find.text('Players'));
+    await tester.pumpAndSettle();
+    expect(find.byType(PlayersPage), findsOneWidget);
+
+    // Player 詳細に遷移
+    await tester.tap(find.text('Player 1'));
+    await tester.pumpAndSettle();
+    expect(find.byType(EditPlayerPage), findsOneWidget);
+
+    // Sessions タブに切り替え（バックスタッククリア）
+    await tester.tap(find.text('Sessions'));
+    await tester.pumpAndSettle();
+    expect(find.byType(SessionsPage), findsOneWidget);
+
+    // バックボタン → アプリ終了（Sessions タブがルート）
+    await tester.pageBack();
+    // アプリが終了することを確認
+  });
+}
+```
+
+#### 3. 権限ベースアクセス制御
+```dart
+// integration_test/role_based_access_test.dart
+
+void main() {
+  testWidgets('Admin タブへのアクセス制御', (tester) async {
+    await tester.pumpWidget(const App());
+
+    // 権限なしユーザーでログイン
+    // ...
+
+    // Admin タブが表示されない
+    expect(find.text('Admin'), findsNothing);
+
+    // 権限ありユーザーに切り替え
+    // ...
+
+    // Admin タブが表示される
+    expect(find.text('Admin'), findsOneWidget);
+
+    // Admin タブに切り替え
+    await tester.tap(find.text('Admin'));
+    await tester.pumpAndSettle();
+    expect(find.byType(AdminPage), findsOneWidget);
+  });
+}
+```
+
+### 手動テストチェックリスト
+
+#### 基本ナビゲーション
+- [ ] アプリ起動時のスプラッシュ画面表示
+- [ ] 初回起動時のオンボーディング表示
+- [ ] サインアップフロー（SignUpPage → ConfirmCodePage）
+- [ ] ログインフロー
+- [ ] ホーム画面への遷移
+
+#### タブナビゲーション
+- [ ] 各タブ間の切り替え
+- [ ] タブ切り替え時のバックスタッククリア
+- [ ] バックボタンでのタブ内ナビゲーション
+- [ ] ルートタブでのバックボタン（アプリ終了）
+
+#### ネストされたナビゲーション
+- [ ] Sessions → SessionDetails → ResourceDetails
+- [ ] Players → EditPlayer
+- [ ] Settings → EditProfile
+- [ ] Settings → Notifications → NotificationDetails
+
+#### 権限ベースアクセス制御
+- [ ] 権限なしユーザーで Admin タブ非表示
+- [ ] 権限ありユーザーで Admin タブ表示
+- [ ] Admin タブへの直接アクセス試行（リダイレクト確認）
+
+#### フルスクリーンページ
+- [ ] Recording ページへの遷移とバック
+- [ ] VideoPlayerFullScreen ページへの遷移とバック
+
+#### カスタムトランジション
+- [ ] Subscription ページの下からスライドイン
+- [ ] Subscription ページのバック時のスライドアウト
+
+#### システムチェック
+- [ ] メンテナンス中の強制リダイレクト
+- [ ] 強制アップデート時の強制リダイレクト
+- [ ] 非推奨バージョンの強制リダイレクト
+
+#### ディープリンク（実装する場合）
+- [ ] 各ページへの直接リンク
+- [ ] 未ログイン時のリダイレクト
+
+---
+
+## リスクと緩和策
+
+### リスク 1: 複雑な状態管理との統合
+
+**リスク内容**:
+GoRouter の `redirect` は同期的に動作するため、非同期の状態チェック（`authClient.isLoggedIn` など）が困難。
+
+**緩和策**:
+1. **同期版の状態プロバイダーを作成**:
+   ```dart
+   final isLoggedInSyncProvider = Provider<bool>((ref) {
+     final authClient = ref.watch(authClientProvider);
+     return authClient.isLoggedInSync; // 同期版を用意
+   });
+   ```
+
+2. **事前に状態をキャッシュ**:
+   SplashPage で認証状態を確認し、`StateProvider` にキャッシュ。
+
+3. **`refreshListenable` の活用**:
+   GoRouter の `refreshListenable` に Riverpod の状態を連携。
+
+### リスク 2: Navigator API との互換性
+
+**リスク内容**:
+一部のコードで `Navigator.of(context).push()` を直接使用している可能性。
+
+**緩和策**:
+1. **コードベース全体の検索**:
+   ```bash
+   grep -r "Navigator.of(context)" lib/
+   ```
+
+2. **段階的な移行**:
+   GoRouter と従来の Navigator を併用可能な期間を設ける。
+
+3. **ラッパー関数の提供**:
+   ```dart
+   extension NavigationExtension on BuildContext {
+     void goToRecording(RecordingPageParams params) {
+       go('/recording', extra: params);
+     }
+   }
+   ```
+
+### リスク 3: パフォーマンスの低下
+
+**リスク内容**:
+GoRouter のルート解決やリダイレクトがパフォーマンスに影響を与える可能性。
+
+**緩和策**:
+1. **ベンチマークの実施**:
+   移行前後でページ遷移速度を測定。
+
+2. **リダイレクトロジックの最適化**:
+   不要なチェックを削減し、早期リターンを活用。
+
+3. **ルート定義の最適化**:
+   ネストの深さを抑え、シンプルな構造を維持。
+
+### リスク 4: テストの複雑化
+
+**リスク内容**:
+GoRouter を使用したテストの記述が複雑になる可能性。
+
+**緩和策**:
+1. **テストヘルパーの作成**:
+   ```dart
+   GoRouter createTestRouter({
+     required bool isLoggedIn,
+     required bool hasAdminAccess,
+   }) {
+     return GoRouter(
+       initialLocation: '/splash',
+       redirect: (context, state) {
+         // テスト用のシンプルなリダイレクト
+       },
+       routes: testRoutes,
+     );
+   }
+   ```
+
+2. **モックの活用**:
+   Riverpod の `ProviderScope` で状態をオーバーライド。
+
+3. **統合テストの充実**:
+   実際のアプリフローをカバーする統合テストを重点的に実施。
+
+### リスク 5: チーム全体の学習コスト
+
+**リスク内容**:
+GoRouter の概念（ShellRoute、redirect、pageBuilder など）の学習が必要。
+
+**緩和策**:
+1. **ドキュメントの整備**:
+   - GoRouter の基本概念の説明
+   - 使用例の追加
+   - トラブルシューティングガイド
+
+2. **ペアプログラミング**:
+   移行作業を通じてチーム全体で知識を共有。
+
+3. **段階的なロールアウト**:
+   影響の小さいページから移行を開始。
+
+---
+
+## 次のステップ
+
+1. **ステークホルダーレビュー**: この計画をチームでレビュー
+2. **依存関係の確認**: go_router の最新版と Flutter バージョンの互換性確認
+3. **タイムライン調整**: 他の開発タスクとの調整
+4. **キックオフ**: Phase 1 の開始
+
+---
+
+## 参考資料
+
+- [GoRouter 公式ドキュメント](https://pub.dev/packages/go_router)
+- [GoRouter Builder 公式ドキュメント](https://pub.dev/packages/go_router_builder)
+- [Flutter ナビゲーションガイド](https://docs.flutter.dev/ui/navigation)
+- [GoRouter と Riverpod の統合](https://codewithandrea.com/articles/flutter-navigation-gorouter-riverpod/)
+- [StatefulShellRoute の使い方](https://pub.dev/documentation/go_router/latest/go_router/StatefulShellRoute-class.html)
+- [Type-safe routes with GoRouter Builder](https://codewithandrea.com/articles/go-router-flutter-type-safe-routes/)
+
+---
+
+## 付録 A: ルート一覧
+
+### システムルート
+| パス | ページ | 認証 | 説明 |
+|------|--------|------|------|
+| `/splash` | SplashPage | 不要 | 初期画面 |
+| `/force-migration` | ForceMigrationPage | 不要 | 非推奨バージョン通知 |
+| `/maintenance` | MaintenancePage | 不要 | メンテナンス中 |
+| `/update-required` | UpdateRequiredPage | 不要 | 強制アップデート |
+
+### 認証ルート
+| パス | ページ | 認証 | 説明 |
+|------|--------|------|------|
+| `/onboarding` | OnboardingPage | 不要 | 初回起動時 |
+| `/login` | LoginPage | 不要 | ログイン |
+| `/login/forgot-password` | ForgotPasswordPage | 不要 | パスワード再設定 |
+| `/signup` | SignUpPage | 不要 | サインアップ |
+| `/signup/confirm-code` | ConfirmCodePage | 不要 | 確認コード入力 |
+
+### メインアプリルート
+| パス | ページ | 認証 | 権限 | 説明 |
+|------|--------|------|------|------|
+| `/home/sessions` | SessionsPage | 必要 | - | Sessions タブ（デフォルト） |
+| `/home/sessions/add` | AddSessionPage | 必要 | - | セッション作成 |
+| `/home/sessions/filter` | SessionFilterPage | 必要 | - | セッションフィルター |
+| `/home/sessions/:sessionId` | SessionDetailsPage | 必要 | - | セッション詳細 |
+| `/home/sessions/:sessionId/edit` | EditSessionPage | 必要 | - | セッション編集 |
+| `/home/sessions/:sessionId/resource/:resourceId` | ResourceDetailsPage | 必要 | - | リソース詳細 |
+| `/home/players` | PlayersPage / SingleTeamPlayerPage | 必要 | - | Players タブ |
+| `/home/players/create` | CreatePlayerPage | 必要 | - | プレイヤー作成 |
+| `/home/players/edit` | EditPlayerPage | 必要 | - | プレイヤー編集 |
+| `/home/admin` | AdminPage | 必要 | management/read | Admin タブ |
+| `/home/admin/edit-team` | EditTeamPage | 必要 | management/read | チーム編集 |
+| `/home/admin/edit-member` | EditMemberPage | 必要 | management/read | メンバー編集 |
+| `/home/admin/invite-member` | InviteMemberPage | 必要 | management/read | メンバー招待 |
+| `/home/settings` | SettingsPage | 必要 | - | Settings タブ |
+| `/home/settings/edit-profile` | EditProfilePage | 必要 | - | プロフィール編集 |
+| `/home/settings/change-password` | ChangePasswordPage | 必要 | - | パスワード変更 |
+| `/home/settings/change-units` | ChangeUnitsPage | 必要 | - | 単位変更 |
+| `/home/settings/license` | CustomLicensePage | 必要 | - | ライセンス |
+| `/home/settings/license-checker` | LicenseCheckerPage | 必要 | - | ライセンスチェッカー |
+| `/home/settings/notifications` | NotificationListPage | 必要 | - | 通知一覧 |
+| `/home/settings/notifications/:notificationId` | NotificationDetailsPage | 必要 | - | 通知詳細 |
+
+### フルスクリーンルート
+| パス | ページ | 認証 | 説明 |
+|------|--------|------|------|
+| `/recording` | RecordingPage | 必要 | 録画画面 |
+| `/video-player-fullscreen` | VideoPlayerFullScreenPage | 必要 | 動画フルスクリーン |
+
+### その他のルート
+| パス | ページ | 認証 | 説明 |
+|------|--------|------|------|
+| `/subscription` | SubscriptionPage | 必要 | サブスクリプション（カスタムトランジション） |
+| `/cancel-subscription` | CancelSubscriptionPage | 必要 | サブスクリプションキャンセル |
+| `/delete-account` | DeleteAccountPage | 必要 | アカウント削除 |
+| `/iap-debug` | InAppPurchaseDebugPage | 必要 | IAP デバッグ |
+
+---
+
+## 付録 B: マイルストーン
+
+| Phase | 期間 | 主要成果物 | 完了条件 |
+|-------|------|-----------|----------|
+| Phase 1: 準備 | 3 日 | GoRouter インスタンス、パラメータクラス | go_router パッケージ追加完了、基本構造定義完了 |
+| Phase 2: コア機能 | 5 日 | システムページ、認証フロー、HomePage 移行 | 認証フローが GoRouter で動作 |
+| Phase 3: 詳細ページ | 4 日 | 全タブのサブルート実装 | 全サブページへの遷移が動作 |
+| Phase 4: 特殊ページ | 3 日 | フルスクリーン、カスタムトランジション | Recording/VideoPlayer が動作 |
+| Phase 5: ユーティリティ | 2 日 | NavigationStreamer 代替、Logger 統合 | LoadingDialog が正常に動作 |
+| Phase 6: テスト | 5 日 | 単体・統合テスト、手動テスト | 全テストケース合格 |
+| Phase 7: クリーンアップ | 2 日 | 旧コード削除、ドキュメント更新 | レビュー完了、マージ準備完了 |
+
+**合計**: 24 日間（約 3〜4 週間）
+
+---
+
+## 付録 C: GoRouter vs GoRouter Builder の比較
+
+### 採用した戦略: **ハイブリッドアプローチ**
+
+| 観点 | 手動 GoRouter | GoRouter Builder |
+|------|--------------|------------------|
+| **型安全性** | `state.extra as Type` で手動キャスト | 完全な型安全性、コンパイル時エラー |
+| **パラメータ受け渡し** | Map や extra で手動管理 | 自動生成されたクラスと拡張メソッド |
+| **コード量** | 多い | 約 40% 削減 |
+| **学習曲線** | 緩やか | やや急（freezed の経験があれば容易） |
+| **柔軟性** | 高い | やや制約あり |
+| **ビルド時間** | 速い | 数秒増（許容範囲） |
+
+### 使い分け
+
+**GoRouter Builder を使用（約 35 ルート）**:
+- システムページ（splash, maintenance など）
+- 認証フロー（login, signup など）
+- 通常のページ遷移（sessions, players, admin, settings）
+- サブページ（edit, create, details など）
+
+**手動 GoRouter を使用（約 5 ルート）**:
+- カスタムトランジション（subscription）
+- StatefulShellRoute の定義
+- 複雑なリダイレクトロジック
+
+### コード例
+
+**Before（手動）**:
+```dart
+// ナビゲーション
+context.go('/home/sessions/${session.id}', extra: session);
+
+// ルート定義
+GoRoute(
+  path: '/home/sessions/:sessionId',
+  builder: (context, state) {
+    final sessionId = state.pathParameters['sessionId']!; // 手動抽出
+    final session = state.extra as Session?; // キャスト
+    return SessionDetailsPage(sessionId: sessionId, session: session);
+  },
+)
+```
+
+**After（GoRouter Builder）**:
+```dart
+// ナビゲーション（型安全！）
+SessionDetailsRoute(session.id, $extra: session).go(context);
+
+// ルート定義（自動生成）
+@TypedGoRoute<SessionDetailsRoute>(path: '/home/sessions/:sessionId')
+class SessionDetailsRoute extends GoRouteData {
+  const SessionDetailsRoute(this.sessionId, {this.$extra});
+  final String sessionId;
+  final Session? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return SessionDetailsPage(sessionId: sessionId, session: $extra);
+  }
+}
+```
+
+---
+
+## 変更履歴
+
+| 日付 | 変更内容 | 担当者 |
+|------|----------|--------|
+| 2025-10-17 | 初版作成 | Claude Code |
+| 2025-10-17 | GoRouter Builder のハイブリッド戦略を追加 | Claude Code |
+

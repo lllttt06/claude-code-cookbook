@@ -1,0 +1,83 @@
+import _ from 'lodash';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+
+import AppConstants from '@/constants/app.constants';
+import useServicesHook from '@/hooks';
+import { useSubmitGuard } from '@/hooks/useSubmitGuard';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import { translate } from '@/utils/i18n';
+
+import {
+  ModifyPlayerModal,
+  ModifyPlayerModalParam,
+} from './modify-player-modal';
+
+export const EditPlayerModal: FC<{
+  currentUser: User;
+  teamId: string;
+  playerId: string;
+  defaultData: ModifyPlayerModalParam;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  onSuccess?: Function;
+  onCancel?: Function;
+}> = ({
+  currentUser,
+  teamId,
+  playerId,
+  defaultData,
+  isOpen,
+  setIsOpen,
+  onSuccess,
+  onCancel,
+}) => {
+  const { services } = useServicesHook();
+  const { isSubmitting, executeWithGuard } = useSubmitGuard();
+
+  const [error, setError] = useState<ServiceError | null>(null);
+
+  const updatePlayer = async (param: ModifyPlayerModalParam) => {
+    await executeWithGuard(async () => {
+      if (param.imageFile) {
+        if (param.imageFile.size > AppConstants.THUMBNAIL_FILE_SIZE_LIMIT) {
+          setError(
+            new ServiceError(new Error(translate('thumbnail_file_too_large'))),
+          );
+          return;
+        }
+      }
+      const { error } = await services.default.player.editPlayer(
+        teamId,
+        playerId,
+        param,
+      );
+
+      if (error) {
+        setError(error);
+        return;
+      }
+      onSuccess?.();
+      setIsOpen(false);
+    });
+  };
+
+  return (
+    <ModifyPlayerModal
+      teamId={teamId}
+      currentUser={currentUser}
+      defaultData={defaultData}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      onOk={async (param) => {
+        await updatePlayer(param);
+      }}
+      mode={'update'}
+      isSubmitting={isSubmitting}
+      error={error}
+      setError={setError}
+      onCancel={onCancel}
+      playerIdToExcludeChecking={playerId}
+    />
+  );
+};

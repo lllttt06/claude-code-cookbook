@@ -1,0 +1,286 @@
+/// {@category Controllers}
+library;
+
+// Flutter imports:
+import 'package:flutter/foundation.dart';
+
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/check_result.dart';
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/controllers/player_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/controllers/utils/api_helper.dart';
+import 'package:baseball_detector_flutter/controllers/utils/paging_notifier_mixin.dart';
+import 'package:baseball_detector_flutter/data/models/dto/session/session_search_response.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_domain.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_level.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/paging_data.dart';
+import 'package:baseball_detector_flutter/data/models/player.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/providers/repository_provider.dart';
+
+part 'session_list_controller.g.dart';
+
+/// A controller class that manages [Session] list.
+///
+/// This controller refreshes itself when
+/// - [repositoryProvider] updated.
+/// - [loginStateControllerProvider] updated.
+/// - [sessionFilterParametersNotifierProvider] updated.
+/// - [PlayerListController] runs [PlayerListController.updatePlayer].
+///
+/// Note: This controller just handles abstract repository.
+/// This means that the controller does not care
+/// the implementation of its repository is either remote DB or local cache.
+/// Therefore do not use anything related to a specific implementation of repository
+/// (e.g., the login state of the remote DB).
+@riverpod
+class SessionListController extends _$SessionListController
+    with AutoDisposePagePagingNotifierMixin<Session> {
+  static const int pageSize = 50;
+
+  @override
+  Future<PagingData<Session>> build() {
+    ref.watch(loginStateControllerProvider);
+    ref.watch(repositoryProvider);
+    ref.watch(userAccessibleContentsControllerProvider);
+    final filterParams = ref.watch(sessionFilterParametersNotifierProvider);
+    return fetch(
+      page: AutoDisposePagePagingNotifierMixin.initialPage,
+      pageSize: pageSize,
+      filterParams: filterParams,
+    );
+  }
+
+  @override
+  Future<PagingData<Session>> fetch({
+    required int page,
+    required int pageSize,
+    SessionFilterParameters? filterParams,
+  }) async {
+    filterParams ??= ref.read(sessionFilterParametersNotifierProvider);
+
+    final userTeamId = ref.read(profileStorageProvider).getTeamId();
+
+    final res = await executeWithPermissionRetry<SessionSearchResponse, bool>(
+      ref: ref,
+      getPermissionValue: (contents) => userTeamId == null
+          ? false
+          : contents?.hasPrivilegesFor(
+                  userTeamId, RoleDomain.basic, RoleLevel.read, true) ??
+              false,
+      apiCall: (isTeamCrossing) => ref.read(repositoryProvider).getSessions(
+            page: page,
+            pageSize: pageSize,
+            playerId: filterParams?.player?.id,
+            location: filterParams?.location,
+            startDate: filterParams?.startDate,
+            endDate: filterParams?.endDate,
+            isTeamCrossing: isTeamCrossing,
+          ),
+    );
+
+    checkResultForMaintenance(ref, res);
+    if (!res.hasRight) {
+      throw res.left;
+    }
+    return PagingData<Session>(
+      items: res.right.sessions,
+      page: page,
+      pageSize: pageSize,
+      total: res.right.total,
+      hasMore: res.right.sessions.length + page * pageSize < res.right.total,
+    );
+  }
+
+  Future<Result<Failure, void>> deleteSession(String sessionId) async {
+    final res =
+        await ref.read(repositoryProvider).deleteSession(sessionId: sessionId);
+    checkResultForMaintenance(ref, res);
+    if (res.hasRight && state.value != null) {
+      final current = state.value!;
+      final newItems = current.items.where((s) => s.id != sessionId).toList();
+      state = AsyncData(current.copyWith(items: newItems));
+    }
+    return res;
+  }
+
+  /// Update a [Session] model in the repository.
+  Future<Result<Failure, Session>> editSession({
+    required String sessionId,
+    required String playerId,
+    required String note,
+    required String location,
+    required String title,
+  }) async {
+    final res = await ref.read(repositoryProvider).editSession(
+          playerId: playerId,
+          sessionId: sessionId,
+          location: location,
+          note: note,
+          title: title,
+        );
+    checkResultForMaintenance(ref, res);
+    if (res.hasLeft) return Left(res.left);
+
+    if (res.hasRight) {
+      final allPlayers = await ref.read(allPlayersProvider.future);
+      final current = state.value;
+      if (current != null) {
+        final updatedPlayer =
+            allPlayers.firstWhereOrNull((p) => p.id == playerId);
+        final newItems = current.items
+            .map((s) => s.id == sessionId
+                ? s.copyWith(
+                    playerId: playerId,
+                    player: updatedPlayer,
+                    note: note,
+                    location: location,
+                    title: title,
+                  )
+                : s)
+            .toList();
+        state = AsyncData(current.copyWith(items: newItems));
+      }
+      return Right(res.right.session);
+    }
+    return Left(res.left);
+  }
+
+  Future<Result<Failure, Session>> addSession({
+    required String playerId,
+    required String location,
+    required String note,
+    required String title,
+  }) async {
+    final res = await ref.read(repositoryProvider).addSession(
+          playerId: playerId,
+          location: location,
+          note: note,
+          title: title,
+        );
+    checkResultForMaintenance(ref, res);
+    if (res.hasLeft) return Left(res.left);
+
+    if (res.hasRight) {
+      if (state.value != null) {
+        final current = state.value!;
+        // Grouping by month is conducted in the [SessionPage].
+        final newItems = [...current.items, res.right.session];
+        state = AsyncData(current.copyWith(items: newItems));
+      }
+      return Right(res.right.session);
+    }
+    return Left(res.left);
+  }
+
+  Future<Result<Failure, Session>> refreshSpecificSesison({
+    required String teamId,
+    required String sessionId,
+  }) async {
+    final res = await ref.read(repositoryProvider).getSessionDetail(
+          teamId: teamId,
+          sessionId: sessionId,
+        );
+    checkResultForMaintenance(ref, res);
+    if (res.hasLeft) return Left(res.left);
+
+    final current = state.value;
+    if (current != null) {
+      final newItems =
+          current.items.map((s) => s.id == sessionId ? res.right : s).toList();
+      state = AsyncData(current.copyWith(items: newItems));
+    }
+    return Right(res.right);
+  }
+}
+
+/// Filtering parameters for SessionListController.
+///
+/// This class is the state of SessionFilterParametersNotifier.
+/// The state of StateNotifier should be immutable.
+@immutable
+class SessionFilterParameters {
+  final Player? player;
+  final DateTime? startDate;
+  final DateTime? endDate;
+  final String? location;
+
+  const SessionFilterParameters({
+    this.player,
+    this.startDate,
+    this.endDate,
+    this.location,
+  });
+}
+
+@riverpod
+class SessionFilterParametersNotifier
+    extends _$SessionFilterParametersNotifier {
+  @override
+  SessionFilterParameters build() {
+    return const SessionFilterParameters();
+  }
+
+  void updatePlayer(Player? newValue) {
+    state = SessionFilterParameters(
+      player: newValue,
+      startDate: state.startDate,
+      endDate: state.endDate,
+      location: state.location,
+    );
+  }
+
+  void updateDateRange(DateTime? newStartDate, DateTime? newEndDate) {
+    state = SessionFilterParameters(
+      player: state.player,
+      startDate: newStartDate,
+      endDate: newEndDate,
+      location: state.location,
+    );
+  }
+
+  void updateLocation(String? newLocation) {
+    state = SessionFilterParameters(
+      player: state.player,
+      startDate: state.startDate,
+      endDate: state.endDate,
+      location: newLocation,
+    );
+  }
+}
+
+@riverpod
+Future<List<String>> sessionLocations(Ref ref) async {
+  final userTeamId = ref.read(profileStorageProvider).getTeamId();
+  final res = await executeWithPermissionRetry<List<String>, bool>(
+    ref: ref,
+    getPermissionValue: (contents) => userTeamId == null
+        ? false
+        : contents?.hasPrivilegesFor(
+              userTeamId,
+              RoleDomain.basic,
+              RoleLevel.read,
+              true,
+            ) ??
+            false,
+    apiCall: (isTeamCrossing) => ref
+        .read(repositoryProvider)
+        .getSessionLocations(isTeamCrossing: isTeamCrossing),
+  );
+
+  checkResultForMaintenance(ref, res);
+  if (!res.hasRight) {
+    throw res.left;
+  }
+  return res.right.where((location) => location.isNotEmpty).toList();
+}

@@ -1,0 +1,994 @@
+import { MoreHoriz, PersonAddAlt } from '@mui/icons-material';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  Chip,
+  Container,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  Grid2 as Grid,
+  Menu,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Switch,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@mui/material';
+import _ from 'lodash';
+import moment from 'moment';
+import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+
+import CriticalError from '@/components/common/critical-error';
+import DefaultBreadCrumbs from '@/components/common/default-breadcrumb';
+import { FloatingButton } from '@/components/common/floating-button';
+import DefaultSearchField from '@/components/common/input/default-search-field';
+import { ConfirmationModal } from '@/components/modal/confirmation-modal';
+import { CreateTeamPlanModal } from '@/components/modal/super-admin/create-team-plan-modal';
+import { EditCurrentOrPreviousTeamPlanModal } from '@/components/modal/super-admin/edit-current-or-previous-team-plan-modal';
+import { EditOrDeleteNextTeamPlanModal } from '@/components/modal/super-admin/edit-or-delete-next-team-plan-modal';
+import {
+  getDefaultParam,
+  TeamCreationModal,
+} from '@/components/modal/super-admin/team-creation-modal';
+import {
+  CommonPagination,
+  CommonPaginationData,
+} from '@/components/pagination/common-pagination';
+import { TeamPlanLimitBand } from '@/components/sessions/team-plan-limit-band';
+import { EnvManager } from '@/constants/env.constants';
+import { PAGE_INFO } from '@/constants/page.constants';
+import useServicesHook from '@/hooks';
+import ConsoleLayout from '@/layouts/console.layout';
+import { Team } from '@/models/team';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import {
+  CreateTeamParam,
+  PlanFilterType,
+  planFilterTypes,
+  TeamPlanExpiryFilterType,
+  teamPlanExpiryFilterTypes,
+  TeamSortType,
+  teamSortTypes,
+  TeamStatusFilterType,
+  teamStatusFilterTypes,
+  TeamTypeFilterType,
+  teamTypeFilterTypes,
+} from '@/services/interfaces/super-admin-api.interface';
+import { useSelector } from '@/store';
+import { translate } from '@/utils/i18n';
+import { PathUtil } from '@/utils/path.util';
+import { StringUtil } from '@/utils/string.util';
+
+type TeamQueryCondition = {
+  keyword: string;
+  sort: TeamSortType;
+  expiry: TeamPlanExpiryFilterType;
+  plan: PlanFilterType;
+  teamType: TeamTypeFilterType;
+  status: TeamStatusFilterType;
+  teamOwner: string;
+  includeNextPlan: boolean;
+  searchTrigger: Date;
+};
+
+const defaultCondition: TeamQueryCondition & CommonPaginationData = {
+  keyword: '',
+  sort: 'recent',
+  expiry: 'all',
+  plan: 'all',
+  teamType: 'all',
+  status: 'all',
+  teamOwner: '',
+  includeNextPlan: false,
+  currentPage: 0,
+  rowsPerPage: 10,
+
+  searchTrigger: new Date(),
+};
+
+const buildQueryParam = (data: TeamQueryCondition & CommonPaginationData) => {
+  return {
+    keyword: data.keyword.toString(),
+    sort: data.sort.toString(),
+    expiry: data.expiry.toString(),
+    plan: data.plan.toString(),
+    teamType: data.teamType.toString(),
+    status: data.status.toString(),
+    teamOwner: data.teamOwner.toString(),
+    includeNextPlan: data.includeNextPlan.toString(),
+    page: data.currentPage.toString(),
+    pageSize: data.rowsPerPage.toString(),
+  };
+};
+
+const parseQueryParam = (data: any) => {
+  return _.chain({
+    keyword: PathUtil.getStringFromQuery(data.keyword),
+    sort: PathUtil.getEnumFromQuery(teamSortTypes, data.sort),
+    expiry: PathUtil.getEnumFromQuery(teamPlanExpiryFilterTypes, data.expiry),
+    plan: PathUtil.getEnumFromQuery(planFilterTypes, data.plan),
+    teamType: PathUtil.getEnumFromQuery(teamTypeFilterTypes, data.teamType),
+    status: PathUtil.getEnumFromQuery(teamStatusFilterTypes, data.status),
+    teamOwner: PathUtil.getStringFromQuery(data.teamOwner),
+    includeNextPlan: PathUtil.getBoolFromQuery(data.includeNextPlan),
+    currentPage: PathUtil.getIntFromQuery(data.page),
+    rowsPerPage: PathUtil.getIntFromQuery(data.pageSize),
+  })
+    .omitBy((v, k) => {
+      return _.isNil(v);
+    })
+    .defaultsDeep(defaultCondition)
+    .value();
+};
+
+type TeamPlanModalParam = {
+  isOpen: boolean;
+  team: Team | null;
+  title?: string;
+};
+
+const getDefaultTeamPlanModalParam: () => TeamPlanModalParam = () => ({
+  isOpen: false,
+  team: null,
+});
+
+function PageInner({
+  currentUser,
+  currentTeam,
+}: {
+  currentUser: User;
+  currentTeam: Team;
+}) {
+  const { services, router, reloader } = useServicesHook();
+  const unit = useSelector((state) => state.user.unit);
+
+  const teamId = currentTeam.id;
+
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
+  const [loadError, setLoadError] = useState<ServiceError | null>(null);
+  const [conditions, setConditions] = useState<
+    TeamQueryCondition & CommonPaginationData
+  >({
+    ...defaultCondition,
+    ...parseQueryParam(router.query),
+    ...services.localStorage.defaultPaginationData(
+      currentUser.id,
+      router.query,
+    ),
+  });
+  const [numberOfTotalItems, setNumberOfTotalItems] = useState<number>(0);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [teamCreationParam, setTeamCreationParam] =
+    useState<CreateTeamParam>(getDefaultParam());
+  const [isCreationModalOpen, setIsCreationModalOpen] =
+    useState<boolean>(false);
+
+  const [
+    editCurrentOrPreviousTeamPlanModalParam,
+    setEditCurrentOrPreviousTeamPlanModalParam,
+  ] = useState<TeamPlanModalParam>(getDefaultTeamPlanModalParam());
+  const [createTeamPlanModalParam, setCreateTeamPlanModalParam] =
+    useState<TeamPlanModalParam>(getDefaultTeamPlanModalParam());
+  const [
+    editOrDeleteNextTeamPlanModalParam,
+    setEditOrDeleteNextTeamPlanModalParam,
+  ] = useState<TeamPlanModalParam>(getDefaultTeamPlanModalParam());
+
+  const [confirmModalIsOpen, setConfirmModalIsOpen] = useState<boolean>(false);
+
+  const [confirmModal, setConfirmModal] = useState<{
+    title?: string;
+    isDeleteMode?: boolean;
+    cbOk?: Function;
+    cbCancel?: Function;
+  }>({});
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+
+  const sortOptions = useMemo((): {
+    name: string;
+    value: TeamSortType;
+  }[] => {
+    return [
+      {
+        name: translate('order_newest_first'),
+        value: 'recent',
+      },
+      {
+        name: translate('order_oldest_first'),
+        value: 'oldest',
+      },
+      {
+        name: translate('order_plan_start_date'),
+        value: 'teamPlanStartDate',
+      },
+      {
+        name: translate('order_plan_start_date_desc'),
+        value: 'teamPlanStartDateDesc',
+      },
+      {
+        name: translate('order_plan_end_date'),
+        value: 'teamPlanEndDate',
+      },
+      {
+        name: translate('order_plan_end_date_desc'),
+        value: 'teamPlanEndDateDesc',
+      },
+    ];
+  }, []);
+
+  const filterByPlanOptions = useMemo((): {
+    name: string;
+    value: PlanFilterType;
+  }[] => {
+    return [
+      {
+        name: translate('filter_all_plans'),
+        value: 'all',
+      },
+      {
+        name: translate('filter_free_plans'),
+        value: 'free',
+      },
+      {
+        name: translate('filter_paid_plans'),
+        value: 'paid',
+      },
+    ];
+  }, []);
+
+  const filterByExpiryOptions = useMemo((): {
+    name: string;
+    value: TeamPlanExpiryFilterType;
+  }[] => {
+    return [
+      {
+        name: translate('filter_all_expiration_dates'),
+        value: 'all',
+      },
+      {
+        name: translate('filter_within_1_week_to_expiration'),
+        value: 'before1Week',
+      },
+      {
+        name: translate('filter_within_2_weeks_to_expiration'),
+        value: 'before2Weeks',
+      },
+      {
+        name: translate('filter_within_1_week_after_expiration'),
+        value: 'after1Week',
+      },
+      {
+        name: translate('filter_within_2_weeks_after_expiration'),
+        value: 'after2Weeks',
+      },
+    ];
+  }, []);
+
+  const hasSuperUserReadAccess = User.isAccessible(
+    currentUser,
+    'all',
+    'admin',
+    'read',
+    false,
+  );
+
+  const hasSuperUserWriteAccess = User.isAccessible(
+    currentUser,
+    'all',
+    'admin',
+    'write',
+    false,
+  );
+
+  const getTeams = async () => {
+    const now = moment();
+    const { teams, total, error } = await services.default.superAdmin.getTeams({
+      keyword: conditions.keyword,
+      sort: conditions.sort,
+      expiryFilter: conditions.expiry,
+      planFilter: conditions.plan,
+      teamTypes:
+        conditions.teamType === 'all'
+          ? ['single', 'multiple']
+          : conditions.teamType
+            ? [conditions.teamType]
+            : [],
+      statusFilter: conditions.status,
+      teamOwner: conditions.teamOwner,
+      extendToNextTeamPlan: conditions.includeNextPlan,
+      offset: conditions.currentPage * conditions.rowsPerPage,
+      pageSize: conditions.rowsPerPage,
+    });
+
+    if (error) {
+      setLoadError(error);
+      return;
+    }
+
+    setLoadError(null);
+    setTeams(teams);
+    setNumberOfTotalItems(total);
+  };
+
+  const initialize = async () => {
+    try {
+      await Promise.all([getTeams()]);
+      const parsed = {
+        ...parseQueryParam(router.query),
+        ...services.localStorage.defaultPaginationData(
+          currentUser.id,
+          router.query,
+        ),
+      };
+      setConditions({
+        ...conditions,
+        ...parsed,
+      });
+      updateQueryParameters({
+        ...parsed,
+        searchTrigger: new Date(),
+      });
+    } finally {
+      setIsInitialized(true);
+    }
+  };
+
+  const updateQueryParameters = (
+    conds: TeamQueryCondition & CommonPaginationData,
+  ) => {
+    const param = buildQueryParam(conds);
+    PathUtil.routerPushOrReplaceWithPaginationData(
+      router,
+      conds.currentPage,
+      PAGE_INFO.SUPER_ADMIN_TEAMS.href(param),
+    );
+  };
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>, team: Team) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedTeamId(team.id);
+  };
+
+  const closeMenu = () => {
+    setAnchorEl(null);
+    setSelectedTeamId(null);
+  };
+
+  const onReactivateButtonClicked = async (team: Team) => {
+    setConfirmModalIsOpen(true);
+    setConfirmModal({
+      title: translate('reactivate_team'),
+      cbOk: async () => {
+        await services.default.team.reactivateTeam(team.id);
+        await getTeams();
+      },
+    });
+  };
+
+  // This must be configured for browser back.
+  useEffect(() => {
+    if (!isInitialized) {
+      return;
+    }
+    // Important: Call after setConditions to trigger (*1)
+    const parsed = parseQueryParam(router.query);
+    setConditions({
+      ...conditions,
+      ...parsed,
+      searchTrigger: new Date(),
+    });
+  }, [router.query]); // browser back -> trigger by paginationData
+
+  useEffect(() => {
+    // (*1
+    if (!isInitialized) {
+      return;
+    }
+    getTeams();
+  }, [conditions.searchTrigger]);
+
+  useEffect(() => {
+    reloader.reloadIfNeeded();
+    initialize();
+  }, []);
+
+  if (!hasSuperUserReadAccess) {
+    return (
+      <Container>
+        <Alert severity="error">
+          このページにアクセスする権限がありません。
+        </Alert>
+      </Container>
+    );
+  }
+
+  return (
+    // mbはFABのため
+    <Container sx={{ position: 'relative', mb: 10 }}>
+      <TeamCreationModal
+        param={teamCreationParam}
+        setParam={setTeamCreationParam}
+        isOpen={isCreationModalOpen}
+        setIsOpen={setIsCreationModalOpen}
+        onSuccess={() => {
+          setConditions({
+            ...conditions,
+            searchTrigger: new Date(),
+          });
+        }}
+      />
+      <EditCurrentOrPreviousTeamPlanModal
+        teamId={editCurrentOrPreviousTeamPlanModalParam.team?.id ?? null}
+        teamPlan={
+          editCurrentOrPreviousTeamPlanModalParam.team?.teamPlan ?? null
+        }
+        title={editCurrentOrPreviousTeamPlanModalParam.title}
+        isOpen={editCurrentOrPreviousTeamPlanModalParam.isOpen}
+        setIsOpen={(isOpen) =>
+          setEditCurrentOrPreviousTeamPlanModalParam((current) => ({
+            ...current,
+            isOpen: isOpen as boolean,
+          }))
+        }
+        onSuccess={getTeams}
+      />
+      <CreateTeamPlanModal
+        teamId={createTeamPlanModalParam.team?.id ?? null}
+        defaultDate={createTeamPlanModalParam.team?.teamPlan?.endDate ?? null}
+        title={createTeamPlanModalParam.title}
+        isOpen={createTeamPlanModalParam.isOpen}
+        setIsOpen={(isOpen) =>
+          setCreateTeamPlanModalParam((current) => ({
+            ...current,
+            isOpen: isOpen as boolean,
+          }))
+        }
+        onSuccess={getTeams}
+      />
+      <EditOrDeleteNextTeamPlanModal
+        teamId={editOrDeleteNextTeamPlanModalParam.team?.id ?? null}
+        teamPlan={editOrDeleteNextTeamPlanModalParam.team?.nextTeamPlan ?? null}
+        isOpen={editOrDeleteNextTeamPlanModalParam.isOpen}
+        setIsOpen={(isOpen) =>
+          setEditOrDeleteNextTeamPlanModalParam((current) => ({
+            ...current,
+            isOpen: isOpen as boolean,
+          }))
+        }
+        onSuccess={getTeams}
+      />
+      <ConfirmationModal
+        isOpen={confirmModalIsOpen}
+        setIsOpen={setConfirmModalIsOpen}
+        {...confirmModal}
+        onClose={() => {
+          setConfirmModalIsOpen(false);
+          setConfirmModal({});
+        }}
+      />
+
+      <DefaultBreadCrumbs
+        breadcrumbs={[
+          {
+            name: translate(
+              PAGE_INFO.SUPER_ADMIN_TEAMS.name as keyof typeof translate,
+            ),
+            link: PAGE_INFO.SUPER_ADMIN_TEAMS.href(),
+          },
+        ]}
+      />
+      <Typography variant="h1">{translate('all_teams')}</Typography>
+      <Divider sx={{ mt: 1, mb: 5 }} />
+
+      <TeamPlanLimitBand team={currentTeam} />
+
+      <Card sx={{ backgroundColor: 'white', p: 2 }}>
+        <Stack
+          direction={{ xs: 'column', md: 'row-reverse' }}
+          spacing={2}
+          justifyContent="space-between"
+        >
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <DefaultSearchField
+              value={conditions.keyword}
+              onSearch={() => {
+                const newData = {
+                  ...conditions,
+                  currentPage: 0,
+                };
+                updateQueryParameters(newData);
+              }}
+              onChange={(e) => {
+                setConditions({
+                  ...conditions,
+                  keyword: e.target.value,
+                });
+              }}
+            />
+            <DefaultSearchField
+              value={conditions.teamOwner}
+              onSearch={() => {
+                const newData = {
+                  ...conditions,
+                  currentPage: 0,
+                };
+                updateQueryParameters(newData);
+              }}
+              onChange={(e) => {
+                setConditions({
+                  ...conditions,
+                  teamOwner: e.target.value,
+                });
+              }}
+              placeholder={translate('team_owner')}
+            />
+          </Box>
+          <Grid container direction="row" spacing={1} sx={{ flex: 1 }}>
+            <Grid size="auto">
+              <FormControl size="small" variant="standard">
+                <Select
+                  value={conditions.sort}
+                  onChange={(e) => {
+                    const newData = {
+                      ...conditions,
+                      sort: e.target.value as TeamSortType,
+                      currentPage: 0,
+                    };
+                    setConditions(newData);
+                    updateQueryParameters(newData);
+                  }}
+                >
+                  {sortOptions.map((x) => {
+                    return (
+                      <MenuItem key={x.value} value={x.value}>
+                        {x.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size="auto">
+              <FormControl size="small" variant="standard">
+                <Select
+                  value={conditions.teamType}
+                  onChange={(e) => {
+                    const newData = {
+                      ...conditions,
+                      teamType: e.target.value as TeamTypeFilterType,
+                      currentPage: 0,
+                    };
+                    setConditions(newData);
+                    updateQueryParameters(newData);
+                  }}
+                >
+                  <MenuItem value="all">{translate('all_team_types')}</MenuItem>
+                  <MenuItem value="single">
+                    {translate('team_type_single_short')}
+                  </MenuItem>
+                  <MenuItem value="multiple">
+                    {translate('team_type_multiple_short')}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size="auto">
+              <FormControl size="small" variant="standard">
+                <Select
+                  value={conditions.status}
+                  onChange={(e) => {
+                    const newData = {
+                      ...conditions,
+                      status: e.target.value as TeamStatusFilterType,
+                      currentPage: 0,
+                    };
+                    setConditions(newData);
+                    updateQueryParameters(newData);
+                  }}
+                >
+                  <MenuItem value="all">
+                    {translate('all_team_status')}
+                  </MenuItem>
+                  <MenuItem value="active">
+                    {translate('team_status_active')}
+                  </MenuItem>
+                  <MenuItem value="deletionScheduled">
+                    {translate('team_status_deletion_scheduled')}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size="auto">
+              <FormControl size="small" variant="standard">
+                <Select
+                  value={conditions.plan}
+                  onChange={(e) => {
+                    const newData = {
+                      ...conditions,
+                      plan: e.target.value as PlanFilterType,
+                      currentPage: 0,
+                    };
+                    setConditions(newData);
+                    updateQueryParameters(newData);
+                  }}
+                >
+                  {filterByPlanOptions.map((x) => {
+                    return (
+                      <MenuItem key={x.value} value={x.value}>
+                        {x.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size="auto">
+              <FormControl size="small" variant="standard">
+                <Select
+                  value={conditions.expiry}
+                  onChange={(e) => {
+                    const newData = {
+                      ...conditions,
+                      expiry: e.target.value as TeamPlanExpiryFilterType,
+                      currentPage: 0,
+                    };
+                    setConditions(newData);
+                    updateQueryParameters(newData);
+                  }}
+                >
+                  {filterByExpiryOptions.map((x) => {
+                    return (
+                      <MenuItem key={x.value} value={x.value}>
+                        {x.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
+            </Grid>
+            {(conditions.expiry.startsWith('before') ||
+              conditions.sort.startsWith('teamPlanEndDate')) && (
+              <Grid container size="auto" sx={{ alignItems: 'center' }}>
+                <FormControl size="small" variant="standard">
+                  <FormControlLabel
+                    control={<Switch size="small" />}
+                    checked={conditions.includeNextPlan}
+                    onChange={(e) => {
+                      const newData = {
+                        ...conditions,
+                        includeNextPlan: (e.target as HTMLInputElement).checked,
+                        currentPage: 0,
+                      };
+                      setConditions(newData);
+                      updateQueryParameters(newData);
+                    }}
+                    slotProps={{ typography: { variant: 'caption' } }}
+                    label={translate('filter_include_next_plan_period')}
+                    sx={{ ml: 0 }}
+                  />
+                </FormControl>
+              </Grid>
+            )}
+          </Grid>
+        </Stack>
+
+        {loadError ? (
+          <CriticalError error={loadError} />
+        ) : (
+          <TableContainer component={Paper}>
+            <Table
+              sx={{
+                tableLayout: 'fixed',
+                '.MuiTableCell-root': { overflowWrap: 'anywhere' },
+              }}
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell align="left">ID</TableCell>
+                  <TableCell align="left">{translate('team_name')}</TableCell>
+                  <TableCell align="left">{translate('plan')}</TableCell>
+                  <TableCell align="left">{translate('usage')}</TableCell>
+                  <TableCell align="left">{translate('start_end')}</TableCell>
+                  <TableCell align="left" sx={{ width: '18%' }}>
+                    {translate('num_users_and_users')}
+                  </TableCell>
+                  <TableCell sx={{ width: '5rem' }} />
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {teams.map((team) => (
+                  <TableRow
+                    key={team.id}
+                    sx={{
+                      backgroundColor: team.deletionScheduledAt
+                        ? '#d0daff'
+                        : team.teamPlan?.isActive
+                          ? 'auto'
+                          : 'gray',
+                      '&:last-child td, &:last-child th': { border: 0 },
+                    }}
+                  >
+                    <TableCell align="left">{team.id}</TableCell>
+                    <TableCell align="left">{team.name}</TableCell>
+                    <TableCell align="left">
+                      <Box>
+                        {team.teamPlan ? (
+                          <>
+                            {team.teamPlan.plan.isPaid ? '💲' : '🆓️'}{' '}
+                            {team.teamPlan.plan.name}
+                          </>
+                        ) : (
+                          '-'
+                        )}
+                      </Box>
+                      {team.nextTeamPlan && (
+                        <Typography variant="inherit" color="textDisabled">
+                          {translate('next_period')}:{' '}
+                          {team.nextTeamPlan.plan.isPaid ? '💲' : '🆓️'}{' '}
+                          {team.nextTeamPlan.plan.name}
+                        </Typography>
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Box>
+                        <Typography variant="inherit">
+                          {translate('analyzed_balls')}
+                          {' : '}
+                          {StringUtil.getTeamItemBallUsageString(team)}
+                          {' / '}
+                          {translate('ai_coach')}
+                          {' : '}
+                          {StringUtil.getTeamItemAiCoachUsageString(team)}
+                        </Typography>
+                      </Box>
+                      {team.nextTeamPlan && (
+                        <Typography variant="inherit" color="textDisabled">
+                          {translate('next_period')}
+                          {' : '}
+                          {translate('analyzed_balls')}
+                          {' : '}
+                          {StringUtil.getNextTeamPlanBallAvailableString(team)}
+                          {' / '}
+                          {translate('ai_coach')}
+                          {' : '}
+                          {StringUtil.getNextTeamPlanAiCoachAvailableString(team)}
+                        </Typography>
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Box>
+                        {StringUtil.getPeriodDispString(
+                          team.teamPlan?.startDate ?? null,
+                        )}
+                      </Box>
+                      <Box>
+                        /
+                        {StringUtil.getPeriodDispString(
+                          team.teamPlan?.endDate ?? null,
+                        )}
+                      </Box>
+                      {team.nextTeamPlan && (
+                        <Typography variant="inherit" color="textDisabled">
+                          <Box>
+                            {translate('next_period')}
+                            {': '}
+                            {StringUtil.getPeriodDispString(
+                              team.nextTeamPlan?.startDate ?? null,
+                            )}
+                          </Box>
+                          <Box>
+                            /
+                            {StringUtil.getPeriodDispString(
+                              team.nextTeamPlan?.endDate ?? null,
+                            )}
+                          </Box>
+                        </Typography>
+                      )}
+                    </TableCell>
+                    <TableCell align="left">
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box sx={{ minWidth: '3rem' }}>{team.users.length}</Box>
+                        <Box sx={{ flex: 1, minWidth: 0 }}>
+                          {team.users.length <= 10
+                            ? _.chain(team.users)
+                                .sortBy(
+                                  (user) => user.createdAt?.getTime() ?? 0,
+                                )
+                                .map((user) => {
+                                  return (
+                                    <Box key={user.id}>
+                                      <Tooltip
+                                        title={
+                                          <>
+                                            {user.profile.username ||
+                                              '(no name)'}
+                                            <br />
+                                            {user.email}
+                                          </>
+                                        }
+                                        arrow
+                                        placement="left"
+                                      >
+                                        <Chip
+                                          color="default"
+                                          label={
+                                            user.profile.username || '(no name)'
+                                          }
+                                        />
+                                      </Tooltip>
+                                    </Box>
+                                  );
+                                })
+                                .value()
+                            : `More than 10 accounts.`}
+                        </Box>
+                      </Box>
+                    </TableCell>
+                    <TableCell align="left">
+                      {!team.deletionScheduledAt || hasSuperUserWriteAccess ? (
+                        <Button
+                          color="neutral"
+                          onClick={(e) => {
+                            openMenu(e, team);
+                          }}
+                        >
+                          <MoreHoriz />
+                        </Button>
+                      ) : (<></>)
+                      }
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={selectedTeamId === team.id}
+                        onClose={closeMenu}
+                      >
+                        {team.deletionScheduledAt ? (
+                          <MenuItem
+                            onClick={() => {
+                              onReactivateButtonClicked(team);
+                              closeMenu();
+                            }}
+                          >
+                            {translate('reactivate_team')}
+                          </MenuItem>
+                        ) : (
+                          (() => {
+                            const editCurrentOrPreviousTeamPlanModalTitle =
+                              team.teamPlan &&
+                              +new Date(team.teamPlan.endDate) <= +new Date() // previousTeamPlan
+                                ? translate('extend_last_team_plan')
+                                : translate('edit_current_team_plan');
+                            const createTeamPlanModalTitle =
+                              team.teamPlan &&
+                              +new Date(team.teamPlan.endDate) > +new Date() // currentTeamPlan
+                                ? translate('register_next_team_plan')
+                                : translate('register_new_team_plan');
+                           return (
+                              <>
+                                <MenuItem
+                                  onClick={() => {
+                                    router.push(
+                                      PAGE_INFO.TEAM_PLANS.href(team.id),
+                                    );
+                                    closeMenu();
+                                  }}
+                                >
+                                  {translate('team_plan_details')}
+                                </MenuItem>
+                                {hasSuperUserWriteAccess ? (
+                                  <>
+                                    <MenuItem
+                                      disabled={!team.teamPlan}
+                                      onClick={() => {
+                                        setEditCurrentOrPreviousTeamPlanModalParam(
+                                          {
+                                            isOpen: true,
+                                            team,
+                                            title:
+                                              editCurrentOrPreviousTeamPlanModalTitle,
+                                          },
+                                        );
+                                        closeMenu();
+                                      }}
+                                    >
+                                      {editCurrentOrPreviousTeamPlanModalTitle}
+                                    </MenuItem>
+                                    {team.nextTeamPlan ? (
+                                      <MenuItem
+                                        onClick={() => {
+                                          setEditOrDeleteNextTeamPlanModalParam({
+                                            isOpen: true,
+                                            team,
+                                          });
+                                          closeMenu();
+                                        }}
+                                      >
+                                        {translate(
+                                          'edit_or_delete_next_team_plan',
+                                        )}
+                                      </MenuItem>
+                                    ) : (
+                                      <MenuItem
+                                        onClick={() => {
+                                          setCreateTeamPlanModalParam({
+                                            isOpen: true,
+                                            team,
+                                            title: createTeamPlanModalTitle,
+                                          });
+                                          closeMenu();
+                                        }}
+                                      >
+                                        {createTeamPlanModalTitle}
+                                      </MenuItem>
+                                    )}
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
+                              </>
+                            );
+                          })()
+                        )}
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+
+        <CommonPagination
+          user={currentUser}
+          numberOfTotalItems={numberOfTotalItems}
+          commonPaginationData={{
+            currentPage: conditions.currentPage,
+            rowsPerPage: conditions.rowsPerPage,
+          }}
+          onChange={(data) => {
+            updateQueryParameters({
+              ...conditions,
+              ...data,
+            });
+          }}
+        />
+      </Card>
+
+      {hasSuperUserWriteAccess && (
+        <FloatingButton
+          icon={<PersonAddAlt />}
+          title={translate('create_new_team')}
+          onClick={() => setIsCreationModalOpen(true)}
+        />
+      )}
+    </Container>
+  );
+}
+
+export default function Page() {
+  const currentUser = useSelector((state) => state.user.me);
+  const currentTeam = useSelector((state) => state.user.currentTeam);
+  return (
+    currentUser &&
+    currentTeam && (
+      <PageInner currentUser={currentUser} currentTeam={currentTeam} />
+    )
+  );
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <ConsoleLayout>{page}</ConsoleLayout>;
+};

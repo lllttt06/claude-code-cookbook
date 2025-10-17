@@ -1,0 +1,249 @@
+import type { TranslationKey } from '@/utils/i18n';
+
+import { BaseModel, CastableTypes } from './base-model';
+import { TeamPlan } from './team-plan';
+import {
+  AiCoachUsageStatus,
+  aiCoachUsageStatusCanUse,
+  BallUsageStatus,
+  ballUsageStatusCanAnalyze,
+  TeamPlanStatus,
+  teamPlanStatusIsValid,
+} from './team-status';
+import { User } from './user';
+
+export enum TeamType {
+  SINGLE = 'single',
+  MULTIPLE = 'multiple',
+}
+
+export class Team extends BaseModel {
+  static _cast: Partial<Record<keyof Team, CastableTypes>> = {
+    createdAt: 'date',
+    updatedAt: 'date',
+  };
+
+  id!: string;
+  imageUrl: string | null = null;
+  presignedImageUrl: string | null = null;
+  name: string | null = null;
+  ownerUserId: string | null = null;
+  teamType: TeamType | null = null;
+  createdAt!: string;
+  updatedAt!: string;
+  deletionScheduledAt: string | null = null;
+
+  teamPlan: TeamPlan | null;
+  nextTeamPlan: TeamPlan | null;
+  users: User[] = [];
+  billingFailureReason: string | null = null;
+  teamPlanCancelAt: string | null = null;
+  teamPlanDowngradeAt: string | null = null;
+  downgradePlanId: string | null = null;
+  item: {
+    aiCoachUsage: number;
+    ballUsage: number;
+    aiCoachAvailableCount: number;
+    ballAvailableCount: number;
+  } | null = null;
+
+  constructor(data?: any) {
+    super();
+    this.init(Team, data);
+    const teamPlan = TeamPlan.newInstance(TeamPlan, data?.teamPlan);
+    this.teamPlan = teamPlan;
+    const nextTeamPlan = TeamPlan.newInstance(TeamPlan, data?.nextTeamPlan);
+    this.nextTeamPlan = nextTeamPlan;
+    this.users = User.newInstances(User, data?.users);
+    this.billingFailureReason = data?.billingFailureReason ?? null;
+    this.item = data?.item;
+  }
+
+  /**
+   * チームの動画解析の回数利用率。
+   * 0以上を返却する。ないとは思うが、開発用でcurrent_usageなどを変更した場合、1以上が返却される場合もある。
+   */
+  get ballRate(): number {
+    const usage = this.ballUsage;
+    const maxUsage = this.maxBalls;
+
+    if (maxUsage === 0) {
+      return 0;
+    }
+
+    const rate = usage / maxUsage;
+    return Math.max(0, rate);
+  }
+
+  /**
+   * 残り利用可能日数。
+   * 0以上を返却する。取得に失敗したときは0を返す。
+   * nextTeamPlanが条件を満たしている場合はそちらも合算して返す。
+   */
+  get remainingDays() {
+    if (!this.teamPlan?.isActive) {
+      return 0;
+    }
+    // nextTeamPlanの有効化予約がされており (isPendingActivation: true)、
+    // teamPlanとnextTeamPlanの間が空いていないときは、利用可能日数を通算とする
+    const days =
+      (+new Date(
+        this.nextTeamPlan?.isPendingActivation &&
+          this.nextTeamPlan.startDate === this.teamPlan.endDate
+          ? this.nextTeamPlan.endDate
+          : this.teamPlan.endDate,
+      ) -
+        +new Date()) /
+      86400_000;
+    return Math.max(0, days);
+  }
+
+  /**
+   * ボール解析の使用量（TeamPlan + Item の合算）
+   */
+  get ballUsage(): number {
+    if (!this.teamPlan && !this.item) {
+      return 0;
+    }
+    const planMax = teamPlanStatusIsValid(this.teamPlanStatus)
+      ? this.teamPlan?.plan.maxBalls ?? 0
+      : 0;
+    const planUsage = teamPlanStatusIsValid(this.teamPlanStatus)
+      ? Math.min(this.teamPlan?.currentUsage ?? 0, planMax)
+      : 0;
+
+    const itemMax = this.item?.ballAvailableCount ?? 0;
+    const itemUsage = Math.min(this.item?.ballUsage ?? 0, itemMax);
+
+    return planUsage + itemUsage;
+  }
+
+  /**
+   * ボール解析の上限数（TeamPlan + Item の合算）
+   */
+  get maxBalls(): number {
+    if (!this.teamPlan && !this.item) {
+      return 0;
+    }
+    const planMax = teamPlanStatusIsValid(this.teamPlanStatus)
+      ? this.teamPlan?.plan.maxBalls ?? 0
+      : 0;
+    const itemMax = this.item?.ballAvailableCount ?? 0;
+    return planMax + itemMax;
+  }
+
+  /**
+   * AI コーチの使用量（TeamPlan + Item の合算）
+   */
+  get aiCoachUsage(): number {
+    if (!this.teamPlan && !this.item) {
+      return 0;
+    }
+    const planMax = teamPlanStatusIsValid(this.teamPlanStatus)
+      ? this.teamPlan?.plan.maxAiCoachs ?? 0
+      : 0;
+    const planUsage = teamPlanStatusIsValid(this.teamPlanStatus)
+      ? Math.min(this.teamPlan?.currentAiCoachUsage ?? 0, planMax)
+      : 0;
+
+    const itemMax = this.item?.aiCoachAvailableCount ?? 0;
+    const itemUsage = Math.min(this.item?.aiCoachUsage ?? 0, itemMax);
+
+    return planUsage + itemUsage;
+  }
+
+  /**
+   * AI コーチの上限数（TeamPlan + Item の合算）
+   */
+  get maxAiCoachCount(): number {
+    if (!this.teamPlan && !this.item) {
+      return 0;
+    }
+    const planMax = teamPlanStatusIsValid(this.teamPlanStatus)
+      ? this.teamPlan?.plan.maxAiCoachs ?? 0
+      : 0;
+    const itemMax = this.item?.aiCoachAvailableCount ?? 0;
+    return planMax + itemMax;
+  }
+
+  /**
+   * プランの契約・有効期限状態
+   */
+  get teamPlanStatus(): TeamPlanStatus {
+    // 1. teamPlan が null または isActive != true の場合
+    if (!this.teamPlan || this.teamPlan.isActive !== true) {
+      return TeamPlanStatus.NO_CONTRACT;
+    }
+
+    // 2. 期限切れか
+    const isExpired = this.remainingDays <= 0;
+    if (isExpired) {
+      if (this.nextTeamPlan?.isPendingActivation === true) {
+        return TeamPlanStatus.NEXT_PLAN_PENDING;
+      }
+      return TeamPlanStatus.EXPIRED;
+    }
+
+    // 3. 期限警告（30日以内）
+    if (this.remainingDays <= 30) {
+      return TeamPlanStatus.EXPIRING_SOON;
+    }
+
+    // 4. 問題なし
+    return TeamPlanStatus.OK;
+  }
+
+  /**
+   * ボール解析の使用量状態
+   */
+  get ballUsageStatus(): BallUsageStatus {
+    const usage = this.ballUsage;
+    const maxUsage = this.maxBalls;
+
+    // 上限到達
+    if (usage >= maxUsage) {
+      return BallUsageStatus.LIMIT_REACHED;
+    }
+
+    // 上限接近（90%以上）
+    if (usage >= Math.floor(maxUsage * 0.9)) {
+      return BallUsageStatus.LIMIT_APPROACHING;
+    }
+
+    // 正常
+    return BallUsageStatus.OK;
+  }
+
+  /**
+   * AI コーチの使用量状態
+   */
+  get aiCoachUsageStatus(): AiCoachUsageStatus {
+    const usage = this.aiCoachUsage;
+    const maxUsage = this.maxAiCoachCount;
+
+    if (usage >= maxUsage) {
+      return AiCoachUsageStatus.LIMIT_REACHED;
+    }
+
+    if (usage >= Math.floor(maxUsage * 0.9)) {
+      return AiCoachUsageStatus.LIMIT_APPROACHING;
+    }
+
+    return AiCoachUsageStatus.OK;
+  }
+
+  /**
+   * ボール解析が実行可能かどうか
+   */
+  get canAnalyzeBall(): boolean {
+    return ballUsageStatusCanAnalyze(this.ballUsageStatus);
+  }
+
+  /**
+   * AI コーチが利用可能かどうか
+   */
+  get canUseAiCoach(): boolean {
+    return aiCoachUsageStatusCanUse(this.aiCoachUsageStatus);
+  }
+
+}

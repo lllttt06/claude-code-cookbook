@@ -1,0 +1,98 @@
+import { Resource } from '@/models/resource';
+import { Session } from '@/models/session';
+import { Team } from '@/models/team';
+import { BallUsageStatus, TeamPlanStatus } from '@/models/team-status';
+import { User } from '@/models/user';
+import { translate, TranslationKey } from '@/utils/i18n';
+
+type Availability = { isAvailable: boolean; unavailableReason: string | null };
+
+/**
+ * ボール解析が利用不可の理由を取得
+ */
+const getUnavailableReasonKey = (team: Team): TranslationKey => {
+  const isSingleTeam = team.teamType === 'single';
+
+  if (isSingleTeam) {
+    // シングルユーザーチームではサブスクが自動更新されるため usageStatus だけで判定
+    if (team.ballUsageStatus === BallUsageStatus.LIMIT_REACHED) {
+      return 'you_have_reached_usage_limit';
+    }
+    // LIMIT_APPROACHING は警告のみで、解析はブロックしない
+    return 'you_have_reached_usage_limit'; // フォールバック
+  } else {
+    // マルチユーザーチームでは最初に planStatus に基づく警告を表示
+    switch (team.teamPlanStatus) {
+      case TeamPlanStatus.NO_CONTRACT:
+        return 'no_team_plan_found';
+      case TeamPlanStatus.NEXT_PLAN_PENDING:
+        return 'next_team_plan_has_not_started_yet';
+      case TeamPlanStatus.EXPIRED:
+        return 'team_plan_expired';
+      case TeamPlanStatus.EXPIRING_SOON:
+        return 'team_plan_expiration_is_approaching';
+      case TeamPlanStatus.OK:
+        // プランが正常なら usageStatus に基づく判定
+        if (team.ballUsageStatus === BallUsageStatus.LIMIT_REACHED) {
+          return 'you_have_reached_usage_limit';
+        }
+        // LIMIT_APPROACHING は警告のみで、解析はブロックしない
+        return 'you_have_reached_usage_limit'; // フォールバック
+    }
+  }
+};
+
+export const checkAnalysisAvailability = (
+  session: Session,
+  user: User,
+  team: Team,
+): Availability => {
+  if (!user.hasBasicWriteAccessFor(session)) {
+    return {
+      isAvailable: false,
+      unavailableReason: translate(
+        'insufficient_permission_for_analyzing_video',
+      ),
+    };
+  }
+  // ボール解析が実行可能かチェック
+  if (!team.canAnalyzeBall) {
+    return {
+      isAvailable: false,
+      unavailableReason: translate(getUnavailableReasonKey(team)),
+    };
+  }
+  return {
+    isAvailable: true,
+    unavailableReason: null,
+  };
+};
+
+export const checkReanalysisAvailability = (
+  resource: Resource,
+  user: User,
+  team: Team,
+): Availability => {
+  if (!resource.canReanalyze) {
+    return { isAvailable: false, unavailableReason: null };
+  }
+  if (!user.hasBasicWriteAccessFor(resource, team.id)) {
+    return {
+      isAvailable: false,
+      unavailableReason: translate(
+        'insufficient_permission_for_analyzing_video',
+      ),
+    };
+  }
+  // ボール解析が実行可能かチェック
+  if (!team.canAnalyzeBall) {
+    return {
+      isAvailable: false,
+      unavailableReason: translate(getUnavailableReasonKey(team)),
+    };
+  }
+  return {
+    isAvailable: true,
+    unavailableReason: null,
+  };
+};

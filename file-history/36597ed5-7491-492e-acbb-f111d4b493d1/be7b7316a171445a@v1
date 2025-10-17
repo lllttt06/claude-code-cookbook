@@ -1,0 +1,80 @@
+/// {@category Misc}
+library;
+
+// Package imports:
+import 'package:json_annotation/json_annotation.dart';
+
+/// Class that manages constants used throughout the application
+class Constants {
+  /// Relative path for managing local video data
+  /// Absolute path depends on device/OS
+  static const String relLocalVideoDataPath = 'localVideoData.json';
+
+  /// Whether to enable Device Preview
+  static bool get enablePreview => const bool.fromEnvironment('PREVIEW');
+
+  /// API server URL
+  static String get apiServerURL =>
+      const String.fromEnvironment('apiServerURL');
+
+  /// Amplify authentication related settings
+  static String get amplifyAuthIdentityPoolId =>
+      const String.fromEnvironment('amplifyAuthIdentityPoolId');
+  static String get amplifyAuthRegion =>
+      const String.fromEnvironment('amplifyAuthRegion');
+  static String get amplifyAuthUserPoolId =>
+      const String.fromEnvironment('amplifyAuthUserPoolId');
+  static String get amplifyAuthUserPoolClientId =>
+      const String.fromEnvironment('amplifyAuthUserPoolClientId');
+  static String get amplifyAuthUserPoolEndpoint =>
+      const String.fromEnvironment('amplifyAuthUserPoolEndpoint');
+
+  /// Amplify logging related settings
+  static String get amplifyLoggingRegion =>
+      const String.fromEnvironment('amplifyLoggingRegion');
+  static String get amplifyLoggingLogGroupName =>
+      const String.fromEnvironment('amplifyLoggingLogGroupName');
+
+  /// Application related URLs
+  static String get maintenanceInfoURL =>
+      const String.fromEnvironment('maintenanceInfoURL');
+  static String get versionInfoURL =>
+      const String.fromEnvironment('versionInfoURL');
+  static String get appleAppURL => const String.fromEnvironment('appleAppURL');
+  static String get appleSubscriptionURL =>
+      const String.fromEnvironment('appleSubscriptionURL');
+  static String get contactFormJaURL =>
+      const String.fromEnvironment('contactFormJaURL');
+  static String get contactFormEnURL =>
+      const String.fromEnvironment('contactFormEnURL');
+  static String get webURL => const String.fromEnvironment('webURL');
+  static const String recordingExplanationVideoJaURL =
+      "https://www.youtube.com/watch?v=EliLvLcTocM";
+
+  // チーム向けプラン案内の URL
+  static const String organizationPlanURLJa =
+      'https://tether-a87.pages.dev/jp/';
+  static const String organizationPlanURL = 'https://tether-a87.pages.dev/';
+
+  static const String appStoreProductIdLight =
+      String.fromEnvironment('appStoreProductIdLight');
+  static const String appStoreProductIdStandard =
+      String.fromEnvironment('appStoreProductIdStandard');
+  static const String appStoreProductIdPremium =
+      String.fromEnvironment('appStoreProductIdPremium');
+
+  static const bool isDeprecated =
+      String.fromEnvironment('isDeprecated') == 'true';
+
+  /// Network connection timeout settings
+  static const connectTimeout = Duration(seconds: 10);
+  static const defaultSendTimeout = Duration(seconds: 10);
+  static const defaultReceiveTimeout = Duration(seconds: 10);
+
+  /// Background downloader settings
+  static const requestTimeout = Duration(seconds: 10);
+  static const resourceTimeout = Duration(minutes: 5);
+
+  /// Model related settings
+  static const FieldRename modelFieldRename = FieldRename.none;
+}

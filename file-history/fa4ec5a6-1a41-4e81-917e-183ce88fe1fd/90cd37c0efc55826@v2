@@ -1,0 +1,273 @@
+import { AuthError, fetchAuthSession, signIn, signOut } from 'aws-amplify/auth';
+import _ from 'lodash';
+import { ZodError } from 'zod';
+
+import { ApiClient } from '@/services/clients/web-api-client';
+import { CodedSystemError } from '@/services/errors/coded-system-error';
+import { ServiceError } from '@/services/errors/service-error';
+import { UsersService } from '@/services/http/users.service';
+import { AuthApiInterface } from '@/services/interfaces/auth-api.interface';
+import { translate } from '@/utils/i18n';
+import { logger } from '@/utils/logger';
+import { signinValidator } from '@/validations/auth';
+
+export type AccountVerificationStatus =
+  | 'unknown'
+  | 'not_verified'
+  | 'verified'
+  | 'not_created';
+
+export class AuthService extends ApiClient implements AuthApiInterface {
+  static readonly code = 'SATH';
+
+  async hasApiCredentials() {
+    const authSession = await fetchAuthSession();
+    return !!authSession.tokens?.accessToken;
+  }
+
+  async signOut() {
+    try {
+      // Cognito
+      await signOut({ global: false });
+    } catch (e) {
+      // Even if an error occurs, the token will be deleted as normal, so we
+      // can safely ignore it.
+      logger.error('unexpected error on signOut', e);
+    }
+  }
+
+  async signin(
+    email: string,
+    password: string,
+  ): Promise<{
+    error: ServiceError | null;
+  }> {
+    try {
+      signinValidator.parse({
+        email,
+        password,
+      });
+    } catch (e) {
+      const _err = e as ZodError;
+      for (const issue of _err.issues) {
+        if (
+          issue.path[0] == 'password' &&
+          (issue.code == 'too_small' || issue.code == 'too_big')
+        ) {
+          issue.message = translate('incorrect_password');
+        }
+      }
+      return {
+        error: new ServiceError(_err),
+      };
+    }
+
+    // Cognito
+    try {
+      // If user is already signed in, UserAlreadyAuthenticatedException will
+      // occurs when we call signIn(), so sign out first.
+      if (await this.hasApiCredentials()) {
+        // Amplify SDK is implemented to automatically clear the token store
+        // even when sign-out operation fails, so if the user was already
+        // signed in when signing in, we only need to call signOut().
+        await this.signOut();
+      }
+
+      const { isSignedIn } = await signIn({
+        username: email,
+        password,
+        options: {
+          authFlowType: 'USER_PASSWORD_AUTH',
+        },
+      });
+      // 必ずtrueのはず、falseになるのは2段階認証有効時など追加のアクションが必要な場合
+      logger.debug(`isSignedIn: ${isSignedIn}`);
+    } catch (e) {
+      if (e instanceof AuthError) {
+        // パスワード不一致
+        const isPasswordIncorrect =
+          // User Poolにユーザが存在
+          e.name === 'NotAuthorizedException' ||
+          // APIサーバにユーザが存在: Migration用ユーザデータは存在するがパスワードが違う
+          (e.name === 'UserNotFoundException' &&
+            e.message ===
+              'UserMigration failed with error Incorrect password.');
+
+        // ユーザは削除前のため休止状態である
+        const isHibernatedUser =
+          e.name === 'UserLambdaValidationException' &&
+          e.message === 'PreAuthentication failed with error Hibernated user.';
+
+        // User PoolにもAPIサーバにもユーザが不存在
+        const isUserNotFound =
+          e.name === 'UserNotFoundException' && !isPasswordIncorrect;
+
+        logger.error(
+          `AuthError: ${e}, ` +
+            `isPasswordIncorrect: ${isPasswordIncorrect}, ` +
+            `isHibernatedUser: ${isHibernatedUser}, ` +
+            `isUserNotFound: ${isUserNotFound}`,
+        );
+
+        if (isPasswordIncorrect) {
+          return {
+            error: new ServiceError(
+              new CodedSystemError(
+                AuthService.code,
+                'SI',
+                '001',
+                translate('incorrect_password'),
+              ),
+            ),
+          };
+        }
+        if (isHibernatedUser) {
+          return {
+            error: new ServiceError(
+              new CodedSystemError(
+                AuthService.code,
+                'SI',
+                '002',
+                translate('account_not_exists'), // 表示上は「アカウント不存在」とする
+              ),
+            ),
+          };
+        }
+        if (isUserNotFound) {
+          return this.checkAccountStatus(email);
+        }
+
+        return {
+          error: new ServiceError(
+            new CodedSystemError(
+              AuthService.code,
+              'SI',
+              '003',
+              translate('failed_to_authenticate_for_unknown_reason'),
+            ),
+          ),
+        };
+      }
+    }
+
+    return {
+      error: null,
+    };
+  }
+
+  private async checkAccountStatus(email: string) {
+    const { result, errors } = await this.wrapForApiError(async () => {
+      return await this.client.get<{ status: AccountVerificationStatus }>(
+        `auth/users/verification-status`,
+        {
+          params: {
+            email,
+          },
+        },
+      );
+    });
+
+    if (result?.status == 'not_verified') {
+      // Retry signup for not_verified users
+      const usersService = new UsersService();
+      const signupResult = await usersService.signupResend(email);
+      // TODO:
+      // See: https://github.com/orgs/Knowhere-inc/projects/1/views/9
+      // ?pane=issue&itemId=128404739&issue=Knowhere-inc%7Cbaseball_detector_web%7C372
+
+      if (signupResult.error) {
+        logger.error(
+          `Failed to retry signup for email ${email}:`,
+          signupResult.error,
+        );
+      }
+
+      return {
+        error: new ServiceError(
+          new CodedSystemError(
+            AuthService.code,
+            'CAS',
+            '001',
+            translate('the_email_is_not_confirmed'),
+          ),
+        ),
+      };
+    } else if (result?.status == 'not_created') {
+      return {
+        error: new ServiceError(
+          new CodedSystemError(
+            AuthService.code,
+            'CAS',
+            '002',
+            translate('account_not_exists'),
+          ),
+        ),
+      };
+    }
+
+    return {
+      error: new ServiceError(
+        new CodedSystemError(
+          AuthService.code,
+          'CAS',
+          '003',
+          translate('failed_to_authenticate_for_unknown_reason'),
+        ),
+      ),
+    };
+  }
+
+  async signinBackground(email: string, password: string) {
+    await signIn({
+      username: email,
+      password,
+      options: {
+        authFlowType: 'USER_PASSWORD_AUTH',
+      },
+    });
+  }
+
+  async sendPasswordResetEmail(
+    email: string,
+  ): Promise<{ error: ServiceError }> {
+    const { errors } = await this.wrapForApiError(async () => {
+      return await this.client.post(`auth/password-reset/email`, {
+        email,
+      });
+    });
+    return { error: errors };
+  }
+
+  async updatePasswordWithToken(
+    userId: string,
+    password: string,
+    token: string,
+  ): Promise<{ error: ServiceError }> {
+    const { errors } = await this.wrapForApiError(async () => {
+      return await this.client.put(`auth/password-reset`, {
+        userId,
+        password,
+        token,
+      });
+    });
+    return { error: errors };
+  }
+
+  async changePassword(
+    newPassword: string,
+    confirm: string,
+  ): Promise<{
+    error: ServiceError | null;
+  }> {
+    const { errors } = await this.wrapForApiError(async () => {
+      return await this.client.put(`users/me/password`, {
+        password: newPassword,
+        passwordConfirmation: confirm,
+      });
+    });
+
+    return {
+      error: errors,
+    };
+  }
+}

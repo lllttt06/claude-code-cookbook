@@ -1,0 +1,620 @@
+# Super Admin / Super Reader 用チーム切り替え UI 実装計画
+
+## 概要
+
+super_admin と super_reader ロールのユーザー向けに、大量のチームを効率的に検索・切り替えできる専用 UI を実装する。
+
+## 現状の課題
+
+### 1. スケーラビリティの問題
+- 現在の実装（`preferences_card.dart`）では全チームを一度に取得
+- `team_list_controller.dart` の `getTeams()` が全件取得
+- チーム数増加に伴いパフォーマンスとメモリ使用量が増大
+
+### 2. 検索機能の不足
+- 現状は SearchableDropdownMenu でチーム名のみ検索可能
+- 以下の検索条件に未対応：
+  - ユーザー ID
+  - チーム ID
+  - ユーザー名
+
+### 3. UX の問題
+- 一般ユーザーと super_admin が同じ UI を共有
+- super_admin 特有のニーズ（大量チームの管理）に最適化されていない
+
+## 要件定義
+
+### 機能要件
+
+#### 1. 検索機能
+- **検索対象**
+  - チーム名（部分一致）
+  - チーム ID（完全一致 / 部分一致）
+  - ユーザー ID（完全一致）- 指定ユーザーが所属するチームを検索
+  - ユーザー名（部分一致）- 指定ユーザー名が所属するチームを検索
+
+- **検索 UI**
+  - 検索バーにクエリを入力
+  - ドロップダウンで検索対象を選択（チーム名/チームID/ユーザーID/ユーザー名）
+  - リアルタイム検索（デバウンス付き）
+
+#### 2. ページング機能
+- サーバーサイドページング実装
+- 無限スクロール or ページネーション
+- 初期表示件数: 20 件
+- スクロール時の追加読み込み
+
+#### 3. チーム切り替え機能
+- 検索結果からチームを選択
+- 現在選択中のチームを明示
+- 切り替え時の確認ダイアログ（オプション）
+
+#### 4. アクセス制御
+- super_admin と super_reader のみアクセス可能
+- その他のロールには従来の UI を表示
+
+### 非機能要件
+
+#### パフォーマンス
+- 初期表示時間: 2 秒以内
+- 検索レスポンス: 1 秒以内
+- メモリ使用量: 全件取得の 1/10 以下
+
+#### UX
+- 検索結果が 0 件の場合の適切なメッセージ表示
+- ローディングインジケーター
+- エラーハンドリングと再試行機能
+
+## アーキテクチャ設計
+
+### レイヤー構造
+
+```
+views/pages/home/settings/
+├── super_admin_team_switcher_page.dart  # 新規ページ
+└── components/
+    ├── super_admin_team_search_bar.dart # 検索バー
+    ├── super_admin_team_list.dart       # チームリスト
+    └── super_admin_team_list_item.dart  # チームリストアイテム
+
+controllers/
+├── super_admin_team_search_controller.dart  # 検索コントローラー（PagePagingNotifierMixin を使用）
+└── team_list_controller.dart               # 既存（変更なし）
+
+data/
+├── models/
+│   ├── paging_data.dart                # 既存（再利用）
+│   ├── team.dart                       # 既存（変更なし）
+│   └── enums/
+│       └── team_search_type.dart       # 新規（検索タイプ enum のみ）
+└── repositories/
+    └── repository.dart                 # 既存（メソッド追加）
+```
+
+### API 設計
+
+#### 新規エンドポイント（バックエンド側で実装必要）
+
+```dart
+/// チーム検索 API（ページング対応）
+/// session_list_controller のパターンに従う
+Future<Result<Failure, TeamsResponse>> searchTeams({
+  String? query,
+  TeamSearchType? searchType,
+  int page = 0,        // 0-indexed (session_list_controller と同様)
+  int pageSize = 20,
+});
+
+/// 検索タイプ
+enum TeamSearchType {
+  teamName,    // チーム名
+  teamId,      // チームID
+  userId,      // ユーザーID
+  userName,    // ユーザー名
+}
+
+/// レスポンスモデル（既存の GetSessionsResponse と同様のパターン）
+class TeamsResponse {
+  final List<Team> teams;
+  final int total;
+}
+```
+
+#### レスポンス形式（既存パターンに従う）
+
+```json
+{
+  "teams": [
+    {
+      "id": "team_001",
+      "name": "Sample Team",
+      "created_at": "2024-01-01T00:00:00Z"
+    }
+  ],
+  "total": 200
+}
+```
+
+**Note**: `hasMore` の計算はクライアント側で行う（`session_list_controller.dart:81` と同様）
+
+### データモデル
+
+#### 既存モデルの再利用
+
+```dart
+// lib/data/models/paging_data.dart (既存 - 変更なし)
+@freezed
+abstract class PagingData<T> with _$PagingData<T> {
+  const factory PagingData({
+    required List<T> items,
+    required int page,
+    required int pageSize,
+    required int total,
+    required bool hasMore,
+  }) = _PagingData<T>;
+}
+
+// PagingData<Team> として使用
+```
+
+#### 新規モデル（検索タイプのみ）
+
+```dart
+// lib/data/models/enums/team_search_type.dart
+@JsonEnum(fieldRename: FieldRename.snake, alwaysCreate: true)
+enum TeamSearchType {
+  teamName,    // チーム名
+  teamId,      // チームID
+  userId,      // ユーザーID
+  userName,    // ユーザー名
+  ;
+
+  String toJson() => _$TeamSearchTypeEnumMap[this]!;
+
+  factory TeamSearchType.fromJson(String json) =>
+      _$TeamSearchTypeEnumMap.map((k, v) => MapEntry(v, k))[json] ?? teamName;
+}
+```
+
+#### Repository レスポンスモデル（内部使用）
+
+```dart
+// lib/data/repositories/repository.dart に追加
+class TeamsResponse {
+  final List<Team> teams;
+  final int total;
+
+  TeamsResponse({required this.teams, required this.total});
+}
+```
+
+### コントローラー設計
+
+#### session_list_controller パターンに従った実装
+
+```dart
+// lib/controllers/super_admin_team_search_controller.dart
+@Riverpod(keepAlive: true)
+class SuperAdminTeamSearchController extends _$SuperAdminTeamSearchController
+    with PagePagingNotifierMixin<Team> {
+  static const int pageSize = 20;
+
+  @override
+  Future<PagingData<Team>> build() {
+    ref.watch(loginStateControllerProvider);
+    ref.watch(repositoryProvider);
+    final filterParams = ref.watch(teamSearchFilterParametersNotifierProvider);
+    return fetch(
+      page: AutoDisposePagePagingNotifierMixin.initialPage,
+      pageSize: pageSize,
+      filterParams: filterParams,
+    );
+  }
+
+  @override
+  Future<PagingData<Team>> fetch({
+    required int page,
+    required int pageSize,
+    TeamSearchFilterParameters? filterParams,
+  }) async {
+    filterParams ??= ref.read(teamSearchFilterParametersNotifierProvider);
+
+    final res = await ref.read(repositoryProvider).searchTeams(
+          query: filterParams.query,
+          searchType: filterParams.searchType,
+          page: page,
+          pageSize: pageSize,
+        );
+
+    checkResultForMaintenance(ref, res);
+    if (!res.hasRight) {
+      throw res.left;
+    }
+
+    return PagingData<Team>(
+      items: res.right.teams,
+      page: page,
+      pageSize: pageSize,
+      total: res.right.total,
+      hasMore: res.right.teams.length + page * pageSize < res.right.total,
+    );
+  }
+}
+
+/// フィルターパラメータ（session_list_controller の SessionFilterParameters と同様）
+@immutable
+class TeamSearchFilterParameters {
+  final String? query;
+  final TeamSearchType searchType;
+
+  const TeamSearchFilterParameters({
+    this.query,
+    this.searchType = TeamSearchType.teamName,
+  });
+}
+
+@riverpod
+class TeamSearchFilterParametersNotifier
+    extends _$TeamSearchFilterParametersNotifier {
+  @override
+  TeamSearchFilterParameters build() {
+    return const TeamSearchFilterParameters();
+  }
+
+  void updateQuery(String? newQuery) {
+    state = TeamSearchFilterParameters(
+      query: newQuery,
+      searchType: state.searchType,
+    );
+  }
+
+  void updateSearchType(TeamSearchType newType) {
+    state = TeamSearchFilterParameters(
+      query: state.query,
+      searchType: newType,
+    );
+  }
+
+  void updateBoth(String? newQuery, TeamSearchType newType) {
+    state = TeamSearchFilterParameters(
+      query: newQuery,
+      searchType: newType,
+    );
+  }
+}
+```
+
+**Note**: `PagePagingNotifierMixin` が `loadMore()` などのページング機能を提供
+
+### UI 設計
+
+#### 1. ページレイアウト
+
+```
+┌─────────────────────────────────────┐
+│ ← Super Admin Team Switcher         │  # AppBar
+├─────────────────────────────────────┤
+│ 🔍 [Search Bar           ] [Filter▼]│  # 検索バー + フィルター
+├─────────────────────────────────────┤
+│ ┌─────────────────────────────────┐ │
+│ │ Team Alpha              ✓       │ │  # 現在のチーム
+│ │ ID: team_001 | 15 members       │ │
+│ └─────────────────────────────────┘ │
+│ ┌─────────────────────────────────┐ │
+│ │ Team Beta                       │ │
+│ │ ID: team_002 | 8 members        │ │
+│ └─────────────────────────────────┘ │
+│ ┌─────────────────────────────────┐ │
+│ │ Team Gamma                      │ │
+│ │ ID: team_003 | 22 members       │ │
+│ └─────────────────────────────────┘ │
+│                ...                  │
+│ [Loading more...]                   │  # 無限スクロール
+└─────────────────────────────────────┘
+```
+
+#### 2. 検索フィルター UI
+
+```dart
+enum TeamSearchType {
+  teamName,   // "チーム名"
+  teamId,     // "チームID"
+  userId,     // "ユーザーID"
+  userName,   // "ユーザー名"
+}
+
+// ドロップダウンで選択可能
+CustomDropdownMenu<TeamSearchType>(
+  value: searchType,
+  items: TeamSearchType.values,
+  onChanged: (type) => _updateSearchType(type),
+)
+```
+
+## 実装フェーズ
+
+### Phase 1: バックエンド API の確認と設計 (優先度: 高)
+
+#### タスク
+1. **API エンドポイント確認**
+   - 既存 API で検索・ページング機能が利用可能か確認
+   - 必要に応じてバックエンドチームに新規エンドポイント実装を依頼
+
+2. **API 仕様の確定**
+   - リクエスト/レスポンス形式の確定
+   - エラーハンドリングの定義
+   - レート制限の確認
+
+#### 成果物
+- API 仕様書（Markdown）
+- バックエンドチームへの実装依頼（必要な場合）
+
+#### 所要時間: 1-2 日
+
+### Phase 2: データ層の実装 (優先度: 高)
+
+#### タスク
+1. **enum の作成**
+   ```bash
+   # 検索タイプ enum のみ新規作成
+   lib/data/models/enums/team_search_type.dart
+   ```
+
+2. **Repository メソッドの実装**
+   - `repository.dart` に `searchTeams()` メソッド追加
+   - `TeamsResponse` クラスを内部クラスとして定義
+   - ページング処理の実装（session_list_controller パターンに従う）
+   - エラーハンドリング
+
+3. **コード生成**
+   ```bash
+   mise br_clean
+   ```
+
+#### 成果物
+- TeamSearchType enum
+- Repository 拡張メソッド
+- 単体テスト
+
+#### 所要時間: 1-2 日（既存モデル再利用により短縮）
+
+### Phase 3: コントローラー層の実装 (優先度: 高)
+
+#### タスク
+1. **SuperAdminTeamSearchController の作成**
+   - `PagePagingNotifierMixin<Team>` を使用（session_list_controller と同様）
+   - `fetch()` メソッドの実装
+   - `TeamSearchFilterParametersNotifier` の実装
+
+2. **既存コントローラーの確認**
+   - `team_list_controller.dart` に影響がないことを確認
+   - `PagePagingNotifierMixin` の使用方法を参照
+
+3. **テストの実装**
+   - コントローラーの単体テスト
+   - 検索ロジックのテスト
+   - ページングのテスト（mixin の動作確認）
+
+#### 成果物
+- SuperAdminTeamSearchController
+- TeamSearchFilterParametersNotifier
+- 単体テスト
+
+#### 所要時間: 2-3 日
+
+### Phase 4: UI コンポーネントの実装 (優先度: 中)
+
+#### タスク
+1. **検索バーコンポーネント**
+   ```dart
+   // lib/views/pages/home/settings/components/super_admin_team_search_bar.dart
+   - TextField + 検索タイプドロップダウン
+   - デバウンス処理
+   - クリアボタン
+   ```
+
+2. **チームリストコンポーネント**
+   ```dart
+   // lib/views/pages/home/settings/components/super_admin_team_list.dart
+   - 無限スクロール実装
+   - ローディングインジケーター
+   - エラー表示
+   ```
+
+3. **チームリストアイテム**
+   ```dart
+   // lib/views/pages/home/settings/components/super_admin_team_list_item.dart
+   - チーム情報表示
+   - 選択状態の表示
+   - タップアクション
+   ```
+
+#### 成果物
+- 再利用可能な UI コンポーネント
+- ウィジェットテスト
+
+#### 所要時間: 3-4 日
+
+### Phase 5: メインページの実装 (優先度: 中)
+
+#### タスク
+1. **SuperAdminTeamSwitcherPage の作成**
+   ```dart
+   // lib/views/pages/home/settings/super_admin_team_switcher_page.dart
+   - Scaffold + AppBar
+   - 検索バー統合
+   - チームリスト統合
+   - リフレッシュ機能
+   ```
+
+2. **チーム切り替えロジック**
+   - 選択時の確認ダイアログ（オプション）
+   - uploadQueue のクリア
+   - プロバイダーの無効化
+   - ナビゲーション処理
+
+3. **アクセス制御**
+   - super_admin / super_reader チェック
+   - その他ロールは従来 UI へリダイレクト
+
+#### 成果物
+- SuperAdminTeamSwitcherPage
+- 統合テスト
+
+#### 所要時間: 2-3 日
+
+### Phase 6: 既存 UI との統合 (優先度: 中)
+
+#### タスク
+1. **settings_page.dart の調整**
+   ```dart
+   // ロールに応じた UI 切り替え
+   if (userInfo.hasRole(AppRole.superAdmin) ||
+       userInfo.hasRole(AppRole.superReader)) {
+     // 新しい専用ページへのリンク表示
+     ListTile(
+       title: Text('チーム管理'),
+       onTap: () => Navigator.push(...),
+     )
+   }
+   ```
+
+2. **preferences_card.dart の調整**
+   ```dart
+   // super_admin / super_reader の場合は従来のドロップダウンを非表示
+   if (teamList.length >= 2 &&
+       !userInfo.hasRole(AppRole.superAdmin) &&
+       !userInfo.hasRole(AppRole.superReader)) {
+     _buildTeamDropdownItem(...);
+   }
+   ```
+
+3. **ナビゲーションの追加**
+   - 設定ページから新しいページへの導線
+   - 適切なアイコンとラベル
+
+#### 成果物
+- 統合された設定 UI
+- ナビゲーションフロー
+
+#### 所要時間: 1-2 日
+
+### Phase 7: 多言語対応とポリッシング (優先度: 低)
+
+#### タスク
+1. **多言語対応**
+   ```bash
+   # lib/l10n/intl_en.arb と intl_ja.arb に追加
+   "super_admin_team_switcher__title": "Team Switcher"
+   "super_admin_team_switcher__search_hint": "Search teams..."
+   "super_admin_team_switcher__filter_team_name": "Team Name"
+   "super_admin_team_switcher__filter_team_id": "Team ID"
+   "super_admin_team_switcher__filter_user_id": "User ID"
+   "super_admin_team_switcher__filter_user_name": "User Name"
+   "super_admin_team_switcher__no_results": "No teams found"
+   "super_admin_team_switcher__switch_confirm": "Switch to {teamName}?"
+
+   mise l10n
+   ```
+
+2. **UI/UX の改善**
+   - アニメーション追加
+   - エラーメッセージの改善
+   - ローディング状態の最適化
+   - アクセシビリティ対応
+
+3. **パフォーマンス最適化**
+   - 画像の遅延読み込み
+   - メモリ使用量の監視
+   - キャッシュ戦略
+
+#### 成果物
+- 多言語対応
+- 洗練された UX
+
+#### 所要時間: 2-3 日
+
+### Phase 8: テストと品質保証 (優先度: 高)
+
+#### タスク
+1. **テストの実装**
+   - 単体テスト（Controllers, Models）
+   - ウィジェットテスト（UI Components）
+   - 統合テスト（ページ全体）
+   - E2E テスト（オプション）
+
+2. **品質チェック**
+   ```bash
+   mise analyze
+   mise test
+   mise format_dart
+   mise format_import
+   ```
+
+3. **レビュー**
+   - コードレビュー
+   - デザインレビュー
+   - パフォーマンステスト
+
+#### 成果物
+- 完全なテストカバレッジ
+- 品質レポート
+
+#### 所要時間: 2-3 日
+
+## 総所要時間
+
+- **最短**: 13-16 日（並行作業あり、既存モデル再利用により短縮）
+- **最長**: 18-22 日（順次作業）
+
+**短縮要因**:
+- `PagingData<T>` の再利用により新規モデル作成が不要
+- `PagePagingNotifierMixin` の再利用によりページングロジック実装が簡素化
+- 既存パターンに従うことでコードレビューが効率化
+
+## リスクと対策
+
+### リスク 1: バックエンド API の未対応
+- **対策**: Phase 1 で早期に確認し、必要に応じてバックエンドチームと調整
+- **代替案**: クライアント側で全件取得後にフィルタリング（暫定対応）
+
+### リスク 2: パフォーマンス問題
+- **対策**: 初期段階でパフォーマンステストを実施
+- **代替案**: ページサイズの調整、キャッシュ戦略の導入
+
+### リスク 3: UX の複雑化
+- **対策**: プロトタイプを作成し、早期にユーザーフィードバックを取得
+- **代替案**: シンプルな検索 UI から開始し、段階的に機能追加
+
+### リスク 4: 既存機能への影響
+- **対策**: 十分な単体・統合テストを実施
+- **代替案**: フィーチャーフラグで段階的にリリース
+
+## 成功指標
+
+### パフォーマンス
+- ✅ 初期表示時間: 2 秒以内
+- ✅ 検索レスポンス: 1 秒以内
+- ✅ メモリ使用量: 従来の 1/10 以下
+
+### UX
+- ✅ 検索結果の正確性: 95% 以上
+- ✅ ユーザー満足度: 4.0/5.0 以上
+
+### 品質
+- ✅ テストカバレッジ: 80% 以上
+- ✅ 静的解析エラー: 0 件
+- ✅ クラッシュ率: 0.1% 以下
+
+## 次のステップ
+
+1. ✅ 実装計画のレビューと承認
+2. ⬜ バックエンドチームとの API 仕様確認
+3. ⬜ Phase 1 の開始
+4. ⬜ プロトタイプの作成とユーザーフィードバック
+
+## 参考資料
+
+- [Flutter Riverpod Best Practices](https://riverpod.dev/docs/essentials/combining_requests)
+- [Flutter Pagination Strategies](https://docs.flutter.dev/cookbook/lists/long-lists)
+- [Material Design Search Guidelines](https://m3.material.io/components/search/overview)

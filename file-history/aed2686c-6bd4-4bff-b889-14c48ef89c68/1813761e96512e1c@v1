@@ -1,0 +1,162 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:playbook/playbook.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/components/usage_limit_alert_snack_bar.dart';
+
+const storyTitle = 'UsageLimitAlertSnackBar';
+
+@GenerateScenario()
+Widget usageLimitAlertSnackBarExpiredSoon(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(result: Right([_dummyTeam])),
+      ),
+    ],
+    child: const UsageLimitAlertSnackBar(),
+  );
+}
+
+@GenerateScenario()
+Widget usageLimitAlertSnackBarExpired(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(
+            result: Right([
+          _dummyTeam.copyWith(
+            teamPlan: _dummyTeamPlan.copyWith(
+              startDate: DateTime.now().subtract(const Duration(days: 30)),
+              endDate: DateTime.now().subtract(const Duration(days: 1)),
+            ),
+          )
+        ])),
+      ),
+    ],
+    child: const UsageLimitAlertSnackBar(),
+  );
+}
+
+@GenerateScenario()
+Widget usageLimitAlertSnackBarLimitReached(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(
+            result: Right([
+          _dummyTeam.copyWith(
+            teamPlan: _dummyTeamPlan.copyWith(
+              currentUsage: 100,
+              plan: _dummyTeamPlan.plan?.copyWith(
+                maxBalls: 100,
+              ),
+            ),
+          )
+        ])),
+      ),
+    ],
+    child: const UsageLimitAlertSnackBar(),
+  );
+}
+
+@GenerateScenario()
+Widget usageLimitAlertSnackBarLimitIsApproaching(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(
+            result: Right([
+          _dummyTeam.copyWith(
+            teamPlan: _dummyTeamPlan.copyWith(
+              currentUsage: 90,
+              plan: _dummyTeamPlan.plan?.copyWith(
+                maxBalls: 100,
+              ),
+            ),
+          )
+        ])),
+      ),
+    ],
+    child: const UsageLimitAlertSnackBar(),
+  );
+}
+
+@GenerateScenario()
+Widget usageLimitAlertSnackBarNoContract(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(
+            result: Right([
+          _dummyTeam.copyWith(
+            teamPlan: null,
+            nextTeamPlan: null,
+          ),
+        ])),
+      ),
+    ],
+    child: const UsageLimitAlertSnackBar(),
+  );
+}
+
+@GenerateScenario()
+Widget usageLimitAlertSnackBarNextPlanPending(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(
+            result: Right([
+          _dummyTeam.copyWith(
+            teamPlan: null,
+            nextTeamPlan: _dummyTeamPlan,
+          ),
+        ])),
+      ),
+    ],
+    child: const UsageLimitAlertSnackBar(),
+  );
+}
+
+final _dummyTeam = Team(
+  id: 'teamId',
+  name: 'Test Team',
+  ownerUserId: 'ownerUserId',
+  createdAt: DateTime(2024, 10, 1),
+  updatedAt: null,
+  imageUrl: null,
+  presignedImageUrl: null,
+  teamType: TeamType.multiple,
+  teamPlan: _dummyTeamPlan,
+);
+
+final _dummyTeamPlan = TeamPlan(
+  id: '1',
+  teamId: 'teamId',
+  planId: 'planId',
+  startDate: DateTime.now().subtract(const Duration(days: 1)),
+  endDate: DateTime.now().add(const Duration(days: 30)),
+  currentUsage: 50,
+  isActive: true,
+  createdAt: DateTime(2024, 10, 1),
+  updatedAt: null,
+  plan: Plan(
+    id: 'planId',
+    name: 'Test Plan',
+    description: null,
+    type: 1,
+    maxBalls: 100000000,
+    createdAt: DateTime(2024, 10, 1),
+    updatedAt: null,
+  ),
+);

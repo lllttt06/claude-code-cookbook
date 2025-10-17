@@ -1,0 +1,251 @@
+import {
+  Autocomplete,
+  Button,
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import _ from 'lodash';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
+
+import CriticalError from '@/components/common/critical-error';
+import PlayerSelector from '@/components/common/input/player-selector';
+import ValidationError from '@/components/common/validation-error';
+import AppConstants from '@/constants/app.constants';
+import useServicesHook from '@/hooks';
+import { Player } from '@/models/player';
+import { Session } from '@/models/session';
+import { ServiceError } from '@/services/errors/service-error';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import { translate } from '@/utils/i18n';
+
+import { CommonModal } from '../common-modal';
+
+export const SessionUpdateModal: FC<{
+  teamId: string;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  session: Session | null;
+  onClose?: Function;
+  onFail?: Function;
+  onSuccess?: Function;
+}> = ({ isOpen, setIsOpen, session, onClose, onFail, onSuccess }) => {
+  const { services } = useServicesHook();
+
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [error, setError] = useState<ServiceError | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const [param, setParam] = useState<{
+    title: string;
+    playerId: string | undefined;
+    location: string | null;
+    note: string;
+  }>({
+    title: '',
+    playerId: undefined,
+    location: '',
+    note: '',
+  });
+
+  const [locations, setLocations] = useState<string[]>([]);
+
+  const getPlayers = async (teamId: string) => {
+    const { players, error } = await services.default.player.getPlayers(
+      teamId,
+      {
+        pageSize: AppConstants.SEARCH_DEFAULT_BIG_VALUE,
+      },
+    );
+    if (error) {
+      return;
+    }
+
+    setPlayers(players);
+  };
+
+  const getLocations = async (teamId: string) => {
+    const { locations, error } =
+      await services.default.session.getLocations(teamId);
+
+    if (error) {
+      return;
+    }
+
+    setLocations(locations);
+  };
+
+  const onUpdateSessionButtonClicked = async (
+    teamId: string,
+    sessionId: string,
+  ) => {
+    await wrapForLoading(setIsSubmitting, async () => {
+      const result = await services.default.session.updateSession(
+        teamId,
+        sessionId,
+        {
+          playerId: param.playerId,
+          title: param.title,
+          location: param.location,
+          note: param.note,
+        },
+      );
+
+      if (result.error) {
+        onFail?.();
+        setError(result.error);
+        return;
+      }
+
+      onSuccess?.();
+      onClose?.();
+    });
+  };
+
+  useEffect(() => {
+    if (_.isNil(session?.teamId)) {
+      return;
+    }
+
+    setError(null);
+
+    setParam({
+      title: session.title ?? '',
+      playerId: session.playerId ?? null,
+      location: session.location ?? '',
+      note: session.note ?? '',
+    });
+
+    getPlayers(session.teamId);
+
+    getLocations(session.teamId);
+  }, [session, isOpen]);
+
+  if (!session) {
+    return <></>;
+  }
+
+  return (
+    <CommonModal isOpen={isOpen} onClose={onClose} setIsOpen={setIsOpen}>
+      <Typography variant="h4">{translate('edit_session')}</Typography>
+
+      <Stack
+        alignItems="stretch"
+        direction="column"
+        spacing={2}
+        sx={{
+          p: 2,
+        }}
+      >
+        <FormControl>
+          <PlayerSelector
+            players={players}
+            playerId={param?.playerId}
+            onChange={(player) => {
+              setParam({
+                ...param,
+                playerId: player.id,
+              });
+            }}
+          />
+        </FormControl>
+        <ValidationError error={error} pos={['playerId']} />
+
+        <FormControl>
+          <TextField
+            fullWidth
+            label={translate('session_dialog_title')}
+            value={param.title}
+            onChange={(e) => {
+              setParam({
+                ...param,
+                title: e.target.value,
+              });
+            }}
+          />
+          <ValidationError error={error} pos={['title']} />
+        </FormControl>
+
+        <FormControl>
+          <Autocomplete
+            freeSolo
+            disableClearable
+            options={locations}
+            value={param.location ?? ''}
+            onChange={(_event, value, _reason, _details) => {
+              setParam({
+                ...param,
+                location: value == '' ? null : value,
+              });
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={translate('session_dialog_location')}
+                InputProps={{
+                  ...params.InputProps,
+                  type: 'search',
+                }}
+                onChange={(event) => {
+                  setParam({
+                    ...param,
+                    location: event.target.value,
+                  });
+                }}
+              />
+            )}
+          />
+          <ValidationError error={error} pos={['location']} />
+        </FormControl>
+
+        <FormControl>
+          <TextField
+            fullWidth
+            label={translate('session_dialog_note')}
+            value={param.note}
+            onChange={(e) => {
+              setParam({
+                ...param,
+                note: e.target.value,
+              });
+            }}
+          />
+          <ValidationError error={error} pos={['note']} />
+        </FormControl>
+
+        <CriticalError error={error} />
+
+        <Button
+          fullWidth
+          color="primary"
+          loading={isSubmitting}
+          variant="contained"
+          onClick={() => {
+            if (session.teamId) {
+              onUpdateSessionButtonClicked(session.teamId, session.id);
+            }
+          }}
+        >
+          {translate('button_save_changes')}
+        </Button>
+
+        <Button
+          fullWidth
+          color="neutral"
+          onClick={() => {
+            onClose?.();
+          }}
+        >
+          {translate('button_cancel')}
+        </Button>
+      </Stack>
+    </CommonModal>
+  );
+};

@@ -1,0 +1,243 @@
+// Package imports:
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/data/clients/auth/auth_client.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure_code.dart';
+import 'package:baseball_detector_flutter/data/profile_storage.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/providers/auth_client_provider.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+
+part 'login_state_controller.g.dart';
+
+@Riverpod(keepAlive: true)
+class LoginStateController extends _$LoginStateController {
+  static final _fc =
+      failureCodeBuilder.category('CLS'); // Controller-LoginState
+
+  bool _mounted = true;
+
+  AuthClient get _authClient => ref.read(authClientProvider);
+
+  ProfileStorage get _profileStorage => ref.read(profileStorageProvider);
+
+  // NOTE:
+  // [supabase.GoTrueClient] automatically restore session when [Supabase.initialize] is called.
+  // In addition to this, calling [goTrueClient.restoreSession] in the constructor of this class
+  // causes an exception.
+  @override
+  FutureOr<bool> build() {
+    _mounted = true;
+    ref.onDispose(() => _mounted = false);
+
+    ref.watch(authClientProvider);
+    return false;
+  }
+
+  /// Signs in using Supabase auth
+  Future<Result<Failure, bool>> signInWithPassword(
+      String email, String password, bool saveCredentials) async {
+    state = const AsyncValue.loading();
+    final res =
+        await _authClient.signInWithPassword(email, password, saveCredentials);
+
+    // UnconfirmedEmailFailure の場合は自動的に resendCode を実行
+    // これにより複数アカウントのサインアップ時に発生する `pendingUserId` 不整合問題を解決
+    //
+    // 発生シナリオ
+    // 1. email1/password1/birthday1 でサインアップ（setPendingUserId に email1 の userId）
+    // 2. メール未検証のまま戻る
+    // 3. email2/password2/birthday2 でサインアップ（setPendingUserId に email2 の userId）
+    // 4. email2 はメール検証してログイン ( setPendingUserId が null になる)
+    // 5. email2 でログアウト
+    // 6. email1 でログイン試行
+    // 7. UnconfirmedEmailFailure を検知し、コード入力画面へ遷移
+    // 8. コード入力画面で古い確認コードを入力し次へ
+    // 9. lib/data/clients/auth/auth_client.dart の completeSignUp で assert(userId != null) により Exception が発生 (completeSignUp 時にはその user の userId が必要でそれを getPendingUserId から取得している)
+    //
+    // TODO: use_auth_code_operations.dart, login_state_controller.dart, auth_client.dart
+    // の処理の流れが複雑なのでリファクタ
+    if (res.hasLeft && res.left is UnconfirmedEmailFailure) {
+      await resendCode();
+    }
+
+    // Refresh user's accessible contents after successful login
+    if (res.hasRight && _mounted) {
+      await ref
+          .read(userAccessibleContentsControllerProvider.notifier)
+          .refresh();
+    }
+
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(true));
+    return res;
+  }
+
+  /// Sign out using Supabase auth
+  Future<Result<Failure, bool>> signOut() async {
+    state = const AsyncValue.loading();
+    final res = await _authClient.signOut();
+
+    // Clear user's accessible contents after sign out
+    if (_mounted) {
+      ref.invalidate(userAccessibleContentsControllerProvider);
+    }
+
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(true));
+    return res;
+  }
+
+  /// Switch team if user belongs to multiple teams
+  /// NOTE: implement here for renew LoginStateController state
+  Future<Result<Failure, bool>> switchTeam(
+    String teamId,
+  ) async {
+    final fc = _fc.category('SWTM');
+
+    state = const AsyncValue.loading();
+    final res = await _profileStorage.setTeamId(teamId);
+
+    // Refresh user's accessible contents after successful team switch
+    if (res && _mounted) {
+      await ref
+          .read(userAccessibleContentsControllerProvider.notifier)
+          .refresh();
+    }
+
+    if (_mounted) {
+      state = res
+          ? const AsyncValue.data(true)
+          : AsyncValue.error('failed to setTeamId', StackTrace.current);
+    }
+    return res
+        ? const Right(true)
+        : Left(Failure.undefined(
+            code: fc.position('001'),
+            description: (l10n) =>
+                l10n.login_state_controller__failed_to_switch_team,
+          ));
+  }
+
+  Future<Result<Failure, void>> signUp(
+    String email,
+    String password,
+    DateTime birthday,
+  ) async {
+    state = const AsyncValue.loading();
+    final res = await _authClient.signUp(
+      email: email,
+      password: password,
+      birthday: birthday,
+    );
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(true));
+    return res;
+  }
+
+  Future<Result<Failure, void>> resendCode() async {
+    state = const AsyncValue.loading();
+    final email = await _profileStorage.getEmail();
+    assert(
+      email != null,
+      'email must not be null',
+    );
+
+    final res = await _authClient.resendCode(email: email!);
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(true));
+    return res;
+  }
+
+  Future<Result<Failure, String>> verifyCode(String code) async {
+    state = const AsyncValue.loading();
+    final res = await _authClient.verifyCode(code: code);
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(true));
+    return res;
+  }
+
+  Future<Result<Failure, void>> completeSignUp(String token) async {
+    state = const AsyncValue.loading();
+    final res = await _authClient.completeSignUp(token: token);
+
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(true));
+    return res;
+  }
+
+  Future<Result<Failure, bool>> deleteAccount() async {
+    state = const AsyncValue.loading();
+    final res = await _authClient.deleteAccount();
+
+    // Clear user's accessible contents after account deletion
+    if (_mounted) {
+      ref.invalidate(userAccessibleContentsControllerProvider);
+    }
+
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => const AsyncValue.data(false));
+    return res;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class ChangePasswordController extends _$ChangePasswordController {
+  bool _mounted = true;
+
+  AuthClient get _authClient => ref.read(authClientProvider);
+
+  @override
+  FutureOr<bool> build() {
+    _mounted = true;
+    ref.onDispose(() => _mounted = false);
+
+    ref.watch(authClientProvider);
+    return false;
+  }
+
+  /// Signs in using Supabase auth
+  Future<Result<Failure, bool>> changePasswordController(
+      String password, bool saveCredentials) async {
+    state = const AsyncValue.loading();
+    final res = await _authClient.changePassword(
+        newPassword: password, saveCredentials: saveCredentials);
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => AsyncValue.data(r));
+    return res;
+  }
+}
+
+@Riverpod(keepAlive: true)
+class ForgotPasswordController extends _$ForgotPasswordController {
+  bool _mounted = true;
+
+  @override
+  FutureOr<bool> build() {
+    _mounted = true;
+    ref.onDispose(() => _mounted = false);
+
+    ref.watch(authClientProvider);
+    return false;
+  }
+
+  Future<Result<Failure, bool>> forgotPassword(String email) async {
+    state = const AsyncValue.loading();
+    final res = await ref.read(authClientProvider).forgotPassword(email: email);
+    if (!_mounted) return res;
+    state = res.fold((l) => AsyncValue.error(l, StackTrace.current),
+        (r) => AsyncValue.data(r));
+    return res;
+  }
+}

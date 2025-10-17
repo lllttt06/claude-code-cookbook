@@ -1,0 +1,232 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/controllers/super_admin_team_search_controller.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/super_admin_team_switcher/components/super_admin_team_list_item.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/super_admin_team_switcher/components/super_admin_team_search_bar.dart';
+
+/// A page for super_admin and super_reader to search and switch teams.
+class SuperAdminTeamSwitcherPage extends ConsumerWidget {
+  const SuperAdminTeamSwitcherPage({super.key});
+
+  static const String routeName = '/super-admin-team-switcher';
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final teamSearchState = ref.watch(superAdminTeamSearchControllerProvider);
+    final profileStorage = ref.watch(profileStorageProvider);
+    final currentTeamId = profileStorage.getTeamId();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(context.l10n.super_admin_team_switcher__title),
+        backgroundColor: colorScheme.surface,
+        elevation: 0,
+      ),
+      body: Column(
+        children: [
+          const SuperAdminTeamSearchBar(),
+          const Divider(height: 1),
+          Expanded(
+            child: teamSearchState.when(
+              data: (pagingData) {
+                if (pagingData.items.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search_off,
+                          size: 64,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                        const Gap(16),
+                        Text(
+                          context.l10n.super_admin_team_switcher__no_results,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    ref.invalidate(superAdminTeamSearchControllerProvider);
+                  },
+                  child: NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification is ScrollEndNotification &&
+                          notification.metrics.extentAfter < 200) {
+                        ref
+                            .read(
+                                superAdminTeamSearchControllerProvider.notifier)
+                            .loadNext(
+                              pageSize: SuperAdminTeamSearchController.pageSize,
+                            );
+                      }
+                      return false;
+                    },
+                    child: ListView.builder(
+                      itemCount: pagingData.items.length +
+                          (pagingData.hasMore ? 1 : 0),
+                      itemBuilder: (context, index) {
+                        if (index >= pagingData.items.length) {
+                          return const Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+
+                        final team = pagingData.items[index];
+                        final isSelected = team.id == currentTeamId;
+
+                        return SuperAdminTeamListItem(
+                          team: team,
+                          isSelected: isSelected,
+                          onTap: () => _onTeamTap(
+                            context,
+                            ref,
+                            team,
+                            isSelected,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, stackTrace) => Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: colorScheme.error,
+                    ),
+                    const Gap(16),
+                    Text(
+                      context.l10n.super_admin_team_switcher__error_message,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: colorScheme.error,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const Gap(16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        ref.invalidate(superAdminTeamSearchControllerProvider);
+                      },
+                      icon: const Icon(Icons.refresh),
+                      label: Text(context.l10n.common__retry),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _onTeamTap(
+    BuildContext context,
+    WidgetRef ref,
+    Team team,
+    bool isSelected,
+  ) async {
+    if (isSelected) {
+      // Already selected, do nothing
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title:
+            Text(context.l10n.super_admin_team_switcher__switch_confirm_title),
+        content: Text(
+          context.l10n.super_admin_team_switcher__switch_confirm_message(
+            team.name ?? '',
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(context.l10n.common__cancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(context.l10n.common__ok),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) {
+      return;
+    }
+
+    if (!context.mounted) return;
+
+    // Show loading indicator
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    try {
+      await ref
+          .read(loginStateControllerProvider.notifier)
+          .switchTeam(team.id ?? '');
+
+      if (!context.mounted) return;
+      Navigator.of(context).pop(); // Close loading dialog
+
+      // Show success message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            context.l10n.super_admin_team_switcher__switch_success(
+              team.name ?? '',
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+        ),
+      );
+
+      // Refresh the list to update the selected state
+      ref.invalidate(superAdminTeamSearchControllerProvider);
+    } catch (e) {
+      if (!context.mounted) return;
+      Navigator.of(context).pop(); // Close loading dialog
+
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            context.l10n.super_admin_team_switcher__switch_error,
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+}

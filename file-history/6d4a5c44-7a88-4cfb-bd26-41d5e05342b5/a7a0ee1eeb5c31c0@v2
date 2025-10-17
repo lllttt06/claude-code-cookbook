@@ -1,0 +1,20 @@
+/// {@category DTO}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+part 'resend_code_response.freezed.dart';
+part 'resend_code_response.g.dart';
+
+@freezed
+abstract class ResendCodeResponse with _$ResendCodeResponse {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)
+  const factory ResendCodeResponse({
+    required String userId,
+  }) = _ResendCodeResponse;
+
+  factory ResendCodeResponse.fromJson(Map<String, dynamic> json) =>
+      _$ResendCodeResponseFromJson(json);
+}

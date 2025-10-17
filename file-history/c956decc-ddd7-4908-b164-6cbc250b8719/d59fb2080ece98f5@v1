@@ -1,0 +1,249 @@
+// Dart imports:
+import 'dart:math';
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/item.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/data/models/utils/now_provider.dart';
+
+part 'team.freezed.dart';
+part 'team.g.dart';
+
+enum TeamType {
+  single,
+  multiple,
+  ;
+}
+
+@freezed
+abstract class Team with _$Team {
+  const Team._();
+
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory Team({
+    @Default(null) String? id,
+    @Default(null) String? name,
+    @Default(null) String? ownerUserId,
+    @Default(TeamType.multiple) TeamType teamType,
+    @Default(null) DateTime? createdAt, // assumes UTC
+    @Default(null) DateTime? updatedAt, // assumes UTC
+    @Default(null) DateTime? teamPlanCancelAt,
+    @Default(null) DateTime? teamPlanDowngradeAt,
+    @Default(null) String? imageUrl,
+    @Default(null) TeamPlan? teamPlan,
+    @Default(null) TeamPlan? nextTeamPlan,
+    @Default(null) String? presignedImageUrl,
+    @Default(null) String? billingFailureReason,
+    @Default(null) String? downgradePlanId,
+    @Default(null) Item? item,
+  }) = _Team;
+
+  factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
+
+  bool get isSingleUserTeam => teamType == TeamType.single;
+
+  /// ボール解析の使用量（TeamPlan + Item の合算）
+  int get ballUsage {
+    // プランの上限
+    final planMax =
+        (teamPlan?.withinPeriod ?? false) ? teamPlan?.plan?.maxBalls ?? 0 : 0;
+
+    // プランの使用量
+    final rawPlanUsage =
+        (teamPlan?.withinPeriod ?? false) ? teamPlan?.currentUsage ?? 0 : 0;
+
+    // 上限を越えないようにする
+    // DB 上で maxBalls == 300 にも関わらず、currentUsage == 10000 などが入った場合
+    // currentUsage = 300 にクランプ
+    final planUsage = min(rawPlanUsage, planMax);
+
+    final itemMax = item?.ballAvailableCount ?? 0;
+    final itemUsage = min(item?.ballUsage ?? 0, itemMax);
+
+    return planUsage + itemUsage;
+  }
+
+  /// AI コーチの使用量（TeamPlan + Item の合算）
+  int get aiCoachUsage {
+    final planMax = (teamPlan?.withinPeriod ?? false)
+        ? teamPlan?.plan?.maxAiCoachs ?? 0
+        : 0;
+
+    final rawPlanUsage = (teamPlan?.withinPeriod ?? false)
+        ? teamPlan?.currentAiCoachUsage ?? 0
+        : 0;
+
+    final planUsage = min(rawPlanUsage, planMax);
+
+    final itemMax = item?.aiCoachAvailableCount ?? 0;
+    final itemUsage = min(item?.aiCoachUsage ?? 0, itemMax);
+
+    return planUsage + itemUsage;
+  }
+
+  /// ボール解析の上限数（Plan + Item の合算）
+  int get maxBalls {
+    final planMax =
+        (teamPlan?.withinPeriod ?? false) ? teamPlan?.plan?.maxBalls ?? 0 : 0;
+    final itemMax = item?.ballAvailableCount ?? 0;
+    return planMax + itemMax;
+  }
+
+  /// AI コーチの上限数（Plan + Item の合算）
+  int get maxAICoachCount {
+    final planMax = (teamPlan?.withinPeriod ?? false)
+        ? teamPlan?.plan?.maxAiCoachs ?? 0
+        : 0;
+    final itemMax = item?.aiCoachAvailableCount ?? 0;
+    return planMax + itemMax;
+  }
+
+  /// プランの契約・有効期限状態
+  TeamPlanStatus get teamPlanStatus {
+    // 1. teamPlanがnullまたはisActive!=trueの場合
+    if (teamPlan == null || teamPlan!.isActive != true) {
+      return TeamPlanStatus.noContract;
+    }
+
+    // 2. 期限切れか
+    final now = resolveTeamPlanNow();
+    final endDate = teamPlan!.endDate;
+    // 以下の場合は nextTeamPlan の endDate を使用する
+    // 1. nextTeamPlan が存在
+    // 2. nextTeamPlan の isPendingActivation が true
+    // 3. teamPlan の endDate が nextTeamPlan の startDate と同じ (連続してプランを継続している)
+    final effectiveEndDate = (nextTeamPlan != null &&
+            nextTeamPlan!.isPendingActivation == true &&
+            endDate == nextTeamPlan!.startDate)
+        ? nextTeamPlan!.endDate
+        : endDate;
+    final isExpired =
+        effectiveEndDate != null && effectiveEndDate.isBefore(now);
+    if (isExpired) {
+      if (nextTeamPlan != null && nextTeamPlan!.isPendingActivation == true) {
+        return TeamPlanStatus.nextPlanPending;
+      }
+      return TeamPlanStatus.expired;
+    }
+
+    // 3. 期限警告（30日以内）
+    if (effectiveEndDate != null) {
+      final oneMonthLater = now.add(const Duration(days: 30));
+      if (effectiveEndDate.isAfter(now) &&
+          effectiveEndDate.isBefore(oneMonthLater)) {
+        return TeamPlanStatus.expiringSoon;
+      }
+    }
+
+    // 4. 問題なし
+    return TeamPlanStatus.ok;
+  }
+
+  /// ボール解析の使用量状態
+  BallAnalysisUsageStatus get ballAnalysisUsageStatus {
+    final usage = ballUsage;
+    final maxUsage = maxBalls;
+
+    // 上限到達
+    if (usage >= maxUsage) {
+      return BallAnalysisUsageStatus.limitReached;
+    }
+
+    // 上限接近（90%以上）
+    if (usage >= (maxUsage * 0.9).floor()) {
+      return BallAnalysisUsageStatus.limitApproaching;
+    }
+
+    // 正常
+    return BallAnalysisUsageStatus.ok;
+  }
+
+  /// AI コーチの使用量状態
+  AICoachUsageStatus get aiCoachUsageStatus {
+    final usage = aiCoachUsage;
+    final maxUsage = maxAICoachCount;
+
+    // 上限到達
+    if (usage >= maxUsage) {
+      return AICoachUsageStatus.limitReached;
+    }
+
+    // 上限接近（90%以上）
+    if (usage >= (maxUsage * 0.9).floor()) {
+      return AICoachUsageStatus.limitApproaching;
+    }
+
+    // 正常
+    return AICoachUsageStatus.ok;
+  }
+
+  /// ボール解析が実行可能かどうか
+  bool get canAnalyzeBall {
+    return ballAnalysisUsageStatus.canAnalyze;
+  }
+
+  /// AI コーチが利用可能かどうか
+  bool get canUseAiCoach {
+    return aiCoachUsageStatus.canUseAiCoach;
+  }
+}
+
+/// チームプランの契約・有効期限に関する状態
+enum TeamPlanStatus {
+  // アプリ利用不可
+  noContract, // 有料プラン契約なし
+  nextPlanPending, // 次回プランが保留中
+  expired, // 期限切れ
+
+  // アプリ利用可（警告あり）
+  expiringSoon, // 30日以内に期限切れ
+
+  // アプリ利用可（正常）
+  ok,
+  ;
+
+  /// プランが有効かどうか（契約があり、期限内）
+  bool get isValid => this == expiringSoon || this == ok;
+}
+
+/// ボール解析の使用量状態
+enum BallAnalysisUsageStatus {
+  // 解析不可
+  limitReached, // 上限到達（currentUsage >= maxBalls）
+
+  // 解析可（警告あり）
+  limitApproaching, // 上限接近（currentUsage >= maxBalls * 0.9）
+
+  // 解析可（正常）
+  ok,
+  ;
+
+  /// 解析実行可能かどうか
+  bool get canAnalyze => this == limitApproaching || this == ok;
+
+  /// 警告を表示すべきかどうか
+  bool get shouldWarn => this == limitApproaching;
+}
+
+/// AI コーチの使用量状態
+enum AICoachUsageStatus {
+  // AI コーチ利用不可
+  limitReached, // 上限到達（currentAiCoachUsage >= maxAiCoachs）
+
+  // AI コーチ利用可（警告あり）
+  limitApproaching, // 上限接近（currentAiCoachUsage >= maxAiCoachs * 0.9）
+
+  // AI コーチ利用可（正常）
+  ok,
+  ;
+
+  /// AI コーチ利用可能かどうか
+  bool get canUseAiCoach => this == limitApproaching || this == ok;
+}

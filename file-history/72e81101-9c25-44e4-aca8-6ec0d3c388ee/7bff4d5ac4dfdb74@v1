@@ -1,0 +1,33 @@
+/// {@category DTO}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+part 'sign_up_request.freezed.dart';
+part 'sign_up_request.g.dart';
+
+@freezed
+abstract class SignUpRequest with _$SignUpRequest {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)
+  const factory SignUpRequest({
+    required String name,
+    required String email,
+    required String password,
+    @JsonKey(fromJson: _parseDate, toJson: _dateOnly)
+    DateTime? birthday,
+  }) = _SignUpRequest;
+
+  factory SignUpRequest.fromJson(Map<String, dynamic> json) =>
+      _$SignUpRequestFromJson(json);
+}
+
+DateTime _parseDate(String value) => DateTime.parse(value);
+
+String _dateOnly(DateTime value) {
+  final year = value.year.toString().padLeft(4, '0');
+  final month = value.month.toString().padLeft(2, '0');
+  final day = value.day.toString().padLeft(2, '0');
+  return '$year-$month-$day';
+}

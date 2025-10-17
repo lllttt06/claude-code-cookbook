@@ -1,0 +1,42 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+import sys
+
+# ARBファイルを読み込んで実際の翻訳キーのみを取得
+with open('lib/l10n/app_en.arb', 'r', encoding='utf-8') as f:
+    arb_data = json.load(f)
+
+# @で始まるメタデータキーと@@localeを除外
+translation_keys = [key for key in arb_data.keys() if not key.startswith('@')]
+
+print(f"Total translation keys: {len(translation_keys)}")
+
+# 未使用のキーを検出
+unused_keys = []
+
+for key in translation_keys:
+    # libディレクトリ内でキーの使用をチェック（l10n生成ファイルは除外）
+    cmd = [
+        'grep', '-r', f'.l10n.{key}', 'lib',
+        '--include=*.dart',
+        '--exclude=l10n.dart',
+        '--exclude=l10n_en.dart',
+        '--exclude=l10n_ja.dart',
+        '--exclude-dir=.dart_tool'
+    ]
+
+    result = subprocess.run(cmd, capture_output=True, text=True)
+
+    # 見つからなかった場合は未使用
+    if result.returncode != 0:
+        unused_keys.append(key)
+
+print(f"\nUnused keys count: {len(unused_keys)}")
+
+if unused_keys:
+    print("\nUnused keys:")
+    for key in sorted(unused_keys):
+        print(f"  {key}")
+else:
+    print("\nAll keys are being used!")

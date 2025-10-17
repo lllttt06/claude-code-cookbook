@@ -1,0 +1,104 @@
+// Project imports:
+import '../record_definitions.dart';
+
+class ItemData {
+  const ItemData({
+    required this.id,
+    required this.name,
+    this.description,
+    required this.isPaid,
+    required this.isSubscription,
+  });
+
+  final String id;
+  final String name;
+  final String? description;
+  final bool isPaid;
+  final bool isSubscription;
+}
+
+class ItemBallData {
+  const ItemBallData({
+    required this.id,
+    required this.itemId,
+    required this.availableCount,
+    required this.priority,
+    this.validityPeriod,
+  });
+
+  final String id;
+  final String itemId;
+  final int availableCount;
+  final int priority;
+  final String? validityPeriod;
+}
+
+// Test用のItem定義
+const itemTestBall1000 = ItemData(
+  id: '11111111-1004-0000-0000-000000000000',
+  name: 'ball-1000',
+  description: 'plan-ball-1000',
+  isPaid: true,
+  isSubscription: true,
+);
+
+const itemFreePlan = ItemData(
+  id: '11111111-4000-0000-0000-000000000000',
+  name: 'Free Plan',
+  description: 'free plan which is attached as default plan',
+  isPaid: false,
+  isSubscription: true,
+);
+
+// Test用のItemBall定義
+final itemBallTest1000 = ItemBallData(
+  id: '11111111-1005-0000-0000-000000000000',
+  itemId: itemTestBall1000.id,
+  availableCount: 1000,
+  priority: 0,
+  validityPeriod: null,
+);
+
+final itemBallFreePlan = ItemBallData(
+  id: '11111111-4005-0000-0000-000000000000',
+  itemId: itemFreePlan.id,
+  availableCount: 20,
+  priority: 0,
+  validityPeriod: null,
+);
+
+final _time = DateTime.utc(2024, 1, 1);
+
+final itemRecords = RecordDefinitions<ItemData>(
+  table: 'items',
+  data: [
+    itemTestBall1000,
+    itemFreePlan,
+  ],
+  columns: {
+    'id': (e) => e.id,
+    'name': (e) => e.name,
+    'description': (e) => e.description,
+    'is_paid': (e) => e.isPaid,
+    'is_subscription': (e) => e.isSubscription,
+    'created_at': (_) => _time,
+    'updated_at': (_) => _time,
+  },
+);
+
+final itemBallRecords = RecordDefinitions<ItemBallData>(
+  table: 'item_balls',
+  data: [
+    itemBallTest1000,
+    itemBallFreePlan,
+  ],
+  columns: {
+    'id': (e) => e.id,
+    'item_id': (e) => e.itemId,
+    'available_count': (e) => e.availableCount,
+    'priority': (e) => e.priority,
+    'validity_period': (e) => e.validityPeriod,
+    'created_at': (_) => _time,
+    'updated_at': (_) => _time,
+  },
+);

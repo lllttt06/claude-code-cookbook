@@ -1,0 +1,525 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/super_admin_team_search_controller.dart';
+import 'package:baseball_detector_flutter/data/models/dto/team/team_search_request.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+
+/// A bottom sheet for advanced team search filters.
+class SuperAdminTeamFilterSheet extends HookConsumerWidget {
+  const SuperAdminTeamFilterSheet({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final currentParams = ref.watch(teamSearchFilterParametersNotifierProvider);
+    final localParams = useState(currentParams);
+
+    return DraggableScrollableSheet(
+      initialChildSize: 0.9,
+      minChildSize: 0.5,
+      maxChildSize: 0.95,
+      expand: false,
+      builder: (context, scrollController) {
+        return Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: Column(
+            children: [
+              // Handle
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 12),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color:
+                      theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.4),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              // Title
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        context.l10n.super_admin_team_filter__title,
+                        style: theme.textTheme.titleLarge,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // ローカル状態をリセット
+                        localParams.value = const TeamSearchFilterParameters();
+                      },
+                      child: Text(context.l10n.super_admin_team_filter__reset),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(),
+              // Filter content
+              Expanded(
+                child: ListView(
+                  controller: scrollController,
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    _buildSortSection(context, theme, localParams),
+                    const Gap(24),
+                    _buildTeamTypeSection(context, theme, localParams),
+                    const Gap(24),
+                    _buildStatusSection(context, theme, localParams),
+                    const Gap(24),
+                    _buildPlanSection(context, theme, localParams),
+                    const Gap(24),
+                    _buildExpirySection(context, theme, localParams),
+                  ],
+                ),
+              ),
+              // Apply button
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: () {
+                        // ローカル状態をグローバル状態に反映
+                        final notifier = ref.read(
+                          teamSearchFilterParametersNotifierProvider.notifier,
+                        );
+                        notifier.updateFilters(
+                          orderBy: localParams.value.orderBy,
+                          isOrderDesc: localParams.value.isOrderDesc,
+                          teamTypes: localParams.value.teamTypes,
+                          isDeletionScheduled:
+                              localParams.value.isDeletionScheduled,
+                          isPlanPaid: localParams.value.isPlanPaid,
+                          teamPlanEndDateFrom:
+                              localParams.value.teamPlanEndDateFrom,
+                          teamPlanEndDateTo:
+                              localParams.value.teamPlanEndDateTo,
+                          extendToNextTeamPlan:
+                              localParams.value.extendToNextTeamPlan,
+                        );
+                        // クエリを実行
+                        ref.invalidate(superAdminTeamSearchControllerProvider);
+                        Navigator.pop(context);
+                      },
+                      child: Text(context.l10n.super_admin_team_filter__apply),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSortSection(
+    BuildContext context,
+    ThemeData theme,
+    ValueNotifier<TeamSearchFilterParameters> localParams,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.super_admin_team_filter__sort,
+          style: theme.textTheme.titleSmall,
+        ),
+        const Gap(12),
+        _buildSortOption(
+          context,
+          localParams,
+          context.l10n.super_admin_team_filter__sort_newest,
+          TeamSearchRequestOrderBy.createdAt,
+          true,
+          localParams.value.orderBy == TeamSearchRequestOrderBy.createdAt &&
+              localParams.value.isOrderDesc == true,
+        ),
+        _buildSortOption(
+          context,
+          localParams,
+          context.l10n.super_admin_team_filter__sort_oldest,
+          TeamSearchRequestOrderBy.createdAt,
+          false,
+          localParams.value.orderBy == TeamSearchRequestOrderBy.createdAt &&
+              localParams.value.isOrderDesc == false,
+        ),
+        _buildSortOption(
+          context,
+          localParams,
+          context.l10n.super_admin_team_filter__sort_plan_start_asc,
+          TeamSearchRequestOrderBy.teamPlanStartDate,
+          false,
+          localParams.value.orderBy ==
+                  TeamSearchRequestOrderBy.teamPlanStartDate &&
+              localParams.value.isOrderDesc == false,
+        ),
+        _buildSortOption(
+          context,
+          localParams,
+          context.l10n.super_admin_team_filter__sort_plan_start_desc,
+          TeamSearchRequestOrderBy.teamPlanStartDate,
+          true,
+          localParams.value.orderBy ==
+                  TeamSearchRequestOrderBy.teamPlanStartDate &&
+              localParams.value.isOrderDesc == true,
+        ),
+        _buildSortOption(
+          context,
+          localParams,
+          context.l10n.super_admin_team_filter__sort_plan_end_asc,
+          TeamSearchRequestOrderBy.teamPlanEndDate,
+          false,
+          localParams.value.orderBy ==
+                  TeamSearchRequestOrderBy.teamPlanEndDate &&
+              localParams.value.isOrderDesc == false,
+        ),
+        _buildSortOption(
+          context,
+          localParams,
+          context.l10n.super_admin_team_filter__sort_plan_end_desc,
+          TeamSearchRequestOrderBy.teamPlanEndDate,
+          true,
+          localParams.value.orderBy ==
+                  TeamSearchRequestOrderBy.teamPlanEndDate &&
+              localParams.value.isOrderDesc == true,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSortOption(
+    BuildContext context,
+    ValueNotifier<TeamSearchFilterParameters> localParams,
+    String label,
+    TeamSearchRequestOrderBy orderBy,
+    bool isDesc,
+    bool isSelected,
+  ) {
+    return InkWell(
+      onTap: () {
+        localParams.value = localParams.value.copyWith(
+          orderBy: orderBy,
+          isOrderDesc: isDesc,
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            Icon(
+              isSelected ? Icons.radio_button_checked : Icons.radio_button_off,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurfaceVariant,
+            ),
+            const Gap(12),
+            Expanded(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTeamTypeSection(
+    BuildContext context,
+    ThemeData theme,
+    ValueNotifier<TeamSearchFilterParameters> localParams,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.super_admin_team_filter__team_type,
+          style: theme.textTheme.titleSmall,
+        ),
+        const Gap(12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__all),
+              selected: localParams.value.teamTypes == null ||
+                  localParams.value.teamTypes!.isEmpty,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(teamTypes: null);
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.team_type__single),
+              selected:
+                  localParams.value.teamTypes?.contains(TeamType.single) ??
+                      false,
+              onSelected: (_) {
+                localParams.value =
+                    localParams.value.copyWith(teamTypes: [TeamType.single]);
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.team_type__multiple),
+              selected:
+                  localParams.value.teamTypes?.contains(TeamType.multiple) ??
+                      false,
+              onSelected: (_) {
+                localParams.value =
+                    localParams.value.copyWith(teamTypes: [TeamType.multiple]);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatusSection(
+    BuildContext context,
+    ThemeData theme,
+    ValueNotifier<TeamSearchFilterParameters> localParams,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.super_admin_team_filter__status,
+          style: theme.textTheme.titleSmall,
+        ),
+        const Gap(12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__all),
+              selected: localParams.value.isDeletionScheduled == null,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  isDeletionScheduled: null,
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__status_active),
+              selected: localParams.value.isDeletionScheduled == false,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  isDeletionScheduled: false,
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context
+                  .l10n.super_admin_team_filter__status_deletion_scheduled),
+              selected: localParams.value.isDeletionScheduled == true,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  isDeletionScheduled: true,
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPlanSection(
+    BuildContext context,
+    ThemeData theme,
+    ValueNotifier<TeamSearchFilterParameters> localParams,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.super_admin_team_filter__plan,
+          style: theme.textTheme.titleSmall,
+        ),
+        const Gap(12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__all),
+              selected: localParams.value.isPlanPaid == null,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  isPlanPaid: null,
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__plan_free),
+              selected: localParams.value.isPlanPaid == false,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  isPlanPaid: false,
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__plan_paid),
+              selected: localParams.value.isPlanPaid == true,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  isPlanPaid: true,
+                );
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildExpirySection(
+    BuildContext context,
+    ThemeData theme,
+    ValueNotifier<TeamSearchFilterParameters> localParams,
+  ) {
+    final nowDateTime = DateTime.now();
+    final now = DateTime(nowDateTime.year, nowDateTime.month, nowDateTime.day);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.super_admin_team_filter__expiry,
+          style: theme.textTheme.titleSmall,
+        ),
+        const Gap(12),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__all),
+              selected: localParams.value.teamPlanEndDateFrom == null &&
+                  localParams.value.teamPlanEndDateTo == null,
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  teamPlanEndDateFrom: null,
+                  teamPlanEndDateTo: null,
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__expiry_before_1week),
+              selected: _isExpiryFilterSelected(
+                localParams.value,
+                now,
+                now.add(const Duration(days: 7)),
+              ),
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  teamPlanEndDateFrom: now,
+                  teamPlanEndDateTo: now.add(const Duration(days: 7)),
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__expiry_before_2weeks),
+              selected: _isExpiryFilterSelected(
+                localParams.value,
+                now,
+                now.add(const Duration(days: 14)),
+              ),
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  teamPlanEndDateFrom: now,
+                  teamPlanEndDateTo: now.add(const Duration(days: 14)),
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__expiry_after_1week),
+              selected: _isExpiryFilterSelected(
+                localParams.value,
+                now.subtract(const Duration(days: 7)),
+                now,
+              ),
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  teamPlanEndDateFrom: now.subtract(const Duration(days: 7)),
+                  teamPlanEndDateTo: now,
+                );
+              },
+            ),
+            FilterChip(
+              label: Text(context.l10n.super_admin_team_filter__expiry_after_2weeks),
+              selected: _isExpiryFilterSelected(
+                localParams.value,
+                now.subtract(const Duration(days: 14)),
+                now,
+              ),
+              onSelected: (_) {
+                localParams.value = localParams.value.copyWith(
+                  teamPlanEndDateFrom: now.subtract(const Duration(days: 14)),
+                  teamPlanEndDateTo: now,
+                );
+              },
+            ),
+          ],
+        ),
+        if (localParams.value.orderBy ==
+                TeamSearchRequestOrderBy.teamPlanEndDate ||
+            localParams.value.teamPlanEndDateFrom != null ||
+            localParams.value.teamPlanEndDateTo != null) ...[
+          const Gap(12),
+          SwitchListTile(
+            title:
+                Text(context.l10n.super_admin_team_filter__include_next_plan),
+            value: localParams.value.extendToNextTeamPlan ?? false,
+            onChanged: (value) {
+              localParams.value = localParams.value.copyWith(
+                extendToNextTeamPlan: value,
+              );
+            },
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+          ),
+        ],
+      ],
+    );
+  }
+
+  bool _isExpiryFilterSelected(
+    TeamSearchFilterParameters params,
+    DateTime from,
+    DateTime to,
+  ) {
+    if (params.teamPlanEndDateFrom == null ||
+        params.teamPlanEndDateTo == null) {
+      return false;
+    }
+    // 日付のみで比較（時刻を無視）
+    final fromDate = params.teamPlanEndDateFrom!;
+    final toDate = params.teamPlanEndDateTo!;
+    return fromDate.year == from.year &&
+        fromDate.month == from.month &&
+        fromDate.day == from.day &&
+        toDate.year == to.year &&
+        toDate.month == to.month &&
+        toDate.day == to.day;
+  }
+}

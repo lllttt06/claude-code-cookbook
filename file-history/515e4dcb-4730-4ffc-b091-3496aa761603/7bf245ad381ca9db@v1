@@ -1,0 +1,299 @@
+/// {@category Controllers}
+library;
+
+// Dart imports:
+import 'dart:math';
+
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:fimber/fimber.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/check_result.dart';
+import 'package:baseball_detector_flutter/controllers/local_video_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/controllers/utils/api_helper.dart';
+import 'package:baseball_detector_flutter/controllers/utils/paging_notifier_mixin.dart';
+import 'package:baseball_detector_flutter/data/models/ball.dart';
+import 'package:baseball_detector_flutter/data/models/dto/resource/resource_search_response.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_domain.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_level.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/local_video.dart';
+import 'package:baseball_detector_flutter/data/models/paging_data.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/providers/repository_provider.dart';
+
+part 'resource_data_list_controller.g.dart';
+
+/// A controller class that manages [ResourceData.id] list.
+///
+/// Note: This controller just handles abstract repository.
+/// This means that the controller does not care
+/// the implementation of its repository is either remote DB or local cache.
+/// Therefore do not use anything related to a specific implementation of repository
+/// (e.g., the login state of the remote DB).
+@Riverpod(keepAlive: true)
+class ResourceDataListController extends _$ResourceDataListController {
+  static final _logger = FimberLog('ResourceDataListController');
+
+  static const _defaultPageSize = 20;
+
+  @override
+  Future<PagingData<ResourceData>> build({
+    required String teamId,
+    required String sessionId,
+  }) {
+    ref.watch(loginStateControllerProvider);
+    ref.watch(repositoryProvider);
+    ref.watch(userAccessibleContentsControllerProvider);
+    return fetch(
+      page: 0,
+      pageSize: _defaultPageSize,
+      teamId: teamId,
+      sessionId: sessionId,
+    );
+  }
+
+  Future<PagingData<ResourceData>> fetch({
+    required int page,
+    required int pageSize,
+    required String teamId,
+    required String sessionId,
+  }) async {
+    final res = await executeWithPermissionRetry<ResourceSearchResponse, bool>(
+      ref: ref,
+      getPermissionValue: (contents) =>
+          contents?.hasPrivilegesFor(
+              teamId, RoleDomain.basic, RoleLevel.read, true) ??
+          false,
+      apiCall: (isTeamCrossing) => ref.read(repositoryProvider).getResources(
+            teamId: teamId,
+            sessionId: sessionId,
+            page: page,
+            pageSize: pageSize,
+            isTeamCrossing: isTeamCrossing,
+          ),
+    );
+
+    checkResultForMaintenance(ref, res);
+    if (res.hasLeft) throw res.left;
+
+    // ローカル動画とのマージ（ページごとに追加）
+    final mergedList = await _mergeLocalVideos(
+      res.right.resources,
+      sessionId,
+    );
+
+    return PagingData<ResourceData>(
+      items: mergedList,
+      page: page,
+      pageSize: pageSize,
+      total: res.right.total,
+      hasMore: mergedList.length + page * pageSize < res.right.total,
+    );
+  }
+
+  Future<void> loadNext() async {
+    final value = state.valueOrNull;
+    if (value == null || state.hasError || !value.hasMore) return;
+
+    state = AsyncLoading<PagingData<ResourceData>>().copyWithPrevious(state);
+
+    state = await state.guardPreservingPreviousOnError(() async {
+      final nextPage = value.page + 1;
+      final next = await fetch(
+        page: nextPage,
+        pageSize: value.pageSize,
+        teamId: teamId,
+        sessionId: sessionId,
+      );
+      return value.copyWith(
+        items: [...value.items, ...next.items],
+        page: nextPage,
+        hasMore: next.hasMore,
+        total: next.total,
+      );
+    });
+  }
+
+  void forceRefresh() {
+    state = AsyncLoading<PagingData<ResourceData>>();
+    ref.invalidateSelf();
+  }
+
+  Future<void> ensureMinimalItems(int minimalItems) async {
+    final value = state.valueOrNull;
+    final currentItems = value?.items.length ?? 0;
+    if (value == null || state.hasError || currentItems >= minimalItems) {
+      return;
+    }
+
+    state = AsyncLoading<PagingData<ResourceData>>().copyWithPrevious(state);
+    final pageSize = max(minimalItems - currentItems, _defaultPageSize);
+    state = await state.guardPreservingPreviousOnError(() async {
+      final next = await fetch(
+        page: 0,
+        pageSize: pageSize,
+        teamId: teamId,
+        sessionId: sessionId,
+      );
+      return value.copyWith(
+        items: next.items,
+        page: 0,
+        hasMore: next.hasMore,
+        total: next.total,
+      );
+    });
+  }
+
+  /// Merge remote [ResourceData] list and local videos, removing duplicates and logging warnings for unuploaded duplicates.
+  Future<List<ResourceData>> _mergeLocalVideos(
+    List<ResourceData> remoteVideos,
+    String sessionId,
+  ) async {
+    final mergedVideos = List<ResourceData>.from(remoteVideos);
+    final localVideoStorage = LocalVideoStorage.getInstance();
+    final localVideos = localVideoStorage.getLocalVideoList(sessionId);
+
+    // Find local videos that have the same id as remote videos
+    final remoteIds = Set<String>.from(mergedVideos.map((r) => r.id!));
+    final duplicated = localVideos.where((lv) => remoteIds.contains(lv.id));
+
+    // Remove local videos that have been uploaded at least once
+    final toRemove =
+        duplicated.where((lv) => lv.hasEverUploaded ?? false).toList();
+    if (toRemove.isNotEmpty) {
+      for (final lv in toRemove) {
+        await localVideoStorage.removeById(lv.id);
+        localVideos.remove(lv);
+      }
+      await localVideoStorage.save();
+      ref.invalidate(localVideoListControllerProvider);
+      _logger.i(
+        'Removed duplicated uploaded videos: ${toRemove.map((v) => v.id).join(', ')}',
+      );
+    }
+
+    // Warn for duplicated local videos that have never been uploaded
+    final warnNotUploaded =
+        duplicated.whereNot((lv) => lv.hasEverUploaded ?? false);
+    if (warnNotUploaded.isNotEmpty) {
+      _logger.w(
+        'Not uploaded duplicated videos detected: ${warnNotUploaded.map((v) => v.id).join(', ')}',
+      );
+    }
+
+    // Add remaining local videos as ResourceData
+    for (final lv in localVideos) {
+      mergedVideos.add(lv.transformToResourceData());
+    }
+    mergedVideos.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
+    return mergedVideos.reversed.toList();
+  }
+
+  // 削除・再解析などのメソッドはfetch/buildのstate更新に合わせて修正する必要あり
+  Future<Result<Failure, void>> deleteResourceData(
+    String sessionId,
+    String resourceId,
+  ) async {
+    final res = await ref.read(repositoryProvider).deleteResource(
+          sessionId: sessionId,
+          resourceId: resourceId,
+        );
+    checkResultForMaintenance(ref, res);
+    if (res.hasRight) {
+      if (state.value != null) {
+        final current = state.value!;
+        final newItems =
+            current.items.where((p) => p.id != resourceId).toList();
+        state = AsyncData(current.copyWith(items: newItems));
+      }
+    }
+    return res;
+  }
+
+  /// Edit pitch type for a specific ball and update the state
+  Future<Result<Failure, void>> editPitchType({
+    required String sessionId,
+    required String resourceId,
+    required int ballId,
+    required String? pitchTypeId,
+  }) async {
+    final res = await ref.read(repositoryProvider).editPitchType(
+          sessionId: sessionId,
+          resourceId: resourceId,
+          ballId: ballId,
+          pitchTypeId: pitchTypeId,
+        );
+
+    checkResultForMaintenance(ref, res);
+
+    // Update local state if API call succeeded
+    if (res.hasRight) {
+      updateSpecificPitchType(
+        resourceId: resourceId,
+        ball: res.right.ball,
+      );
+    }
+
+    return res;
+  }
+
+  // Update the pitch type of the specific resourceData
+  void updateSpecificPitchType({
+    required String resourceId,
+    required Ball ball,
+  }) {
+    if (state.value != null) {
+      final current = state.value!;
+      final newItems = current.items
+          .map((resourceData) => resourceData.id == resourceId
+              ? resourceData.copyWith(
+                  ballInfoList: resourceData.ballInfoList
+                      ?.map((ballInfo) => ballInfo.ball.id == ball.id
+                          ? ballInfo.copyWith(ball: ball)
+                          : ballInfo)
+                      .toList())
+              : resourceData)
+          .toList();
+      state = AsyncData(current.copyWith(items: newItems));
+    }
+  }
+
+  // Remove a ball from the specific resourceData
+  void removeBallFromResource({
+    required String resourceId,
+    required int ballId,
+  }) {
+    if (state.value != null) {
+      final current = state.value!;
+      final newItems = current.items
+          .map((resourceData) => resourceData.id == resourceId
+              ? resourceData.copyWith(
+                  ballInfoList: resourceData.ballInfoList
+                      ?.where((ballInfo) => ballInfo.ball.id != ballId)
+                      .toList())
+              : resourceData)
+          .toList();
+      state = AsyncData(current.copyWith(items: newItems));
+    }
+  }
+
+  /// Update a specific resource data in the current list
+  void updateResourceData(ResourceData updatedResource) {
+    if (state.value != null) {
+      final current = state.value!;
+      final newItems = current.items
+          .map((resourceData) => resourceData.id == updatedResource.id
+              ? updatedResource
+              : resourceData)
+          .toList();
+      state = AsyncData(current.copyWith(items: newItems));
+    }
+  }
+}

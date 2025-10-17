@@ -1,0 +1,98 @@
+import { TranslationKey } from '@/utils/i18n';
+
+import { EnvManager } from './env.constants';
+
+export interface PlanConfig {
+  id: string;
+  nameKey: TranslationKey;
+  price: number;
+  analysisCount: number;
+  aiCoachCount: number;
+  isPopular: boolean;
+  isTopTier: boolean;
+  forTest: boolean;
+}
+
+export const PLAN_IDS = {
+  BASIC: '00000001-0000-0050-0000-000000000000',
+  STANDARD: '00000001-0000-0100-0000-000000000000',
+  PREMIUM: '00000001-0000-0300-0000-000000000000',
+  TEST_BASIC: '00000001-9999-0050-0000-000000000000',
+  TEST_STANDARD: '00000001-9999-0100-0000-000000000000',
+  TEST_PREMIUM: '00000001-9999-0300-0000-000000000000',
+} as const;
+
+export const PLANS: PlanConfig[] = [
+  {
+    id: PLAN_IDS.BASIC,
+    nameKey: 'plans_basic' as TranslationKey,
+    price: 10,
+    analysisCount: 50,
+    aiCoachCount: 3,
+    isPopular: false,
+    isTopTier: false,
+    forTest: false,
+  },
+  {
+    id: PLAN_IDS.STANDARD,
+    nameKey: 'plans_standard' as TranslationKey,
+    price: 20,
+    analysisCount: 100,
+    aiCoachCount: 10,
+    isPopular: true,
+    isTopTier: false,
+    forTest: false,
+  },
+  {
+    id: PLAN_IDS.PREMIUM,
+    nameKey: 'plans_premium' as TranslationKey,
+    price: 55,
+    analysisCount: 300,
+    aiCoachCount: 30,
+    isPopular: false,
+    isTopTier: true,
+    forTest: false,
+  },
+  // For test
+  {
+    id: PLAN_IDS.TEST_BASIC,
+    nameKey: 'plans_basic' as TranslationKey,
+    price: 10,
+    analysisCount: 50,
+    aiCoachCount: 3,
+    isPopular: false,
+    isTopTier: false,
+    forTest: true,
+  },
+  {
+    id: PLAN_IDS.TEST_STANDARD,
+    nameKey: 'plans_standard' as TranslationKey,
+    price: 20,
+    analysisCount: 100,
+    aiCoachCount: 10,
+    isPopular: false,
+    isTopTier: false,
+    forTest: true,
+  },
+  {
+    id: PLAN_IDS.TEST_PREMIUM,
+    nameKey: 'plans_premium' as TranslationKey,
+    price: 55,
+    analysisCount: 300,
+    aiCoachCount: 30,
+    isPopular: false,
+    isTopTier: true,
+    forTest: true,
+  },
+].filter((plan) =>
+  plan.forTest ? EnvManager.config.APP_ENV !== 'production' : true,
+);
+
+export const getPlanById = (id: string): PlanConfig | undefined => {
+  return PLANS.find((plan) => plan.id === id);
+};
+
+export const isTopTierPlan = (planId: string): boolean => {
+  const plan = getPlanById(planId);
+  return plan?.isTopTier ?? false;
+};

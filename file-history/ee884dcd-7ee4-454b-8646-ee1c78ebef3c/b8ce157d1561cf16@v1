@@ -1,0 +1,466 @@
+// Package imports:
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:knowhere_configurable_camera/knowhere_configurable_camera.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/camera_controller.dart';
+import 'package:baseball_detector_flutter/data/models/enums/analysis_type.dart';
+import 'package:baseball_detector_flutter/data/models/enums/camera_mode.dart';
+import 'package:baseball_detector_flutter/data/models/enums/extended_zoom_type.dart';
+import 'package:baseball_detector_flutter/data/profile_storage_fake.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import '../_common/mock_knowhere_configurable_camera.dart';
+
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  late ProviderContainer container;
+  late FakeProfileStorage fakeProfileStorage;
+  late MockKnowhereConfigurableCamera mockCameraApi;
+  late CameraState cameraState;
+
+  setUp(() {
+    fakeProfileStorage = FakeProfileStorage();
+    mockCameraApi = MockKnowhereConfigurableCamera();
+    container = ProviderContainer(
+      overrides: [
+        profileStorageProvider.overrideWithValue(fakeProfileStorage),
+        cameraControllerProvider
+            .overrideWith(() => CameraController(cameraAPI: mockCameraApi)),
+      ],
+    );
+    cameraState = CameraState(
+      analysisType: AnalysisType.pitching,
+      cameraMode: CameraMode.auto,
+      isStabilizationAvailable: true,
+      isTelephotoAvailable: false,
+      telephotoLensList: [],
+      wideAngleLensList: [Lens(0, 'WideAngle')],
+      longsideAngleOfView: 30.0,
+      minZoom: 1.0,
+      maxZoom: 2.0,
+      minISO: 100,
+      maxISO: 5000,
+      minShutterSpeed: 5000,
+      maxShutterSpeed: 5000,
+      minFocus: 1.0,
+      maxFocus: 2.0,
+      isFocusModeAuto: true,
+      focus: 1.0,
+      zoom: 1.0,
+      lens: Lens(0, 'WideAngle'),
+      format: dummyFormatList[18],
+      lensList: [Lens(0, 'WideAngle')],
+      formatList: dummyFormatList,
+      iso: 100,
+      shutterSpeed: 5000,
+      extendedZoom: ExtendedZoomType.zoom,
+    );
+
+    container
+        .read(cameraControllerProvider.notifier)
+        .setCameraState(cameraState);
+  });
+
+  tearDown(() {
+    container.dispose();
+  });
+
+  group('selectBestFullHDFormat', () {
+    Format makeFormat({
+      required int width,
+      required int height,
+      required double fps,
+      bool binned = false,
+      bool hdr = false,
+    }) {
+      return Format(
+        index: 0,
+        landscapeWidth: width,
+        landscapeHeight: height,
+        fps: fps,
+        videoFieldOfView: 60.0,
+        binned: binned,
+        hdr: hdr,
+        stabilization: false,
+      );
+    }
+
+    test('非HDRかつ非Binnedが最優先で選ばれる', () {
+      final controller = container.read(cameraControllerProvider.notifier);
+      final formats = [
+        makeFormat(
+            width: 1920, height: 1080, fps: 30, binned: true, hdr: false),
+        makeFormat(
+            width: 1920, height: 1080, fps: 60, binned: false, hdr: true),
+        makeFormat(
+            width: 1920,
+            height: 1080,
+            fps: 60,
+            binned: false,
+            hdr: false), // ←期待値
+        makeFormat(width: 1920, height: 1080, fps: 60, binned: true, hdr: true),
+      ];
+      final result = controller.selectBestFullHDFormat(formats);
+      expect(result, isNotNull);
+      expect(result!.fps, 60);
+      expect(result.binned, false);
+      expect(result.hdr, false);
+    });
+
+    test('非Binnedが次点で選ばれる', () {
+      final controller = container.read(cameraControllerProvider.notifier);
+      final formats = [
+        makeFormat(width: 1920, height: 1080, fps: 60, binned: true, hdr: true),
+        makeFormat(
+            width: 1920,
+            height: 1080,
+            fps: 60,
+            binned: false,
+            hdr: true), // ←期待値
+      ];
+      final result = controller.selectBestFullHDFormat(formats);
+      expect(result, isNotNull);
+      expect(result!.binned, false);
+    });
+
+    test('どちらもなければ最大FPSのものが選ばれる', () {
+      final controller = container.read(cameraControllerProvider.notifier);
+      final formats = [
+        makeFormat(width: 1920, height: 1080, fps: 30, binned: true, hdr: true),
+        makeFormat(
+            width: 1920,
+            height: 1080,
+            fps: 60,
+            binned: true,
+            hdr: true), // ←期待値
+      ];
+      final result = controller.selectBestFullHDFormat(formats);
+      expect(result, isNotNull);
+      expect(result!.fps, 60);
+    });
+
+    test('フルHD以外は無視される', () {
+      final controller = container.read(cameraControllerProvider.notifier);
+      final formats = [
+        makeFormat(width: 3840, height: 2160, fps: 60),
+        makeFormat(width: 1280, height: 720, fps: 60),
+      ];
+      final result = controller.selectBestFullHDFormat(formats);
+      expect(result, isNull);
+    });
+
+    test('120FPS以上は除外される', () {
+      final controller = container.read(cameraControllerProvider.notifier);
+      final formats = [
+        makeFormat(width: 1920, height: 1080, fps: 120),
+        makeFormat(width: 1920, height: 1080, fps: 240),
+      ];
+      final result = controller.selectBestFullHDFormat(formats);
+      expect(result, isNull);
+    });
+
+    test('実機のformatListから最良のフルHDフォーマットを選ぶ', () async {
+      // 期待値: 1920x1080, 60fps, hdr: false, binned: false, stabilization: true
+      final controller = container.read(cameraControllerProvider.notifier);
+      final formats = await mockCameraApi.getFormatList();
+      final result = controller.selectBestFullHDFormat(formats);
+      expect(result, isNotNull);
+      expect(result!.landscapeWidth, 1920);
+      expect(result.landscapeHeight, 1080);
+      expect(result.fps, 60.0);
+      expect(result.hdr, false);
+      expect(result.binned, false);
+    });
+  });
+
+  group('各種 set のメソッド', () {
+    test(
+      'setZoomがcameraAPI.setZoomとprofileStorage.setCameraZoomValueを呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+
+        await controller.setZoom(1.5);
+        final result = await mockCameraApi.getZoom();
+
+        expect(result, 1.5);
+      },
+    );
+
+    test(
+      'setISOがcameraAPI.setISO を呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+
+        await controller.setISO(200.0);
+        final result = await mockCameraApi.getISO();
+
+        expect(result, 200.0);
+      },
+    );
+
+    test(
+      'setShutterSpeedがcameraAPI.setShutterSpeed を呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+
+        await controller.setShutterSpeed(1234.0);
+        final result = await mockCameraApi.getShutterSpeed();
+
+        expect(result, 1234.0);
+      },
+    );
+
+    test(
+      'setFocusがcameraAPI.setFocusとprofileStorage.setCameraFocusValueを呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+
+        await controller.setFocus(0.8);
+        final result = await mockCameraApi.getFocus();
+
+        expect(result, 0.8);
+      },
+    );
+
+    test(
+      'setFocusModeToAutoがcameraAPI.setFocusModeToAutoとprofileStorage.setCameraAutoFocusMode(true)を呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+
+        await controller.setFocusModeToAuto();
+        final result = await mockCameraApi.isAutoFocus();
+        expect(result, true);
+      },
+    );
+
+    test(
+      'setFocusModeToManualがcameraAPI.setFocusModeToManualとprofileStorage.setCameraAutoFocusMode(false)を呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+
+        await controller.setFocusModeToManual();
+        final result = await mockCameraApi.isAutoFocus();
+
+        expect(result, false);
+      },
+    );
+
+    test(
+      'setLensIndexInternalがcameraAPI.setLensIndexとprofileStorage.setCameraLensIndexを呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+        mockCameraApi.lensIndex = null;
+        fakeProfileStorage.setCameraLensIndex(-1);
+
+        await controller.setLensIndex(2);
+        expect(mockCameraApi.lensIndex, 2);
+      },
+    );
+
+    test(
+      'setFormatIndexInternalがcameraAPI.setFormatIndexとprofileStorage.setCameraFormatIndexを呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+        mockCameraApi.formatIndex = null;
+        fakeProfileStorage.setCameraFormatIndex(-1);
+
+        await controller.setFormatIndex(3);
+        expect(mockCameraApi.formatIndex, 3);
+      },
+    );
+
+    test(
+      'setStabilizationModeOnがcameraAPI.setStabilizationModeOnを呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+        mockCameraApi.stabilizationOnCalled = false;
+
+        await controller.setStabilizationModeOn();
+        expect(mockCameraApi.stabilizationOnCalled, true);
+      },
+    );
+
+    test(
+      'setFocusRegionがcameraAPI.setFocusRegionを呼ぶ',
+      () async {
+        final controller = container.read(cameraControllerProvider.notifier);
+        mockCameraApi.lastFocusRegion = null;
+
+        await controller.setFocusRegion(0.3, 0.7);
+        expect(mockCameraApi.lastFocusRegion, const [0.3, 0.7]);
+      },
+    );
+  });
+
+  group('setCameraModeAuto', () {
+    late CameraController controller;
+
+    setUp(() {
+      controller = container.read(cameraControllerProvider.notifier);
+      mockCameraApi.maxZoom = 2.0;
+      mockCameraApi.minZoom = 1.0;
+      mockCameraApi.maxISO = 5000;
+      mockCameraApi.minISO = 100;
+      mockCameraApi.maxFocus = 2.0;
+      mockCameraApi.minFocus = 1.0;
+      mockCameraApi.maxShutterSpeed = 5000;
+      mockCameraApi.minShutterSpeed = 5000;
+      mockCameraApi.lastFocusMode = null;
+      mockCameraApi.lensList = [
+        Lens(0, 'WideAngle'),
+        Lens(1, 'Telephoto'),
+      ];
+    });
+
+    test('WideAngle レンズのみで正しくAPIを呼ぶ', () async {
+      controller.setCameraState(cameraState.copyWith(
+        isTelephotoAvailable: false,
+        telephotoLensList: [],
+        wideAngleLensList: [
+          Lens(0, 'WideAngle'),
+        ],
+        lensList: [
+          Lens(0, 'WideAngle'),
+        ],
+      ));
+
+      mockCameraApi.lensList = [Lens(0, 'WideAngle')];
+
+      await controller.setCameraModeAuto();
+
+      expect(mockCameraApi.lensIndex, 0);
+      expect(mockCameraApi.formatIndex, 18);
+      expect(mockCameraApi.zoom, 2.0);
+      expect(mockCameraApi.shutterSpeed, 4000);
+      expect(mockCameraApi.iso, 1000);
+      expect(controller.state.cameraMode, CameraMode.auto);
+    });
+
+    test('Telephoto & WideAngle レンズで正しくAPIを呼ぶ', () async {
+      controller.setCameraState(cameraState.copyWith(
+        isTelephotoAvailable: true,
+        telephotoLensList: [
+          Lens(1, 'Telephoto'),
+        ],
+        wideAngleLensList: [
+          Lens(0, 'WideAngle'),
+        ],
+      ));
+
+      await controller.setCameraModeAuto();
+
+      expect(mockCameraApi.lensIndex, 1);
+      expect(mockCameraApi.formatIndex, 18);
+      expect(mockCameraApi.zoom, 1.0);
+      expect(mockCameraApi.shutterSpeed, 4000);
+      expect(mockCameraApi.iso, 1000);
+      expect(controller.state.cameraMode, CameraMode.auto);
+    });
+
+    test('ExtendedZoomType.superZoom  が保存されている場合', () async {
+      fakeProfileStorage.setCameraExtendedZoomType(
+        ExtendedZoomType.superZoom,
+      );
+      controller.setCameraState(cameraState.copyWith(
+        isTelephotoAvailable: true,
+        telephotoLensList: [
+          Lens(1, 'Telephoto'),
+        ],
+        wideAngleLensList: [
+          Lens(0, 'WideAngle'),
+        ],
+      ));
+
+      await controller.setCameraModeAuto();
+
+      expect(mockCameraApi.lensIndex, 1);
+      expect(mockCameraApi.formatIndex, 18);
+      expect(mockCameraApi.zoom, 2.0);
+      expect(mockCameraApi.shutterSpeed, 4000);
+      expect(mockCameraApi.iso, 1000);
+      expect(mockCameraApi.lastFocusMode, null);
+      expect(controller.state.cameraMode, CameraMode.auto);
+    });
+
+    test('ExtendedZoomType.zoom  が保存されている場合', () async {
+      fakeProfileStorage.setCameraExtendedZoomType(
+        ExtendedZoomType.zoom,
+      );
+      controller.setCameraState(cameraState.copyWith(
+        isTelephotoAvailable: true,
+        telephotoLensList: [
+          Lens(1, 'Telephoto'),
+        ],
+        wideAngleLensList: [
+          Lens(0, 'WideAngle'),
+        ],
+      ));
+
+      await controller.setCameraModeAuto();
+
+      expect(mockCameraApi.lensIndex, 1);
+      expect(mockCameraApi.formatIndex, 18);
+      expect(mockCameraApi.zoom, 1.0);
+      expect(mockCameraApi.shutterSpeed, 4000);
+      expect(mockCameraApi.iso, 1000);
+      expect(mockCameraApi.lastFocusMode, null);
+      expect(controller.state.cameraMode, CameraMode.auto);
+    });
+  });
+
+  group('setExtendedZoomType', () {
+    late CameraController controller;
+
+    setUp(() {
+      controller = container.read(cameraControllerProvider.notifier);
+      mockCameraApi.maxZoom = 2.0;
+      mockCameraApi.minZoom = 1.0;
+      controller.setCameraState(cameraState.copyWith(
+        minZoom: 1.0,
+        maxZoom: 2.0,
+        lensList: [
+          Lens(0, 'WideAngle'),
+          Lens(1, 'Telephoto'),
+        ],
+        telephotoLensList: [
+          Lens(1, 'Telephoto'),
+        ],
+        wideAngleLensList: [
+          Lens(0, 'WideAngle'),
+        ],
+      ));
+    });
+
+    test('superZoom sets telephoto lens with max zoom', () async {
+      await controller.setExtendedZoomType(ExtendedZoomType.superZoom);
+
+      expect(mockCameraApi.lensIndex, 1); // Telephoto
+      expect(mockCameraApi.zoom, 2.0); // Max zoom
+    });
+
+    test('zoom sets telephoto lens with min zoom', () async {
+      await controller.setExtendedZoomType(ExtendedZoomType.zoom);
+
+      expect(mockCameraApi.lensIndex, 1); // Telephoto
+      expect(mockCameraApi.zoom, 1.0); // Min zoom
+    });
+
+    test('wide sets wide angle lens with max zoom', () async {
+      await controller.setExtendedZoomType(ExtendedZoomType.wide);
+
+      expect(mockCameraApi.lensIndex, 0); // WideAngle
+      expect(mockCameraApi.zoom, 2.0); // Max zoom
+    });
+
+    test('superWide sets wide angle lens with min zoom', () async {
+      await controller.setExtendedZoomType(ExtendedZoomType.superWide);
+
+      expect(mockCameraApi.lensIndex, 0); // WideAngle
+      expect(mockCameraApi.zoom, 1.0); // Min zoom
+    });
+  });
+}

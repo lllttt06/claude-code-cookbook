@@ -1,0 +1,285 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:playbook/playbook.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/plan_controller.dart';
+import 'package:baseball_detector_flutter/controllers/subscription_controller.dart';
+import 'package:baseball_detector_flutter/controllers/subscription_controller_fake.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller_fake.dart';
+import 'package:baseball_detector_flutter/data/models/apple_subscription.dart';
+import 'package:baseball_detector_flutter/data/models/plan_dummy.dart';
+import 'package:baseball_detector_flutter/data/models/stripe_subscription.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/components/plan_card.dart';
+
+const storyTitle = 'PlanCard';
+
+// VRTで差分が出ないよう、日時は固定値を使用する
+// 実行時の現在日時に依存しない安定したゴールデン生成のため。
+final _kVrtStartActive = DateTime.utc(2030, 1, 1);
+final _kVrtEndActive = DateTime.utc(2030, 12, 31);
+final _kVrtEndExpired = DateTime.utc(2020, 1, 1);
+final _kVrtCancelAt = DateTime.utc(2030, 7, 15, 12, 0, 0);
+final _kVrtDowngradeAt = DateTime.utc(2030, 8, 1, 9, 30, 0);
+
+// 基本となるダミープラン/チーム
+// dummyPlans から Premium プランを取得（ID: 00000001-0000-0300-0000-000000000000）
+final _basePlan = dummyPlans[2]; // Premium プラン
+
+TeamPlan _activeTeamPlanForMultipleUserTeam() => TeamPlan(
+      id: '1',
+      teamId: 'teamId',
+      planId: 'planId',
+      startDate: _kVrtStartActive,
+      endDate: _kVrtEndActive,
+      currentUsage: 50,
+      currentAiCoachUsage: 3,
+      isActive: true,
+      createdAt: DateTime(2024, 10, 1),
+      plan: _basePlan,
+    );
+
+TeamPlan _activeTeamPlanApple() => TeamPlan(
+      id: '1',
+      teamId: 'teamId',
+      planId: 'planId',
+      startDate: _kVrtStartActive,
+      endDate: _kVrtEndActive,
+      currentUsage: 50,
+      currentAiCoachUsage: 7,
+      isActive: true,
+      createdAt: DateTime(2024, 10, 1),
+      plan: _basePlan,
+      appleSubscription: AppleSubscription(
+        id: 'apple-1',
+        createdAt: DateTime(2024, 10, 1),
+        updatedAt: DateTime(2024, 10, 1),
+        webOrderLineItemId: 'apple-1',
+      ),
+    );
+
+TeamPlan _activeTeamPlanStripe() => TeamPlan(
+      id: '1',
+      teamId: 'teamId',
+      planId: 'planId',
+      startDate: _kVrtStartActive,
+      endDate: _kVrtEndActive,
+      currentUsage: 50,
+      currentAiCoachUsage: 5,
+      isActive: true,
+      createdAt: DateTime(2024, 10, 1),
+      plan: _basePlan,
+      stripeSubscription: StripeSubscription(
+        id: 'stripe-1',
+        createdAt: DateTime(2024, 10, 1),
+        updatedAt: DateTime(2024, 10, 1),
+      ),
+    );
+
+TeamPlan _expiredTeamPlan() => TeamPlan(
+      id: '2',
+      teamId: 'teamId',
+      planId: 'planId',
+      startDate: DateTime.utc(2019, 12, 1),
+      endDate: _kVrtEndExpired,
+      currentUsage: 0,
+      currentAiCoachUsage: 0,
+      isActive: true,
+      createdAt: DateTime(2024, 10, 1),
+      plan: _basePlan,
+    );
+
+Team _team({required TeamPlan teamPlan}) => Team(
+      id: 'teamId',
+      name: 'Test Team',
+      ownerUserId: 'ownerUserId',
+      teamType: TeamType.single,
+      createdAt: DateTime(2024, 10, 1),
+      teamPlan: teamPlan,
+    );
+
+@GenerateScenario()
+Widget notSingleUserTeam(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanForMultipleUserTeam()).copyWith(
+    teamType: TeamType.multiple,
+  );
+  return _story(team: team);
+}
+
+// キャンセル予定バナーの表示
+@GenerateScenario()
+Widget withCancelScheduled(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanApple())
+      .copyWith(teamPlanCancelAt: _kVrtCancelAt);
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+// ダウングレード予定バナー（適用後プランあり）
+@GenerateScenario()
+Widget withDowngradeScheduledWithPlan(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanApple()).copyWith(
+    teamPlanDowngradeAt: _kVrtDowngradeAt,
+    downgradePlanId: '00000001-0000-0050-0000-000000000000', // LIGHT plan
+  );
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+// ダウングレード予定バナー（適用後プラン名なし）
+@GenerateScenario()
+Widget withDowngradeScheduledWithoutPlan(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanApple())
+      .copyWith(teamPlanDowngradeAt: _kVrtDowngradeAt, downgradePlanId: null);
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+@GenerateScenario()
+Widget subscribedByMe(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanApple());
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+@GenerateScenario()
+Widget subscribedByMeInOtherTeam(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanApple());
+  return _story(
+    team: team,
+    appAccountToken: 'another-team-id',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+@GenerateScenario()
+Widget subscribedOnWeb(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanStripe());
+  return _story(team: team);
+}
+
+@GenerateScenario()
+Widget subscribedByTeammate(BuildContext context) {
+  final team = _team(teamPlan: _activeTeamPlanApple());
+  return _story(team: team);
+}
+
+@GenerateScenario()
+Widget notSubscribedOrCancelled(BuildContext context) {
+  // 期限切れのプランを持つ（canAnalyze=false）→ notSubscribed だが Card は表示される
+  final team = _team(teamPlan: _expiredTeamPlan());
+  return _story(team: team);
+}
+
+@GenerateScenario()
+Widget autoRenewFailed(BuildContext context) {
+  final team = _team(teamPlan: _expiredTeamPlan())
+      .copyWith(billingFailureReason: 'payment_failed');
+  return _story(team: team);
+}
+
+// AI コーチ使用状況の表示テスト用シナリオ
+@GenerateScenario()
+Widget aiCoachUsageNearLimit(BuildContext context) {
+  final planWithAiCoach = _basePlan.copyWith(maxAiCoachs: 10);
+  final teamPlan = _activeTeamPlanApple().copyWith(
+    plan: planWithAiCoach,
+    currentAiCoachUsage: 9, // 90% 使用 (警告色表示テスト)
+  );
+  final team = _team(teamPlan: teamPlan);
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+@GenerateScenario()
+Widget aiCoachUsageHalfway(BuildContext context) {
+  final planWithAiCoach = _basePlan.copyWith(maxAiCoachs: 30);
+  final teamPlan = _activeTeamPlanStripe().copyWith(
+    plan: planWithAiCoach,
+    currentAiCoachUsage: 15, // 50% 使用
+  );
+  final team = _team(teamPlan: teamPlan);
+  return _story(team: team);
+}
+
+@GenerateScenario()
+Widget aiCoachUsageZero(BuildContext context) {
+  final planWithAiCoach = _basePlan.copyWith(maxAiCoachs: 5);
+  final teamPlan = _activeTeamPlanApple().copyWith(
+    plan: planWithAiCoach,
+    currentAiCoachUsage: 0, // 0% 使用
+  );
+  final team = _team(teamPlan: teamPlan);
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+@GenerateScenario()
+Widget noAiCoachPlan(BuildContext context) {
+  final planWithoutAiCoach = _basePlan.copyWith(maxAiCoachs: 0);
+  final teamPlan = _activeTeamPlanApple().copyWith(
+    plan: planWithoutAiCoach,
+    currentAiCoachUsage: 0,
+  );
+  final team = _team(teamPlan: teamPlan);
+  return _story(
+    team: team,
+    appAccountToken: 'teamId',
+    webOrderLineItemId: 'apple-1',
+  );
+}
+
+// 共通のProvider上書き＋PlanCard描画
+Widget _story({
+  required Team team,
+  String? appAccountToken,
+  String? webOrderLineItemId,
+}) {
+  return ProviderScope(
+    overrides: [
+      teamListControllerProvider.overrideWith(
+        () => FakeTeamListController(result: Right([team])),
+      ),
+      subscriptionControllerProvider.overrideWith(
+        () => FakeSubscriptionController(
+          appAccountToken: appAccountToken,
+          webOrderLineItemId: webOrderLineItemId,
+        ),
+      ),
+      plansControllerProvider.overrideWith((ref) async => dummyPlans),
+      // planByIdProvider の各 ID に対する override
+      planByIdProvider('00000001-0000-0050-0000-000000000000')
+          .overrideWith((ref) async => dummyPlans[0]), // Light
+      planByIdProvider('00000001-0000-0100-0000-000000000000')
+          .overrideWith((ref) async => dummyPlans[1]), // Standard
+      planByIdProvider('00000001-0000-0300-0000-000000000000')
+          .overrideWith((ref) async => dummyPlans[2]), // Premium
+    ],
+    child: PlanCard(teamList: [team]),
+  );
+}

@@ -1,0 +1,479 @@
+# Bug Analysis: "Bad state: No element" Exception in ResourceUploadDialog
+
+## 概要
+
+`ResourceUploadDialog` でローカルビデオのアップロードを試行した際に、`Bad state: No element` 例外が発生する問題の原因調査と修正案。
+
+## エラー情報
+
+### エラーメッセージ
+
+```
+UNHANDLED EXCEPTION:
+Bad state: No element
+    #0      List.first (dart:core-patch/growable_array.dart:352)
+    #1      LocalVideoStorage.selectLocalVideoDataWhereTheIdIs (package:baseball_detector_flutter/data/models/local_video.dart:212)
+    #2      LocalVideoListController.findVideoById (package:baseball_detector_flutter/controllers/local_video_list_controller.dart:166)
+    <asynchronous suspension>
+    #3      ResourceUploadDialog.build.<anonymous closure> (package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart:33)
+```
+
+### 発生箇所
+
+- **起点**: `resource_upload_dialog.dart:33`
+- **問題のメソッド**: `local_video.dart:207` の `selectLocalVideoDataWhereTheIdIs`
+
+## 根本原因
+
+### 1. コードレベルの問題
+
+`LocalVideoStorage.selectLocalVideoDataWhereTheIdIs` メソッドが、存在しない ID に対して安全でない実装になっている：
+
+```dart
+// local_video.dart:206-208
+LocalVideoData selectLocalVideoDataWhereTheIdIs(String id) {
+  return localVideoList.where((element) => element.id == id).toList().first;
+}
+```
+
+**問題点:**
+- ID に一致する要素が存在しない場合、空のリストに対して `.first` を呼び出す
+- `.first` は空のリストに対して `StateError: No element` を投げる
+- null チェックや例外ハンドリングが存在しない
+
+### 2. データ整合性の問題
+
+`ResourceData` (サーバー側のリソース情報) と `LocalVideoData` (ローカルの動画ファイル情報) の同期が取れていない状況で発生：
+
+- `ResourceData.statusType` が `onLocalStorage` (ローカルにのみ存在)
+- しかし実際には対応する `LocalVideoData` が既に削除されている
+- UI は古い状態を表示し続けている
+
+### 3. エラーハンドリングの不足
+
+`LocalVideoListController.findVideoById` では部分的なエラーハンドリングが実装されているが、呼び出し側でキャッチされていない：
+
+```dart
+// local_video_list_controller.dart:155-171
+Future<LocalVideoData> findVideoById(String id) async {
+  await _mutex.acquire();
+  try {
+    final storage = state.value!;
+    return storage.selectLocalVideoDataWhereTheIdIs(id);
+  } on StateError {
+    if (_deletedVideoIds.contains(id)) {
+      throw DeletedVideoIdException(id);  // この例外がキャッチされていない
+    }
+    rethrow;
+  } catch (e) {
+    rethrow;
+  } finally {
+    _mutex.release();
+  }
+}
+```
+
+## 発生する具体的なシナリオ
+
+### シナリオ 1: ユーザーによる手動削除後の再試行
+
+**ステップ:**
+
+1. ユーザーが動画を録画 → `LocalVideoData` と `ResourceData` が作成される
+2. ネットワーク不良などでアップロードに失敗 → `ResourceData.statusType` が `onLocalStorage` のまま
+3. ユーザーが「録画リスト」画面に移動し、容量削減のためにローカル動画を削除
+   - `LocalVideoData` が削除される
+   - しかし `ResourceData` は削除されず、`onLocalStorage` 状態のまま残る
+4. ユーザーがリソース詳細画面に戻る
+5. スナックバーに「ローカルストレージ上にあります / 再試行」ボタンが表示される
+6. ユーザーが「再試行」ボタンをタップ
+7. `ResourceUploadDialog` が開き、アップロードボタンをタップ
+8. **エラー発生**: 削除済みの ID で `findVideoById` を呼び出し → 例外
+
+### シナリオ 2: アプリ再起動後のデータ不整合
+
+**ステップ:**
+
+1. ユーザーが動画を録画し、アップロード中にアプリがクラッシュまたは強制終了
+2. 再起動時に `LocalVideoStorage.loadSingleton()` が実行されるが、ファイルシステムとの整合性チェックが不十分
+3. 動画ファイルが物理的に削除されているが、`LocalVideoData` のエントリが残っている（または逆）
+4. ユーザーがアップロードを試行
+5. **エラー発生**: 存在しない ID で検索
+
+### シナリオ 3: 複数デバイス間での競合（将来的なリスク）
+
+**ステップ:**
+
+1. ユーザーが同じアカウントで複数デバイスを使用
+2. デバイス A でローカル動画を削除
+3. デバイス B で同期が不完全なまま、削除済み動画のアップロードを試行
+4. **エラー発生**: デバイス B のローカルストレージに存在しない ID を検索
+
+### シナリオ 4: アップロード完了後の状態更新遅延
+
+**ステップ:**
+
+1. ユーザーが動画をアップロード
+2. アップロード完了後、`LocalVideoData` は削除されるが、`ResourceData` の状態更新が遅延
+3. ユーザーが素早く画面を再表示し、まだ `onLocalStorage` 状態のリソースを見る
+4. 「再試行」ボタンをタップ
+5. **エラー発生**: 既に削除された ID で検索
+
+## 修正案
+
+### 修正案 1: ResourceUploadDialog でエラーハンドリングを追加 ⭐ 推奨
+
+**対象ファイル:** `lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart`
+
+**変更内容:**
+
+```dart
+aboveButtonAction: (context) async {
+  try {
+    final localVideoData = await ref
+        .read(localVideoListControllerProvider.notifier)
+        .findVideoById(resource.id!);
+
+    // Add to upload queue
+    ref.read(uploadQueueProvider).addUploadTask(localVideoData);
+
+    // Invalidate resource data list
+    ref.invalidate(
+      resourceDataListControllerProvider(
+        teamId: resource.teamId!,
+        sessionId: resource.sessionId!,
+      ),
+    );
+    onSucceeded?.call();
+    if (context.mounted) {
+      Navigator.of(context).pop(); // pop the dialog.
+    }
+  } on DeletedVideoIdException catch (_) {
+    // ビデオが既に削除されている場合
+    if (context.mounted) {
+      Navigator.of(context).pop(); // pop the dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.error_video_already_deleted),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    onFailed?.call();
+  } on StateError catch (_) {
+    // ビデオが見つからない場合
+    if (context.mounted) {
+      Navigator.of(context).pop(); // pop the dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.error_video_not_found),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    onFailed?.call();
+  } catch (e) {
+    // その他の予期しないエラー
+    if (context.mounted) {
+      Navigator.of(context).pop(); // pop the dialog
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.error_unexpected),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+    onFailed?.call();
+  }
+},
+```
+
+**メリット:**
+- UI レイヤーで適切なエラーハンドリング
+- ユーザーに分かりやすいエラーメッセージを表示
+- 既存のコードへの影響が最小限
+
+**必要な追加作業:**
+- `l10n/app_ja.arb` と `l10n/app_en.arb` にエラーメッセージを追加
+  - `error_video_already_deleted`
+  - `error_video_not_found`
+  - `error_unexpected`
+
+### 修正案 2: selectLocalVideoDataWhereTheIdIs を安全にする ⭐ 推奨
+
+**対象ファイル:** `lib/data/models/local_video.dart`
+
+**変更内容:**
+
+```dart
+// Option A: Nullable を返す
+LocalVideoData? selectLocalVideoDataWhereTheIdIs(String id) {
+  final results = localVideoList.where((element) => element.id == id).toList();
+  return results.isEmpty ? null : results.first;
+}
+
+// Option B: firstOrNull を使用（Dart 3.0+）
+LocalVideoData? selectLocalVideoDataWhereTheIdIs(String id) {
+  return localVideoList
+      .where((element) => element.id == id)
+      .firstOrNull;
+}
+```
+
+**影響範囲の確認が必要:**
+このメソッドを呼び出している全ての箇所で null チェックが必要：
+- `LocalVideoListController.findVideoById`
+- `LocalVideoListController.deleteVideo`
+- その他の呼び出し箇所
+
+**メリット:**
+- データレイヤーでの防御的プログラミング
+- 将来的なバグの予防
+- より明示的な API
+
+**デメリット:**
+- 既存コードへの影響が大きい
+- 全ての呼び出し箇所の修正が必要
+
+### 修正案 3: ResourceData の状態を事前チェック
+
+**対象ファイル:** `lib/views/pages/home/sessions/session_details/resource_details/components/resource_details_snackbar.dart`
+
+**変更内容:**
+
+```dart
+// ResourceUploadDialog を表示する前にチェック
+_buildTappableText(
+  context.l10n.resource_details_page__try_again,
+  () async {
+    // 事前チェック: ローカルビデオが実際に存在するか確認
+    try {
+      await ref
+          .read(localVideoListControllerProvider.notifier)
+          .findVideoById(resource.id!);
+
+      // 存在する場合のみダイアログを表示
+      _showResourceDialog(
+        context,
+        ref,
+        AppRouter.uploadResourceDialog,
+        ResourceUploadDialog(
+          resource: resource,
+          onSucceeded: rerender,
+        ),
+      );
+    } on DeletedVideoIdException catch (_) {
+      // ビデオが削除されている場合、エラーメッセージを表示
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.error_video_already_deleted),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } on StateError catch (_) {
+      // ビデオが見つからない場合
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(context.l10n.error_video_not_found),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  },
+),
+```
+
+**メリット:**
+- ダイアログを開く前に問題を検出
+- より良いユーザー体験
+
+**デメリット:**
+- 2 回 `findVideoById` を呼び出すことになる（事前チェックとダイアログ内）
+- 競合状態のリスクは残る（チェック後、ダイアログ表示前に削除される可能性）
+
+### 修正案 4: LocalVideoStorage.loadSingleton でファイル存在チェック
+
+**対象ファイル:** `lib/data/models/local_video.dart`
+
+**変更内容:**
+
+```dart
+static Future<void> loadSingleton() async {
+  final dataPath = await _getLocalVideoDataPath();
+  final file = File(dataPath);
+  if (await file.exists()) {
+    final buf = await file.readAsString();
+    try {
+      _singletonInstance = LocalVideoStorage._fromJson(json.decode(buf));
+
+      final dirPath = await LocalVideoData.getBaseDirectory();
+      final validVideos = <LocalVideoData>[];
+
+      for (final localVideoData in _singletonInstance.localVideoList) {
+        localVideoData._fillFields(dirPath);
+
+        // ファイルが実際に存在するかチェック
+        if (localVideoData.absolutePath != null) {
+          final videoFile = File(localVideoData.absolutePath!);
+          if (await videoFile.exists()) {
+            validVideos.add(localVideoData);
+          } else {
+            // ファイルが存在しない場合はログに記録
+            print('Warning: Video file not found: ${localVideoData.absolutePath}');
+          }
+        }
+      }
+
+      // 存在するファイルのみをリストに保持
+      _singletonInstance.localVideoList = validVideos;
+
+      // クリーンアップ後のデータを保存
+      await _singletonInstance.save();
+    } catch (e) {
+      // noop
+    }
+  }
+}
+```
+
+**メリット:**
+- アプリ起動時にデータの整合性を保証
+- 孤立した（ファイルが削除された）エントリを自動的にクリーンアップ
+
+**デメリット:**
+- 起動時のパフォーマンスへの影響
+- 大量の動画がある場合、チェックに時間がかかる
+- 意図的にファイルを別の場所に移動した場合も削除される
+
+## 推奨される実装方針
+
+### 優先度 1（必須）: 修正案 1
+
+`ResourceUploadDialog` でエラーハンドリングを追加し、ユーザーに適切なフィードバックを提供する。これにより即座にクラッシュを防ぐことができる。
+
+### 優先度 2（推奨）: 修正案 2
+
+`selectLocalVideoDataWhereTheIdIs` を nullable にして、データレイヤーでの安全性を向上させる。ただし、影響範囲の調査と全ての呼び出し箇所の修正が必要。
+
+### 優先度 3（オプション）: 修正案 4
+
+アプリ起動時にデータの整合性をチェックし、孤立したエントリをクリーンアップする。ただし、パフォーマンスへの影響を考慮する必要がある。
+
+## 追加の改善提案
+
+### 1. データ同期メカニズムの強化
+
+`LocalVideoData` が削除されたときに、対応する `ResourceData` の状態も更新するメカニズムを追加：
+
+```dart
+// LocalVideoListController.deleteVideo 内
+Future<Result<Failure, void>> deleteVideo(String id, [bool deleteFile = true, bool rememberId = true]) async {
+  // ... 既存のコード ...
+
+  // ResourceData の状態も更新
+  // （具体的な実装は ResourceData の管理方法による）
+
+  return const Right(null);
+}
+```
+
+### 2. UI での状態の再検証
+
+リソース詳細画面を表示する際に、`onLocalStorage` 状態のリソースについて、実際にローカルファイルが存在するかを確認：
+
+```dart
+// ResourceDetailsPage や ResourceDetailsSnackbar で
+final isLocalVideoExists = await _checkLocalVideoExists(resource.id);
+if (!isLocalVideoExists) {
+  // 状態を修正または警告を表示
+}
+```
+
+### 3. ロギングの追加
+
+エラーが発生した際の詳細なログを記録し、デバッグを容易にする：
+
+```dart
+on StateError catch (e, stackTrace) {
+  _logger.e(
+    'Local video not found for resource',
+    ex: e,
+    stacktrace: stackTrace,
+    data: {
+      'resourceId': resource.id,
+      'sessionId': resource.sessionId,
+      'statusType': resource.statusType,
+    },
+  );
+}
+```
+
+## 影響範囲の調査
+
+### selectLocalVideoDataWhereTheIdIs の呼び出し箇所
+
+このメソッドを nullable にする場合、以下の箇所の修正が必要：
+
+1. `lib/controllers/local_video_list_controller.dart:160` - `findVideoById` メソッド
+2. `lib/controllers/local_video_list_controller.dart:55` - `deleteVideo` メソッド
+3. その他、Grep で検索して確認が必要
+
+### 必要な翻訳キーの追加
+
+`l10n/app_ja.arb`:
+```json
+{
+  "error_video_already_deleted": "この動画は既に削除されています",
+  "error_video_not_found": "動画が見つかりませんでした",
+  "error_unexpected": "予期しないエラーが発生しました"
+}
+```
+
+`l10n/app_en.arb`:
+```json
+{
+  "error_video_already_deleted": "This video has already been deleted",
+  "error_video_not_found": "Video not found",
+  "error_unexpected": "An unexpected error occurred"
+}
+```
+
+## テスト計画
+
+### 単体テスト
+
+1. `LocalVideoStorage.selectLocalVideoDataWhereTheIdIs` で存在しない ID を検索
+2. `LocalVideoListController.findVideoById` で削除済み ID を検索
+3. エラーハンドリングの動作確認
+
+### 統合テスト
+
+1. シナリオ 1 の再現テスト
+2. シナリオ 2 の再現テスト
+3. エラーメッセージの表示確認
+
+### 手動テスト
+
+1. ローカル動画を削除後、リソース詳細画面で「再試行」をタップ
+2. アプリ再起動後の動作確認
+3. ネットワーク不良時の動作確認
+
+## 参考情報
+
+- **関連ファイル:**
+  - `lib/data/models/local_video.dart`
+  - `lib/controllers/local_video_list_controller.dart`
+  - `lib/views/pages/home/sessions/session_details/resource_details/components/resource_upload_dialog.dart`
+  - `lib/views/pages/home/sessions/session_details/resource_details/components/resource_details_snackbar.dart`
+
+- **関連する Exception:**
+  - `StateError: No element` (Dart 標準)
+  - `DeletedVideoIdException` (カスタム例外)
+
+- **関連する状態:**
+  - `ResourceStatusType.onLocalStorage`
+  - `LocalVideoData` の存在/非存在
+
+## まとめ
+
+この問題は、`ResourceData` と `LocalVideoData` の同期が取れていない状況で発生するデータ整合性の問題です。修正案 1（エラーハンドリング追加）を最優先で実装し、時間があれば修正案 2（nullable 化）も実装することで、堅牢なシステムを構築できます。

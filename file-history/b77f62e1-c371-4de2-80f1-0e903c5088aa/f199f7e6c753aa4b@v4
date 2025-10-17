@@ -1,0 +1,189 @@
+/// {@category Resources}
+library;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+class ColorManager {
+  ColorManager._();
+
+  // TODO: Refactor these variables. Name variables by their roles.
+  static const Color lightGrey = Color(0xFF9E9E9E);
+  static const Color grey = Color.fromRGBO(100, 100, 100, 1);
+  static const Color darkGrey = Color.fromRGBO(72, 70, 70, 1);
+  static const Color blueCrayola = Color.fromRGBO(19, 130, 255, 1);
+
+  static const Color splashBackground = Colors.white;
+
+  static const Color primaryText = Colors.black87;
+  static const Color secondaryText = Color(0xFF666666);
+  static const Color keyboardAccessoryBackground = Color(0xFFABB0BA);
+  static const Color main = Color(0xFF068CD4);
+  static const Color hover = Color(0xFFF5F5F5);
+  static const Color error = Color(0xFFD32F2F);
+  static const Color active = Color(0xFF707070);
+  static const Color disabled = Color(0xFF9E9E9E);
+  static const Color link = Colors.blue;
+  static const Color light = Color(0xFF03A9F4);
+  static const Color warning = Color(0xFFEAE100);
+
+  static const Color primaryBorder = Color(0xFFC7C7CC);
+  static const Color avatarBorder = Color(0xFFE0E0E0);
+  static const Color avatarFill = Color(0xFFBDBDBD);
+  static const Color chevronRight = Color(0x4D3C3C43);
+  static const Color darkChevronRight = Color(0x99CCCCCC); // 60%透明度の明るいグレー
+  static const Color teamImageEditBackground = Color(0x80000000);
+  static const Color cameraControlBackground = Color(0x59000000);
+  // Camera overlay pills that should remain visible on dark scenes
+  static const Color cameraControlPillBackground =
+      Color(0x26A0A0A0); // gray 15%
+  static const Color cameraTipBackground = Color(0xCCFFFFFF);
+  static const Color cameraSettingValue = Colors.white;
+  static const Color recordStopButton = Color(0xFFE63838);
+
+  // Colors of the line graphs of trajectories.
+  static const Color chartTooltipText = Colors.white;
+  static const Color chartX = Color(0xFFFF5050);
+  static const Color chartY = Color(0xFF03A9F4);
+  static const Color chartZ = Color(0xFFFFCD56);
+
+  // Colors of the badges of member roles.
+  static const Color roleBorder = Color(0xFFCACAFF);
+  static const Color adminText = Color(0xFFFFFFFF);
+  static const Color adminBackground = Color(0xFF0000DE);
+  static const Color managerText = Color(0xFFFFFFFF);
+  static const Color managerBackground = Color(0xFF6363FF);
+  static const Color memberText = Color(0xFF000000);
+  static const Color memberBackground = Color(0xFFEEF7FE);
+  static const Color deactivatedText = Color(0xFFFFFFFF);
+  static const Color deactivatedBackground = Color(0xFF727272);
+
+  // Colors of the slide buttons of cards.
+  static const Color iconForeground = Colors.white;
+  static const Color iconEdit = Colors.orange;
+  static const Color iconDelete = Colors.red;
+  static const Color iconUpload = Colors.green;
+
+  // Colors of the attributes of balls.
+  // 速度関連
+  static const Color initialVelocity = Color(0xFF1976D2); // 初速 - 深いブルー
+  static const Color exitVelocity = Color(0xFF00BCD4); // 打球速度 - シアン
+
+  // 効率性
+  static const Color efficiency = Color(0xFFE53935); // 効率 - 鮮やかな赤
+
+  // 角度関連
+  static const Color gyroDegree = Color(0xFF8E24AA); // ジャイロ角度 - 深い紫
+  static const Color angle = Color(0xFFAB47BC); // 角度 - 明るい紫
+
+  // 変化量
+  static const Color horizontalBreak = Color(0xFFFF7043); // 横変化 - コーラルオレンジ
+  static const Color verticalBreak = Color(0xFF26A69A); // 縦変化 - ティール
+
+  // 回転関連
+  static const Color spinDirection = Color(0xFF43A047); // 回転方向 - 明るい緑
+  static const Color activeSpin = Color(0xFF424242); // アクティブスピン - ダークグレー
+  static const Color totalSpin = Color(0xFF795548); // 総回転数 - ブラウン
+
+  // Colors of the pitch type grouping tags.
+  static const Color pitchTypeFourSeamFastBall = Color(0xFFd22d49);
+  static const Color pitchTypeCutter = Color(0xFF933f2d);
+  static const Color pitchTypeSinker = Color(0xFFfe9d00);
+
+  static const Color pitchTypeChangeup = Color(0xFF1cbe3b);
+  static const Color pitchTypeForkball = Color(0xFF55ccab);
+  static const Color pitchTypeSplitter = Color(0xFF3cacac);
+  static const Color pitchTypeScrewball = Color(0xFF60db33);
+
+  static const Color pitchTypeCurveball = Color(0xFF01d1ed);
+  static const Color pitchTypeKnuckleCurve = Color(0xFF6236cd);
+  static const Color pitchTypeSlurve = Color(0xFF93afd4);
+
+  static const Color pitchTypeSlider = Color(0xFFeee717);
+  static const Color pitchTypeSweaper = Color(0xFFddb33a);
+
+  static const Color pitchTypeEephus = Color(0xFF888888);
+  static const Color pitchTypeKnuckleball = Color(0xFF3d44cd);
+
+  // Special pitch type states
+  static const Color pitchTypeNone = Color(0xFFE0E0E0); // 未設定 - 非常に薄い灰色
+  static const Color pitchTypeExcluded =
+      Color(0x00000000); // 除外 - 透明（枠線のみ表示）
+  static const Color pitchTypeExcludedBorder =
+      Color(0xFF888888); // 除外時の枠線色
+
+  // Dark mode colors for pitch type grouping tags.
+  static const Color darkPitchTypeFourSeamFastBall = Color(0xFF8B1E2F);
+  static const Color darkPitchTypeCutter = Color(0xFF5A2519);
+  static const Color darkPitchTypeSinker = Color(0xFFB36D00);
+
+  static const Color darkPitchTypeChangeup = Color(0xFF147A26);
+  static const Color darkPitchTypeForkball = Color(0xFF3A8B6F);
+  static const Color darkPitchTypeSplitter = Color(0xFF2A7979);
+  static const Color darkPitchTypeScrewball = Color(0xFF449625);
+
+  static const Color darkPitchTypeCurveball = Color(0xFF018FA6);
+  static const Color darkPitchTypeKnuckleCurve = Color(0xFF442599);
+  static const Color darkPitchTypeSlurve = Color(0xFF6A809A);
+
+  static const Color darkPitchTypeSlider = Color(0xFFA6A011);
+  static const Color darkPitchTypeSweaper = Color(0xFF997E28);
+
+  static const Color darkPitchTypeEephus = Color(0xFF5A5A5A);
+  static const Color darkPitchTypeKnuckleball = Color(0xFF2A3099);
+
+  // Special pitch type states (dark mode)
+  static const Color darkPitchTypeNone = Color(0xFF5A5A5A);
+  static const Color darkPitchTypeExcluded =
+      Color(0x00000000); // 除外 - 透明（枠線のみ表示）
+  static const Color darkPitchTypeExcludedBorder =
+      Color(0xFF888888); // 除外時の枠線色（ダークモード）
+
+  // Base colors for the light mode.
+  static const Color lightBackground = Color(0xFFFAFAFA);
+  static const Color lightSurface = Color(0xFFF5F5F5);
+  static const Color lightForeground = Colors.black;
+  static const Color lightAppBarText = main;
+  static const Color lightNavigationSelected = main;
+  static const Color lightCard = Colors.white;
+  static const Color lightElevatedButton = main;
+  static const Color lightElevatedButtonText = Colors.white;
+  static const Color lightElevatedButtonDisabled = Color(0xFFE0E0E0);
+  static const Color lightElevatedButtonDisabledText = Color(0xFF707070);
+
+  // Base colors for the dark mode.
+  static const Color darkBackground = Color(0xFF181A1B); // より深い黒
+  static const Color darkSurface = Color(0xFF232627); // カードやダイアログ用
+  static const Color darkForeground = Color(0xFFECECEC); // メインテキスト
+  static const Color darkSubText = Color(0xFFB0B0B0); // サブテキスト
+  static const Color darkSecondaryText =
+      Color(0xFFCCCCCC); // Secondary text for dark mode (brighter gray)
+  static const Color darkAppBarText = main;
+  static const Color darkNavigationSelected = main;
+  static const Color darkNavigationUnselected = Color(0xFF888888); // 未選択ナビ
+  static const Color darkCard = Color(0xFF232627); // Surfaceと統一
+  static const Color darkElevatedButton = Color(0xFF2196F3);
+  static const Color darkElevatedButtonText = Colors.white;
+  static const Color darkElevatedButtonDisabled = Color(0xFF313335); // 無効ボタン背景
+  static const Color darkElevatedButtonDisabledText =
+      Color(0xFF707070); // 無効ボタンテキスト
+
+  // CustomButton colors other than those using the default colors.
+  // CustomButtonVariant.secondary
+  static const Color lightSecondaryButton = Color(0xFFEBEBEB);
+  static const Color lightSecondaryButtonText = Color(0xFF424242);
+  static const Color lightSecondaryButtonDisabled = Color(0xFFC0C0C0);
+  static const Color lightSecondaryButtonDisabledText = Color(0xFF909090);
+  static const Color darkSecondaryButton = Color(0xFF35383A); // セカンダリボタン
+  static const Color darkSecondaryButtonDisabled = Color(0xFF232627); // 無効セカンダリ
+  static const Color darkSecondaryButtonDisabledText =
+      Color(0xFF505050); // 無効セカンダリテキスト
+  static const Color darkSecondaryButtonText =
+      Color(0xFFB0B0B0); // セカンダリボタンのテキスト色
+
+  // SnackBar colors
+  static const Color lightSnackBarSuccess = Color(0xFF43A047); // 明るめのグリーン
+  static const Color lightSnackBarError = Color(0xFFD32F2F); // 明るめのレッド
+  static const Color darkSnackBarSuccess = Color(0xFF388E3C); // 落ち着いたグリーン
+  static const Color darkSnackBarError = Color(0xFFB71C1C); // 深いレッド
+}

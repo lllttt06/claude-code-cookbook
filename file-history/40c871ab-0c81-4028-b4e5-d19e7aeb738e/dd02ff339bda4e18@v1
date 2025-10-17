@@ -1,0 +1,60 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+/// A singleton class that manages all providers in the application.
+/// This class is responsible for tracking and invalidating providers.
+class AppProviders {
+  AppProviders._();
+
+  static final AppProviders _instance = AppProviders._();
+  static AppProviders get instance => _instance;
+
+  /// List of provider types that should be ignored when tracking
+  static final List<Type> _neglectProviderTypes = [
+    StateNotifierProvider,
+  ];
+
+  /// List of all tracked providers
+  final List<ProviderBase<Object?>> _allProviders = <ProviderBase<Object?>>[];
+
+  /// Adds a provider to the tracking list if it's not in the neglect list
+  void addProvider(ProviderBase<Object?> provider) {
+    if (_neglectProviderTypes.contains(provider.runtimeType)) {
+      return;
+    }
+    _allProviders.add(provider);
+  }
+
+  /// Invalidates all tracked providers using a ProviderContainer.
+  ///
+  /// NOTE:
+  /// - Do not use WidgetRef here, as it may be disposed when called from
+  ///   async callbacks (e.g., sign-out flow), which triggers
+  ///   "Cannot use ref after the widget was disposed".
+  Future<void> invalidateAllProviders(ProviderContainer container) async {
+    for (final provider in _allProviders) {
+      container.invalidate(provider);
+    }
+  }
+
+  /// Prints all currently tracked providers for debugging purposes
+  void debugPrintAllProviders() {
+    debugPrint('All providers: $_allProviders');
+  }
+}
+
+/// A custom provider observer that tracks all providers in the application
+class CustomProviderObservers extends ProviderObserver {
+  @override
+  void didAddProvider(
+    ProviderBase<Object?> provider,
+    Object? value,
+    ProviderContainer container,
+  ) {
+    AppProviders.instance.addProvider(provider);
+    super.didAddProvider(provider, value, container);
+  }
+}

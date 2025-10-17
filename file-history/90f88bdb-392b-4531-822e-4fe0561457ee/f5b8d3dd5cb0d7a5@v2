@@ -1,0 +1,827 @@
+import { MoreHoriz, PersonAddAlt } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Card,
+  Chip,
+  Container,
+  Divider,
+  FormControl,
+  Grid2 as Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Select,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import _ from 'lodash';
+import moment from 'moment';
+import Image from 'next/image';
+import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+
+import AccessDenied from '@/components/common/access-denied';
+import CriticalError from '@/components/common/critical-error';
+import { FloatingButton } from '@/components/common/floating-button';
+import { ImageOrAvatar } from '@/components/common/image-or-avatar';
+import DefaultSearchField from '@/components/common/input/default-search-field';
+import { StyledLink } from '@/components/common/styled-link';
+import { CreatePlayerModal } from '@/components/modal/player/create-player-modal';
+import {
+  DeletePlayerModal,
+  DeletePlayerModalParam,
+  DeletePlayerModalParamDefault,
+} from '@/components/modal/player/delete-player-modal';
+import { EditPlayerModal } from '@/components/modal/player/edit-player-modal';
+import { EditTeamModal } from '@/components/modal/team/edit-team-modal';
+import {
+  CommonPagination,
+  CommonPaginationData,
+} from '@/components/pagination/common-pagination';
+import AppConstants from '@/constants/app.constants';
+import { PAGE_INFO } from '@/constants/page.constants';
+import useServicesHook from '@/hooks';
+import ConsoleLayout from '@/layouts/console.layout';
+import { Player } from '@/models/player';
+import { Team, TeamType } from '@/models/team';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import {
+  PlayerSortType,
+  playerSortTypes,
+} from '@/services/interfaces/players-api.interface';
+import { useSelector } from '@/store';
+import { actions as userDataActions } from '@/store/slices/user.slice';
+import { translate } from '@/utils/i18n';
+import { PathUtil } from '@/utils/path.util';
+
+type PlayerQueryCondition = {
+  keyword: string;
+  sort: PlayerSortType;
+  searchTrigger: Date;
+};
+
+const defaultCondition: PlayerQueryCondition & CommonPaginationData = {
+  keyword: '',
+  sort: 'name',
+  currentPage: 0,
+  rowsPerPage: 10,
+
+  searchTrigger: new Date(),
+};
+
+const buildQueryParam = (data: PlayerQueryCondition & CommonPaginationData) => {
+  return {
+    keyword: data.keyword.toString(),
+    sort: data.sort.toString(),
+    page: data.currentPage.toString(),
+    pageSize: data.rowsPerPage.toString(),
+  };
+};
+
+const parseQueryParam = (data: any) => {
+  return _.chain({
+    keyword: PathUtil.getStringFromQuery(data.keyword),
+    sort: PathUtil.getEnumFromQuery(playerSortTypes, data.sort),
+    currentPage: PathUtil.getIntFromQuery(data.page),
+    rowsPerPage: PathUtil.getIntFromQuery(data.pageSize),
+  })
+    .omitBy((v, k) => {
+      return _.isNil(v);
+    })
+    .defaultsDeep(defaultCondition)
+    .value();
+};
+
+function PageInner({
+  currentUser,
+  currentTeam,
+}: {
+  currentUser: User;
+  currentTeam: Team;
+}) {
+  const { services, router, reloader, dispatch } = useServicesHook();
+  const teams = useSelector((state) => state.user.accessibleTeams);
+
+  const teamId = currentTeam.id;
+
+  // this page param
+  const [loadError, setLoadError] = useState<ServiceError | null>(null);
+  const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
+  const [editingTeam, setEditingTeam] = useState<Team | null>(null);
+  const [conditions, setConditions] = useState<
+    PlayerQueryCondition & CommonPaginationData
+  >({
+    ...defaultCondition,
+    ...parseQueryParam(router.query),
+    ...services.localStorage.defaultPaginationData(
+      currentUser.id,
+      router.query,
+    ),
+  });
+  const [numberOfTotalItems, setNumberOfTotalItems] = useState<number>(0);
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
+
+  // modal data
+  const [deletePlayerModalParam, setDeletePlayerModal] =
+    useState<DeletePlayerModalParam>({
+      ...DeletePlayerModalParamDefault(currentTeam.id),
+    });
+
+  const [isCreationModalOpen, setIsCreationModalOpen] =
+    useState<boolean>(false);
+  const [isEditionModalOpen, setIsEditionModalOpen] = useState<boolean>(false);
+  const [isEditTeamModalOpen, setIsEditTeamModalOpen] =
+    useState<boolean>(false);
+
+  const [players, setPlayers] = useState<Player[]>([]);
+
+  const hasBasicWriteAccess = User.isAccessible(
+    currentUser,
+    currentTeam.id,
+    'basic',
+    'write',
+    false,
+  );
+
+  const hasManagementWriteAccess = User.isAccessible(
+    currentUser,
+    teamId,
+    'management',
+    'write',
+    true,
+  );
+
+  const sortOptions = useMemo((): {
+    name: string;
+    value: PlayerSortType;
+  }[] => {
+    return [
+      {
+        name: translate('order_newest_first'),
+        value: 'recent',
+      },
+      {
+        name: translate('order_oldest_first'),
+        value: 'oldest',
+      },
+      {
+        name: translate('order_name'),
+        value: 'name',
+      },
+      {
+        name: translate('order_name_desc'),
+        value: 'nameDesc',
+      },
+    ];
+  }, []);
+
+  const getTeamPlayers = async () => {
+    const offset = conditions.rowsPerPage * conditions.currentPage;
+    const { players, error, total } = await services.default.player.getPlayers(
+      currentTeam.id,
+      {
+        keyword: conditions.keyword,
+        sort: conditions.sort,
+        offset: offset,
+        pageSize: conditions.rowsPerPage,
+      },
+    );
+
+    if (error) {
+      setLoadError(error);
+      return;
+    }
+
+    setLoadError(null);
+    setPlayers(players);
+    setNumberOfTotalItems(total);
+  };
+
+  const reloadTeam = async (team: Team) => {
+    dispatch(
+      userDataActions.setTeams({
+        teams: [..._.filter(teams, (team) => team.id != teamId), team],
+      }),
+    );
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const openMenu = (event: React.MouseEvent<HTMLElement>, player: Player) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedPlayerId(player.id);
+  };
+
+  const closeMenu = () => {
+    setAnchorEl(null);
+    setSelectedPlayerId(null);
+  };
+
+  const initialize = async () => {
+    try {
+      const parsed = {
+        ...parseQueryParam(router.query),
+        ...services.localStorage.defaultPaginationData(
+          currentUser.id,
+          router.query,
+        ),
+      };
+      setConditions({
+        ...conditions,
+        ...parsed,
+      });
+      updateQueryParameters({
+        ...parsed,
+        searchTrigger: new Date(),
+      });
+    } finally {
+      setIsInitialized(true);
+    }
+  };
+
+  const updateQueryParameters = (
+    conds: PlayerQueryCondition & CommonPaginationData,
+  ) => {
+    const param = buildQueryParam(conds);
+    PathUtil.routerPushOrReplaceWithPaginationData(
+      router,
+      conds.currentPage,
+      PAGE_INFO.PLAYERS.href(teamId, param),
+    );
+  };
+
+  // This must be configured for browser back.
+  useEffect(() => {
+    if (!isInitialized) {
+      return;
+    }
+    // Important: Call after setConditions to trigger (*1)
+    const parsed = parseQueryParam(router.query);
+    setConditions({
+      ...conditions,
+      ...parsed,
+      searchTrigger: new Date(),
+    });
+  }, [router.query]); // browser back -> trigger by paginationData
+
+  useEffect(() => {
+    // (*1
+    if (!isInitialized) {
+      return;
+    }
+    getTeamPlayers();
+  }, [conditions.searchTrigger]);
+
+  useEffect(() => {
+    reloader.reloadIfNeeded();
+    initialize();
+  }, [currentUser]);
+
+  const birthdayToAge = (birthday: Date | null) => {
+    if (_.isNil(birthday)) {
+      return null;
+    }
+    const age = moment().diff(moment(birthday), 'years');
+    return age;
+  };
+
+  const theme = useTheme();
+  const isCardMode = useMediaQuery(theme.breakpoints.down('md'));
+
+  return (
+    // mbはFABのため
+    <Container sx={{ mb: 10 }}>
+      <Stack direction="column" spacing={4}>
+        <CreatePlayerModal
+          teamId={teamId}
+          defaultData={{
+            name: '',
+            note: '',
+            throw: 'none',
+            stand: 'none',
+            birthday: null,
+            previewUrl: null,
+          }}
+          isOpen={isCreationModalOpen}
+          setIsOpen={setIsCreationModalOpen}
+          onSuccess={() => {
+            getTeamPlayers();
+          }}
+        />
+        {editingPlayer && (
+          <EditPlayerModal
+            teamId={editingPlayer.teamId}
+            playerId={editingPlayer.id}
+            defaultData={{
+              name: editingPlayer?.name ?? '',
+              note: editingPlayer?.note ?? '',
+              throw: editingPlayer?.throw ?? 'none',
+              stand: editingPlayer?.stand ?? 'none',
+              birthday: editingPlayer?.birthday,
+              previewUrl: editingPlayer?.presignedImageUrl ?? '',
+            }}
+            isOpen={isEditionModalOpen}
+            setIsOpen={setIsEditionModalOpen}
+            onSuccess={() => {
+              getTeamPlayers();
+            }}
+            onCancel={() => {
+              setEditingPlayer(null);
+            }}
+          />
+        )}
+
+        <DeletePlayerModal
+          param={deletePlayerModalParam}
+          setParam={setDeletePlayerModal}
+          onDeleted={() => getTeamPlayers()}
+        />
+
+        {editingTeam && (
+          <EditTeamModal
+            teamId={currentTeam.id}
+            defaultData={{
+              name: currentTeam.name!,
+              previewUrl: currentTeam.presignedImageUrl,
+            }}
+            isOpen={isEditTeamModalOpen}
+            setIsOpen={setIsEditTeamModalOpen}
+            onSuccess={(team: Team) => {
+              reloadTeam(team);
+            }}
+            onCancel={() => {
+              setEditingTeam(null);
+            }}
+          />
+        )}
+
+        {/* [HEADER] */}
+        <Stack direction="row" alignItems="center" sx={{ py: 1 }}>
+          <Image
+            src={
+              currentTeam?.presignedImageUrl ??
+              AppConstants.NO_IMAGE_2ND_BASE_URL
+            }
+            alt=""
+            width="120"
+            height="120"
+          />
+          <Stack
+            direction="row"
+            sx={{ alignItems: 'center', flex: 1, px: 3, py: 1 }}
+          >
+            {/* multiple team:チーム名, single team:プレイヤー一覧 */}
+            <Typography variant="h1">
+              {currentTeam.teamType === TeamType.SINGLE
+                ? translate('page_players')
+                : currentTeam.name}
+            </Typography>
+            {hasManagementWriteAccess ? (
+              <Button
+                sx={{ color: '#707070', textDecoration: 'underline' }}
+                color="neutral"
+                onClick={() => {
+                  setEditingTeam(currentTeam);
+                  setIsEditTeamModalOpen(true);
+                }}
+              >
+                {translate('edit')}
+              </Button>
+            ) : (
+              ''
+            )}
+          </Stack>
+        </Stack>
+        <Divider sx={{ mt: 2 }} />
+
+        {/* [MAIN CONTENT] */}
+        <Card sx={{ backgroundColor: 'white', p: 2 }}>
+          <Stack
+            direction={{ xs: 'column', md: 'row-reverse' }}
+            spacing={2}
+            justifyContent="space-between"
+          >
+            <DefaultSearchField
+              value={conditions.keyword}
+              onSearch={() => {
+                const newData = {
+                  ...conditions,
+                  currentPage: 0,
+                };
+                updateQueryParameters(newData);
+              }}
+              onChange={(e) => {
+                setConditions({
+                  ...conditions,
+                  keyword: e.target.value,
+                });
+              }}
+            />
+            <Grid container direction="row" spacing={1} sx={{ flex: 1 }}>
+              <Grid size="auto">
+                <FormControl size="small" variant="standard">
+                  <Select
+                    value={conditions.sort}
+                    onChange={(e) => {
+                      const newData = {
+                        ...conditions,
+                        sort: e.target.value as PlayerSortType,
+                        currentPage: 0,
+                      };
+                      setConditions(newData);
+                      updateQueryParameters(newData);
+                    }}
+                  >
+                    {sortOptions.map((x) => {
+                      return (
+                        <MenuItem key={x.value} value={x.value}>
+                          {x.name}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </Stack>
+
+          {loadError ? (
+            <CriticalError error={loadError} />
+          ) : isCardMode ? (
+            // ======== モバイル（md以下）：カードレイアウト ========
+            <Stack spacing={1}>
+              {players.map((player) => (
+                <Paper key={player.id} variant="outlined" sx={{ p: 1.5 }}>
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    spacing={1}
+                    sx={{ minWidth: 0 }}
+                  >
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1.25}
+                      flex={1}
+                      sx={{ minWidth: 0 }}
+                    >
+                      <ImageOrAvatar
+                        url={player?.presignedImageUrl}
+                        width={36}
+                        height={36}
+                      />
+                      <Box sx={{ minWidth: 0 }}>
+                        <Typography
+                          variant="subtitle1"
+                          noWrap
+                          sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                        >
+                          {player.name}
+                        </Typography>
+                        {!!player.note && (
+                          <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            noWrap
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {player.note}
+                          </Typography>
+                        )}
+                      </Box>
+                    </Stack>
+
+                    {/* アクション（⋯ メニュー） */}
+                    {currentUser.hasBasicWriteAccessFor(player) && (
+                      <IconButton
+                        size="small"
+                        color="info"
+                        onClick={(e) => {
+                          if (anchorEl) {
+                            closeMenu();
+                          } else {
+                            openMenu(e, player);
+                          }
+                        }}
+                      >
+                        <MoreHoriz />
+                      </IconButton>
+                    )}
+                  </Stack>
+
+                  {/* セカンダリ行（ハンド・スタンス・年齢・セッション数） */}
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    flexWrap="wrap"
+                    sx={{ mt: 1 }}
+                    useFlexGap
+                  >
+                    <Chip
+                      size="small"
+                      label={`${translate('throw')}: ${translate(`handedness_${player.throw}`)}`}
+                    />
+                    <Chip
+                      size="small"
+                      label={`${translate('stand')}: ${translate(`handedness_${player.stand}`)}`}
+                    />
+                    <Chip
+                      size="small"
+                      label={`${translate('age')}: ${birthdayToAge(player.birthday) ?? '-'}`}
+                    />
+                    <Chip
+                      size="small"
+                      label={`${translate('total_sessions')}: ${player.numberOfSessions}`}
+                    />
+                    <StyledLink
+                      color="primary"
+                      href={PAGE_INFO.PLAYER.href(teamId, player.id)}
+                      sx={{ ml: 'auto', alignSelf: 'center' }}
+                    >
+                      {translate('view')}
+                    </StyledLink>
+                  </Stack>
+
+                  {/* 共有メニュー（モバイルでも再利用） */}
+                  <Menu
+                    onClose={closeMenu}
+                    anchorEl={anchorEl}
+                    open={selectedPlayerId === player.id}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        setEditingPlayer(player);
+                        setIsEditionModalOpen(true);
+                        closeMenu();
+                      }}
+                    >
+                      {translate('edit')}
+                    </MenuItem>
+                    <Tooltip
+                      title={
+                        currentTeam.teamType === TeamType.SINGLE
+                          ? translate('cannot_delete_player_for_single_team')
+                          : player.numberOfSessions > 0
+                            ? translate(
+                                'cannot_delete_player_associated_with_session',
+                              )
+                            : ''
+                      }
+                      arrow
+                      placement="left"
+                    >
+                      <Box>
+                        <MenuItem
+                          onClick={() => {
+                            setDeletePlayerModal({
+                              isOpen: true,
+                              teamId: player.teamId,
+                              targetPlayer: {
+                                id: player.id,
+                                name: player.name,
+                              },
+                            });
+                            closeMenu();
+                          }}
+                          disabled={
+                            currentTeam.teamType === TeamType.SINGLE ||
+                            player.numberOfSessions > 0
+                          }
+                        >
+                          {translate('delete')}
+                        </MenuItem>
+                      </Box>
+                    </Tooltip>
+                  </Menu>
+                </Paper>
+              ))}
+            </Stack>
+          ) : (
+            // ======== デスクトップ（md以上）：従来のテーブル ========
+            <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+              <Table
+                aria-label="a dense table"
+                sx={{
+                  tableLayout: 'fixed',
+                  minWidth: 730, // 横スクロールしやすく
+                  '.MuiTableCell-root': { overflowWrap: 'anywhere' },
+                }}
+              >
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">{translate('name')}</TableCell>
+                    <TableCell align="left">{translate('note')}</TableCell>
+                    <TableCell align="left">{translate('throw')}</TableCell>
+                    <TableCell align="left">{translate('stand')}</TableCell>
+                    <TableCell align="left">{translate('age')}</TableCell>
+                    <TableCell align="left">
+                      {translate('total_sessions')}
+                    </TableCell>
+                    <TableCell align="left" sx={{ width: '5rem' }}></TableCell>
+                    <TableCell align="left" sx={{ width: '5rem' }}>
+                      {/* button */}
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {players.map((player) => (
+                    <TableRow
+                      key={player.id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell align="left">
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <ImageOrAvatar
+                            url={player?.presignedImageUrl}
+                            width={30}
+                            height={30}
+                          />
+                          <Typography
+                            variant="inherit"
+                            sx={{
+                              textDecoration: 'none',
+                              color: 'text.primary',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                            }}
+                          >
+                            {player.name}
+                          </Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+                      >
+                        {player.note}
+                      </TableCell>
+                      <TableCell align="left">
+                        {translate(`handedness_${player.throw}`)}
+                      </TableCell>
+                      <TableCell align="left">
+                        {translate(`handedness_${player.stand}`)}
+                      </TableCell>
+                      <TableCell align="left">
+                        {birthdayToAge(player.birthday)}
+                      </TableCell>
+                      <TableCell align="left">
+                        {player.numberOfSessions}
+                      </TableCell>
+                      <TableCell>
+                        <StyledLink
+                          color="primary"
+                          href={PAGE_INFO.PLAYER.href(teamId, player.id)}
+                        >
+                          {translate('view')}
+                        </StyledLink>
+                      </TableCell>
+                      <TableCell align="left" sx={{ textAlign: 'right' }}>
+                        {currentUser.hasBasicWriteAccessFor(player) && (
+                          <Button
+                            color="neutral"
+                            onClick={(e) => {
+                              if (anchorEl) {
+                                closeMenu();
+                              } else {
+                                openMenu(e, player);
+                              }
+                            }}
+                          >
+                            <MoreHoriz />
+                          </Button>
+                        )}
+                        <Menu
+                          onClose={closeMenu}
+                          anchorEl={anchorEl}
+                          open={selectedPlayerId === player.id}
+                        >
+                          <MenuItem
+                            onClick={() => {
+                              setEditingPlayer(player);
+                              setIsEditionModalOpen(true);
+                              closeMenu();
+                            }}
+                          >
+                            {translate('edit')}
+                          </MenuItem>
+                          <Tooltip
+                            title={
+                              currentTeam.teamType === TeamType.SINGLE
+                                ? translate(
+                                    'cannot_delete_player_for_single_team',
+                                  )
+                                : player.numberOfSessions > 0
+                                  ? translate(
+                                      'cannot_delete_player_associated_with_session',
+                                    )
+                                  : ''
+                            }
+                            arrow
+                            placement="left"
+                          >
+                            <Box>
+                              <MenuItem
+                                onClick={() => {
+                                  setDeletePlayerModal({
+                                    isOpen: true,
+                                    teamId: player.teamId,
+                                    targetPlayer: {
+                                      id: player.id,
+                                      name: player.name,
+                                    },
+                                  });
+                                  closeMenu();
+                                }}
+                                disabled={
+                                  currentTeam.teamType === TeamType.SINGLE ||
+                                  player.numberOfSessions > 0
+                                }
+                              >
+                                {translate('delete')}
+                              </MenuItem>
+                            </Box>
+                          </Tooltip>
+                        </Menu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+
+          <CommonPagination
+            user={currentUser}
+            numberOfTotalItems={numberOfTotalItems}
+            commonPaginationData={{
+              currentPage: conditions.currentPage,
+              rowsPerPage: conditions.rowsPerPage,
+            }}
+            onChange={(data) => {
+              updateQueryParameters({
+                ...conditions,
+                ...data,
+              });
+            }}
+          />
+        </Card>
+      </Stack>
+      {hasBasicWriteAccess && (
+        <FloatingButton
+          icon={<PersonAddAlt />}
+          title={translate('create_new_player')}
+          disabled={currentTeam.teamType === TeamType.SINGLE}
+          tooltipTitle={
+            currentTeam.teamType === TeamType.SINGLE
+              ? translate('cannot_create_player_for_single_team')
+              : undefined
+          }
+          onClick={() => setIsCreationModalOpen(true)}
+        />
+      )}
+    </Container>
+  );
+}
+
+export default function Page() {
+  const { router, dispatch } = useServicesHook();
+  const currentUser = useSelector((state) => state.user.me);
+  const teams = useSelector((state) => state.user.accessibleTeams);
+  const [team, setTeam] = useState<Team>();
+  const teamId = router.query.team_id?.toString();
+
+  useEffect(() => {
+    if (!teamId) {
+      return;
+    }
+    setTeam(teams.find((x) => x.id == teamId));
+  }, [teamId, teams]);
+
+  if (!team) {
+    return <AccessDenied />;
+  }
+
+  return (
+    currentUser &&
+    team && <PageInner currentUser={currentUser} currentTeam={team} />
+  );
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <ConsoleLayout>{page}</ConsoleLayout>;
+};

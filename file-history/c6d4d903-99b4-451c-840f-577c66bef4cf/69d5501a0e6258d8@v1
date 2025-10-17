@@ -1,0 +1,403 @@
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  List,
+  ListItem,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import _ from 'lodash';
+import React, {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useId,
+  useState,
+} from 'react';
+
+import CriticalError from '@/components/common/critical-error';
+import { ImageOrAvatar } from '@/components/common/image-or-avatar';
+import ValidationError from '@/components/common/validation-error';
+import useServicesHook from '@/hooks';
+import {
+  PlayerStandType,
+  playerStandTypes,
+  PlayerThrowType,
+  playerThrowTypes,
+} from '@/models/player';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import { translate } from '@/utils/i18n';
+
+import { CommonModal } from '../common-modal';
+
+export type ModifyPlayerModalParam = {
+  name: string;
+  note: string;
+  throw: PlayerThrowType;
+  stand: PlayerStandType;
+  birthday: Date | null;
+  previewUrl: string | null;
+  imageFile?: File;
+};
+
+export const ModifyPlayerModal: FC<{
+  teamId: string;
+  currentUser: User;
+  defaultData: ModifyPlayerModalParam;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  mode: 'create' | 'update';
+  isSubmitting: boolean;
+  error: ServiceError | null;
+  setError: Dispatch<SetStateAction<ServiceError | null>>;
+
+  playerIdToExcludeChecking?: string;
+  onOk?: (param: ModifyPlayerModalParam) => Promise<void>;
+  onCancel?: Function;
+}> = ({
+  teamId,
+  currentUser,
+  defaultData,
+  isOpen,
+  setIsOpen,
+  mode,
+  isSubmitting,
+  error,
+  setError,
+
+  playerIdToExcludeChecking,
+  onOk,
+  onCancel,
+}) => {
+  const { services } = useServicesHook();
+
+  const [playerData, setPlayerData] = useState<{
+    name: string;
+    note: string;
+    throw: PlayerThrowType;
+    stand: PlayerStandType;
+    birthday: Date | null;
+    imageFile?: File;
+    previewUrl: string | null;
+  }>({
+    name: defaultData.name,
+    note: defaultData.note,
+    throw: defaultData.throw,
+    stand: defaultData.stand,
+    birthday: defaultData.birthday,
+    previewUrl: defaultData.previewUrl,
+  });
+
+  const [dataForSimilarNames, setDataForSimilarNames] = useState<{
+    isSimilarNamesAlreadyRetrieved: boolean;
+    similarNamesForTheInput: string[];
+  }>({
+    isSimilarNamesAlreadyRetrieved: false,
+    similarNamesForTheInput: [],
+  });
+
+  const throwLabelId = useId();
+  const standLabelId = useId();
+
+  const hasCrossAccessInTeam = User.isAccessible(
+    currentUser,
+    teamId,
+    'basic',
+    'read',
+    true,
+  );
+
+  const checkPlayerName = async (
+    teamId: string,
+  ): Promise<{
+    stopProcess: boolean;
+  }> => {
+    const { players, error } = await services.default.player.getPlayers(
+      teamId,
+      {
+        userId: hasCrossAccessInTeam ? null : currentUser.id,
+        keyword: playerData.name,
+        isKeywordUsedAsFuzzySearch: true,
+      },
+    );
+
+    const foundPlayers = _.filter(
+      players,
+      (p) => p.id != playerIdToExcludeChecking,
+    );
+
+    if (error || foundPlayers.length == 0) {
+      // Ignore the error because it is not critical.
+      return {
+        stopProcess: false,
+      };
+    }
+
+    setDataForSimilarNames({
+      ...dataForSimilarNames,
+      isSimilarNamesAlreadyRetrieved: true,
+      similarNamesForTheInput: foundPlayers.map((x) => x.name),
+    });
+
+    return {
+      stopProcess: true,
+    };
+  };
+
+  const onClickCreateBtn = async (teamId: string) => {
+    if (
+      defaultData.name !== playerData.name &&
+      !dataForSimilarNames.isSimilarNamesAlreadyRetrieved &&
+      (await checkPlayerName(teamId)).stopProcess
+    ) {
+      return;
+    }
+    await onOk?.(playerData);
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setPlayerData({
+      ...playerData,
+      imageFile: file,
+      previewUrl: URL.createObjectURL(file),
+    });
+  };
+
+  useEffect(() => {
+    // reset
+    setError(null);
+    setPlayerData({
+      name: defaultData.name,
+      note: defaultData.note,
+      throw: defaultData.throw,
+      stand: defaultData.stand,
+      birthday: defaultData.birthday,
+      previewUrl: defaultData.previewUrl,
+    });
+    setDataForSimilarNames({
+      isSimilarNamesAlreadyRetrieved: false,
+      similarNamesForTheInput: [],
+    });
+  }, [isOpen]);
+
+  return (
+    <CommonModal isOpen={isOpen} setIsOpen={setIsOpen} onClose={onCancel}>
+      <Typography variant="h4">
+        {mode == 'create'
+          ? translate('create_new_player')
+          : translate('update_player')}
+      </Typography>
+      <Stack
+        alignItems="stretch"
+        direction="column"
+        spacing={2}
+        sx={{ py: 1 }}
+        useFlexGap
+      >
+        <Button
+          color="neutral"
+          component="label"
+          role={undefined}
+          sx={{
+            m: '0 auto',
+            p: 0,
+            position: 'relative',
+          }}
+          tabIndex={-1}
+          variant="contained"
+        >
+          <ImageOrAvatar
+            url={playerData?.previewUrl}
+            width={120}
+            height={120}
+          />
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              padding: '4px',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              borderRadius: '50%',
+              color: 'white',
+              display: 'flex',
+            }}
+          >
+            <CameraAltIcon fontSize="medium" />
+          </Box>
+          <input
+            accept=".jpg, .jpeg, .png, .webp"
+            hidden
+            type="file"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              if (file) {
+                handleImageUpload(file);
+              }
+            }}
+          />
+        </Button>
+        <FormControl>
+          <TextField
+            label={translate('name')}
+            value={playerData.name}
+            onChange={(e) => {
+              setPlayerData({
+                ...playerData,
+                name: e.target.value,
+              });
+            }}
+          />
+          <ValidationError error={error} pos={['name']} />
+        </FormControl>
+
+        {dataForSimilarNames.similarNamesForTheInput.length > 0 ? (
+          <Box sx={{ mx: 1 }}>
+            <Typography color="error" variant="body2">
+              {translate('found_players_with_similar_names')}
+              <br />
+              {translate('to_save_press_the_button_again')}
+            </Typography>
+            <List
+              component="ol"
+              sx={{
+                listStyleType: 'disc',
+                pl: 4,
+              }}
+            >
+              {dataForSimilarNames.similarNamesForTheInput.map((n, i) => {
+                return (
+                  <ListItem
+                    key={i}
+                    sx={{ display: 'list-item', fontSize: 12, padding: '4px' }}
+                  >
+                    <Typography color="error" variant="inherit">
+                      {n}
+                    </Typography>
+                  </ListItem>
+                );
+              })}
+            </List>
+          </Box>
+        ) : (
+          ''
+        )}
+
+        <FormControl>
+          <TextField
+            label={translate('note')}
+            value={playerData.note}
+            onChange={(e) => {
+              setPlayerData({
+                ...playerData,
+                note: e.target.value,
+              });
+            }}
+          />
+          <ValidationError error={error} pos={['note']} />
+        </FormControl>
+
+        <FormControl>
+          <InputLabel id={throwLabelId}>{translate('throw')}</InputLabel>
+          <Select
+            labelId={throwLabelId}
+            label={translate('throw')}
+            value={playerData.throw}
+            onChange={(e) => {
+              setPlayerData({
+                ...playerData,
+                throw: e.target.value as PlayerThrowType,
+              });
+            }}
+          >
+            {_.map(playerThrowTypes, (t) => (
+              <MenuItem key={t} value={t}>
+                {translate(`handedness_${t}`)}
+              </MenuItem>
+            ))}
+          </Select>
+          <ValidationError error={error} pos={['throw']} />
+        </FormControl>
+
+        <FormControl>
+          <InputLabel id={standLabelId}>{translate('stand')}</InputLabel>
+          <Select
+            labelId={standLabelId}
+            label={translate('stand')}
+            value={playerData.stand}
+            onChange={(e) => {
+              setPlayerData({
+                ...playerData,
+                stand: e.target.value as PlayerStandType,
+              });
+            }}
+          >
+            {_.map(playerStandTypes, (t) => (
+              <MenuItem key={t} value={t}>
+                {translate(`handedness_${t}`)}
+              </MenuItem>
+            ))}
+          </Select>
+          <ValidationError error={error} pos={['stand']} />
+        </FormControl>
+
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label={translate('birthday')}
+            value={playerData.birthday}
+            openTo="year"
+            onChange={(e) => {
+              setPlayerData({
+                ...playerData,
+                birthday: e,
+              });
+            }}
+          />
+        </LocalizationProvider>
+
+        <CriticalError
+          messagePrefix={translate('failed_to_create_player') + ' '}
+          error={error}
+        />
+
+        <Button
+          color="primary"
+          fullWidth
+          loading={isSubmitting}
+          variant="contained"
+          onClick={() => {
+            onClickCreateBtn(teamId);
+          }}
+        >
+          {mode == 'create'
+            ? translate('button_create')
+            : translate('button_save_changes')}
+        </Button>
+
+        <Button
+          fullWidth
+          color="neutral"
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          {mode == 'create'
+            ? translate('button_cancel')
+            : translate('button_discard')}
+        </Button>
+      </Stack>
+    </CommonModal>
+  );
+};

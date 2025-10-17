@@ -1,0 +1,716 @@
+import { Edit } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  FormLabel,
+  Grid2 as Grid,
+  IconButton,
+  Paper,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+import _ from 'lodash';
+import moment from 'moment';
+import { useSearchParams } from 'next/navigation';
+import { enqueueSnackbar } from 'notistack';
+import React, { ReactElement, useEffect, useMemo, useState } from 'react';
+import { sprintf } from 'sprintf-js';
+
+import { AppRoleChip } from '@/components/app-role/app-role-chip';
+import CriticalError from '@/components/common/critical-error';
+import { ImageOrAvatar } from '@/components/common/image-or-avatar';
+import { TabPanel } from '@/components/common/tab-panel';
+import {
+  SUPPORTED_LANGUAGES,
+  SUPPORTED_UNITS,
+  SupportedLanguage,
+  SupportedUnit,
+} from '@/constants/app.constants';
+import { resolveContactFormUrl } from '@/constants/contact-form.constants';
+import { EnvManager } from '@/constants/env.constants';
+import { PAGE_INFO } from '@/constants/page.constants';
+import { getPlanById } from '@/constants/plan.constants';
+import useServicesHook from '@/hooks';
+import ConsoleLayout from '@/layouts/console.layout';
+import { Team, TeamType } from '@/models/team';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import { useSelector } from '@/store';
+import { actions as userDataActions } from '@/store/slices/user.slice';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import {
+  getDefaultLanguage,
+  getDefaultUnit,
+  translate,
+  TranslationKey,
+} from '@/utils/i18n';
+import { StringUtil } from '@/utils/string.util';
+import { userRoleToDescription } from '@/utils/user-role-util';
+
+export const AccountTab = 'account_tab';
+export const TeamTab = 'team_tab';
+export const ChangePasswordTab = 'change_password_tab';
+
+const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm';
+
+function PageInner({
+  currentUser,
+  currentTeam,
+}: {
+  currentUser: User;
+  currentTeam: Team;
+}) {
+  const { services, reloader, dispatch } = useServicesHook();
+  const teams = useSelector((state) => state.user.accessibleTeams);
+  const [loadError, setLoadError] = useState<ServiceError | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [currentLang, setCurrentLang] =
+    useState<SupportedLanguage>(getDefaultLanguage());
+  const [currentUnit, setCurrentUnit] =
+    useState<SupportedUnit>(getDefaultUnit());
+
+  const isSmallScreen = useMediaQuery('(max-width:600px)', { noSsr: true });
+  const contactFormUrl = useMemo(
+    () => resolveContactFormUrl(currentLang, currentUser, currentTeam),
+    [currentLang, currentTeam, currentUser],
+  );
+  const showContactFormButton = !EnvManager.isPrd;
+
+  const searchParams = useSearchParams();
+  const [tabValue, setTabValue] = useState<string>(
+    searchParams.get('tab') ?? AccountTab,
+  );
+
+  const hasSuperUserReadAccess = User.isAccessible(
+    currentUser,
+    'all',
+    'basic',
+    'read',
+    false,
+  );
+
+  const tabs = [AccountTab, TeamTab, ChangePasswordTab] as TranslationKey[];
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: string) => {
+    setTabValue(newValue);
+  };
+
+  const logout = () => {
+    wrapForLoading(setIsSubmitting, async () => {
+      await services.default.auth.signOut();
+      location.href = PAGE_INFO.SIGN_IN.href();
+    });
+  };
+
+  const handlePaymentSuccess = async () => {
+    const status = searchParams.get('status');
+    if (status === 'error') {
+      enqueueSnackbar({
+        variant: 'error',
+        message: translate('payment_session_error'),
+      });
+    } else if (status === 'success') {
+      enqueueSnackbar({
+        variant: 'success',
+        message: translate('payment_session_success'),
+      });
+      // チームプラン情報を更新
+      await getUserInfo();
+    }
+
+    // Remove query parameters from URL
+    const url = new URL(window.location.href);
+    url.searchParams.delete('status');
+    url.searchParams.delete('session_id');
+    window.history.replaceState({}, '', url.toString());
+  };
+
+  const handleBillingPortal = async () => {
+    setIsSubmitting(true);
+    try {
+      const result = await services.default.payment.createBillingPortalSession({
+        teamId: currentTeam.id,
+      });
+
+      if (result.error) {
+        throw result.error;
+      }
+
+      if (result.data?.url) {
+        window.open(result.data.url, '_blank', 'noopener,noreferrer');
+      }
+    } catch (error) {
+      enqueueSnackbar({
+        variant: 'error',
+        message: translate('payment_error_occurred'),
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getUserInfo = async () => {
+    const userResult = await services.default.user.getMe();
+    if (userResult.error) {
+      setLoadError(userResult.error);
+      return;
+    }
+
+    let teams = userResult.user.teams;
+    if (hasSuperUserReadAccess) {
+      const teamsResult = await services.default.superAdmin.getTeams({});
+      if (!teamsResult.error) {
+        teams = teamsResult.teams;
+      } else {
+        enqueueSnackbar({
+          variant: 'error',
+          message: sprintf(
+            '%s: %s',
+            translate('snackbar_failed_to_get_accessible_teams'),
+            teamsResult.error.message,
+          ),
+        });
+      }
+    }
+    setLoadError(null);
+    // Update plan info bound by the team.
+    dispatch(
+      userDataActions.setTeams({
+        teams,
+      }),
+    );
+  };
+
+  useEffect(() => {
+    reloader.reloadIfNeeded();
+    setCurrentUnit(
+      services.localStorage.getUnit(currentUser.id) ?? getDefaultUnit(),
+    );
+    setCurrentLang(
+      services.localStorage.getLanguage(currentUser.id) ?? getDefaultLanguage(),
+    );
+    handlePaymentSuccess();
+    getUserInfo();
+  }, []);
+
+  return (
+    <Container>
+      <Stack direction="column">
+        <Box>
+          <Stack direction="row" alignItems="center" sx={{ py: 1 }}>
+            <ImageOrAvatar
+              url={currentUser.profile?.presignedImageUrl}
+              width={120}
+              height={120}
+            />
+            <Box sx={{ flex: 1, px: 3 }}>
+              <Typography variant="h1">
+                {currentUser.profile?.username ?? '(No Name)'}
+              </Typography>
+            </Box>
+            <Box>
+              <Button
+                color="neutral"
+                loading={isSubmitting}
+                onClick={() => logout()}
+              >
+                {translate('sign_out')}
+              </Button>
+            </Box>
+          </Stack>
+          <Divider sx={{ mt: 2 }} />
+        </Box>
+        <Tabs sx={{ mb: 2, mt: 4 }} value={tabValue} onChange={handleTabChange}>
+          {tabs.map((tab) => {
+            return (
+              <Tab
+                key={tab}
+                label={translate(tab)}
+                style={{ backgroundColor: 'inherit' }}
+                sx={{ px: 2, py: 1 }}
+                value={tab}
+              />
+            );
+          })}
+        </Tabs>
+        {loadError ? (
+          <CriticalError error={loadError} />
+        ) : (
+          <>
+            <TabPanel index={AccountTab} value={tabValue}>
+              <Paper
+                sx={{
+                  p: 3,
+                  position: 'relative',
+                  overflowWrap: 'break-word',
+                }}
+              >
+                <IconButton
+                  color="primary"
+                  href={PAGE_INFO.ACCOUNT_EDIT.href(AccountTab)}
+                  sx={{ position: 'absolute', top: 20, right: 20 }}
+                >
+                  <Edit />
+                </IconButton>
+                <Stack direction="column">
+                  <Typography sx={{ mb: 3 }} variant="h2">
+                    {translate('account')}
+                  </Typography>
+                  <Grid container spacing={3}>
+                    <Grid size={{ sm: 6, xs: 12 }}>
+                      <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormLabel>
+                          <Typography variant="h4">
+                            {translate('email')}
+                          </Typography>
+                        </FormLabel>
+                        <Typography>{currentUser.email}</Typography>
+                      </FormControl>
+                    </Grid>
+                    <Grid size={{ sm: 6, xs: 12 }}>
+                      <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormLabel>
+                          <Typography variant="h4">
+                            {translate('language')}
+                          </Typography>
+                        </FormLabel>
+                        <Typography>
+                          {
+                            _.find(
+                              SUPPORTED_LANGUAGES,
+                              (x) => x.value == currentLang,
+                            )?.name
+                          }
+                        </Typography>
+                      </FormControl>
+                      <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormLabel>
+                          <Typography variant="h4">
+                            {translate('unit')}
+                          </Typography>
+                        </FormLabel>
+                        <Typography>
+                          {
+                            _.find(
+                              SUPPORTED_UNITS,
+                              (x) => x.value == currentUnit,
+                            )?.name
+                          }
+                        </Typography>
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <Divider sx={{ my: 3 }} />
+                  <Stack direction="column" spacing={2}>
+                    <Typography sx={{ mb: 3 }} variant="h2">
+                      {translate('support')}
+                    </Typography>
+                    <Stack
+                      direction={isSmallScreen ? 'column' : 'row'}
+                      spacing={2}
+                    >
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        href={
+                          currentLang === 'ja'
+                            ? '/terms-of-use?lang=ja'
+                            : '/terms-of-use?lang=en'
+                        }
+                        fullWidth={isSmallScreen}
+                        sx={{ flex: 1 }}
+                      >
+                        {translate('open_terms_of_use')}
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        href={
+                          currentLang === 'ja'
+                            ? '/privacy-policy?lang=ja'
+                            : '/privacy-policy?lang=en'
+                        }
+                        fullWidth={isSmallScreen}
+                        sx={{ flex: 1 }}
+                      >
+                        {translate('open_privacy_policy')}
+                      </Button>
+                      {showContactFormButton && contactFormUrl && (
+                        <Button
+                          variant="outlined"
+                          color="primary"
+                          href={contactFormUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          fullWidth={isSmallScreen}
+                          sx={{ flex: 1 }}
+                        >
+                          {translate('open_contact_form')}
+                        </Button>
+                      )}
+                    </Stack>
+                  </Stack>
+                </Stack>
+              </Paper>
+            </TabPanel>
+            <TabPanel index={TeamTab} value={tabValue}>
+              <Paper
+                sx={{
+                  p: 3,
+                  position: 'relative',
+                  overflowWrap: 'break-word',
+                }}
+              >
+                {teams.length >= 2 && (
+                  <IconButton
+                    color="primary"
+                    href={PAGE_INFO.ACCOUNT_EDIT.href(TeamTab)}
+                    sx={{ position: 'absolute', top: 20, right: 20 }}
+                  >
+                    <Edit />
+                  </IconButton>
+                )}
+                <Stack direction="column">
+                  <Typography sx={{ mb: 3 }} variant="h2">
+                    {translate('team_info')}
+                  </Typography>
+                  <Grid container spacing={3}>
+                    <Grid size={{ sm: 6, xs: 12 }}>
+                      <Typography sx={{ mb: 2 }} variant="h3">
+                        {translate('team')}
+                      </Typography>
+                      <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormLabel>
+                          <Typography variant="h4">
+                            {translate('team_displayed')}
+                          </Typography>
+                        </FormLabel>
+                        <Typography>{currentTeam.name}</Typography>
+                      </FormControl>
+                      <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormLabel>
+                          <Typography variant="h4">
+                            {translate('team_type')}
+                          </Typography>
+                        </FormLabel>
+                        <Typography>
+                          {translate(
+                            currentTeam.teamType === TeamType.SINGLE
+                              ? 'team_type_single'
+                              : 'team_type_multiple',
+                          )}
+                        </Typography>
+                      </FormControl>
+                      <FormControl fullWidth sx={{ mb: 2 }}>
+                        <FormLabel>
+                          <Typography variant="h4">
+                            {translate('role')}
+                          </Typography>
+                        </FormLabel>
+                        {_.map(
+                          currentUser.getUserRoles(currentTeam.id),
+                          (userRole) => {
+                            return (
+                              <Box key={userRole.id} sx={{ mb: 1 }}>
+                                <AppRoleChip roleGroup={userRole.roleGroup} />
+                                <Typography component="div">
+                                  {userRoleToDescription(
+                                    userRole.roleGroup.name,
+                                  )}
+                                </Typography>
+                              </Box>
+                            );
+                          },
+                        )}
+                      </FormControl>
+                    </Grid>
+                    {(currentTeam.teamPlan || currentTeam.nextTeamPlan) && (
+                      <Grid size={{ sm: 6, xs: 12 }}>
+                        <Typography sx={{ mb: 2 }} variant="h3">
+                          {translate('plan')}
+                        </Typography>
+                        {currentTeam.teamPlan && (
+                          <>
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                              <FormLabel>
+                                <Typography variant="h4">
+                                  {translate('plan_name')}
+                                </Typography>
+                              </FormLabel>
+                              <Typography>
+                                {currentTeam.teamPlan.plan.name}
+                              </Typography>
+                            </FormControl>
+
+                            {EnvManager.config.APP_ENV === 'production' && (
+                              <FormControl fullWidth sx={{ mb: 2 }}>
+                                <FormLabel>
+                                  <Typography variant="h4">
+                                    {translate('usage')}
+                                  </Typography>
+                                </FormLabel>
+                                <Typography>
+                                  <Typography
+                                    component="span"
+                                    variant="inherit"
+                                  >
+                                    {currentTeam.teamPlan.currentUsage.toLocaleString()}
+                                  </Typography>
+                                  <Typography
+                                    component="span"
+                                    variant="inherit"
+                                  >
+                                    /
+                                  </Typography>
+                                  <Typography
+                                    component="span"
+                                    variant="inherit"
+                                  >
+                                    {(
+                                      currentTeam.teamPlan.plan.maxBalls ?? 0
+                                    ).toLocaleString()}
+                                  </Typography>
+                                </Typography>
+                              </FormControl>
+                            )}
+
+                            {currentTeam.teamPlan.plan.isPaid && (
+                              <>
+                                <FormControl fullWidth sx={{ mb: 2 }}>
+                                  <FormLabel>
+                                    <Typography variant="h4">
+                                      {translate('validity_period')}
+                                    </Typography>
+                                  </FormLabel>
+                                  <Typography>
+                                    {moment(
+                                      currentTeam.teamPlan.startDate,
+                                    ).format(DATETIME_FORMAT)}
+                                    {' - '}
+                                    {moment(currentTeam.teamPlan.endDate).format(
+                                      DATETIME_FORMAT,
+                                    )}
+                                  </Typography>
+                                  // キャンセルの注意書き
+                                  {currentTeam.teamType === TeamType.SINGLE &&
+                                    !currentTeam.teamPlanCancelAt && currentTeam.teamPlan.isInStripeSubscription && (
+                                      <Typography
+                                        variant="caption"
+                                        color="text.secondary"
+                                        sx={{ mt: 1, display: 'block' }}
+                                      >
+                                        {translate(
+                                          'subscription_cancellation_notice',
+                                        )}
+                                      </Typography>
+                                    )}
+                                  // Apple で契約中の注意書き
+                                  {
+                                    currentTeam.teamPlan.isPendingActivation && (
+                                      <Typography
+                                        variant="caption"
+                                        color="text.secondary"
+                                        sx={{ mt: 1, display: 'block' }}
+                                      >
+                                        {translate(
+                                          'apple_subscription_active_notice',
+                                        )}
+                                      </Typography>
+                                    )}
+                                </FormControl>
+                              </>
+                            )}
+
+                            {currentTeam.teamPlanCancelAt && (
+                              <FormControl fullWidth sx={{ mb: 2 }}>
+                                <FormLabel>
+                                  <Typography variant="h4" color="warning.main">
+                                    {translate('plan_cancellation_scheduled')}
+                                  </Typography>
+                                </FormLabel>
+                                <Typography color="warning.main">
+                                  {moment(currentTeam.teamPlanCancelAt).format(
+                                    DATETIME_FORMAT,
+                                  )}
+                                </Typography>
+                              </FormControl>
+                            )}
+
+                            {currentTeam.teamPlanDowngradeAt && (
+                              <FormControl fullWidth sx={{ mb: 2 }}>
+                                <FormLabel>
+                                  <Typography variant="h4" color="warning.main">
+                                    {translate('plan_downgrade_scheduled')}
+                                  </Typography>
+                                </FormLabel>
+                                <Typography color="warning.main">
+                                  {moment(
+                                    currentTeam.teamPlanDowngradeAt,
+                                  ).format(DATETIME_FORMAT)}
+                                  {(() => {
+                                    const plan = getPlanById(
+                                      currentTeam.downgradePlanId ?? '',
+                                    );
+                                    return plan
+                                      ? ` — ${translate(plan.nameKey)}`
+                                      : '';
+                                  })()}
+                                </Typography>
+                              </FormControl>
+                            )}
+                          </>
+                        )}
+
+                        {currentTeam.nextTeamPlan && (
+                          <>
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                              <FormLabel>
+                                <Typography variant="h4">
+                                  {translate('next_plan_name')}
+                                </Typography>
+                              </FormLabel>
+                              <Typography>
+                                {currentTeam.nextTeamPlan.plan.name}
+                              </Typography>
+                            </FormControl>
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                              <FormLabel>
+                                <Typography variant="h4">
+                                  {translate('next_validity_period')}
+                                </Typography>
+                              </FormLabel>
+                              <Typography>
+                                {moment(
+                                  currentTeam.nextTeamPlan.startDate,
+                                ).format(DATETIME_FORMAT)}
+                                {' - '}
+                                {moment(
+                                  currentTeam.nextTeamPlan.endDate,
+                                ).format(DATETIME_FORMAT)}
+                              </Typography>
+                            </FormControl>
+                          </>
+                        )}
+                        {(!EnvManager.isPrd ||
+                          currentTeam.teamType !== TeamType.MULTIPLE) &&
+                          currentTeam.teamPlan?.stripeSubscription && (
+                            <FormControl fullWidth sx={{ mt: 3 }}>
+                              <Button
+                                variant="outlined"
+                                color="primary"
+                                onClick={handleBillingPortal}
+                                disabled={isSubmitting}
+                              >
+                                {translate('open_billing_portal')}
+                              </Button>
+                            </FormControl>
+                          )}
+                        {/* 総使用量 */}
+                        {EnvManager.config.APP_ENV !== 'production' &&
+                          currentTeam.teamPlan?.isActive && (
+                            <FormControl fullWidth sx={{ mb: 2 }}>
+                              <FormLabel>
+                                <Typography variant="h4">
+                                  {translate('total_usage')}
+                                </Typography>
+                              </FormLabel>
+                              <Typography>
+                                <Typography component="span" variant="inherit">
+                                  {translate('analyzed_balls')}
+                                  {' : '}
+                                </Typography>
+                                <Typography component="span" variant="inherit">
+                                  {StringUtil.getTeamItemBallUsageString(
+                                    currentTeam,
+                                  )}
+                                </Typography>
+                              </Typography>
+                              <Typography>
+                                <Typography component="span" variant="inherit">
+                                  {translate('ai_coach_usage')}
+                                  {' : '}
+                                </Typography>
+                                <Typography component="span" variant="inherit">
+                                  {currentTeam.teamPlan.currentAiCoachUsage.toLocaleString()}
+                                </Typography>
+                                <Typography component="span" variant="inherit">
+                                  /
+                                </Typography>
+                                <Typography component="span" variant="inherit">
+                                  {(
+                                    currentTeam.teamPlan.plan.maxAiCoachs ?? 0
+                                  ).toLocaleString()}
+                                </Typography>
+                              </Typography>
+                            </FormControl>
+                          )}
+                      </Grid>
+                    )}
+                  </Grid>
+                </Stack>
+              </Paper>
+            </TabPanel>
+
+            <TabPanel index={ChangePasswordTab} value={tabValue}>
+              <Paper
+                sx={{
+                  p: 3,
+                  position: 'relative',
+                }}
+              >
+                <IconButton
+                  color="primary"
+                  href={PAGE_INFO.ACCOUNT_EDIT.href(ChangePasswordTab)}
+                  sx={{ position: 'absolute', top: 20, right: 20 }}
+                >
+                  <Edit />
+                </IconButton>
+                <Stack direction="column" spacing={3}>
+                  <Typography variant="h2">
+                    {translate('change_password')}
+                  </Typography>
+                  <FormControl>
+                    <Stack direction="row" spacing={1}>
+                      <Typography>
+                        {translate('password_last_change')}
+                      </Typography>
+                      <Typography fontWeight="bold">
+                        {currentUser?.passwordUpdatedDate
+                          ? moment(currentUser?.passwordUpdatedDate).format(
+                            'YYYY-MM-DD',
+                          )
+                          : '-'}
+                      </Typography>
+                    </Stack>
+                  </FormControl>
+                </Stack>
+              </Paper>
+            </TabPanel>
+          </>
+        )}
+      </Stack>
+    </Container>
+  );
+}
+
+export default function Page() {
+  const currentUser = useSelector((state) => state.user.me);
+  const currentTeam = useSelector((state) => state.user.currentTeam);
+
+  return (
+    currentUser &&
+    currentTeam && (
+      <PageInner currentUser={currentUser} currentTeam={currentTeam} />
+    )
+  );
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <ConsoleLayout>{page}</ConsoleLayout>;
+};

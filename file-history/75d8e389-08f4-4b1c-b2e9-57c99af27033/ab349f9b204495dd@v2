@@ -1,0 +1,19 @@
+import { EnvManager } from '@/constants/env.constants';
+import { Team, TeamType } from '@/models/team';
+
+/**
+ * シングルユーザーチームかつ staging/production 環境かどうかを判定
+ * 開発環境 (dev) では false を返す
+ *
+ * @param team - チーム情報
+ * @returns staging/production 環境のシングルユーザーチームの場合 true
+ *
+ * @see https://knowhere-org.slack.com/archives/C03EGR0M9AN/p1759381143908219
+ */
+export const isStagingOrProductionSingleTeam = (team: Team): boolean => {
+  return (
+    (EnvManager.config.APP_ENV === 'staging' ||
+      EnvManager.config.APP_ENV === 'production') &&
+    team.teamType === TeamType.SINGLE
+  );
+};

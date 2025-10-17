@@ -1,0 +1,263 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/ai_coach_report_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/paging_data.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/utils/build_context_ext.dart';
+import 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';
+import 'package:baseball_detector_flutter/utils/platform.dart';
+import 'package:baseball_detector_flutter/views/components/custom_app_bar.dart';
+import 'package:baseball_detector_flutter/views/components/custom_loading_indicator.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_access_denied_navigation.dart';
+import 'package:baseball_detector_flutter/views/pages/home/home_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/hooks/use_subscription.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/components/usage_limit_alert_snack_bar.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/ai_coach_report/ai_coach_report_container.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/recording_fab.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/resource_list_tab.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/session_meta_data_menu_anchor.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/session_scatter_chart.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/components/session_tab_bar.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/hooks/use_session_refresh.dart';
+import 'package:baseball_detector_flutter/views/routers/home_router.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+
+/// A page widget class to display data of a session.
+/// It shows the list of the resources (i.e., videos and their analysis results) associated to the session.
+/// By tapping an analyzed resource item, its `ResourceDetailsPage` will open.
+/// Uploading local videos and re-analyzing failed videos also will be managed by this widget.
+class SessionDetailsPage extends HookConsumerWidget {
+  const SessionDetailsPage({
+    required this.session,
+    required this.teamId,
+    required this.sessionId,
+    super.key,
+  });
+
+  final String teamId;
+  final String sessionId;
+  final Session session;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final handleAccessDenied = useAccessDeniedNavigation();
+    final currentSession = useState<Session>(session);
+    // _SessionDetailsPageContent 内で tabController を定義すると
+    // refresh 時に tab が最初に戻ってしまうためここで定義
+    final tabController = useTabController(initialLength: 3);
+    final resourceState = ref.watch(
+      resourceDataListControllerProvider(
+        teamId: teamId,
+        sessionId: sessionId,
+      ),
+    );
+
+    return resourceState.when(
+      data: (resourceData) => _SessionDetailsPageContent(
+        resourcePagingData: resourceData,
+        currentSession: currentSession,
+        teamId: teamId,
+        tabController: tabController,
+        onSessionUpdated: (updatedSession) {
+          currentSession.value = updatedSession;
+        },
+      ),
+      loading: () => Scaffold(
+        appBar: CustomAppBar(isBackNavigation: true),
+        body: const CustomLoadingIndicator(),
+      ),
+      error: (error, stackTrace) {
+        if (error is ForbiddenFailure) {
+          handleAccessDenied();
+          return const SizedBox.shrink();
+        }
+
+        return Scaffold(
+          appBar: CustomAppBar(isBackNavigation: true),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: context.isDarkMode
+                ? ColorManager.darkSecondaryText
+                : ColorManager.secondaryText,
+            onPressed: null,
+            child: const Icon(Icons.videocam_outlined),
+          ),
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    ref
+                      ..invalidate(resourceDataListControllerProvider(
+                        teamId: teamId,
+                        sessionId: sessionId,
+                      ))
+                      ..invalidate(teamListControllerProvider);
+                  },
+                  icon: const Icon(Icons.refresh),
+                ),
+                Text(context.l10n.get_data_failed),
+                const Gap(8),
+                Text(
+                  (error is Failure)
+                      ? error.translate(context.l10n)
+                      : error.toString(),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SessionDetailsPageContent extends HookConsumerWidget {
+  const _SessionDetailsPageContent({
+    required this.resourcePagingData,
+    required this.currentSession,
+    required this.teamId,
+    required this.tabController,
+    required this.onSessionUpdated,
+  });
+
+  final PagingData<ResourceData> resourcePagingData;
+  final ValueNotifier<Session> currentSession;
+  final String teamId;
+  final TabController tabController;
+  final void Function(Session) onSessionUpdated;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userId = ref.watch(profileStorageProvider).getUserId();
+    final accessibleContents =
+        ref.watch(userAccessibleContentsControllerProvider);
+    final (canSubscribe, subscriptionStatus, restrictionMessage) =
+        useSubscription();
+
+    final onRefresh = useSessionRefresh(currentSession: currentSession);
+
+    final reportState = ref.watch(
+      aICoachReportControllerProvider(
+        teamId: teamId,
+        reportId: currentSession.value.aiCoachReport?.id,
+      ),
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          tooltip: "Back",
+          icon: Icon(
+            isIos ? Icons.arrow_back_ios_new : Icons.arrow_back,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+        title: SessionMetaDataMenuAnchor(session: currentSession.value),
+        actions: [
+          if (!currentSession.value
+              .isEditableByUser(userId, accessibleContents))
+            const SizedBox.shrink()
+          else
+            IconButton(
+              onPressed: () async {
+                final result = await Navigator.of(context).pushNamed(
+                  HomeRouter.editSessionPage,
+                  arguments: {'session': currentSession.value},
+                );
+                if (result is Session) {
+                  currentSession.value = result;
+                  onSessionUpdated(result);
+                }
+              },
+              icon: const Icon(Icons.settings),
+            ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(24),
+          child: Padding(
+            padding: HomePage.bodyPadding,
+            child: SessionTabBar(controller: tabController),
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: HomePage.bodyPadding.copyWith(top: 8),
+          child: Stack(
+            children: [
+              TabBarView(
+                controller: tabController,
+                children: [
+                  ResourceListTab(
+                    resourcePagingData: resourcePagingData,
+                    session: currentSession.value,
+                    onRefresh: onRefresh,
+                  ),
+                  SessionScatterChart(
+                    teamId: teamId,
+                    sessionId: currentSession.value.id!,
+                  ),
+                  RefreshIndicator(
+                    onRefresh: () async {
+                      await onRefresh();
+                      // タブを AI レポートに移動する
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        tabController.animateTo(2);
+                      });
+                    },
+                    child: AICoachReportContainer(
+                      player: currentSession.value.player,
+                      currentSession: currentSession,
+                      reportState: reportState,
+                    ),
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: context.isPortrait
+                      ? const EdgeInsets.only(right: 66, bottom: 10)
+                      : const EdgeInsets.only(right: 66, bottom: 32),
+                  child: const UsageLimitAlertSnackBar(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: ListenableBuilder(
+        listenable: tabController,
+        builder: (context, child) {
+          if (tabController.index == 0) {
+            return RecordingFab(
+              currentSession: currentSession.value,
+              teamId: teamId,
+              canSubscribe: canSubscribe,
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
+    );
+  }
+}

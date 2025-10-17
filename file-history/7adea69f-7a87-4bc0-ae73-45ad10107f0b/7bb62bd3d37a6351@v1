@@ -1,0 +1,73 @@
+services:
+  localstack:
+    tty: true
+    image: public.ecr.aws/localstack/localstack
+    environment:
+      DISABLE_CORS_CHECKS: 1
+      DISABLE_CUSTOM_CORS_S3: 1
+    ports:
+      - '4566:4566'
+      - '4510-4559:4510-4559'
+    networks:
+      - base-network
+  aws-command-runner:
+    tty: true
+    image: public.ecr.aws/aws-cli/aws-cli
+    entrypoint: bash /initialization/entry.sh
+    # command: s3 mb s3://test-bucket --endpoint-url http://host.docker.internal:4566
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./entry.sh:/initialization/entry.sh
+      - ./json:/initialization/json
+    environment:
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_DEFAULT_REGION: ap-northeast-1
+    depends_on:
+      localstack:
+        condition: service_healthy
+      magnito:
+        condition: service_healthy
+    networks:
+      - base-network
+  db:
+    image: public.ecr.aws/docker/library/postgres:15.1
+    volumes:
+     - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5430:5432'
+    networks:
+      - base-network
+  magnito:
+    # 事前ビルドされたイメージを使用
+    image: ${AWS_ACCOUNT_ID}.dkr.ecr.us-east-1.amazonaws.com/dev-ci-runner-images:magnito-latest
+    ports:
+      - '5050-5052:5050-5052'
+    environment:
+      COGNITO_USER_POOL_ID: us-east-1_example
+      COGNITO_USER_POOL_CLIENT_ID: example-client-id
+      COGNITO_ACCESS_KEY: test
+      COGNITO_SECRET_KEY: test
+      COGNITO_REGION: us-east-1
+      SMTP_HOST: inbucket
+      SMTP_PORT: 2500
+      SMTP_USER: fake_mail_user
+      SMTP_PASS: fake_mail_password
+    networks:
+      - base-network
+    volumes:
+      - ./magnito_data:/usr/src/app/data
+  inbucket:
+    image: public.ecr.aws/supabase/inbucket:3.0.3
+    ports:
+      - '2500:2500'
+      - '9009:9000'
+    networks:
+      - base-network
+networks:
+  base-network:

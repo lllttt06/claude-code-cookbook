@@ -1,0 +1,17 @@
+import { Container } from '@mui/material';
+import { ReactElement } from 'react';
+
+import AccessDenied from '@/components/common/access-denied';
+import SigningLayout from '@/layouts/signing.layout';
+
+export default function AccessDeniedPage() {
+  return (
+    <Container>
+      <AccessDenied sx={{ mt: 4 }} />
+    </Container>
+  );
+}
+
+AccessDeniedPage.getLayout = function getLayout(page: ReactElement) {
+  return <SigningLayout>{page}</SigningLayout>;
+};

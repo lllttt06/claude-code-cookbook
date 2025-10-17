@@ -1,0 +1,273 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/app_links_provider.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/components/custom_button.dart';
+import 'package:baseball_detector_flutter/views/components/custom_password_text_field.dart';
+import 'package:baseball_detector_flutter/views/components/custom_text_form_field.dart';
+import 'package:baseball_detector_flutter/views/components/login_layout.dart';
+import 'package:baseball_detector_flutter/views/constants/input_max_lengths.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_effect_once.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_operation.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_single_action.dart';
+import 'package:baseball_detector_flutter/views/routers/app_router.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+import 'package:baseball_detector_flutter/views/validators/email.dart';
+import 'package:baseball_detector_flutter/views/validators/password.dart';
+
+class LoginPage extends HookConsumerWidget {
+  const LoginPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Controllers
+    final emailController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    useListenable(emailController);
+    useListenable(passwordController);
+
+    // States
+    final authError = useState<_AuthError?>(null);
+    final emailError = useState<EmailError?>(null);
+    final passwordError = useState<PasswordError?>(null);
+    final rememberMe = useState(true);
+    final loading = useState(false);
+    // useOperation hook
+    final handleOperation = useOperation<void>();
+    // 多重ログイン防止
+    final runLogin = useSingleAction<void>(asyncCallback: (_) async {
+      FocusScope.of(context).unfocus();
+      authError.value = null;
+      emailError.value = null;
+      passwordError.value = null;
+
+      // Email validation
+      final emailValidationError = validateEmailAddress(emailController.text);
+      if (emailValidationError != null) {
+        emailError.value = emailValidationError;
+        return;
+      }
+
+      // Password validation
+      final passwordValidationError = validatePassword(
+        password: passwordController.text,
+      );
+      if (passwordValidationError != null) {
+        passwordError.value = passwordValidationError;
+        return;
+      }
+
+      loading.value = true;
+      await handleOperation(
+        operation:
+            ref.read(loginStateControllerProvider.notifier).signInWithPassword(
+                  emailController.text,
+                  passwordController.text,
+                  rememberMe.value,
+                ),
+        onSucceeded: (data) {
+          loading.value = false;
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRouter.homePage,
+            (_) => false,
+          );
+          return context.l10n.login_page__login_succeeded;
+        },
+        onFailed: (error) {
+          loading.value = false;
+          if (error is IncorrectPasswordFailure) {
+            authError.value = _AuthError.incorrectPassword;
+            return null;
+          }
+          if (error is UnregisteredEmailFailure) {
+            authError.value = _AuthError.unregisteredEmail;
+            return null;
+          }
+          if (error is UnconfirmedEmailFailure) {
+            Navigator.of(context).pushNamed(
+              AppRouter.confirmCodePage,
+              arguments: {
+                'email': emailController.text,
+              },
+            );
+            return null;
+          }
+          return '${context.l10n.login_page__login_failed}: ${error.translate(context.l10n)}';
+        },
+        shouldSendErrorLog: (failure) => failure is! UnprocessableEntityFailure,
+      );
+    });
+
+    // Load cached email/password on mount
+    final emailFuture = useFuture(useMemoized(() async {
+      final profileStorage = ref.read(profileStorageProvider);
+      return await profileStorage.getEmail();
+    }));
+
+    final passwordFuture = useFuture(useMemoized(() async {
+      final profileStorage = ref.read(profileStorageProvider);
+      return await profileStorage.getPassword();
+    }));
+
+    useEffect(() {
+      final email = emailFuture.data;
+      if (email != null && email.isNotEmpty) {
+        emailController.text = email;
+      }
+      return null;
+    }, [emailFuture.data]);
+
+    useEffect(() {
+      final password = passwordFuture.data;
+      if (password != null && password.isNotEmpty) {
+        passwordController.text = password;
+      }
+      return null;
+    }, [passwordFuture.data]);
+
+    // Deep link init
+    useEffectOnce(() {
+      final appLinks = ref.read(appLinksProvider);
+      appLinks.getInitialLink();
+      final sub = appLinks.uriLinkStream.listen((uri) async {});
+      return sub.cancel;
+    });
+
+    return LoginLayout(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Email field
+          CustomTextFormField(
+            controller: emailController,
+            label: Text(
+              context.l10n.login_page__email_hint,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+            maxLength: InputMaxLengths.email,
+            textInputAction: TextInputAction.next,
+            errorText: emailError.value != null
+                ? translateEmailError(context, emailError.value)
+                : authError.value == _AuthError.unregisteredEmail
+                    ? context.l10n.login_page__unregistered_email
+                    : null,
+            keyboardType: TextInputType.emailAddress,
+          ),
+          const Gap(20),
+          // Password field
+          CustomPasswordTextField(
+            controller: passwordController,
+            label: Text(
+              context.l10n.login_page__password_hint,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+            maxLength: InputMaxLengths.password,
+            errorText: passwordError.value != null
+                ? translatePasswordError(context, passwordError.value)
+                : authError.value == _AuthError.incorrectPassword
+                    ? context.l10n.login_page__incorrect_password
+                    : null,
+            textInputAction: TextInputAction.done,
+          ),
+          const Gap(16),
+          // Remember me and Forgot password row
+          Row(
+            children: [
+              Checkbox(
+                value: rememberMe.value,
+                onChanged: (bool? checked) {
+                  rememberMe.value = checked!;
+                },
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+              const Gap(8),
+              Text(
+                context.l10n.login_page__remember_me,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(fontSize: 16),
+              ),
+            ],
+          ),
+          const Gap(28),
+          CustomButton(
+            variant: CustomButtonVariant.primary,
+            onPressed: !loading.value
+                ? () async {
+                    await runLogin();
+                  }
+                : null,
+            text: context.l10n.login_page__login,
+            loading: loading.value,
+          ),
+          const Gap(24),
+          GestureDetector(
+            onTap: useSingleAction<void>(asyncCallback: (_) async {
+              Navigator.of(context).pushNamed(AppRouter.forgotPasswordPage);
+            }),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(
+                context.l10n.login_page__forgot_password,
+                style: TextStyleManager.link.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const Gap(8),
+          GestureDetector(
+            onTap: useSingleAction<void>(asyncCallback: (_) async {
+              Navigator.of(context).pushNamed(AppRouter.signUpPage);
+            }),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 4,
+                children: [
+                  Text(
+                    context.l10n.login_page__dont_have_account,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                        ),
+                  ),
+                  Text(
+                    context.l10n.login_page__sign_up,
+                    style: TextStyleManager.link.copyWith(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+enum _AuthError {
+  unregisteredEmail,
+  incorrectPassword,
+}

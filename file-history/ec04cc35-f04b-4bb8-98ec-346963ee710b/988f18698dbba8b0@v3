@@ -1,0 +1,168 @@
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/enums/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_domain.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_level.dart';
+import 'package:baseball_detector_flutter/data/models/role_group.dart';
+import '../record_definitions.dart';
+
+part 'roles.freezed.dart';
+
+@freezed
+abstract class Role with _$Role {
+  const factory Role({
+    required String id,
+    required String roleGroupId,
+    required RoleDomain domain,
+    required RoleLevel level,
+    required bool isTeamCrossing,
+  }) = _Role;
+}
+
+const roleGroupSuperAdmin = RoleGroup(
+  id: 'a0000000-0000-0000-0000-000000000001',
+  isAllTeamsAccess: true,
+  name: AppRole.superAdmin,
+);
+
+const roleGroupTeamAdmin = RoleGroup(
+  id: 'a0000000-0000-0000-0000-000000000002',
+  isAllTeamsAccess: false,
+  name: AppRole.teamAdmin,
+);
+
+const roleGroupTeamManager = RoleGroup(
+  id: 'a0000000-0000-0000-0000-000000000003',
+  isAllTeamsAccess: false,
+  name: AppRole.teamManager,
+);
+
+const roleGroupTeamMember = RoleGroup(
+  id: 'a0000000-0000-0000-0000-000000000004',
+  isAllTeamsAccess: false,
+  name: AppRole.teamMember,
+);
+
+const roleGroupPersonalUser = RoleGroup(
+  id: 'a0000000-0000-0000-0000-000000000005',
+  isAllTeamsAccess: false,
+  name: AppRole.personalUser,
+);
+
+final rolesSuperAdmin = [
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000001',
+    roleGroupId: roleGroupSuperAdmin.id,
+    domain: RoleDomain.basic,
+    level: RoleLevel.read,
+    isTeamCrossing: true,
+  ),
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000002',
+    roleGroupId: roleGroupSuperAdmin.id,
+    domain: RoleDomain.management,
+    level: RoleLevel.read,
+    isTeamCrossing: true,
+  ),
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000009',
+    roleGroupId: roleGroupSuperAdmin.id,
+    domain: RoleDomain.admin,
+    level: RoleLevel.write,
+    isTeamCrossing: true,
+  ),
+];
+
+final rolesTeamAdmin = [
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000003',
+    roleGroupId: roleGroupTeamAdmin.id,
+    domain: RoleDomain.basic,
+    level: RoleLevel.admin,
+    isTeamCrossing: true,
+  ),
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000004',
+    roleGroupId: roleGroupTeamAdmin.id,
+    domain: RoleDomain.management,
+    level: RoleLevel.admin,
+    isTeamCrossing: true,
+  ),
+];
+
+final rolesTeamManager = [
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000005',
+    roleGroupId: roleGroupTeamManager.id,
+    domain: RoleDomain.basic,
+    level: RoleLevel.write,
+    isTeamCrossing: true,
+  ),
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000006',
+    roleGroupId: roleGroupTeamManager.id,
+    domain: RoleDomain.management,
+    level: RoleLevel.read,
+    isTeamCrossing: true,
+  ),
+];
+
+final rolesTeamMember = [
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000007',
+    roleGroupId: roleGroupTeamMember.id,
+    domain: RoleDomain.basic,
+    level: RoleLevel.write,
+    isTeamCrossing: false,
+  ),
+];
+
+final rolesPersonalUser = [
+  Role(
+    id: 'a0000000-0001-0000-0000-000000000008',
+    roleGroupId: roleGroupPersonalUser.id,
+    domain: RoleDomain.basic,
+    level: RoleLevel.admin,
+    isTeamCrossing: true,
+  ),
+];
+
+final _time = DateTime.utc(2024, 1, 1);
+
+final roleGroupRecords = RecordDefinitions<RoleGroup>(
+  table: 'role_groups',
+  data: [
+    roleGroupSuperAdmin,
+    roleGroupTeamAdmin,
+    roleGroupTeamManager,
+    roleGroupTeamMember,
+    roleGroupPersonalUser,
+  ],
+  columns: {
+    'id': (e) => e.id,
+    'is_all_teams_access': (e) => e.isAllTeamsAccess,
+    'name': (e) => e.name.toJson(),
+    'created_at': (_) => _time,
+    'updated_at': (_) => _time,
+  },
+);
+
+final RecordDefinitions<Role> roleRecords = RecordDefinitions<Role>(
+  table: 'roles',
+  data: [
+    ...rolesSuperAdmin,
+    ...rolesTeamAdmin,
+    ...rolesTeamManager,
+    ...rolesTeamMember,
+    ...rolesPersonalUser,
+  ],
+  columns: {
+    'id': (e) => e.id,
+    'role_group_id': (e) => e.roleGroupId,
+    'domain': (e) => e.domain.toJson(),
+    'level': (e) => e.level.toJson(),
+    'is_team_crossing': (e) => e.isTeamCrossing,
+  },
+);

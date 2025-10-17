@@ -1,0 +1,353 @@
+# Super Admin チーム切り替え機能 実装計画
+
+## 概要
+
+Super Admin / Super Reader 向けに、チーム一覧ページ (`web/src/pages/super-admin/teams/index.tsx`) から直接チームを切り替えられる機能を追加します。
+
+現状、通常ユーザーと同じくアカウント設定ページ (`web/src/pages/account/edit.tsx`) でチーム切り替えを行っていますが、チーム数が増加したため、より効率的な導線が必要となっています。
+
+## 現状分析
+
+### 既存のチーム切り替え実装
+
+**場所**: `web/src/pages/account/edit.tsx:193-201`
+
+```typescript
+const setCurrentTeam = async (teamId: string) => {
+  dispatch(
+    userDataActions.setCurrentTeam({
+      teamId,
+    }),
+  );
+  services.localStorage.setCurrentTeamId(currentUser.id, teamId);
+  router.replace(PAGE_INFO.ACCOUNT.href(TeamTab));
+};
+```
+
+**Redux Action**: `web/src/store/slices/user.slice.ts:79-96`
+
+```typescript
+setCurrentTeam(
+  state: UserDataState,
+  action: PayloadAction<{ teamId: string }>,
+): void {
+  const validTeams = state.accessibleTeams.filter((t) => {
+    return _.some(
+      state.me?.givenUserRoles[t.id] ?? [],
+      (r) => r.deleteFlag === false,
+    );
+  });
+  const foundTeam = state.accessibleTeams.find(
+    (x) => x.id == action.payload.teamId,
+  );
+  state.currentTeam = foundTeam ?? state.currentTeam;
+  logger.debug(
+    `Team updated: ID=${state.currentTeam?.id}, name=${state.currentTeam?.name}`,
+  );
+}
+```
+
+### Super Admin の権限判定
+
+**場所**: `web/src/pages/super-admin/teams/index.tsx:280-294`
+
+```typescript
+const hasSuperUserReadAccess = User.isAccessible(
+  currentUser,
+  'all',
+  'admin',
+  'read',
+  false,
+);
+
+const hasSuperUserWriteAccess = User.isAccessible(
+  currentUser,
+  'all',
+  'admin',
+  'write',
+  false,
+);
+```
+
+### Super Admin のチーム取得
+
+**場所**: `web/src/pages/_app.tsx:114-119`
+
+```typescript
+if (User.isAccessible(user, 'all', 'admin', 'read', false)) {
+  const { teams, error } = await services.default.superAdmin.getTeams({
+    statusFilter: 'active'
+  });
+  if (teams) {
+    accessibleTeams = teams;
+  }
+}
+```
+
+## 実装方針
+
+### 1. UI コンポーネント追加
+
+チーム一覧の各行にチーム切り替えボタンを追加します。
+
+**配置場所**: テーブルの Action カラム（既存の `MoreHoriz` メニュー内）
+
+**表示条件**:
+- `hasSuperUserReadAccess === true`
+- 現在選択中のチーム以外
+
+### 2. チーム切り替え処理
+
+既存の `setCurrentTeam` ロジックを再利用します。
+
+**実装手順**:
+
+1. チーム切り替えハンドラー関数を追加
+2. Redux Action (`userDataActions.setCurrentTeam`) をディスパッチ
+3. LocalStorage に現在のチーム ID を保存
+4. ページリロードまたは状態更新
+
+### 3. 確認ダイアログ
+
+チーム切り替え時に確認モーダルを表示します。
+
+**理由**:
+- 誤操作防止
+- 現在の作業コンテキストが変わることの明示
+
+**既存コンポーネント利用**: `ConfirmationModal`（既に同ページで使用中）
+
+## 実装詳細
+
+### Phase 1: ハンドラー関数追加
+
+**ファイル**: `web/src/pages/super-admin/teams/index.tsx`
+
+```typescript
+const onSwitchTeamButtonClicked = async (team: Team) => {
+  setConfirmModalIsOpen(true);
+  setConfirmModal({
+    title: translate('switch_to_team', { teamName: team.name }),
+    cbOk: async () => {
+      dispatch(
+        userDataActions.setCurrentTeam({
+          teamId: team.id,
+        }),
+      );
+      services.localStorage.setCurrentTeamId(currentUser.id, team.id);
+
+      // ページをリロードして新しいチームコンテキストを反映
+      await router.replace(PAGE_INFO.SUPER_ADMIN_TEAMS.href());
+      location.reload();
+    },
+  });
+};
+```
+
+### Phase 2: UI に切り替えボタン追加
+
+**場所**: `web/src/pages/super-admin/teams/index.tsx:912-1018` (Menu 内)
+
+```tsx
+<Menu
+  anchorEl={anchorEl}
+  open={selectedTeamId === team.id}
+  onClose={closeMenu}
+>
+  {team.deletionScheduledAt ? (
+    <MenuItem
+      onClick={() => {
+        onReactivateButtonClicked(team);
+        closeMenu();
+      }}
+    >
+      {translate('reactivate_team')}
+    </MenuItem>
+  ) : (
+    <>
+      {/* 既存メニュー項目 */}
+      <MenuItem
+        onClick={() => {
+          router.push(PAGE_INFO.TEAM_PLANS.href(team.id));
+          closeMenu();
+        }}
+      >
+        {translate('team_plan_details')}
+      </MenuItem>
+
+      {/* 🆕 チーム切り替えメニュー項目 */}
+      {hasSuperUserReadAccess && currentTeam.id !== team.id && (
+        <MenuItem
+          onClick={() => {
+            onSwitchTeamButtonClicked(team);
+            closeMenu();
+          }}
+        >
+          {translate('switch_to_this_team')}
+        </MenuItem>
+      )}
+
+      {/* 既存の Super Admin 専用メニュー */}
+      {hasSuperUserWriteAccess ? (
+        <>
+          {/* ... 既存項目 ... */}
+        </>
+      ) : (
+        <></>
+      )}
+    </>
+  )}
+</Menu>
+```
+
+### Phase 3: 翻訳キー追加
+
+**ファイル**: 翻訳ファイル（`i18n` 関連）
+
+```json
+{
+  "switch_to_this_team": "このチームに切り替える",
+  "switch_to_team": "「{{teamName}}」に切り替えますか？"
+}
+```
+
+### Phase 4: 視覚的フィードバック
+
+現在選択中のチームを視覚的に識別できるようにします。
+
+**実装方法**:
+- 現在のチーム行に特別なスタイル（背景色、アイコンなど）を適用
+- テーブル行の `sx` prop に条件付きスタイルを追加
+
+```tsx
+<TableRow
+  key={team.id}
+  sx={{
+    backgroundColor: team.deletionScheduledAt
+      ? 'gray'
+      : team.maxBalls === 0 && team.maxAiCoachCount === 0 && team.nextTeamPlan == null
+        ? '#fff3e0'
+        : currentTeam.id === team.id
+          ? '#e3f2fd'  // 🆕 現在のチームをハイライト
+          : 'null',
+    // ... 既存スタイル
+  }}
+>
+```
+
+## テスト計画
+
+### 単体テスト
+
+1. `onSwitchTeamButtonClicked` 関数が正しく動作するか
+2. Redux Action が正しくディスパッチされるか
+3. LocalStorage に正しく保存されるか
+
+### 統合テスト
+
+1. チーム切り替え後、正しいチームコンテキストで画面が表示されるか
+2. 削除予定チームでは切り替えボタンが表示されないか
+3. 現在のチームでは切り替えボタンが表示されないか
+4. Super Admin 権限がない場合、切り替えボタンが表示されないか
+
+### E2E テスト
+
+1. チーム一覧からチーム切り替え
+2. 確認ダイアログで「OK」
+3. ページがリロードされ、新しいチームのデータが表示される
+4. ヘッダーのチーム名が更新される
+
+## セキュリティ考慮事項
+
+### 権限チェック
+
+- フロントエンドでの権限チェック: `hasSuperUserReadAccess`
+- バックエンドでの権限検証は既存の `User.isAccessible` で実施済み
+
+### 不正なチーム ID
+
+- Redux の `setCurrentTeam` で `accessibleTeams` 内のチームのみ許可
+- 存在しないチーム ID は無視される
+
+## パフォーマンス考慮事項
+
+### ページリロード
+
+チーム切り替え後に `location.reload()` を実行します。
+
+**理由**:
+- チーム依存のデータを確実にリフレッシュ
+- Redux store 全体を新しいチームコンテキストで再初期化
+
+**代替案**:
+- 必要なデータのみ再取得（より複雑だが、UX は向上）
+
+## マイルストーン
+
+### Milestone 1: 基本実装（必須）
+
+- [ ] チーム切り替えハンドラー追加
+- [ ] Menu 内にボタン追加
+- [ ] 確認ダイアログ統合
+- [ ] 翻訳キー追加
+
+### Milestone 2: UX 改善（推奨）
+
+- [ ] 現在のチームをハイライト
+- [ ] 切り替え中のローディング表示
+- [ ] 成功通知（snackbar）
+
+### Milestone 3: テスト（必須）
+
+- [ ] 単体テスト追加
+- [ ] E2E テスト追加
+
+## リスク管理
+
+### リスク 1: ページリロード時のデータ損失
+
+**対策**: チーム切り替え前に未保存データがある場合は警告を表示
+
+### リスク 2: Redux State の不整合
+
+**対策**: `location.reload()` で確実に State をリセット
+
+### リスク 3: 誤操作
+
+**対策**: 確認ダイアログで明示的な同意を取得
+
+## 将来の拡張
+
+### オプション 1: クイックスイッチャー
+
+検索機能付きのチーム切り替えモーダルを追加（チーム数が更に増加した場合）
+
+### オプション 2: 最近使用したチーム
+
+よく切り替えるチームをトップに表示
+
+### オプション 3: チーム切り替え履歴
+
+切り替え履歴を LocalStorage に保存し、素早く前のチームに戻れるようにする
+
+## 参考資料
+
+- 既存実装: `web/src/pages/account/edit.tsx:193-201`
+- Redux Action: `web/src/store/slices/user.slice.ts:79-96`
+- Super Admin 判定: `web/src/pages/_app.tsx:114-119`
+- 確認ダイアログ: `web/src/components/modal/confirmation-modal.tsx`
+
+## 承認
+
+実装開始前に以下を確認してください：
+
+- [ ] 実装方針の承認
+- [ ] UI/UX デザインの承認
+- [ ] セキュリティレビュー
+- [ ] パフォーマンスへの影響評価
+
+---
+
+**作成日**: 2025-10-13
+**対象バージョン**: 現在の develop ブランチ
+**実装予定**: Milestone 1 から順次実装

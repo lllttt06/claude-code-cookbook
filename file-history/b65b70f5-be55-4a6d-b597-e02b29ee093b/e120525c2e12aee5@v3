@@ -1,0 +1,44 @@
+// Package imports:
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/providers/repository_provider.dart';
+
+part 'current_team_controller.g.dart';
+
+@riverpod
+class CurrentTeamController extends _$CurrentTeamController {
+  @override
+  Future<Result<Failure, Team>> build() async {
+    final teamId = ref.watch(profileStorageProvider).getTeamId();
+    if (teamId == null) {
+      return Left(Failure.undefined(
+        code: 'CTCC-001',
+        description: (l10n) => 'No team ID found in profile storage',
+      ));
+    }
+
+    final repository = ref.watch(repositoryProvider);
+    return await repository.getTeam(teamId: teamId);
+  }
+
+  Future<void> refresh() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final teamId = ref.read(profileStorageProvider).getTeamId();
+      if (teamId == null) {
+        return Left(Failure.undefined(
+          code: 'CTCC-002',
+          description: (l10n) => 'No team ID found in profile storage',
+        ));
+      }
+
+      final repository = ref.read(repositoryProvider);
+      return await repository.getTeam(teamId: teamId);
+    });
+  }
+}

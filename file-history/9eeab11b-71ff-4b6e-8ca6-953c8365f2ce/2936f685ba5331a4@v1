@@ -1,0 +1,592 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:gap/gap.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/gen/assets.gen.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/build_context_ext.dart';
+
+@immutable
+class CoachMarkStep {
+  const CoachMarkStep({
+    required this.identifier,
+    required this.targetKey,
+    required this.icon,
+    required this.title,
+    required this.checklistItems,
+    this.description,
+    this.image,
+    this.align = ContentAlign.top,
+    this.shape = ShapeLightFocus.Circle,
+    this.radius = RecordingCoachMarks.focusRadius,
+  });
+
+  final String identifier;
+  final GlobalKey targetKey;
+  final IconData icon;
+  final String title;
+  final List<String> checklistItems;
+  final String? description;
+  final AssetGenImage? image;
+  final ContentAlign align;
+  final ShapeLightFocus shape;
+  final double radius;
+
+  bool get hasImage => image != null;
+  bool get hasDescription => (description ?? '').isNotEmpty;
+  bool get hasMediaContent => hasImage || hasDescription;
+}
+
+class RecordingCoachMarkTargets {
+  const RecordingCoachMarkTargets({
+    required this.recordButtonKey,
+    required this.analysisModeKey,
+    required this.focusButtonKey,
+  });
+
+  final GlobalKey recordButtonKey;
+  final GlobalKey analysisModeKey;
+  final GlobalKey focusButtonKey;
+}
+
+class RecordingCoachMarks {
+  static const double focusRadius = 8.0;
+
+  static List<TargetFocus> createTargets({
+    required List<CoachMarkStep> steps,
+    void Function(int currentStep, int totalSteps)? onStepChange,
+    VoidCallback? onLaunchUrl,
+  }) {
+    if (steps.isEmpty) {
+      return const [];
+    }
+
+    return steps.asMap().entries.map((entry) {
+      final index = entry.key;
+      final step = entry.value;
+      final totalSteps = steps.length;
+
+      return TargetFocus(
+        identify: step.identifier,
+        keyTarget: step.targetKey,
+        shape: step.shape,
+        radius: step.radius,
+        contents: [
+          TargetContent(
+            align: step.align,
+            builder: (contentContext, controller) {
+              return _CoachMarkCard(
+                step: step,
+                onNext: () {
+                  onStepChange?.call(index + 1, totalSteps);
+                  controller.next();
+                },
+                onLaunchUrl: onLaunchUrl,
+              );
+            },
+          ),
+        ],
+      );
+    }).toList();
+  }
+
+  static void show({
+    required BuildContext context,
+    required RecordingCoachMarkTargets targets,
+    VoidCallback? onFinish,
+    VoidCallback? onLaunchUrl,
+    void Function(int currentStep, int totalSteps)? onStepChange,
+    List<CoachMarkStep> additionalSteps = const [],
+  }) {
+    _setPortraitOrientations();
+
+    final locale = Localizations.localeOf(context);
+    final isJapanese = locale.languageCode == 'ja';
+
+    final steps = [
+      ..._buildDefaultSteps(
+        context: context,
+        targets: targets,
+        isJapanese: isJapanese,
+      ),
+      ...additionalSteps,
+    ];
+
+    if (steps.isEmpty) {
+      _restoreOrientations();
+      return;
+    }
+
+    TutorialCoachMark(
+      colorShadow:
+          _RecordingCoachMarkStyles.overlayColor.withValues(alpha: 0.7),
+      targets: createTargets(
+        steps: steps,
+        onStepChange: onStepChange,
+        onLaunchUrl: onLaunchUrl,
+      ),
+      alignSkip: Alignment.topRight,
+      hideSkip: true,
+      onFinish: () {
+        _restoreOrientations();
+        onFinish?.call();
+      },
+    ).show(context: context);
+  }
+
+  static void _setPortraitOrientations() {
+    SystemChrome.setPreferredOrientations(const [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+  }
+
+  static void _restoreOrientations() {
+    SystemChrome.setPreferredOrientations(const [
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
+
+  static List<CoachMarkStep> _buildDefaultSteps({
+    required BuildContext context,
+    required RecordingCoachMarkTargets targets,
+    required bool isJapanese,
+  }) {
+    final l10n = context.l10n;
+    return [
+      CoachMarkStep(
+        identifier: 'analysis_mode',
+        targetKey: targets.analysisModeKey,
+        icon: Icons.settings_outlined,
+        title: l10n.recording_coach_marks__analysis_mode_title,
+        description: l10n.recording_coach_marks__analysis_mode_description,
+        checklistItems: [
+          l10n.recording_coach_marks__analysis_mode_tip_pitching,
+          l10n.recording_coach_marks__analysis_mode_tip_hitting,
+        ],
+      ),
+      CoachMarkStep(
+        identifier: 'focus',
+        targetKey: targets.focusButtonKey,
+        icon: Icons.center_focus_strong_outlined,
+        title: l10n.recording_coach_marks__focus_title,
+        description: l10n.recording_coach_marks__focus_description,
+        checklistItems: [
+          l10n.recording_coach_marks__focus_tip_af_to_mf,
+          l10n.recording_coach_marks__focus_tip_behind_pitcher,
+          l10n.recording_coach_marks__focus_tip_behind_catcher,
+        ],
+      ),
+      CoachMarkStep(
+        identifier: 'try_recording_from_pitcher_side',
+        targetKey: targets.recordButtonKey,
+        icon: Icons.center_focus_strong_outlined,
+        title: l10n.recording_coach_marks__pitcher_side_title,
+        image: isJapanese
+            ? Assets.images.imgPitcherSidePositionJa
+            : Assets.images.imgPitcherSidePositionEn,
+        checklistItems: [
+          l10n.recording_coach_marks__try_recording_checklist_1,
+          l10n.recording_coach_marks__try_recording_checklist_2,
+          l10n.recording_coach_marks__try_recording_checklist_3,
+        ],
+      ),
+      CoachMarkStep(
+        identifier: 'try_recording_from_catcher_side',
+        targetKey: targets.recordButtonKey,
+        icon: Icons.center_focus_strong_outlined,
+        title: l10n.recording_coach_marks__catcher_side_title,
+        image: isJapanese
+            ? Assets.images.imgCatcherSidePositionJa
+            : Assets.images.imgCatcherSidePositionEn,
+        checklistItems: [
+          l10n.recording_coach_marks__try_recording_checklist_1,
+          l10n.recording_coach_marks__try_recording_checklist_2,
+          l10n.recording_coach_marks__try_recording_checklist_3,
+        ],
+      ),
+    ];
+  }
+}
+
+class _CoachMarkCard extends StatelessWidget {
+  const _CoachMarkCard({
+    required this.step,
+    required this.onNext,
+    this.onLaunchUrl,
+  });
+
+  final CoachMarkStep step;
+  final VoidCallback onNext;
+  final VoidCallback? onLaunchUrl;
+
+  @override
+  Widget build(BuildContext context) {
+    final styles = _RecordingCoachMarkStyles.of(context);
+
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Container(
+          constraints: const BoxConstraints(maxWidth: 390),
+          margin: const EdgeInsets.only(bottom: 40),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: _RecordingCoachMarkStyles.cardBorderRadius,
+            boxShadow: styles.cardShadows,
+          ),
+          child: ClipRRect(
+            borderRadius: _RecordingCoachMarkStyles.cardBorderRadius,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _CoachMarkCardHeader(step: step, styles: styles),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (step.hasMediaContent) ...[
+                        _CoachMarkMediaSection(step: step, styles: styles),
+                        const Gap(16),
+                      ],
+                      _CoachMarkChecklist(
+                        items: step.checklistItems,
+                        styles: styles,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: onNext,
+          child: Container(
+            width: context.screenWidth,
+            height: context.screenHeight,
+            color: Colors.transparent,
+          ),
+        ),
+        if (onLaunchUrl != null)
+          Align(
+            alignment: Alignment.topRight,
+            child: _CoachMarkMoreButton(
+              onTap: onLaunchUrl!,
+              styles: styles,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class _CoachMarkCardHeader extends StatelessWidget {
+  const _CoachMarkCardHeader({
+    required this.step,
+    required this.styles,
+  });
+
+  final CoachMarkStep step;
+  final _RecordingCoachMarkStyles styles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: styles.headerGradient,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        child: Row(
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                gradient: styles.iconGradient,
+                borderRadius: _RecordingCoachMarkStyles.iconBorderRadius,
+                boxShadow: styles.iconShadow,
+              ),
+              child: Icon(
+                step.icon,
+                color: Colors.white,
+                size: 20,
+              ),
+            ),
+            const Gap(12),
+            Expanded(
+              child: Text(
+                step.title,
+                style: styles.titleTextStyle,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CoachMarkMediaSection extends StatelessWidget {
+  const _CoachMarkMediaSection({
+    required this.step,
+    required this.styles,
+  });
+
+  final CoachMarkStep step;
+  final _RecordingCoachMarkStyles styles;
+
+  @override
+  Widget build(BuildContext context) {
+    final children = <Widget>[];
+
+    if (step.hasImage) {
+      children.add(
+        ClipRRect(
+          borderRadius: _RecordingCoachMarkStyles.mediaBorderRadius,
+          child: step.image!.image(
+            width: double.infinity,
+            fit: BoxFit.contain,
+          ),
+        ),
+      );
+    }
+
+    if (step.hasDescription) {
+      if (children.isNotEmpty) {
+        children.add(const Gap(16));
+      }
+
+      children.add(
+        Text(
+          step.description!,
+          style: styles.descriptionTextStyle,
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: children,
+    );
+  }
+}
+
+class _CoachMarkChecklist extends StatelessWidget {
+  const _CoachMarkChecklist({
+    required this.items,
+    required this.styles,
+  });
+
+  final List<String> items;
+  final _RecordingCoachMarkStyles styles;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: styles.checklistBackground,
+        borderRadius: _RecordingCoachMarkStyles.checklistBorderRadius,
+        border: Border.all(
+          color: styles.checklistBorderColor,
+          width: 1.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        children: [
+          for (var i = 0; i < items.length; i++) ...[
+            Row(
+              children: [
+                const Icon(
+                  Icons.check_circle,
+                  size: 16,
+                  color: _RecordingCoachMarkStyles.primaryColor,
+                ),
+                const Gap(8),
+                Expanded(
+                  child: Text(
+                    items[i],
+                    style: styles.checklistTextStyle,
+                  ),
+                ),
+              ],
+            ),
+            if (i < items.length - 1) const Gap(12),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _CoachMarkMoreButton extends StatelessWidget {
+  const _CoachMarkMoreButton({
+    required this.onTap,
+    required this.styles,
+  });
+
+  final VoidCallback onTap;
+  final _RecordingCoachMarkStyles styles;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Assets.images.icYoutube.svg(width: 32),
+          const Gap(4),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                context.l10n.recording_coach_marks__more,
+                style: styles.moreLabelStyle,
+              ),
+              const Gap(5),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RecordingCoachMarkStyles {
+  const _RecordingCoachMarkStyles(this.theme);
+
+  final ThemeData theme;
+
+  static const Color primaryColor = Color(0xFF0052CC);
+  static const Color overlayColor = Color(0xFF091E42);
+  static const Color titleColor = Color(0xFF172B4D);
+  static const Color descriptionColor = Color(0xFF5E6C84);
+
+  static const BorderRadius cardBorderRadius =
+      BorderRadius.all(Radius.circular(16));
+  static const BorderRadius iconBorderRadius =
+      BorderRadius.all(Radius.circular(8));
+  static const BorderRadius mediaBorderRadius =
+      BorderRadius.all(Radius.circular(12));
+  static const BorderRadius checklistBorderRadius =
+      BorderRadius.all(Radius.circular(12));
+
+  static _RecordingCoachMarkStyles of(BuildContext context) =>
+      _RecordingCoachMarkStyles(Theme.of(context));
+
+  List<BoxShadow> get cardShadows => [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.08),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.04),
+          blurRadius: 24,
+          offset: const Offset(0, 8),
+        ),
+      ];
+
+  LinearGradient get headerGradient => LinearGradient(
+        colors: [
+          primaryColor.withValues(alpha: 0.08),
+          primaryColor.withValues(alpha: 0.04),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+
+  LinearGradient get iconGradient => LinearGradient(
+        colors: [
+          primaryColor,
+          primaryColor.withValues(alpha: 0.8),
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      );
+
+  List<BoxShadow> get iconShadow => [
+        BoxShadow(
+          color: primaryColor.withValues(alpha: 0.3),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
+        ),
+      ];
+
+  Color get checklistBackground => primaryColor.withValues(alpha: 0.05);
+
+  Color get checklistBorderColor => primaryColor.withValues(alpha: 0.2);
+
+  TextStyle get titleTextStyle =>
+      theme.textTheme.titleMedium?.copyWith(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: titleColor,
+        letterSpacing: -0.3,
+      ) ??
+      const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w600,
+        color: titleColor,
+        letterSpacing: -0.3,
+      );
+
+  TextStyle get descriptionTextStyle =>
+      theme.textTheme.bodyMedium?.copyWith(
+        fontSize: 16,
+        color: descriptionColor,
+        height: 1.6,
+        letterSpacing: -0.2,
+      ) ??
+      const TextStyle(
+        fontSize: 16,
+        color: descriptionColor,
+        height: 1.6,
+        letterSpacing: -0.2,
+      );
+
+  TextStyle get checklistTextStyle =>
+      theme.textTheme.bodyMedium?.copyWith(
+        color: titleColor,
+        fontSize: 15,
+        height: 1.5,
+        fontWeight: FontWeight.w500,
+        letterSpacing: -0.1,
+      ) ??
+      const TextStyle(
+        color: titleColor,
+        fontSize: 15,
+        height: 1.5,
+        fontWeight: FontWeight.w500,
+        letterSpacing: -0.1,
+      );
+
+  TextStyle get moreLabelStyle =>
+      theme.textTheme.labelMedium?.copyWith(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+      ) ??
+      const TextStyle(
+        color: Colors.white,
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+      );
+}

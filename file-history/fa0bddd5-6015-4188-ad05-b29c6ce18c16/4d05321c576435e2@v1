@@ -1,0 +1,111 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:playbook/playbook.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/apple_subscription.dart';
+import 'package:baseball_detector_flutter/data/models/enums/plan_type.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/providers/storefront_provider.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/subscription/subscription_page.dart';
+
+const storyTitle = 'SubscriptionPage';
+
+// 基本（デフォルトのプランあり）
+@GenerateScenario()
+Widget subscriptionPageDefaultPlan(BuildContext context) {
+  return SubscriptionPage(
+    currentPlan: PlanType.standard,
+    team: _fakeTeam(id: 'team1'),
+  );
+}
+
+// USA のストアフロントの場合（デフォルトのプランなし）
+@GenerateScenario()
+Widget storefrontUSAWithoutCurrentPlan(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      storefrontProvider
+          .overrideWith((ref) => Storefront(countryCode: 'USA', id: 'id')),
+    ],
+    child: SubscriptionPage(
+      currentPlan: null,
+      team: _fakeTeam(id: 'team1').copyWith(teamPlan: null),
+    ),
+  );
+}
+
+// USA のストアフロントの場合（デフォルトのプランあり）
+@GenerateScenario()
+Widget storefrontUSAWithCurrentPlan(BuildContext context) {
+  return ProviderScope(
+    overrides: [
+      storefrontProvider
+          .overrideWith((ref) => Storefront(countryCode: 'USA', id: 'id')),
+    ],
+    child: SubscriptionPage(
+      currentPlan: PlanType.standard,
+      team: _fakeTeam(id: 'team1'),
+    ),
+  );
+}
+
+// キャンセル予定あり
+@GenerateScenario()
+Widget subscriptionPageWithCancelScheduled(BuildContext context) {
+  return SubscriptionPage(
+    currentPlan: PlanType.standard,
+    team: _fakeTeam(
+      id: 'team1',
+      cancelAt: DateTime(2222, 2, 22),
+    ),
+  );
+}
+
+// ダウングレード予定あり（適用後プラン名あり）
+@GenerateScenario()
+Widget subscriptionPageWithDowngradeScheduled(BuildContext context) {
+  return SubscriptionPage(
+    currentPlan: PlanType.standard,
+    team: _fakeTeam(
+      id: 'team1',
+      downgradeAt: DateTime(2222, 2, 22),
+      downgradePlanId: '00000001-0000-0050-0000-000000000000', // LIGHT plan
+    ),
+  );
+}
+
+Team _fakeTeam({
+  required String id,
+  DateTime? cancelAt,
+  DateTime? downgradeAt,
+  String? downgradePlanId,
+}) {
+  return Team(
+    id: id,
+    name: 'Demo Team',
+    teamPlan: TeamPlan(
+      isActive: true,
+      plan: const Plan(
+        id: '00000001-0000-0100-0000-000000000000',
+        name: 'STANDARD',
+      ),
+      appleSubscription: AppleSubscription(
+        id: '',
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        webOrderLineItemId: '',
+      ),
+    ),
+    teamPlanCancelAt: cancelAt,
+    teamPlanDowngradeAt: downgradeAt,
+    downgradePlanId: downgradePlanId,
+  );
+}
+
+// ProfileStorage のフェイクは不要になったため削除

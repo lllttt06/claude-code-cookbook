@@ -1,0 +1,60 @@
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/subscription_groups_controller.dart';
+import 'package:baseball_detector_flutter/data/models/app_store_plan.dart';
+import 'package:baseball_detector_flutter/utils/platform.dart';
+
+part 'subscription_plans_controller.g.dart';
+
+@riverpod
+Future<List<AppStoreProduct>> subscriptionPlansController(Ref ref) async {
+  if (!isIos) return [];
+
+  // SmartScout サーバーに登録済みのプランを取得
+  final plans = await ref.watch(plansControllerProvider.future);
+  if (plans.isEmpty) return [];
+
+  // App Store 商品 ID とマッチするものを抽出
+  final productIds = plans
+      .map((plan) {
+        final appleProductId = plan.platformConfig?.apple?.productId;
+        if (appleProductId != null) {
+          return appleProductId;
+        }
+      })
+      .whereType<String>()
+      .toSet();
+
+  if (productIds.isEmpty) return [];
+
+  // iOS の App Store Connect に登録されている商品情報を取得
+  final appStoreProducts =
+      await InAppPurchase.instance.queryProductDetails(productIds);
+
+  // API から取得した Plan と App Store Connect の商品を照合
+  return appStoreProducts.productDetails
+      .sorted((a, b) => a.rawPrice.compareTo(b.rawPrice))
+      .map(
+    (product) {
+      final p = (product as AppStoreProduct2Details).sk2Product;
+      return AppStoreProduct(
+        planType: PlanType.fromId(p.id),
+        productDetails: product,
+        id: p.id,
+        displayName: p.displayName,
+        displayPrice: p.displayPrice,
+        description: p.description,
+        price: p.price,
+        type: p.type,
+        priceLocale: p.priceLocale,
+        subscription: p.subscription,
+      );
+    },
+  ).toList();
+}

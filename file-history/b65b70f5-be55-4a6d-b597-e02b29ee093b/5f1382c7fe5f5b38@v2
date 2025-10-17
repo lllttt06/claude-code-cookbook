@@ -1,0 +1,22 @@
+/// {@category DTO}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/team.dart';
+
+part 'team_detail_response.freezed.dart';
+part 'team_detail_response.g.dart';
+
+@freezed
+abstract class TeamDetailResponse with _$TeamDetailResponse {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)
+  const factory TeamDetailResponse({
+    required Team team,
+  }) = _TeamDetailResponse;
+
+  factory TeamDetailResponse.fromJson(Map<String, dynamic> json) =>
+      _$TeamDetailResponseFromJson(json);
+}

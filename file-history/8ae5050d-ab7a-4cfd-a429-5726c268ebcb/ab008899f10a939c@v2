@@ -1,0 +1,527 @@
+/// {@category Utils}
+library;
+
+// Dart imports:
+import 'dart:convert';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/enums/extended_zoom_type.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/sign_up_context.dart';
+import 'package:baseball_detector_flutter/l10n/l10n.dart';
+
+abstract class ProfileStorage {
+  // If you want to change or remove the key, you shouldn't delete the key,
+  // but should comment out the old key and add a new key.
+  // To avoid the key conflict, you should keep the old key.
+  static const String prefsKeyTerminalId = "PREFS_KEY_TERMINAL_ID";
+  static const String prefsKeyEmail = "PREFS_KEY_EMAIL";
+  static const String prefsKeyPassword = "PREFS_KEY_PASSWORD";
+  static const String prefsKeyTeamId = "PREFS_KEY_TEAM_ID";
+  static const String prefsKeyUserId = "PREFS_KEY_USER_ID";
+  static const String prefsKeyPendingSignUpUserId =
+      "PREFS_KEY_PENDING_SIGN_UP_USER_ID";
+  static const String prefsKeyBirthday = "PREFS_KEY_BIRTHDAY";
+  // static const String prefsKeyAccessibleContents =
+  //     "PREFS_KEY_ACCESSIBLE_CONTENTS"; // Removed: Now managed by Riverpod
+  static const String prefsKeyIsOnboardingPageShown =
+      "PREFS_KEY_IS_ONBOARDING_PAGE_SHOWN";
+  static const String prefsKeyIsRecordingIntroductionDismissed =
+      "PREFS_KEY_IS_RECORDING_INTRODUCTION_DISMISSED";
+  static const String prefsKeyIsInSignUpFlow = "PREFS_KEY_IS_IN_SIGN_UP_FLOW";
+
+  static const String prefsKeyCameraLensIndex = "PREFS_KEY_CAMERA_LENS_INDEX";
+  static const String prefsKeyCameraFormatIndex =
+      "PREFS_KEY_CAMERA_FORMAT_INDEX";
+  static const String prefsKeyCameraAutoFocusMode =
+      "PREFS_KEY_CAMERA_AUTO_FOCUS_MODE";
+  static const String prefsKeyCameraFocusValue = "PREFS_KEY_CAMERA_FOCUS_VALUE";
+  static const String prefsKeyCameraZoomValue = "PREFS_KEY_CAMERA_ZOOM_VALUE";
+  // static const String prefsKeyCameraISOValue = "PREFS_KEY_CAMERA_ISO_VALUE";
+  // static const String prefsKeyCameraShutterSpeedValue =
+  //     "PREFS_KEY_CAMERA_SHUTTER_SPEED_VALUE";
+  // static const String prefsKeyCameraStabilizationMode =
+  //     "PREFS_KEY_CAMERA_STABILIZATION_MODE";
+  static const String prefsKeyCameraAnalysisType =
+      "PREFS_KEY_CAMERA_ANALYSIS_TYPE";
+  // static const String prefsKeyCameraMode = "PREFS_KEY_CAMERA_MODE";
+  static const String prefsKeyCameraExtendedZoomType =
+      "PREFS_KEY_CAMERA_EXTENDED_ZOOM_TYPE";
+
+  static const String prefsKeyIsmphInchUnit = "PREFS_KEY_IS_MPH_INCH_UNIT";
+  static const String prefsKeyLocaleLanguage = "PREFS_KEY_LOCALE_LANGUAGE_CODE";
+  static const String prefsKeyDarkMode = "PREFS_KEY_DARK_MODE";
+
+  // SignUpContext keys
+  static const String prefsKeySignUpContexts = "PREFS_KEY_SIGN_UP_CONTEXTS";
+  static const String prefsKeyActiveEmail = "PREFS_KEY_ACTIVE_EMAIL";
+
+  Future<bool> setTerminalId(String terminalId);
+  Future<bool> setEmail(String? email);
+  Future<bool> setPassword(String? password);
+  Future<bool> setTeamId(String? teamId);
+  Future<bool> setUserId(String? userId);
+  Future<bool> setPendingSignUpUserId(String? userId);
+  Future<bool> setBirthday(DateTime? birthday);
+
+  Future<bool> setIsOnboardingPageShown(bool isOnboardingPageShown);
+  Future<bool> setIsRecordingIntroductionDismissed(
+      bool isRecordingIntroductionDismissed);
+  Future<bool> setIsInSignUpFlow(bool isInSignUpFlow);
+  Future<void> setCameraLensIndex(int index);
+  Future<void> setCameraFormatIndex(int index);
+  Future<void> setCameraAutoFocusMode(bool isAutoFocusOn);
+  Future<void> setCameraFocusValue(double value);
+  Future<void> setCameraZoomValue(double value);
+  Future<void> setCameraAnalysisType(int value);
+  Future<void> setCameraExtendedZoomType(ExtendedZoomType extendedZoomType);
+  Future<void> setUnitType(UnitType unitType);
+  Future<void> setLocaleLanguage(String languageCode);
+  Future<void> setDarkMode(bool darkMode);
+
+  // SignUpContext methods
+  Future<bool> setSignUpContext(String email, SignUpContext context);
+  Future<bool> removeSignUpContext(String email);
+  Future<bool> setActiveEmail(String? email);
+  Future<bool> clearAllSignUpContexts();
+
+  String? getTerminalId();
+  Future<String?> getEmail();
+  Future<String?> getPassword();
+  String? getTeamId();
+  String? getUserId();
+  String? getPendingSignUpUserId();
+  Future<DateTime?> getBirthday();
+
+  bool? getIsOnboardingPageShown();
+  bool? getIsRecordingIntroductionDismissed();
+  bool? getIsInSignUpFlow();
+  int? getCameraLensIndex();
+  int? getCameraFormatIndex();
+  bool? getCameraAutoFocusMode();
+  double? getCameraFocusValue();
+  double? getCameraZoomValue();
+  int? getCameraAnalysisType();
+  ExtendedZoomType? getCameraExtendedZoomType();
+  UnitType? getUnitType();
+  Locale? getLocaleLanguage();
+  bool? getDarkMode();
+
+  // SignUpContext getters
+  Future<SignUpContext?> getSignUpContext(String email);
+  Future<Map<String, SignUpContext>> getAllSignUpContexts();
+  Future<String?> getActiveEmail();
+}
+
+class ProfileStorageImpl extends ProfileStorage {
+  final SharedPreferences _sharedPreferences;
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
+
+  ProfileStorageImpl(this._sharedPreferences);
+
+  Future<bool> _updateStringValueOnSecureStorage(
+      String key, String? value) async {
+    if (value != null) {
+      await _secureStorage.write(key: key, value: value);
+    } else {
+      await _secureStorage.delete(key: key);
+    }
+    return true;
+  }
+
+  Future<String?> _readStringValueOnSecureStorage(String key) async {
+    // FlutterSecureStorage.read causes a PlatformException for undefined keys.
+    if (await _secureStorage.containsKey(key: key)) {
+      return _secureStorage.read(key: key);
+    } else {
+      return null;
+    }
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Setters
+  ///////////////////////////////////////////////////////////////////////////
+
+  @override
+  Future<bool> setTerminalId(String terminalId) async {
+    return _sharedPreferences.setString(
+        ProfileStorage.prefsKeyTerminalId, terminalId);
+  }
+
+  @override
+  Future<bool> setEmail(String? email) async {
+    await _updateStringValueOnSecureStorage(
+        ProfileStorage.prefsKeyEmail, email);
+    return true;
+  }
+
+  @override
+  Future<bool> setPassword(String? password) async {
+    await _updateStringValueOnSecureStorage(
+        ProfileStorage.prefsKeyPassword, password);
+    return true;
+  }
+
+  @override
+  Future<bool> setBirthday(DateTime? birthday) async {
+    await _updateStringValueOnSecureStorage(
+      ProfileStorage.prefsKeyBirthday,
+      birthday != null ? _dateOnly(birthday) : null,
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> setTeamId(String? teamId) {
+    if (teamId != null) {
+      return _sharedPreferences.setString(
+          ProfileStorage.prefsKeyTeamId, teamId);
+    } else {
+      return _sharedPreferences.remove(ProfileStorage.prefsKeyTeamId);
+    }
+  }
+
+  @override
+  Future<bool> setUserId(String? userId) {
+    if (userId != null) {
+      return _sharedPreferences.setString(
+          ProfileStorage.prefsKeyUserId, userId);
+    } else {
+      return _sharedPreferences.remove(ProfileStorage.prefsKeyUserId);
+    }
+  }
+
+  @override
+  Future<bool> setPendingSignUpUserId(String? userId) {
+    if (userId != null) {
+      return _sharedPreferences.setString(
+          ProfileStorage.prefsKeyPendingSignUpUserId, userId);
+    } else {
+      return _sharedPreferences
+          .remove(ProfileStorage.prefsKeyPendingSignUpUserId);
+    }
+  }
+
+  @override
+  Future<bool> setIsOnboardingPageShown(bool isOnboardingPageShown) async {
+    return _sharedPreferences.setBool(
+        ProfileStorage.prefsKeyIsOnboardingPageShown, isOnboardingPageShown);
+  }
+
+  @override
+  Future<bool> setIsRecordingIntroductionDismissed(
+      bool isRecordingIntroductionDismissed) async {
+    return _sharedPreferences.setBool(
+        ProfileStorage.prefsKeyIsRecordingIntroductionDismissed,
+        isRecordingIntroductionDismissed);
+  }
+
+  @override
+  Future<bool> setIsInSignUpFlow(bool isInSignUpFlow) async {
+    return _sharedPreferences.setBool(
+        ProfileStorage.prefsKeyIsInSignUpFlow, isInSignUpFlow);
+  }
+
+  @override
+  Future<void> setCameraLensIndex(int index) async {
+    _sharedPreferences.setInt(ProfileStorage.prefsKeyCameraLensIndex, index);
+  }
+
+  @override
+  Future<void> setCameraFormatIndex(int index) async {
+    _sharedPreferences.setInt(ProfileStorage.prefsKeyCameraFormatIndex, index);
+  }
+
+  @override
+  Future<void> setCameraAutoFocusMode(bool isAutoFocusOn) async {
+    _sharedPreferences.setBool(
+        ProfileStorage.prefsKeyCameraAutoFocusMode, isAutoFocusOn);
+  }
+
+  @override
+  Future<void> setCameraFocusValue(double value) async {
+    _sharedPreferences.setDouble(
+        ProfileStorage.prefsKeyCameraFocusValue, value);
+  }
+
+  @override
+  Future<void> setCameraZoomValue(double value) async {
+    _sharedPreferences.setDouble(ProfileStorage.prefsKeyCameraZoomValue, value);
+  }
+
+  @override
+  Future<void> setCameraAnalysisType(int value) async {
+    _sharedPreferences.setInt(ProfileStorage.prefsKeyCameraAnalysisType, value);
+  }
+
+  @override
+  Future<void> setCameraExtendedZoomType(
+      ExtendedZoomType extendedZoomType) async {
+    _sharedPreferences.setString(
+      ProfileStorage.prefsKeyCameraExtendedZoomType,
+      extendedZoomType.name,
+    );
+  }
+
+  @override
+  Future<void> setUnitType(UnitType unitType) async {
+    _sharedPreferences.setBool(
+      ProfileStorage.prefsKeyIsmphInchUnit,
+      unitType == UnitType.mphInch,
+    );
+  }
+
+  @override
+  Future<void> setLocaleLanguage(String languageCode) async {
+    _sharedPreferences.setString(
+        ProfileStorage.prefsKeyLocaleLanguage, languageCode);
+  }
+
+  @override
+  Future<void> setDarkMode(bool darkMode) async {
+    _sharedPreferences.setBool(ProfileStorage.prefsKeyDarkMode, darkMode);
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // Getters
+  ///////////////////////////////////////////////////////////////////////////
+
+  @override
+  String? getTerminalId() {
+    return _sharedPreferences.getString(ProfileStorage.prefsKeyTerminalId);
+  }
+
+  @override
+  Future<String?> getEmail() {
+    return _readStringValueOnSecureStorage(ProfileStorage.prefsKeyEmail);
+  }
+
+  @override
+  Future<String?> getPassword() {
+    return _readStringValueOnSecureStorage(ProfileStorage.prefsKeyPassword);
+  }
+
+  @override
+  Future<DateTime?> getBirthday() async {
+    final value =
+        await _readStringValueOnSecureStorage(ProfileStorage.prefsKeyBirthday);
+    if (value == null) return null;
+    return DateTime.tryParse(value);
+  }
+
+  @override
+  String? getTeamId() {
+    return _sharedPreferences.getString(ProfileStorage.prefsKeyTeamId);
+  }
+
+  @override
+  String? getUserId() {
+    return _sharedPreferences.getString(ProfileStorage.prefsKeyUserId);
+  }
+
+  @override
+  String? getPendingSignUpUserId() {
+    return _sharedPreferences
+        .getString(ProfileStorage.prefsKeyPendingSignUpUserId);
+  }
+
+  @override
+  bool? getIsOnboardingPageShown() {
+    return _sharedPreferences
+        .getBool(ProfileStorage.prefsKeyIsOnboardingPageShown);
+  }
+
+  @override
+  bool? getIsRecordingIntroductionDismissed() {
+    return _sharedPreferences
+        .getBool(ProfileStorage.prefsKeyIsRecordingIntroductionDismissed);
+  }
+
+  @override
+  bool? getIsInSignUpFlow() {
+    return _sharedPreferences.getBool(ProfileStorage.prefsKeyIsInSignUpFlow);
+  }
+
+  @override
+  int? getCameraLensIndex() {
+    return _sharedPreferences.getInt(ProfileStorage.prefsKeyCameraLensIndex);
+  }
+
+  @override
+  int? getCameraFormatIndex() {
+    return _sharedPreferences.getInt(ProfileStorage.prefsKeyCameraFormatIndex);
+  }
+
+  @override
+  bool? getCameraAutoFocusMode() {
+    return _sharedPreferences
+        .getBool(ProfileStorage.prefsKeyCameraAutoFocusMode);
+  }
+
+  @override
+  double? getCameraFocusValue() {
+    return _sharedPreferences
+        .getDouble(ProfileStorage.prefsKeyCameraFocusValue);
+  }
+
+  @override
+  double? getCameraZoomValue() {
+    return _sharedPreferences.getDouble(ProfileStorage.prefsKeyCameraZoomValue);
+  }
+
+  @override
+  int? getCameraAnalysisType() {
+    return _sharedPreferences.getInt(ProfileStorage.prefsKeyCameraAnalysisType);
+  }
+
+  @override
+  ExtendedZoomType? getCameraExtendedZoomType() {
+    final extendedZoomType = _sharedPreferences.getString(
+      ProfileStorage.prefsKeyCameraExtendedZoomType,
+    );
+
+    return ExtendedZoomType.values.firstWhereOrNull(
+      (e) => e.name == extendedZoomType,
+    );
+  }
+
+  @override
+  UnitType? getUnitType() {
+    final isMphInch =
+        _sharedPreferences.getBool(ProfileStorage.prefsKeyIsmphInchUnit);
+    if (isMphInch == null) return null;
+    return isMphInch ? UnitType.mphInch : UnitType.kmhCm;
+  }
+
+  @override
+  Locale? getLocaleLanguage() {
+    final savedLocaleLanguage =
+        _sharedPreferences.getString(ProfileStorage.prefsKeyLocaleLanguage);
+
+    return L10n.supportedLocales.firstWhereOrNull(
+      (e) => savedLocaleLanguage == e.languageCode,
+    );
+  }
+
+  @override
+  bool? getDarkMode() {
+    return _sharedPreferences.getBool(ProfileStorage.prefsKeyDarkMode);
+  }
+
+  String _dateOnly(DateTime value) {
+    final year = value.year.toString().padLeft(4, '0');
+    final month = value.month.toString().padLeft(2, '0');
+    final day = value.day.toString().padLeft(2, '0');
+    return '$year-$month-$day';
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // SignUpContext methods
+  ///////////////////////////////////////////////////////////////////////////
+
+  @override
+  Future<bool> setSignUpContext(String email, SignUpContext context) async {
+    final allContexts = await getAllSignUpContexts();
+    allContexts[email] = context;
+
+    // 最新 3 件のみ保持（古いものを削除）
+    if (allContexts.length > 3) {
+      final sortedEntries = allContexts.entries.toList()
+        ..sort((a, b) => b.value.lastUpdated.compareTo(a.value.lastUpdated));
+      allContexts
+        ..clear()
+        ..addAll(Map.fromEntries(sortedEntries.take(3)));
+    }
+
+    final jsonMap = allContexts
+        .map((key, value) => MapEntry(key, jsonEncode(value.toJson())));
+    await _updateStringValueOnSecureStorage(
+      ProfileStorage.prefsKeySignUpContexts,
+      jsonEncode(jsonMap),
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> removeSignUpContext(String email) async {
+    final allContexts = await getAllSignUpContexts();
+    allContexts.remove(email);
+
+    if (allContexts.isEmpty) {
+      await _updateStringValueOnSecureStorage(
+        ProfileStorage.prefsKeySignUpContexts,
+        null,
+      );
+    } else {
+      final jsonMap = allContexts
+          .map((key, value) => MapEntry(key, jsonEncode(value.toJson())));
+      await _updateStringValueOnSecureStorage(
+        ProfileStorage.prefsKeySignUpContexts,
+        jsonEncode(jsonMap),
+      );
+    }
+    return true;
+  }
+
+  @override
+  Future<bool> setActiveEmail(String? email) async {
+    await _updateStringValueOnSecureStorage(
+      ProfileStorage.prefsKeyActiveEmail,
+      email,
+    );
+    return true;
+  }
+
+  @override
+  Future<bool> clearAllSignUpContexts() async {
+    await _updateStringValueOnSecureStorage(
+      ProfileStorage.prefsKeySignUpContexts,
+      null,
+    );
+    await _updateStringValueOnSecureStorage(
+      ProfileStorage.prefsKeyActiveEmail,
+      null,
+    );
+    return true;
+  }
+
+  @override
+  Future<SignUpContext?> getSignUpContext(String email) async {
+    final allContexts = await getAllSignUpContexts();
+    return allContexts[email];
+  }
+
+  @override
+  Future<Map<String, SignUpContext>> getAllSignUpContexts() async {
+    final jsonString = await _readStringValueOnSecureStorage(
+      ProfileStorage.prefsKeySignUpContexts,
+    );
+    if (jsonString == null) return {};
+
+    try {
+      final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
+      return jsonMap.map((key, value) {
+        final contextJson = jsonDecode(value as String);
+        return MapEntry(key, SignUpContext.fromJson(contextJson));
+      });
+    } catch (e) {
+      // JSON デコードエラー時は空の Map を返す
+      return {};
+    }
+  }
+
+  @override
+  Future<String?> getActiveEmail() async {
+    return _readStringValueOnSecureStorage(
+      ProfileStorage.prefsKeyActiveEmail,
+    );
+  }
+}

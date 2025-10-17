@@ -1,0 +1,419 @@
+import {
+  Autocomplete,
+  Button,
+  Card,
+  FormControl,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
+import _ from 'lodash';
+import moment from 'moment';
+import Link from 'next/link';
+import React, {
+  Dispatch,
+  FC,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+
+import { ImageOrAvatar } from '@/components/common/image-or-avatar';
+import PlayerSelector from '@/components/common/input/player-selector';
+import AppConstants from '@/constants/app.constants';
+import { PAGE_INFO } from '@/constants/page.constants';
+import useServicesHook from '@/hooks';
+import { Player } from '@/models/player';
+import { Session } from '@/models/session';
+import { Team } from '@/models/team';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import { useSelector } from '@/store';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import { translate } from '@/utils/i18n';
+import { isStagingOrProductionSingleTeam } from '@/utils/team.util';
+
+import CriticalError from '../../common/critical-error';
+import ValidationError from '../../common/validation-error';
+import { CommonModal } from './../common-modal';
+
+export type SessionCreationModalInputParam = {
+  title: string | null;
+  location: string | null;
+  note: string | null;
+};
+
+type SessionCreationModalParam = {
+  teamId: string;
+  team: Team;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  onClose?: Function;
+  defaultPlayer?: Player | null;
+  onSessionCreated?: (result: {
+    session: Session | null;
+    error: ServiceError | null;
+  }) => Promise<void>;
+  onExitButtonClickedAfterSessionSuccessfullyCreated: (
+    session: Session,
+  ) => Promise<void>;
+};
+
+export const SessionCreationModal: FC<SessionCreationModalParam> = ({
+  teamId,
+  team,
+  isOpen,
+  setIsOpen,
+  onClose,
+  defaultPlayer,
+  onSessionCreated,
+  onExitButtonClickedAfterSessionSuccessfullyCreated,
+}) => {
+  const currentUser = useSelector((state) => state.user.me);
+
+  const { services, router } = useServicesHook();
+
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>();
+  const [newSession, setNewSession] = useState<Session | null>(null);
+  const [error, setError] = useState<ServiceError | null>(null);
+  const [playerNotFound, setPlayerNotFound] = useState<boolean>(false);
+
+  const hasCrossAccessInTeam = User.isAccessible(
+    currentUser,
+    teamId,
+    'basic',
+    'read',
+    true,
+  );
+
+  // シングルユーザーチームでは動画のアップロードの導線を非表示にする
+  // 開発用に dev では表示したままにする
+  // https://knowhere-org.slack.com/archives/C03EGR0M9AN/p1759381143908219
+  const shouldHideUploadButton = isStagingOrProductionSingleTeam(team);
+
+  const defaultSessionParam = useMemo(() => {
+    return {
+      title: '',
+      location: '',
+      note: '',
+    };
+  }, [defaultPlayer]);
+
+  const [sessionParam, setSessionParam] =
+    useState<SessionCreationModalInputParam>(defaultSessionParam);
+
+  const getPlayers = async (teamId: string, userId: string) => {
+    const { players, error } = await services.default.player.getPlayers(
+      teamId,
+      {
+        userId: hasCrossAccessInTeam ? null : userId,
+        pageSize: AppConstants.SEARCH_DEFAULT_BIG_VALUE,
+        sort: 'name',
+      },
+    );
+    if (error) {
+      return;
+    }
+
+    setPlayers(players);
+    if (players.length) {
+      setSelectedPlayer(players[0]);
+      setPlayerNotFound(false);
+    } else {
+      setPlayerNotFound(true);
+    }
+  };
+
+  const [locations, setLocations] = useState<string[]>([]);
+
+  const getLocations = async (teamId: string) => {
+    if (!currentUser) {
+      return;
+    }
+    const { locations, error } = await services.default.session.getLocations(
+      teamId,
+      hasCrossAccessInTeam ? null : currentUser.id,
+    );
+
+    if (error) {
+      return;
+    }
+
+    setLocations(locations);
+  };
+
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const onSubmitButtonClicked = async (
+    e: FormEvent<HTMLFormElement | HTMLAnchorElement>,
+  ) => {
+    if (!selectedPlayer) {
+      return;
+    }
+    setError(null);
+    e.preventDefault();
+    await wrapForLoading(setIsSubmitting, async () => {
+      const sessionResult = await services.default.session.createSession(
+        selectedPlayer.teamId!,
+        {
+          ...sessionParam,
+          playerId: selectedPlayer.id ?? null,
+        },
+      );
+
+      if (sessionResult.error) {
+        setError(sessionResult.error);
+        return;
+      }
+      setNewSession(sessionResult.session);
+      onSessionCreated?.({ session: sessionResult.session, error: error });
+    });
+  };
+
+  const initialize = async (teamId: string, userId: string) => {
+    setError(null);
+    setSessionParam(defaultSessionParam);
+    setNewSession(null);
+
+    await getPlayers(teamId, userId);
+    await getLocations(teamId);
+  };
+
+  useEffect(() => {
+    if (defaultPlayer) {
+      setPlayers([defaultPlayer]);
+    }
+    setSelectedPlayer(defaultPlayer);
+  }, [defaultPlayer]);
+
+  useEffect(() => {
+    if (!isOpen || !currentUser) {
+      return;
+    }
+
+    initialize(teamId, currentUser.id);
+  }, [isOpen, currentUser]);
+
+  if (playerNotFound) {
+    return (
+      <CommonModal
+        isOpen={isOpen}
+        onClose={() => {
+          onClose?.();
+          setPlayerNotFound(false);
+        }}
+        setIsOpen={setIsOpen}
+        sx={{ '& .MuiPaper-root': { width: '30rem', maxWidth: 'calc(100% - 32px)' } }}
+      >
+        <Typography variant="h4">Player Not Found</Typography>
+
+        <Stack direction="column" spacing={2} alignItems="center">
+          <Typography variant="body2">
+            {translate(
+              'you_can_create_a_player_on_the_players_page_and_then_create_a_session',
+            )}
+          </Typography>
+          <Button
+            color="primary"
+            fullWidth
+            variant="contained"
+            onClick={() => {
+              router.push(PAGE_INFO.PLAYERS.href(teamId));
+            }}
+          >
+            GO TO PLAYERS PAGE
+          </Button>
+          <Button
+            color="neutral"
+            fullWidth
+            onClick={() => {
+              onClose?.();
+              setPlayerNotFound(false);
+              setIsOpen(false);
+            }}
+          >
+            CLOSE
+          </Button>
+        </Stack>
+      </CommonModal>
+    );
+  }
+
+  if (newSession) {
+    return (
+      <CommonModal isOpen={isOpen} onClose={onClose} setIsOpen={setIsOpen} sx={{ '& .MuiPaper-root': { width: '30rem', maxWidth: 'calc(100% - 32px)' } }}>
+        <Typography variant="h4">{translate('session_created')}</Typography>
+
+        <Stack
+          direction="column"
+          spacing={2}
+          sx={{ mt: 4 }}
+          alignItems="center"
+        >
+          <Card
+            sx={(theme) => ({
+              backgroundColor: theme.palette.grey[100],
+              p: 2,
+              width: 1,
+            })}
+          >
+            <Stack direction="row" spacing={1}>
+              <ImageOrAvatar
+                url={selectedPlayer?.presignedImageUrl}
+                width={40}
+                height={40}
+              />
+              <Stack direction="column">
+                <Typography color="primary" variant="body2">
+                  {moment(newSession?.createdAt).format('YYYY-MM-DD')}
+                </Typography>
+                <Typography
+                  fontWeight="bold"
+                  variant="body1"
+                >{`${selectedPlayer?.name ?? ''} Session`}</Typography>
+              </Stack>
+              <Link
+                href={PAGE_INFO.SESSION_RESOURCES.href(teamId, newSession.id)}
+              >
+                <Button color="neutral">
+                  <Typography color="neutral" variant="inherit">
+                    {translate('view')}
+                  </Typography>
+                </Button>
+              </Link>
+            </Stack>
+          </Card>
+          {/* <Typography level="body-sm" sx={{ my: 8 }}>PITCHING DATA IS AVAILABLE TO VIEW</Typography> */}
+          {!shouldHideUploadButton && (
+            <Button
+              color="primary"
+              fullWidth
+              variant="contained"
+              onClick={() => {
+                onExitButtonClickedAfterSessionSuccessfullyCreated(newSession);
+              }}
+            >
+              {translate('upload_videos_button')}
+            </Button>
+          )}
+          <Button
+            color="neutral"
+            fullWidth
+            onClick={() => {
+              setIsOpen(false);
+              onClose?.();
+            }}
+          >
+            {translate('button_close')}
+          </Button>
+        </Stack>
+      </CommonModal>
+    );
+  }
+
+  return (
+    <CommonModal isOpen={isOpen} onClose={onClose} setIsOpen={setIsOpen} sx={{ '& .MuiPaper-root': { width: '30rem', maxWidth: 'calc(100% - 32px)' } }}>
+      <Typography variant="h4">{translate('create_new_session')}</Typography>
+      <form onSubmit={onSubmitButtonClicked}>
+        <Stack
+          alignItems="stretch"
+          direction="column"
+          spacing={2}
+          sx={{ p: 2 }}
+        >
+          <FormControl fullWidth>
+            <PlayerSelector
+              players={players}
+              playerId={selectedPlayer?.id}
+              onChange={(player) => {
+                setSelectedPlayer(player);
+              }}
+            />
+          </FormControl>
+          <ValidationError error={error} pos={['playerId']} />
+
+          <FormControl fullWidth>
+            <TextField
+              type={'text'}
+              sx={{ mb: 1 }}
+              label={translate('session_dialog_title')}
+              value={sessionParam.title ?? ''}
+              onChange={(e) => {
+                setSessionParam({
+                  ...sessionParam,
+                  title: e.target.value,
+                });
+              }}
+            />
+            <ValidationError error={error} pos={['title']} />
+          </FormControl>
+
+          <FormControl fullWidth>
+            <Autocomplete
+              freeSolo
+              disableClearable
+              options={locations}
+              value={sessionParam.location ?? ''}
+              onChange={(event, value, reason, details) => {
+                setSessionParam({
+                  ...sessionParam,
+                  location: value == '' ? null : value,
+                });
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={translate('session_dialog_location')}
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                  }}
+                  onChange={(event) => {
+                    setSessionParam({
+                      ...sessionParam,
+                      location: event.target.value,
+                    });
+                  }}
+                />
+              )}
+            />
+            <ValidationError error={error} pos={['location']} />
+          </FormControl>
+
+          <FormControl fullWidth>
+            <TextField
+              type={'text'}
+              sx={{ mb: 1 }}
+              label={translate('session_dialog_note')}
+              value={sessionParam.note ?? ''}
+              onChange={(e) => {
+                setSessionParam({
+                  ...sessionParam,
+                  note: e.target.value,
+                });
+              }}
+            />
+            <ValidationError error={error} pos={['note']} />
+          </FormControl>
+
+          <CriticalError error={error} />
+
+          <Button
+            color="primary"
+            fullWidth
+            loading={isSubmitting}
+            type="submit"
+            variant="contained"
+          >
+            {translate('button_create')}
+          </Button>
+          <Button color="neutral" fullWidth onClick={() => setIsOpen(false)}>
+            {translate('button_cancel')}
+          </Button>
+        </Stack>
+      </form>
+    </CommonModal>
+  );
+};

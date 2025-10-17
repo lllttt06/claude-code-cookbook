@@ -1,0 +1,105 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/components/custom_alert_snack_bar.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+
+class UsageLimitAlertSnackBar extends ConsumerWidget {
+  const UsageLimitAlertSnackBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final teamListState = ref.watch(teamListControllerProvider);
+    final teamId = ref.watch(profileStorageProvider).getTeamId();
+
+    return teamListState.fold(
+      data: (teams) {
+        final team = teams.where((team) => team.id == teamId!).firstOrNull;
+        final isSingleTeam = team?.isSingleUserTeam == true;
+        final text = _getText(context, team?.teamPlanStatus, isSingleTeam);
+        final colors = _getColor(team?.teamPlanStatus);
+
+        if (text == null) return const SizedBox.shrink();
+
+        return CustomAlertSnackBar(
+          foregroundColor: colors.foregroundColor,
+          backgroundColor: colors.backgroundColor,
+          child: Text(text, style: TextStyle(color: colors.foregroundColor)),
+        );
+      },
+      error: (error) => CustomAlertSnackBar(
+        foregroundColor: Colors.white,
+        backgroundColor: ColorManager.error,
+        child: Text(
+          context.l10n.usage_limit_alert_snack_bar__could_not_get,
+        ),
+      ),
+      loading: () => const SizedBox.shrink(),
+    );
+  }
+
+  ({
+    Color foregroundColor,
+    Color backgroundColor,
+  }) _getColor(TeamPlanStatus? status) {
+    return switch (status) {
+      TeamPlanStatus.analysisLimitIsApproaching ||
+      TeamPlanStatus.expiringSoon =>
+        (
+          foregroundColor: ColorManager.primaryText,
+          backgroundColor: ColorManager.warning,
+        ),
+      _ => (
+          foregroundColor: Colors.white,
+          backgroundColor: ColorManager.error,
+        ),
+    };
+  }
+
+  String? _getText(
+    BuildContext context,
+    TeamPlanStatus? status,
+    bool isSingleTeam,
+  ) {
+    if (isSingleTeam) {
+      return switch (status) {
+        TeamPlanStatus.noContract =>
+          context.l10n.usage_limit_alert_snack_bar__no_contract,
+        TeamPlanStatus.expired =>
+          context.l10n.usage_limit_alert_snack_bar__expired,
+        TeamPlanStatus.analysisLimit =>
+          context.l10n.usage_limit_alert_snack_bar__reached_limit,
+        TeamPlanStatus.analysisLimitIsApproaching =>
+          context.l10n.usage_limit_alert_snack_bar__limit_is_approaching,
+        _ => null,
+      };
+    }
+    return switch (status) {
+      TeamPlanStatus.noContract =>
+        context.l10n.usage_limit_alert_snack_bar__no_contract,
+      TeamPlanStatus.nextPlanPending =>
+        context.l10n.usage_limit_alert_snack_bar__next_plan_pending,
+      TeamPlanStatus.expired =>
+        context.l10n.usage_limit_alert_snack_bar__expired,
+      TeamPlanStatus.analysisLimit =>
+        context.l10n.usage_limit_alert_snack_bar__reached_limit,
+      TeamPlanStatus.analysisLimitIsApproaching =>
+        context.l10n.usage_limit_alert_snack_bar__limit_is_approaching,
+      TeamPlanStatus.expiringSoon =>
+        context.l10n.usage_limit_alert_snack_bar__expiring_soon,
+      null => context.l10n.usage_limit_alert_snack_bar__failed_to_load,
+      _ => null,
+    };
+  }
+}

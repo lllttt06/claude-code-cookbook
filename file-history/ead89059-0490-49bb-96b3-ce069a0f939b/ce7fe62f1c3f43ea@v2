@@ -1,0 +1,294 @@
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Logger,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+} from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
+import { Response } from 'express';
+
+import { ApiDefault, Coded, CodedMethod } from '@/app/common/decorators';
+import { AppExtendedRequest } from '@/app/common/types';
+import { StringUtil } from '@/app/common/utils/string.util';
+import { ValidationUtil } from '@/app/common/utils/validation.util';
+import { BaseController } from '@/app/controllers/base-controller';
+import {
+  CodeVerificationDto,
+  codeVerificationDtoValidator,
+  EmailChangeVerificationDto,
+  emailChangeVerificationDtoValidator,
+  EmailDto,
+  emailDtoValidator,
+  EmailVerificationStatusDto,
+  emailVerificationStatusDtoValidator,
+  GetTokenDto,
+  getTokenDtoValidator,
+  PasswordChangeTokenDto,
+  passwordChangeTokenDtoValidator,
+  SignupDto,
+  signUpDtoValidator,
+} from '@/app/models/dto/auth.dto';
+import { ConfigProvider } from '@/app/providers/config.provider';
+import { UsersService } from '@/app/services/users.service';
+
+@Coded('CATH')
+@ApiDefault()
+@Controller('auth')
+export class AuthController extends BaseController {
+  private readonly logger = new Logger(AuthController.name);
+
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly configProvider: ConfigProvider,
+  ) {
+    super();
+  }
+
+  static ERROR_CODES = {};
+
+  get EC() {
+    return AuthController.ERROR_CODES;
+  }
+
+  @ApiOperation({
+    summary: 'For develop',
+    description:
+      'Note that magnito on local environments does not check passwords for this endpoint. ' +
+      'But the forked version of magnito checks passwords for ordinary user logins. ',
+    tags: ['auth'],
+  })
+  @Post('token')
+  @CodedMethod('GTK')
+  async getToken(@Req() req: AppExtendedRequest, @Body() dto: GetTokenDto) {
+    const validated = await ValidationUtil.validate(
+      getTokenDtoValidator(),
+      dto,
+    );
+    let cognitoToken: string | null = null;
+    let error;
+    try {
+      cognitoToken = (
+        await this.usersService.getUserToken(
+          validated.email,
+          validated.password,
+        )
+      ).accessToken;
+    } catch (e) {
+      error = e;
+    }
+
+    return {
+      cognito: cognitoToken,
+      error,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Gets the verification status to create a new user',
+    tags: ['auth'],
+  })
+  @Get('users/verification-status')
+  @CodedMethod('CEVS')
+  async checkEmailVerificationStatus(
+    @Req() req: AppExtendedRequest,
+    @Query() dto: EmailVerificationStatusDto,
+  ) {
+    const validated = await ValidationUtil.validate(
+      emailVerificationStatusDtoValidator(),
+      dto,
+    );
+
+    const { status, userId } =
+      await this.usersService.checkEmailVerificationStatus(validated.email);
+
+    return {
+      status,
+      userId,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Creates a new personal user',
+    tags: ['auth'],
+  })
+  @Post('signup')
+  @CodedMethod('SGU')
+  async signup(@Req() req: AppExtendedRequest, @Body() dto: SignupDto) {
+    const validated = await ValidationUtil.validate(signUpDtoValidator(), dto);
+
+    const { userId } = await this.usersService.createPersonalUser(
+      validated.email,
+      validated.name,
+      validated.birthday,
+      {
+        lang:
+          req.headers['accept-language'] ??
+          req.headers['content-language'] ??
+          null,
+      },
+      dto.inviteMode,
+    );
+
+    return {
+      userId,
+    };
+  }
+
+  @ApiOperation({
+    summary: 'Verifies the code given in the email sent in signup flow.',
+    tags: ['auth'],
+  })
+  @Get('code-verification')
+  @CodedMethod('VC')
+  async verifyCode(
+    @Req() req: AppExtendedRequest,
+    @Query() dto: CodeVerificationDto,
+  ) {
+    const validated = await ValidationUtil.validate(
+      codeVerificationDtoValidator(),
+      dto,
+    );
+
+    return {
+      token: await this.usersService.verifyAuthCode(
+        validated.email,
+        validated.code,
+      ),
+    };
+  }
+
+  @ApiOperation({
+    summary:
+      'Verifies email token to confirm the owner of the email is the requested user' +
+      ', and redirects to dto.redirect or returns a message text',
+    description:
+      'Ref. UsersController.sendEmailToChangeUserEmail (email changing process).',
+    tags: ['auth'],
+  })
+  @Get('email-verification')
+  @CodedMethod('VCET')
+  async verifyChangingEmailToken(
+    @Req() req: AppExtendedRequest,
+    @Res() response: Response,
+    @Query() dto: EmailChangeVerificationDto,
+  ) {
+    const validated = await ValidationUtil.validate(
+      emailChangeVerificationDtoValidator(),
+      dto,
+    );
+    const [token, hashedEmail] = validated.t.split(':');
+
+    const { message, isOk } = await this.usersService.changeEmailWithToken(
+      validated.uid,
+      validated.email,
+      token,
+      hashedEmail,
+    );
+
+    if (!isOk) {
+      response.status(HttpStatus.FORBIDDEN).send(message);
+      return;
+    }
+
+    // Redirect to it if the `redirect` parameter is set.
+    if (validated.redirect) {
+      return response.status(302).redirect(
+        // If validated.redirect does not start with http-, append `webBaseUrl` to the head of `redirect` and `status` query parameter.
+        validated.redirect.match(/^https?/)
+          ? validated.redirect
+          : StringUtil.buildUrl(
+              this.configProvider.config.webBaseUrl,
+              validated.redirect,
+              {
+                status: 'email_changed',
+              },
+            ),
+      );
+    }
+
+    // Only returns a message text if redirect parameter is not set.
+    response.status(HttpStatus.OK).send(message);
+  }
+
+  @ApiOperation({
+    summary: "Sends 'password reset' email to reset the password of the user",
+    description: '',
+    tags: ['auth'],
+  })
+  @Post('password-reset/email')
+  @CodedMethod('SPRE')
+  async sendPasswordResetEmail(
+    @Req() req: AppExtendedRequest,
+    @Body() dto: EmailDto,
+  ) {
+    const validated = await ValidationUtil.validate(emailDtoValidator(), dto);
+
+    await this.usersService.sendPasswordResetEmail(validated.email, {
+      lang:
+        req.headers['accept-language'] ??
+        req.headers['content-language'] ??
+        null,
+    });
+  }
+
+  @ApiOperation({
+    summary:
+      'Updates password with the token passed through password-reset email',
+    description: 'Ref. AuthController.sendPasswordResetEmail',
+    tags: ['auth'],
+  })
+  @Put('password-reset')
+  @CodedMethod('CPR')
+  async updatePasswordWithToken(
+    @Req() req: AppExtendedRequest,
+    @Body() dto: PasswordChangeTokenDto,
+  ) {
+    const validated = await ValidationUtil.validate(
+      passwordChangeTokenDtoValidator(),
+      dto,
+    );
+
+    await this.usersService.changePasswordWithToken(
+      validated.userId,
+      validated.password,
+      validated.token,
+      'reset',
+    );
+
+    return {};
+  }
+
+  @ApiOperation({
+    summary:
+      'Updates password with the token passed through password-reset email',
+    description: 'Ref. AuthController.sendPasswordResetEmail',
+    tags: ['auth'],
+  })
+  @Put('password-reset/initial')
+  @CodedMethod('CPRI')
+  async updatePasswordWithCode(
+    @Req() req: AppExtendedRequest,
+    @Body() dto: PasswordChangeTokenDto,
+  ) {
+    const validated = await ValidationUtil.validate(
+      passwordChangeTokenDtoValidator(),
+      dto,
+    );
+
+    await this.usersService.changePasswordWithToken(
+      validated.userId,
+      validated.password,
+      validated.token,
+      'initial',
+    );
+
+    return {};
+  }
+}

@@ -1,0 +1,53 @@
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+
+part 'platform_config.freezed.dart';
+part 'platform_config.g.dart';
+
+@freezed
+abstract class PlatformConfig with _$PlatformConfig {
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory PlatformConfig({
+    StripePlatformConfig? stripe,
+    ApplePlatformConfig? apple,
+  }) = _PlatformConfig;
+
+  factory PlatformConfig.fromJson(Map<String, dynamic> json) =>
+      _$PlatformConfigFromJson(json);
+}
+
+@freezed
+abstract class StripePlatformConfig with _$StripePlatformConfig {
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory StripePlatformConfig({
+    required String productId,
+    required String priceId,
+  }) = _StripePlatformConfig;
+
+  factory StripePlatformConfig.fromJson(Map<String, dynamic> json) =>
+      _$StripePlatformConfigFromJson(json);
+}
+
+@freezed
+abstract class ApplePlatformConfig with _$ApplePlatformConfig {
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory ApplePlatformConfig({
+    required String productId,
+  }) = _ApplePlatformConfig;
+
+  factory ApplePlatformConfig.fromJson(Map<String, dynamic> json) =>
+      _$ApplePlatformConfigFromJson(json);
+}
+

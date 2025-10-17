@@ -1,0 +1,132 @@
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+
+part 'team.freezed.dart';
+part 'team.g.dart';
+
+enum TeamType {
+  single,
+  multiple,
+  ;
+}
+
+typedef NowProvider = DateTime Function();
+
+NowProvider _teamPlanNow = DateTime.now;
+
+DateTime _resolveTeamPlanNow() => _teamPlanNow();
+
+@visibleForTesting
+
+/// `teamPlanStatus` が参照する現在時刻の取得方法を上書きする。
+void overrideTeamPlanNow(NowProvider provider) => _teamPlanNow = provider;
+
+@visibleForTesting
+
+/// `teamPlanStatus` の現在時刻取得方法をデフォルトの `DateTime.now` に戻す。
+void resetTeamPlanNow() {
+  _teamPlanNow = DateTime.now;
+}
+
+@freezed
+abstract class Team with _$Team {
+  const Team._();
+
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory Team({
+    @Default(null) String? id,
+    @Default(null) String? name,
+    @Default(null) String? ownerUserId,
+    @Default(TeamType.multiple) TeamType teamType,
+    @Default(null) DateTime? createdAt, // assumes UTC
+    @Default(null) DateTime? updatedAt, // assumes UTC
+    @Default(null) DateTime? teamPlanCancelAt,
+    @Default(null) DateTime? teamPlanDowngradeAt,
+    @Default(null) String? imageUrl,
+    @Default(null) TeamPlan? teamPlan,
+    @Default(null) TeamPlan? nextTeamPlan,
+    @Default(null) String? presignedImageUrl,
+    @Default(null) String? billingFailureReason,
+    @Default(null) String? downgradePlanId,
+  }) = _Team;
+
+  factory Team.fromJson(Map<String, dynamic> json) => _$TeamFromJson(json);
+
+  bool get isSingleUserTeam => teamType == TeamType.single;
+
+  // Returns the current TeamPlanStatus based on teamPlan and nextTeamPlan (フローチャート準拠)
+  TeamPlanStatus get teamPlanStatus {
+    // 1. teamPlanがnullまたはisActive!=trueの場合
+    if (teamPlan == null || teamPlan!.isActive != true) {
+      return TeamPlanStatus.noContract;
+    }
+
+    // 2. 期限切れか
+    final now = _resolveTeamPlanNow();
+    final endDate = teamPlan!.endDate;
+    // 以下の場合は nextTeamPlan の endDate を使用する
+    // 1. nextTeamPlan が存在
+    // 2. nextTeamPlan の isPendingActivation が true
+    // 3. teamPlan の endDate が nextTeamPlan の startDate と同じ (連続してプランを継続している)
+    final effectiveEndDate = (nextTeamPlan != null &&
+            nextTeamPlan!.isPendingActivation == true &&
+            endDate == nextTeamPlan!.startDate)
+        ? nextTeamPlan!.endDate
+        : endDate;
+    final isExpired =
+        effectiveEndDate != null && effectiveEndDate.isBefore(now);
+    if (isExpired) {
+      if (nextTeamPlan != null && nextTeamPlan!.isPendingActivation == true) {
+        return TeamPlanStatus.nextPlanPending;
+      }
+      return TeamPlanStatus.expired;
+    }
+
+    // 3. 球数制限にかかっているか
+    final usage = teamPlan!.currentUsage ?? 0;
+    final maxUsage = (teamPlan!.plan?.maxBalls ?? 0);
+    if (usage >= maxUsage) {
+      return TeamPlanStatus.analysisLimit;
+    }
+
+    // 4. 警告系（30日以内, 90%到達）
+    if (effectiveEndDate != null) {
+      final oneMonthLater = now.add(const Duration(days: 30));
+      if (effectiveEndDate.isAfter(now) &&
+          effectiveEndDate.isBefore(oneMonthLater)) {
+        return TeamPlanStatus.expiringSoon;
+      }
+    }
+    if (usage >= (maxUsage * 0.9).floor()) {
+      return TeamPlanStatus.analysisLimitIsApproaching;
+    }
+
+    // 5. 問題なし
+    return TeamPlanStatus.ok;
+  }
+}
+
+// TeamPlanStatus enum moved from team_plan.dart
+enum TeamPlanStatus {
+  // Users cannot use the app when TeamPlanStatus is the following
+  noContract, // No paid plan contract found
+  nextPlanPending, // Next paid plan is pending activation
+  expired,
+  analysisLimit,
+
+  // Users can use the app when TeamPlanStatus is the following
+  analysisLimitIsApproaching,
+  expiringSoon,
+  ok,
+  ;
+
+  bool get canAnalyze =>
+      this == analysisLimitIsApproaching || this == expiringSoon || this == ok;
+}

@@ -1,0 +1,243 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_accessible_contents_controller.dart';
+import 'package:baseball_detector_flutter/data/models/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/data/models/user_accessible_contents.dart';
+import 'package:baseball_detector_flutter/data/profile_storage_fake.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/hooks/use_fab_state.dart';
+
+void main() {
+  group('useFabState', () {
+    const testUserId = 'test-user-id';
+    const testTeamId = 'test-team-id';
+    final testSession = Session(
+      id: 'session-1',
+      userId: testUserId,
+      teamId: testTeamId,
+    );
+
+    final mockProfileStorage = FakeProfileStorage(
+      userId: testUserId,
+      teamId: testTeamId,
+    );
+    final mockAccessibleContents = UserAccessibleContents(
+      appRole: AppRole.teamAdmin,
+      accessibleTeamIds: [testTeamId],
+    );
+
+    Widget buildTestWidget({
+      required List<Team> teams,
+      required bool canSubscribe,
+      required ValueNotifier<FabState?> resultNotifier,
+    }) {
+      return ProviderScope(
+        overrides: [
+          profileStorageProvider.overrideWithValue(mockProfileStorage),
+          userAccessibleContentsControllerProvider
+              .overrideWith((ref) => mockAccessibleContents),
+          teamListControllerProvider.overrideWith(
+            (ref) => AsyncValue.data(teams),
+          ),
+        ],
+        child: _TestWidget(
+          session: testSession,
+          teamId: testTeamId,
+          canSubscribe: canSubscribe,
+          resultNotifier: resultNotifier,
+        ),
+      );
+    }
+
+    testWidgets('should return available when recording is available',
+        (tester) async {
+      final resultNotifier = ValueNotifier<FabState?>(null);
+      final team = Team(
+        id: testTeamId,
+        teamType: TeamType.single,
+        teamPlan: TeamPlan(
+          plan: const Plan(
+            name: 'standard',
+            maxBalls: 100,
+          ),
+          currentUsage: 50,
+        ),
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          teams: [team],
+          canSubscribe: true,
+          resultNotifier: resultNotifier,
+        ),
+      );
+
+      expect(resultNotifier.value, FabState.available);
+    });
+
+    testWidgets(
+        'should return needsSubscription when not premium and cannot analyze',
+        (tester) async {
+      final resultNotifier = ValueNotifier<FabState?>(null);
+      final team = Team(
+        id: testTeamId,
+        teamType: TeamType.single,
+        teamPlan: TeamPlan(
+          plan: const Plan(
+            name: 'standard',
+            maxBalls: 100,
+          ),
+          currentUsage: 100, // reached limit
+        ),
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          teams: [team],
+          canSubscribe: true,
+          resultNotifier: resultNotifier,
+        ),
+      );
+
+      expect(resultNotifier.value, FabState.needsSubscription);
+    });
+
+    testWidgets('should return unavailable when premium plan and reached limit',
+        (tester) async {
+      final resultNotifier = ValueNotifier<FabState?>(null);
+      final team = Team(
+        id: testTeamId,
+        teamType: TeamType.single,
+        teamPlan: TeamPlan(
+          plan: const Plan(
+            name: 'premium',
+            maxBalls: 1000,
+          ),
+          currentUsage: 1000, // reached limit
+        ),
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          teams: [team],
+          canSubscribe: true,
+          resultNotifier: resultNotifier,
+        ),
+      );
+
+      expect(resultNotifier.value, FabState.unavailable);
+    });
+
+    testWidgets(
+        'should return needsSubscription when premium plan but still has remaining balls',
+        (tester) async {
+      final resultNotifier = ValueNotifier<FabState?>(null);
+      final team = Team(
+        id: testTeamId,
+        teamType: TeamType.single,
+        teamPlan: TeamPlan(
+          plan: const Plan(
+            name: 'premium',
+            maxBalls: 1000,
+          ),
+          currentUsage: 900, // approaching limit but not reached
+        ),
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          teams: [team],
+          canSubscribe: true,
+          resultNotifier: resultNotifier,
+        ),
+      );
+
+      // Premium だがボールが残っている場合は available になるべき
+      expect(resultNotifier.value, FabState.available);
+    });
+
+    testWidgets('should return unavailable when canSubscribe is false',
+        (tester) async {
+      final resultNotifier = ValueNotifier<FabState?>(null);
+      final team = Team(
+        id: testTeamId,
+        teamType: TeamType.single,
+        teamPlan: TeamPlan(
+          plan: const Plan(
+            name: 'standard',
+            maxBalls: 100,
+          ),
+          currentUsage: 100, // reached limit
+        ),
+      );
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          teams: [team],
+          canSubscribe: false, // cannot subscribe
+          resultNotifier: resultNotifier,
+        ),
+      );
+
+      expect(resultNotifier.value, FabState.unavailable);
+    });
+
+    testWidgets('should return unavailable when team not found',
+        (tester) async {
+      final resultNotifier = ValueNotifier<FabState?>(null);
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          teams: [], // no teams
+          canSubscribe: true,
+          resultNotifier: resultNotifier,
+        ),
+      );
+
+      expect(resultNotifier.value, FabState.unavailable);
+    });
+  });
+}
+
+class _TestWidget extends HookConsumerWidget {
+  const _TestWidget({
+    required this.session,
+    required this.teamId,
+    required this.canSubscribe,
+    required this.resultNotifier,
+  });
+
+  final Session session;
+  final String teamId;
+  final bool canSubscribe;
+  final ValueNotifier<FabState?> resultNotifier;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final fabState = useFabState(
+      session: session,
+      teamId: teamId,
+      canSubscribe: canSubscribe,
+    );
+
+    resultNotifier.value = fabState;
+
+    return const MaterialApp(
+      home: Scaffold(
+        body: SizedBox.shrink(),
+      ),
+    );
+  }
+}

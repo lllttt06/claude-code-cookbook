@@ -1,0 +1,43 @@
+##### ベース #####
+
+APP_NAME=knowhere-api
+# APP_SECRET_KEY=(secret)
+APP_ENV=production
+APP_BASE_URL=https://api.prd.smart-scout.knowhere-japan.dev
+WEB_BASE_URL=https://web.smart-scout.knowhere-japan.dev  # prdのwebのみweb.prd.smart-scoutにしない。
+LOG_LEVEL=info
+LOG_FILE=api.log
+SERVER_PORT=3090
+# HASH_IDS_SALT=(secret)
+DEFAULT_TOKEN_EXPIRATION_SECONDS=86400
+
+##### DB #####
+
+# DB_HOST=
+DB_PORT=5432
+DB_DATABASE=postgres
+# DB_USERNAME=
+# DB_PASSWORD=
+
+##### 通知/メール系/外部連携 #####
+
+EMAIL_USER=apikey
+# SENDGRID_API_KEY=(secret)
+EMAIL_FROM_ADDRESS=noreply@knowhere.co.jp
+EMAIL_BCC_USER=noreply@knowhere.co.jp
+EMAIL_HOST=smtp.sendgrid.net
+EMAIL_PORT=465
+EMAIL_DEBUG_PREVIEW=0
+
+COGNITO_POOL_ID=us-east-1_oNmDB3CG2
+COGNITO_CLIENT_ID=3heq00b519kpfce3v6n55mqeb2
+COGNITO_REGION=us-east-1
+COGNITO_LOCAL_ENDPOINT=http://127.0.0.1:5050
+
+# AWS_DEFAULT_BUCKET="test-bucket"
+# AWS_S3_REGION=ap-northeast-1
+AWS_S3_LOCAL_ENDPOINT=http://127.0.0.1:4566
+
+# ANALYZE_SERVER_URL=
+# ANALYZE_SERVER_ACCESS_KEY=(secret)
+# INTERNAL_IF_SALT=

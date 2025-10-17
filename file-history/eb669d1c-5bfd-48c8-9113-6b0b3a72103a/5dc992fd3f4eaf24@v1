@@ -1,0 +1,71 @@
+import { Box, Container, Stack, Typography } from '@mui/material';
+import Script from 'next/script';
+import React, { ReactElement } from 'react';
+
+import { EnvManager } from '@/constants/env.constants';
+import ConsoleLayout from '@/layouts/console.layout';
+import { TeamType } from '@/models/team';
+import { useSelector } from '@/store';
+import { translate } from '@/utils/i18n';
+
+function PageInner() {
+  const currentTeam = useSelector((state) => state.user.currentTeam);
+
+  const publishableKey = EnvManager.config.STRIPE_PUBLISHABLE_KEY;
+  const pricingTableId = EnvManager.config.STRIPE_PRICING_TABLE_ID;
+
+  if (!currentTeam) {
+    return null;
+  }
+
+  return (
+    <Box sx={{ minHeight: '100vh', py: 4 }}>
+      <Container maxWidth="lg">
+        <Stack direction="column" spacing={3}>
+          <Box textAlign="center" sx={{ mb: 2 }}>
+            <Typography variant="h1" sx={{ mb: 2 }}>
+              {translate('plans_page_title')}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {translate('plans_page_description')}
+            </Typography>
+          </Box>
+
+          <Box sx={{ bgcolor: 'white', borderRadius: 2, p: 3 }}>
+            <Script
+              async
+              strategy="lazyOnload"
+              src="https://js.stripe.com/v3/pricing-table.js"
+            />
+            <stripe-pricing-table
+              pricing-table-id={pricingTableId}
+              publishable-key={publishableKey}
+              client-reference-id={currentTeam.id}
+            ></stripe-pricing-table>
+
+            {currentTeam?.teamType === TeamType.SINGLE && (
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ mt: 3, textAlign: 'center' }}
+              >
+                {translate('subscription_cancellation_notice')}
+              </Typography>
+            )}
+          </Box>
+        </Stack>
+      </Container>
+    </Box>
+  );
+}
+
+export default function Page() {
+  const currentUser = useSelector((state) => state.user.me);
+  const currentTeam = useSelector((state) => state.user.currentTeam);
+
+  return currentUser && currentTeam && <PageInner />;
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <ConsoleLayout>{page}</ConsoleLayout>;
+};

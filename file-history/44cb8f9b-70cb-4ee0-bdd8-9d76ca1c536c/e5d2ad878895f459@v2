@@ -1,0 +1,418 @@
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/enums/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/player.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import '../../_common/create_accessible_contents.dart';
+
+void main() {
+  group('Testing Session', () {
+    const id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+    const userId = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
+    const playerId = '1';
+    const location = 'Test Location';
+    const note = 'Test Note';
+    final createdAt = DateTime(2024, 1, 1, 1, 1);
+    final updatedAt = DateTime(2024, 1, 1, 2, 1);
+    const deleteFlag = false;
+    const teamId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+    const title = 'test session';
+    const Player? playerNull = null;
+    final Player player = Player(
+      id: playerId,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+    const List<ResourceData>? resourcesNull = null;
+    final ResourceData resource = ResourceData(
+      id: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      focalLength: 24.0,
+      longsideAngleOfView: 25.0,
+      fps: 60.0,
+      uploadFilename: 'video.mp4',
+      originalVideoFilename: 'original.mp4',
+      movieWidth: 1920,
+      movieHeight: 1080,
+      status: 3000,
+      createdAt: DateTime(2024, 1, 1, 1, 1),
+      updatedAt: DateTime(2024, 1, 1, 2, 1),
+      recordedAt: DateTime(2024, 1, 1, 3, 1),
+      deleteFlag: false,
+      userId: 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb',
+      sessionId: 'cccccccc-cccc-cccc-cccc-cccccccccccc',
+      accX: 0.1,
+      accY: 9.8,
+      accZ: 0.1,
+      focus: 1.0,
+      iso: 6000.0,
+      lens: 'Test lens',
+      shutterSpeed: 1.0,
+      zoom: 1.0,
+      analyzeType: 1,
+      unit: UnitType.mphInch,
+      presignedOriginalVideoUrl: 'https://example.test/original.mp4?presigned',
+    );
+
+    test('toJson1', () {
+      final session = Session(
+        id: id,
+        userId: userId,
+        playerId: playerId,
+        location: location,
+        note: note,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        deleteFlag: deleteFlag,
+        teamId: teamId,
+        title: title,
+      );
+
+      final sessionJson = session.toJson();
+
+      expect(sessionJson.length, 14);
+
+      expect(sessionJson.containsKey('id'), isTrue);
+      expect(sessionJson.containsKey('userId'), isTrue);
+      expect(sessionJson.containsKey('playerId'), isTrue);
+      expect(sessionJson.containsKey('location'), isTrue);
+      expect(sessionJson.containsKey('note'), isTrue);
+      expect(sessionJson.containsKey('createdAt'), isTrue);
+      expect(sessionJson.containsKey('updatedAt'), isTrue);
+      expect(sessionJson.containsKey('deleteFlag'), isTrue);
+      expect(sessionJson.containsKey('teamId'), isTrue);
+      expect(sessionJson.containsKey('title'), isTrue);
+      expect(sessionJson.containsKey('player'), isTrue);
+      expect(sessionJson.containsKey('resources'), isTrue);
+      expect(sessionJson.containsKey('aiCoachReport'), isTrue);
+      expect(sessionJson.containsKey('aiCoachReportId'), isTrue);
+
+      expect(sessionJson['id'], id);
+      expect(sessionJson['userId'], userId);
+      expect(sessionJson['playerId'], playerId);
+      expect(sessionJson['location'], location);
+      expect(sessionJson['note'], note);
+      expect(sessionJson['createdAt'], createdAt.toIso8601String());
+      expect(sessionJson['updatedAt'], updatedAt.toIso8601String());
+      expect(sessionJson['deleteFlag'], deleteFlag);
+      expect(sessionJson['teamId'], teamId);
+      expect(sessionJson['title'], title);
+      expect(sessionJson['player'], playerNull);
+      expect(sessionJson['resources'], resourcesNull);
+
+      final deserializedSession = Session.fromJson(sessionJson);
+      expect(deserializedSession, session);
+    });
+
+    test('toJson2', () {
+      final session = Session(
+        id: id,
+        userId: userId,
+        playerId: playerId,
+        location: location,
+        note: note,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        deleteFlag: deleteFlag,
+        teamId: teamId,
+        title: title,
+        player: player,
+      );
+
+      final sessionJson = session.toJson();
+
+      expect(sessionJson.length, 14);
+
+      expect(sessionJson.containsKey('id'), isTrue);
+      expect(sessionJson.containsKey('userId'), isTrue);
+      expect(sessionJson.containsKey('playerId'), isTrue);
+      expect(sessionJson.containsKey('location'), isTrue);
+      expect(sessionJson.containsKey('note'), isTrue);
+      expect(sessionJson.containsKey('createdAt'), isTrue);
+      expect(sessionJson.containsKey('updatedAt'), isTrue);
+      expect(sessionJson.containsKey('deleteFlag'), isTrue);
+      expect(sessionJson.containsKey('teamId'), isTrue);
+      expect(sessionJson.containsKey('title'), isTrue);
+      expect(sessionJson.containsKey('player'), isTrue);
+      expect(sessionJson.containsKey('resources'), isTrue);
+      expect(sessionJson.containsKey('aiCoachReport'), isTrue);
+      expect(sessionJson.containsKey('aiCoachReportId'), isTrue);
+
+      expect(sessionJson['id'], id);
+      expect(sessionJson['userId'], userId);
+      expect(sessionJson['playerId'], playerId);
+      expect(sessionJson['location'], location);
+      expect(sessionJson['note'], note);
+      expect(sessionJson['createdAt'], createdAt.toIso8601String());
+      expect(sessionJson['updatedAt'], updatedAt.toIso8601String());
+      expect(sessionJson['deleteFlag'], deleteFlag);
+      expect(sessionJson['teamId'], teamId);
+      expect(sessionJson['title'], title);
+      expect(sessionJson['player'], player.toJson());
+      expect(sessionJson['resources'], resourcesNull);
+
+      final deserializedSession = Session.fromJson(sessionJson);
+      expect(deserializedSession, session);
+    });
+
+    test('toJson3 (API)', () {
+      final session = Session(
+        id: id,
+        userId: userId,
+        playerId: playerId,
+        location: location,
+        note: note,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        deleteFlag: deleteFlag,
+        teamId: teamId,
+        title: title,
+        player: player,
+        resources: [resource],
+      );
+
+      final sessionJson = session.toJson();
+
+      expect(sessionJson.length, 14);
+
+      expect(sessionJson.containsKey('id'), isTrue);
+      expect(sessionJson.containsKey('userId'), isTrue);
+      expect(sessionJson.containsKey('playerId'), isTrue);
+      expect(sessionJson.containsKey('location'), isTrue);
+      expect(sessionJson.containsKey('note'), isTrue);
+      expect(sessionJson.containsKey('createdAt'), isTrue);
+      expect(sessionJson.containsKey('updatedAt'), isTrue);
+      expect(sessionJson.containsKey('deleteFlag'), isTrue);
+      expect(sessionJson.containsKey('teamId'), isTrue);
+      expect(sessionJson.containsKey('title'), isTrue);
+      expect(sessionJson.containsKey('player'), isTrue);
+      expect(sessionJson.containsKey('resources'), isTrue);
+      expect(sessionJson.containsKey('aiCoachReport'), isTrue);
+      expect(sessionJson.containsKey('aiCoachReportId'), isTrue);
+
+      expect(sessionJson['id'], id);
+      expect(sessionJson['userId'], userId);
+      expect(sessionJson['playerId'], playerId);
+      expect(sessionJson['location'], location);
+      expect(sessionJson['note'], note);
+      expect(sessionJson['createdAt'], createdAt.toIso8601String());
+      expect(sessionJson['updatedAt'], updatedAt.toIso8601String());
+      expect(sessionJson['deleteFlag'], deleteFlag);
+      expect(sessionJson['teamId'], teamId);
+      expect(sessionJson['title'], title);
+      expect(sessionJson['player'], player.toJson());
+      expect(sessionJson['resources'].length, 1);
+      expect(sessionJson['resources'][0], resource.toJson());
+    });
+
+    test('fromJson1 (API)', () {
+      final sessionJson = {
+        'id': id,
+        'userId': userId,
+        'playerId': playerId,
+        'location': location,
+        'note': note,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+        'deleteFlag': deleteFlag,
+        'teamId': teamId,
+        'title': title,
+        'player': playerNull,
+        'resources': [
+          {
+            'id': resource.id,
+            'focalLength': resource.focalLength,
+            'longsideAngleOfView': resource.longsideAngleOfView,
+            'fps': resource.fps,
+            'uploadFilename': resource.uploadFilename,
+            'originalVideoFilename': resource.originalVideoFilename,
+            'movieWidth': resource.movieWidth,
+            'movieHeight': resource.movieHeight,
+            'status': resource.status,
+            'createdAt': resource.createdAt!.toIso8601String(),
+            'updatedAt': resource.updatedAt!.toIso8601String(),
+            'recordedAt': resource.recordedAt!.toIso8601String(),
+            'deleteFlag': resource.deleteFlag,
+            'userId': resource.userId,
+            'sessionId': resource.sessionId,
+            'accX': resource.accX,
+            'accY': resource.accY,
+            'accZ': resource.accZ,
+            'focus': resource.focus,
+            'iso': resource.iso,
+            'lens': resource.lens,
+            'shutterSpeed': resource.shutterSpeed,
+            'zoom': resource.zoom,
+            'analyzeType': resource.analyzeType,
+            'unit': resource.unit!.toJson(),
+            'presignedUrl': resource.presignedOriginalVideoUrl,
+          },
+        ],
+      };
+
+      final session = Session.fromJson(sessionJson);
+
+      expect(session.id, id);
+      expect(session.userId, userId);
+      expect(session.playerId, playerId);
+      expect(session.location, location);
+      expect(session.note, note);
+      expect(session.createdAt, createdAt);
+      expect(session.updatedAt, updatedAt);
+      expect(session.deleteFlag, deleteFlag);
+      expect(session.teamId, teamId);
+      expect(session.title, title);
+      expect(session.player, playerNull);
+      expect(session.resources!.length, 1);
+
+      // These tests are in resource_test.dart
+      // expect(session.resources![0]...)
+    });
+
+    test('isEditableByUser', () {
+      const teamId1 = '00000000-0000-4000-8000-000000000001';
+      const userId1 = '10000000-0000-4000-8000-000000000001';
+      const teamId2 = '00000000-0000-4000-8000-000000000002';
+      const userId2 = '10000000-0000-4000-8000-000000000002';
+      const s = Session(
+        teamId: teamId1,
+        userId: userId1,
+      );
+
+      // same team, same user
+      expect(
+        s.isEditableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.teamAdmin]
+          }),
+        ),
+        true,
+      );
+      expect(
+        s.isEditableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.teamManager]
+          }),
+        ),
+        true,
+      );
+      expect(
+        s.isEditableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.teamMember]
+          }),
+        ),
+        true,
+      );
+      expect(
+        s.isEditableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.superAdmin]
+          }),
+        ),
+        false, // superAdmin は basic ドメインで Read のみ
+      );
+      expect(
+        s.isEditableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.personalUser]
+          }),
+        ),
+        true,
+      );
+
+      // same team, another user
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.teamAdmin]
+          }),
+        ),
+        true,
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.teamManager]
+          }),
+        ),
+        true,
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.superAdmin]
+          }),
+        ),
+        false, // superAdmin は basic ドメインで Read のみ
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.teamMember]
+          }),
+        ),
+        false,
+      );
+
+      // another team, another user
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.superAdmin]
+          }),
+        ),
+        false, // superAdmin は basic ドメインで Read のみ
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.teamAdmin]
+          }),
+        ),
+        false,
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.teamManager]
+          }),
+        ),
+        false,
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.teamMember]
+          }),
+        ),
+        false,
+      );
+      expect(
+        s.isEditableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.personalUser]
+          }),
+        ),
+        false,
+      );
+    });
+  });
+}

@@ -1,0 +1,458 @@
+# Team Plan Availability リファクタリング仕様書
+
+## 概要
+
+`Team` モデルの `teamPlanAvailability` と関連するボール使用量判定ロジックを、`item` 概念の導入に伴い修正する。TeamPlan が期限切れでも `item` がボール枠を提供している場合は解析を継続可能としつつ、UI では期限切れ警告を表示できるようにする。
+
+## 背景
+
+### 従来の仕様
+- ボール解析の使用量は `teamPlan.currentUsage` のみで判定
+- `teamPlanAvailability` は期限（`remainingDays`）と使用率（`ballRate`）の両方をチェック
+
+### 現在の問題
+- `item` 概念が追加され、ボール使用量は `team.teamPlan.currentUsage + team.item.ballUsage` で判断する必要がある
+- `teamPlanAvailability` が使用率チェックを含むため、期限と使用率が混在して判定されている
+- モバイルアプリ（`../baseball_detector_flutter`）では既に分離された判定に変更済み
+
+## 修正方針
+
+### 1. `teamPlanAvailability` の責務分離
+
+**変更前：**
+- 期限チェック（`remainingDays`）
+- 使用率チェック（`ballRate`）
+
+**変更後：**
+- 期限チェック（`remainingDays`）のみ
+
+### 2. 新しい getter の追加
+
+`ballAvailability` getter を追加し、ボール使用量の判定を行う。
+
+```typescript
+get ballAvailability(): {
+  isAvailable: boolean;
+  unavailableReason: TranslationKey | null;
+}
+```
+
+### 3. 判定ロジックの統合
+
+利用可否の判定は以下の 2 つを組み合わせて行う：
+1. `teamPlanAvailability` - TeamPlan の期限チェック（UI 警告向けの情報提供）
+2. `ballAvailability` - TeamPlan と Item を合算したボール使用量チェック（実際の利用可否判定）
+
+`ballAvailability` が `isAvailable: true` を返す限り、TeamPlan が期限切れでも解析はブロックしない。代わりに `teamPlanAvailability` の情報を使って UI で期限切れ警告を表示する。
+
+### 4. 責務の分離
+
+| getter | 責務 | 用途 |
+|--------|------|------|
+| `teamPlanAvailability` | TeamPlan の期限切れを判定 | UI での警告表示（解析はブロックしない） |
+| `ballAvailability` | ボール使用量（TeamPlan + Item）の上限到達を判定 | 実際の機能利用可否（解析をブロック） |
+| `ballRate` | ボール使用率の計算（0〜1 以上） | UI での使用状況表示、警告の閾値判定（0.9 以上で警告） |
+
+### 5. エラーメッセージの優先順位
+
+UI での表示優先順位：
+
+1. **使用量上限到達** (`ballAvailability.isAvailable === false`)
+   - 色: 赤 (#FF0000)
+   - メッセージ: `you_have_reached_usage_limit` など
+   - 動作: 解析ブロック
+
+2. **TeamPlan 期限切れ（Item 有効時）** (`teamPlanAvailability.isAvailable === false` かつ `ballAvailability.isAvailable === true`)
+   - 色: 赤 (#FF0000)
+   - メッセージ: `team_plan_expired` など
+   - 動作: 解析可能だが警告表示
+
+3. **使用量警告（90% 以上）** (`ballRate >= 0.9`)
+   - 色: オレンジ (#FF8152)
+   - メッセージ: `usage_limit_is_approaching`
+   - 動作: 解析可能、警告のみ
+
+4. **期限警告（30 日以内）** (`remainingDays <= 30`)
+   - 色: オレンジ (#FF8152)
+   - メッセージ: `team_plan_expiration_is_approaching`
+   - 動作: 解析可能、警告のみ
+
+## 詳細設計
+
+### 修正対象ファイル
+
+#### 1. `web/src/models/team.ts`
+
+##### 1.1 `teamPlanAvailability` getter の修正
+
+**変更前（93-112 行目）：**
+```typescript
+get teamPlanAvailability(): {
+  isAvailable: boolean;
+  unavailableReason: TranslationKey | null;
+} {
+  const isRateLimitReached = this.ballRate >= 1;  // 使用率チェック
+  const isExpired = this.remainingDays <= 0;      // 期限チェック
+  if (isRateLimitReached || isExpired) {
+    return {
+      isAvailable: false,
+      unavailableReason: isExpired
+        ? this.nextTeamPlan?.isPendingActivation
+          ? 'next_team_plan_has_not_started_yet'
+          : this.teamPlan
+            ? 'team_plan_expired'
+            : 'no_team_plan_found'
+        : 'you_have_reached_usage_limit',
+    };
+  }
+  return {
+    isAvailable: true,
+    unavailableReason: null,
+  };
+}
+```
+
+**変更後：**
+```typescript
+get teamPlanAvailability(): {
+  isAvailable: boolean;
+  unavailableReason: TranslationKey | null;
+} {
+  const isExpired = this.remainingDays <= 0;
+  if (isExpired) {
+    return {
+      isAvailable: false,
+      unavailableReason: this.nextTeamPlan?.isPendingActivation
+        ? 'next_team_plan_has_not_started_yet'
+        : this.teamPlan
+          ? 'team_plan_expired'
+          : 'no_team_plan_found',
+    };
+  }
+  return {
+    isAvailable: true,
+    unavailableReason: null,
+  };
+}
+```
+
+##### 1.2 `ballAvailability` getter の追加
+
+`teamPlanAvailability` の後に以下を追加：
+
+```typescript
+get ballAvailability(): {
+  isAvailable: boolean;
+  unavailableReason: TranslationKey | null;
+} {
+  const totalUsage = this.currentTotalBallUsage;
+  const totalAvailable = this.currentTotalBallAvailableCount;
+
+  if (totalUsage === undefined || totalAvailable === undefined) {
+    // TeamPlan も Item も枠を提供していないケース
+    return {
+      isAvailable: false,
+      unavailableReason: this.teamPlanAvailability.unavailableReason ?? 'no_team_plan_found',
+    };
+  }
+
+  if (totalAvailable === 0) {
+    // 利用可能枠が 0 の場合
+    // TeamPlan が有効なら使用量上限、期限切れなら期限切れ理由を返す
+    return {
+      isAvailable: false,
+      unavailableReason: this.teamPlanAvailability.isAvailable
+        ? 'you_have_reached_usage_limit'
+        : this.teamPlanAvailability.unavailableReason!,
+    };
+  }
+
+  if (totalUsage >= totalAvailable) {
+    return {
+      isAvailable: false,
+      unavailableReason: 'you_have_reached_usage_limit',
+    };
+  }
+
+  return {
+    isAvailable: true,
+    unavailableReason: null,
+  };
+}
+```
+
+**ロジックの詳細：**
+- `totalAvailable === 0` のケースでは、TeamPlan が有効（期限内）なら `you_have_reached_usage_limit`、期限切れなら期限切れ理由（`team_plan_expired` など）を返す
+- これにより、期限切れと使用量上限を適切に区別できる
+
+##### 1.3 `currentTotalBallUsage` と `currentTotalBallAvailableCount` の変更
+
+**現状の実装（117-132 行目）：**
+```typescript
+get currentTotalBallUsage() {
+  if (this.teamPlan || this.item) {
+    const isTeamPlanAvailable = this.teamPlanAvailability.isAvailable;
+    return (isTeamPlanAvailable ? this.teamPlan?.currentUsage ?? 0 : 0) + (this.item?.ballUsage ?? 0);
+  } else {
+    return undefined;
+  }
+}
+
+get currentTotalBallAvailableCount() {
+  if (this.teamPlan || this.item) {
+    const isTeamPlanAvailable = this.teamPlanAvailability.isAvailable;
+    return (isTeamPlanAvailable ? this.teamPlan?.plan.maxBalls ?? 0 : 0) + (this.item?.ballAvailableCount ?? 0);
+  } else {
+    return undefined;
+  }
+}
+```
+
+**変更：変更不要**
+
+`teamPlanAvailability` から使用率チェックを削除し、期限チェックのみにすることで循環参照は解消される。
+既存のロジックは以下の通り動作し、要件を満たす：
+
+- **期限内：** TeamPlan の値 + Item の値を合算
+- **期限切れ：** Item の値のみを使用（TeamPlan の値は 0 として扱う）
+
+これにより、TeamPlan が期限切れでも `item` が存在すれば `currentTotalBallUsage` / `currentTotalBallAvailableCount` は定義され続け、ボール枠を提供できる。
+
+#### 2. `web/src/utils/analysis.util.ts`
+
+**変更箇所：** `checkAnalysisAvailability` および `checkReanalysisAvailability` 関数
+
+**変更前（22-28 行目、52-58 行目）：**
+```typescript
+if (!team.teamPlanAvailability.isAvailable) {
+  return {
+    isAvailable: false,
+    unavailableReason: translate(
+      team.teamPlanAvailability.unavailableReason!,
+    ),
+  };
+}
+```
+
+**変更後：**
+```typescript
+// ボール使用量チェック（TeamPlan + Item を合算）
+if (!team.ballAvailability.isAvailable) {
+  return {
+    isAvailable: false,
+    unavailableReason: translate(
+      team.ballAvailability.unavailableReason!,
+    ),
+  };
+}
+
+// TeamPlan 期限切れの情報は、利用可否ではなく警告表示に利用する。
+```
+
+これにより `team.teamPlanAvailability.isAvailable` が `false` でも、`item` によってボール枠が確保されていれば解析は継続できる。期限切れ警告を出す必要がある画面では、別途 `teamPlanAvailability` を参照する。
+
+#### 3. `web/src/layouts/console.layout.tsx`
+
+**変更箇所：** `getPlanStatus` 関数内の判定ロジック（254-260 行目、268-276 行目）
+
+**変更前：**
+```typescript
+// プランが利用不可の場合（期限切れや利用制限に達している場合）
+if (!currentTeam.teamPlanAvailability.isAvailable) {
+  const reason = currentTeam.teamPlanAvailability.unavailableReason;
+  if (reason === 'team_plan_expired' || reason === 'no_team_plan_found') {
+    return { status: 'upgrade_prompt' };
+  }
+}
+
+// 既存のplanがisTopTierPlanの場合は表示しない
+if (isTopTierPlan(currentTeam.teamPlan?.plan.id)) {
+  return { status: null };
+}
+
+// 利用制限に達している場合
+if (currentTeam.ballRate >= 1) {
+  return { status: 'limit_reached' };
+}
+
+// 利用制限が近づいている場合
+const isUsageLimitApproaching = currentTeam.ballRate >= 0.9;
+if (isUsageLimitApproaching) {
+  return { status: 'pre_warning' };
+}
+```
+
+**変更後：**
+```typescript
+// 既存のplanがisTopTierPlanの場合は表示しない
+if (isTopTierPlan(currentTeam.teamPlan?.plan.id)) {
+  return { status: null };
+}
+
+// ボール使用量が利用制限に達している場合（TeamPlan + Item を合算）
+if (!currentTeam.ballAvailability.isAvailable) {
+  return { status: 'limit_reached' };
+}
+
+// 利用制限が近づいている場合
+const isUsageLimitApproaching = currentTeam.ballRate >= 0.9;
+if (isUsageLimitApproaching) {
+  return { status: 'pre_warning' };
+}
+
+// プランが期限切れ／未契約の場合は、item が有効でも警告を表示
+if (!currentTeam.teamPlanAvailability.isAvailable) {
+  const reason = currentTeam.teamPlanAvailability.unavailableReason;
+  if (reason === 'team_plan_expired' || reason === 'no_team_plan_found') {
+    return { status: 'upgrade_prompt' };
+  }
+}
+
+return { status: null };
+```
+
+#### 4. `web/src/components/sessions/team-plan-limit-band.tsx`
+
+**変更箇所：** `useEffect` 内の判定ロジック（44-52 行目、54-74 行目）
+
+**変更前：**
+```typescript
+if (!team.teamPlanAvailability.isAvailable) {
+  setParam({
+    background: '#FF0000',
+    icon: InfoSvg,
+    text: translate(team.teamPlanAvailability.unavailableReason!),
+    isActive: true,
+  });
+  return;
+}
+
+const isUsageLimitApproaching = team.ballRate >= 0.9;
+const isExpirationApproaching =
+  team.remainingDays <= 30 &&
+  // Suppress this warning for subscription billing
+  !team.teamPlan?.subscriptionType;
+if (isUsageLimitApproaching || isExpirationApproaching) {
+  const texts: string[] = [];
+  if (isExpirationApproaching) {
+    texts.push(translate('team_plan_expiration_is_approaching'));
+  }
+  if (isUsageLimitApproaching) {
+    texts.push(translate('usage_limit_is_approaching'));
+  }
+  setParam({
+    background: '#FF8152',
+    icon: InfoSvg,
+    text: texts.join(' / '),
+    isActive: true,
+  });
+  return;
+}
+```
+
+**変更後：**
+```typescript
+// ボール使用量チェック（利用不可の場合は即座に通知）
+if (!team.ballAvailability.isAvailable) {
+  setParam({
+    background: '#FF0000',
+    icon: InfoSvg,
+    text: translate(team.ballAvailability.unavailableReason!),
+    isActive: true,
+  });
+  return;
+}
+
+// TeamPlan の期限チェック（item により利用可能でも警告は表示する）
+if (!team.teamPlanAvailability.isAvailable) {
+  setParam({
+    background: '#FF0000',
+    icon: InfoSvg,
+    text: translate(team.teamPlanAvailability.unavailableReason!),
+    isActive: true,
+  });
+  return;
+}
+
+const isUsageLimitApproaching = team.ballRate >= 0.9;
+const isExpirationApproaching =
+  team.remainingDays <= 30 &&
+  // Suppress this warning for subscription billing
+  !team.teamPlan?.subscriptionType;
+if (isUsageLimitApproaching || isExpirationApproaching) {
+  const texts: string[] = [];
+  if (isExpirationApproaching) {
+    texts.push(translate('team_plan_expiration_is_approaching'));
+  }
+  if (isUsageLimitApproaching) {
+    texts.push(translate('usage_limit_is_approaching'));
+  }
+  setParam({
+    background: '#FF8152',
+    icon: InfoSvg,
+    text: texts.join(' / '),
+    isActive: true,
+  });
+  return;
+}
+```
+
+## 変更の影響範囲
+
+### 直接影響を受けるファイル
+1. `web/src/models/team.ts` - モデル定義の修正
+2. `web/src/utils/analysis.util.ts` - 分析可能性チェック
+3. `web/src/layouts/console.layout.tsx` - プランステータス表示
+4. `web/src/components/sessions/team-plan-limit-band.tsx` - リミットバンド表示
+
+### 間接影響を受ける可能性のあるファイル
+- `teamPlanAvailability` を使用している他の箇所
+- `ballRate` を使用している他の箇所
+
+## テスト項目
+
+### 1. TeamPlan のみの場合
+- [ ] 期限内 & 使用量が制限未満 → 利用可能
+- [ ] 期限内 & 使用量が制限に達している → 利用不可（使用量）
+- [ ] 期限切れ & 使用量が制限未満 → 利用不可（期限）
+- [ ] 期限切れ & 使用量が制限に達している → 利用不可（期限優先）
+
+### 2. Item のみの場合
+- [ ] 使用量が制限未満 → 利用可能
+- [ ] 使用量が制限に達している → 利用不可（使用量）
+
+### 3. TeamPlan + Item の場合
+- [ ] 期限内 & 合計使用量が制限未満 → 利用可能
+- [ ] 期限内 & 合計使用量が制限に達している → 利用不可（使用量）
+- [ ] 期限切れ & Item の使用量が制限未満 → 利用可能（Item のみ有効、UI で期限切れ警告）
+- [ ] 期限切れ & Item の使用量が制限に達している → 利用不可（使用量）
+
+### 4. UI 表示の確認
+- [ ] 分析画面での利用可否メッセージ（item により利用可能な場合はエラーにならない）
+- [ ] プランステータスカードの表示（期限切れでも利用可能だが警告は表示される）
+- [ ] リミットバンドの表示内容（利用不可は ballAvailability、期限切れ警告は teamPlanAvailability）
+- [ ] 期限切れと使用制限が同時に発生した場合の優先順位（利用不可を優先し、その後に期限切れ警告を表示）
+
+## 実装順序
+
+1. `web/src/models/team.ts` の修正
+   - `teamPlanAvailability` の修正
+   - `ballAvailability` の追加
+2. `web/src/utils/analysis.util.ts` の修正
+3. `web/src/layouts/console.layout.tsx` の修正
+4. `web/src/components/sessions/team-plan-limit-band.tsx` の修正
+5. テスト実行と動作確認
+
+## 注意事項
+
+1. **後方互換性：** `teamPlanAvailability` の戻り値の型は変更しないが、判定ロジックが変わるため、既存の使用箇所での動作を確認する必要がある。
+
+2. **TeamPlan 期限切れ時の挙動：** TeamPlan が期限切れでも `item` が枠を提供している場合は利用をブロックしない。UI 側で警告表示のみ行うことを必ず確認する。
+
+3. **モバイルアプリとの整合性：** Flutter アプリと同様の判定ロジックになるため、Web とモバイルで一貫した挙動を実現できる。
+
+4. **循環参照の解消：**
+   - 変更前：`ballRate` → `currentTotalBallUsage` → `teamPlanAvailability` → `ballRate` （循環）
+   - 変更後：`ballRate` → `currentTotalBallUsage` → `teamPlanAvailability` （期限のみチェック、循環なし）
+
+5. **メッセージの優先順位：** 利用不可（使用量上限など）が発生した場合はそちらを優先し、その後に TeamPlan 期限切れの警告を表示する。

@@ -1,0 +1,392 @@
+// NOTE: See the following page to run this test.
+// https://zenn.dev/laiso/articles/cfff69685553753ee378
+
+@Tags(['needAPI'])
+library;
+
+// Dart imports:
+import 'dart:async';
+import 'dart:io';
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path/path.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/controllers/member_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/player_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_detail_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/session_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_controller.dart';
+import 'package:baseball_detector_flutter/controllers/team_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/user_info_controller.dart';
+import 'package:baseball_detector_flutter/data/models/dto/player/handedness.dart';
+import 'package:baseball_detector_flutter/data/models/enums/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+import '../_common/create_container.dart';
+import '../_common/expect_api_response.dart';
+import '../_common/http_test_flutter_binding.dart';
+import '../_common/sql_utils.dart';
+import '../_testdata/generators/data/players.dart';
+import '../_testdata/generators/data/resources.dart';
+import '../_testdata/generators/data/sessions.dart';
+import '../_testdata/generators/data/teams.dart';
+import '../_testdata/generators/data/users.dart';
+
+void main() {
+  HttpTestFlutterBinding();
+
+  final testDataDir = join(dirname(Platform.script.path), 'test', '_testdata');
+
+  // Not strictly equivalent to ref, but to bring the test code closer to the actual code
+  late final ProviderContainer ref;
+  setUpAll(() async {
+    ref = await createContainer();
+    await restoreDeletedRecords();
+  });
+
+  group('Testing controllers (team_admin, read)', () {
+    // sign in
+    setUpAll(() async {
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .signInWithPassword('team_admin@example.co.jp', 'test1234', true);
+      expectRight(response);
+    });
+
+    test('sessionList', () async {
+      final sessionsAsync =
+          await waitForAsyncValue(ref, sessionListControllerProvider);
+      final sessions = sessionsAsync.value!.items;
+      expectSessions(sessions, teamId: teamMultipleUsers.id!);
+    });
+
+    test('resourceDataList', () async {
+      final resourceListAsync = await waitForAsyncValue(
+        ref,
+        resourceDataListControllerProvider(
+          teamId: sessionTeam.teamId!,
+          sessionId: sessionTeam.id!,
+        ),
+      );
+      final resources = resourceListAsync.value!.items;
+      expectResourcesBySessionId(resources, sessionTeam.id!);
+    });
+
+    test('resourceDataDetail', () async {
+      final resourceDetailAsync = await waitForAsyncValue(
+        ref,
+        resourceDataDetailControllerProvider(
+          teamId: resourceTeam.teamId!,
+          sessionId: resourceTeam.sessionId!,
+          resourceId: resourceTeam.id!,
+        ),
+      );
+      expect(resourceDetailAsync.value, isNotNull);
+      final resource = resourceDetailAsync.value!;
+      expectResourceDetailById(resource, resourceTeam.id!);
+    });
+
+    test('userInfo', () async {
+      final profileAsync =
+          await waitForAsyncValue(ref, userInfoControllerProvider);
+      expect(profileAsync.value?.hasRight, true);
+      final userInfo = profileAsync.value!.right;
+      expectUserInfoByUserId(userInfo, userTeamAdmin.id);
+    });
+
+    test('teamList', () async {
+      final teamListAsync =
+          await waitForAsyncValue(ref, teamListControllerProvider);
+      expect(teamListAsync.value?.hasRight, true);
+      final teamList = teamListAsync.value!.right;
+      expectTeamsByUserId(teamList, userTeamAdmin.id);
+    });
+
+    test('memberList', () async {
+      final memberListAsync =
+          await waitForAsyncValue(ref, memberListControllerProvider);
+      final teamMemberUserInfos = memberListAsync.value!.items;
+      final teamMemberProfiles =
+          teamMemberUserInfos.map((userInfo) => userInfo.profile).toList();
+      expectTeamMemberProfilesByTeamId(
+          teamMemberProfiles, teamMultipleUsers.id!);
+    });
+
+    test('playerList', () async {
+      final playerListAsync =
+          await waitForAsyncValue(ref, playerListControllerProvider);
+      final pagination = playerListAsync.value!;
+      expectPlayers(pagination.items, teamId: teamMultipleUsers.id!);
+    });
+
+    tearDownAll(() async {
+      final response =
+          await ref.read(loginStateControllerProvider.notifier).signOut();
+      expectRight(response);
+    });
+  });
+
+  group('testing controllers (team_admin, write)', () {
+    // sign in
+    setUpAll(() async {
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .signInWithPassword(
+              'team_admin_write_test@example.co.jp', 'test1234', true);
+      expectRight(response);
+    });
+
+    test('SessionListController.deleteSession', () async {
+      final res = await ref
+          .read(sessionListControllerProvider.notifier)
+          .deleteSession(sessionToBeDeleted.id!);
+      expectRight(res);
+    });
+
+    test('SessionListController.createSession', () async {
+      final res =
+          await ref.read(sessionListControllerProvider.notifier).addSession(
+                playerId: playerWriteTest.id!,
+                location: 'test location',
+                note: 'test note',
+                title: 'addSession test',
+              );
+      expectRight(res);
+    });
+
+    test(
+      'SessionDetailController.updateSession',
+      () async {
+        final res =
+            await ref.read(sessionListControllerProvider.notifier).editSession(
+                  sessionId: sessionToBeEdited.id!,
+                  playerId: playerWriteTest.id!,
+                  title: 'edited session',
+                  location: 'edited location',
+                  note: 'edited note',
+                );
+        expectRight(res);
+      },
+      timeout: const Timeout(Duration(seconds: 60)),
+    );
+
+    test('ResourceDataListController.deleteResourceData', () async {
+      final res = await ref
+          .read(resourceDataListControllerProvider(
+            teamId: resourceToBeDeleted.teamId!,
+            sessionId: resourceToBeDeleted.sessionId!,
+          ).notifier)
+          .deleteResourceData(
+            resourceToBeDeleted.sessionId!,
+            resourceToBeDeleted.id!,
+          );
+      expectRight(res);
+    });
+
+    test('ResourceDataDetailController.reAnalyzeVideo', () async {
+      final res = await ref
+          .read(resourceDataDetailControllerProvider(
+            teamId: resourceToBeReanalyzed.teamId!,
+            sessionId: resourceToBeReanalyzed.sessionId!,
+            resourceId: resourceToBeReanalyzed.id!,
+          ).notifier)
+          .reAnalyzeVideo();
+      expect(res.hasRight, true);
+    });
+
+    test('TeamController.editTeam', () async {
+      final res = await ref.read(teamControllerProvider.notifier).editTeam(
+            name: 'Edited team',
+            imageFilePath: join(testDataDir, 'dummy.png'),
+          );
+      expectRight(res);
+    });
+
+    test('UserInfoController.editProfile', () async {
+      final res =
+          await ref.read(userInfoControllerProvider.notifier).editProfile(
+                name: 'Edited profile (team_admin)',
+                imageFilePath: join(testDataDir, 'dummy.png'),
+              );
+      expectRight(res);
+    });
+
+    test('MemberListController.editRole', () async {
+      final res =
+          await ref.read(memberListControllerProvider.notifier).editMemberRole(
+                userId: userToBeEdited.id,
+                role: AppRole.teamManager,
+              );
+      expectRight(res);
+    });
+
+    test('MemberListController.inviteTeamMember', () async {
+      final res =
+          await ref.read(memberListControllerProvider.notifier).inviteMember(
+                name: 'Invited',
+                email:
+                    'invited-${DateTime.now().millisecondsSinceEpoch}@example.co.jp',
+                role: AppRole.teamMember,
+              );
+      expectRight(res);
+    });
+
+    test('MemberListController.deactivateTeamMember', () async {
+      final res = await ref
+          .read(memberListControllerProvider.notifier)
+          .deactivateMember(userId: userToBeActivated.id);
+      expectRight(res);
+    });
+
+    test('MemberListController.reactivateTeamMember', () async {
+      final res = await ref
+          .read(memberListControllerProvider.notifier)
+          .reactivateMember(userId: userToBeActivated.id);
+      expectRight(res);
+    });
+
+    test('PlayerListController.updatePlayer', () async {
+      final res =
+          await ref.read(playerListControllerProvider.notifier).updatePlayer(
+                playerId: playerToBeEdited.id!,
+                name: 'Edited player',
+                note: 'Edited note',
+                pitchingHand: Handedness.right,
+                hittingHand: Handedness.right,
+                imageFilePath: join(testDataDir, 'dummy.png'),
+              );
+      expectRight(res);
+    });
+
+    test('PlayerListController.deletePlayer', () async {
+      final res = await ref
+          .read(playerListControllerProvider.notifier)
+          .deletePlayer(playerToBeDeleted.id!);
+      expectRight(res);
+    });
+
+    test('PlayerListController.createPlayer', () async {
+      final res =
+          await ref.read(playerListControllerProvider.notifier).createPlayer(
+                playerName: 'addPlayer test',
+                note: 'test note',
+                pitchingHand: Handedness.right,
+                hittingHand: Handedness.right,
+                imageFilePath: join(testDataDir, 'dummy.png'),
+              );
+      expectRight(res);
+    });
+
+    test('ForgotPasswordController.forgotPassword', () async {
+      final res = await ref
+          .read(forgotPasswordControllerProvider.notifier)
+          .forgotPassword('team_admin_write_test@example.co.jp');
+      expectRight(res);
+    });
+
+    test('ChangePasswordController.changePasswordController', () async {
+      // change password temporarily
+      final res = await ref
+          .read(changePasswordControllerProvider.notifier)
+          .changePasswordController('test12345', true);
+      expectRight(res);
+
+      // restore password
+      final res2 = await ref
+          .read(changePasswordControllerProvider.notifier)
+          .changePasswordController('test1234', true);
+      expectRight(res2);
+    });
+
+    tearDownAll(() async {
+      final response =
+          await ref.read(loginStateControllerProvider.notifier).signOut();
+      expectRight(response);
+    });
+  });
+
+  group('LoginStateController.signInWithPassword: abnormal cases', () {
+    test('unverified account', () async {
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .signInWithPassword('not_verified@example.co.jp', 'test1234', true);
+      expect(response.hasLeft, true);
+      expect(response.left is UnconfirmedEmailFailure, true);
+    });
+
+    test('not registered', () async {
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .signInWithPassword('not_registered@example.co.jp', 'test1234', true);
+      expect(response.hasLeft, true);
+      expect(response.left is UnregisteredEmailFailure, true);
+    });
+  });
+
+  group('LoginStateController: sign up', () {
+    final email =
+        'sign-up-${DateTime.now().millisecondsSinceEpoch}@example.co.jp';
+    late String token;
+
+    test('signUp', () async {
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .signUp(email, 'test1234', DateTime(2000, 1, 1));
+      expectRight(response);
+    });
+
+    test('verifyCode', () async {
+      final code = await extractVerificationCode(email);
+      expect(code, isNotNull);
+
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .verifyCode(code!);
+      expectRight(response);
+      token = response.right;
+    });
+
+    test('completeSignUp', () async {
+      final response = await ref
+          .read(loginStateControllerProvider.notifier)
+          .completeSignUp(token);
+      expectRight(response);
+    });
+  });
+}
+
+void expectRightAsync<T>(AsyncValue<Result<Failure, T>> actual) {
+  expect(actual.hasValue, true);
+  expectRight(actual.value!);
+}
+
+/// Wait until AsyncValue.loading of the value of provider is false.
+Future<AsyncValue<T>> waitForAsyncValue<T>(
+  ProviderContainer ref,
+  ProviderListenable<AsyncValue<T>> provider,
+) {
+  final completer = Completer<AsyncValue<T>>();
+
+  ProviderSubscription<AsyncValue<T>>? subscription;
+  subscription = ref.listen(
+    provider,
+    (prev, next) {
+      if (next.isLoading) {
+        return;
+      }
+      // in case of fireImmediately
+      Future.microtask(() {
+        subscription!.close();
+        completer.complete(next);
+      });
+    },
+    fireImmediately: true,
+  );
+
+  return completer.future;
+}

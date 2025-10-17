@@ -1,0 +1,1601 @@
+import { Team } from '../team';
+import { TeamPlanStatus, BallUsageStatus, AiCoachUsageStatus } from '../team-status';
+
+describe('Team', () => {
+  describe('ballUsage', () => {
+    it('teamPlan も item も null の場合は 0 を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsage).toBe(0);
+    });
+
+    it('teamPlan のみ有効な場合は teamPlan の currentUsage を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsage).toBe(30);
+    });
+
+    it('item のみ有効な場合は item の ballUsage を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.ballUsage).toBe(15);
+    });
+
+    it('teamPlan と item が両方有効な場合は合算を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.ballUsage).toBe(45); // 30 + 15
+    });
+
+    it('teamPlan が期限切れの場合は item のみの値を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.ballUsage).toBe(15); // item のみ
+    });
+
+    it('teamPlan の currentUsage が maxBalls を超えている場合は maxBalls でクランプする', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 150, // maxBalls (100) を超える不正な値
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsage).toBe(100); // maxBalls でクランプされる
+    });
+
+    it('item の ballUsage が ballAvailableCount を超えている場合は ballAvailableCount でクランプする', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 80, // ballAvailableCount (50) を超える不正な値
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.ballUsage).toBe(50); // ballAvailableCount でクランプされる
+    });
+
+    it('teamPlan と item の両方で上限を超えている場合は両方クランプして合算する', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 150, // maxBalls (100) を超える
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 80, // ballAvailableCount (50) を超える
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.ballUsage).toBe(150); // 100 + 50（両方クランプ後）
+    });
+  });
+
+  describe('maxBalls', () => {
+    it('teamPlan も item も null の場合は 0 を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.maxBalls).toBe(0);
+    });
+
+    it('teamPlan のみ有効な場合は teamPlan の maxBalls を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.maxBalls).toBe(100);
+    });
+
+    it('item のみ有効な場合は item の ballAvailableCount を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.maxBalls).toBe(50);
+    });
+
+    it('teamPlan と item が両方有効な場合は合算を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.maxBalls).toBe(150); // 100 + 50
+    });
+
+    it('teamPlan が期限切れの場合は item のみの値を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.maxBalls).toBe(50); // item のみ
+    });
+  });
+
+  describe('teamPlanStatus', () => {
+    it('teamPlan が null の場合は NO_CONTRACT を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.NO_CONTRACT);
+    });
+
+    it('teamPlan の isActive が false の場合は NO_CONTRACT を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: false,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.NO_CONTRACT);
+    });
+
+    it('期限切れで nextTeamPlan が保留中の場合は NEXT_PLAN_PENDING を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: {
+          id: 'plan2',
+          teamId: 'team1',
+          planId: 2,
+          plan: {
+            id: 2,
+            name: 'Premium',
+            maxBalls: 200,
+            maxMembers: 20,
+            maxAiCoachs: 10,
+            pricePerMonth: 2000,
+          },
+          isPendingActivation: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.NEXT_PLAN_PENDING);
+    });
+
+    it('期限切れの場合は EXPIRED を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.EXPIRED);
+    });
+
+    it('残り 30 日以内の場合は EXPIRING_SOON を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.EXPIRING_SOON);
+    });
+
+    it('残り 31 日以上の場合は OK を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.OK);
+    });
+  });
+
+  describe('ballUsageStatus', () => {
+    it('使用量が上限に達している場合は LIMIT_REACHED を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 100,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsageStatus).toBe(BallUsageStatus.LIMIT_REACHED);
+    });
+
+    it('使用量が上限を超えている場合は LIMIT_REACHED を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 105,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsageStatus).toBe(BallUsageStatus.LIMIT_REACHED);
+    });
+
+    it('使用量が 90% 以上の場合は LIMIT_APPROACHING を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 90,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsageStatus).toBe(BallUsageStatus.LIMIT_APPROACHING);
+    });
+
+    it('使用量が 90% 未満の場合は OK を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 50,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsageStatus).toBe(BallUsageStatus.OK);
+    });
+
+    it('maxBalls が 0 の場合は LIMIT_REACHED を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.ballUsageStatus).toBe(BallUsageStatus.LIMIT_REACHED);
+    });
+  });
+
+  describe('canAnalyzeBall', () => {
+    it('ballUsageStatus が OK の場合は true を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 50,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.canAnalyzeBall).toBe(true);
+    });
+
+    it('ballUsageStatus が LIMIT_APPROACHING の場合は true を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 90,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.canAnalyzeBall).toBe(true);
+    });
+
+    it('ballUsageStatus が LIMIT_REACHED の場合は false を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 100,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.canAnalyzeBall).toBe(false);
+    });
+
+    it('teamPlan が期限切れでも item が有効なら true を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 40 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 3,
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.canAnalyzeBall).toBe(true);
+      expect(team.teamPlanStatus).toBe(TeamPlanStatus.EXPIRED);
+    });
+  });
+
+  describe('aiCoachUsageStatus', () => {
+    it('使用量が上限に達している場合は LIMIT_REACHED を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 5,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.aiCoachUsageStatus).toBe(AiCoachUsageStatus.LIMIT_REACHED);
+    });
+
+    it('使用量が 90% 以上の場合は LIMIT_APPROACHING を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 10,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 9,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.aiCoachUsageStatus).toBe(AiCoachUsageStatus.LIMIT_APPROACHING);
+    });
+
+    it('使用量が 90% 未満の場合は OK を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.aiCoachUsageStatus).toBe(AiCoachUsageStatus.OK);
+    });
+
+    it('teamPlan の currentAiCoachUsage が maxAiCoachs を超えている場合は maxAiCoachs でクランプする', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 10, // maxAiCoachs (5) を超える不正な値
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.aiCoachUsage).toBe(5); // maxAiCoachs でクランプされる
+    });
+
+    it('item の aiCoachUsage が aiCoachAvailableCount を超えている場合は aiCoachAvailableCount でクランプする', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: null,
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 20, // aiCoachAvailableCount (10) を超える不正な値
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.aiCoachUsage).toBe(10); // aiCoachAvailableCount でクランプされる
+    });
+
+    it('teamPlan と item の AI コーチ使用量が両方上限を超えている場合は両方クランプして合算する', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 10, // maxAiCoachs (5) を超える
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: {
+          id: 'item1',
+          teamId: 'team1',
+          ballUsage: 15,
+          ballAvailableCount: 50,
+          aiCoachUsage: 20, // aiCoachAvailableCount (10) を超える
+          aiCoachAvailableCount: 10,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      });
+
+      expect(team.aiCoachUsage).toBe(15); // 5 + 10（両方クランプ後）
+    });
+  });
+
+  describe('canUseAiCoach', () => {
+    it('aiCoachUsageStatus が OK の場合は true を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 2,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.canUseAiCoach).toBe(true);
+    });
+
+    it('aiCoachUsageStatus が LIMIT_APPROACHING の場合は true を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 10,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 9,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.canUseAiCoach).toBe(true);
+    });
+
+    it('aiCoachUsageStatus が LIMIT_REACHED の場合は false を返す', () => {
+      const team = new Team({
+        id: 'team1',
+        imageUrl: null,
+        presignedImageUrl: null,
+        name: 'Test Team',
+        ownerUserId: 'user1',
+        teamType: 'multi',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletionScheduledAt: null,
+        teamPlan: {
+          id: 'plan1',
+          teamId: 'team1',
+          planId: 1,
+          plan: {
+            id: 1,
+            name: 'Standard',
+            maxBalls: 100,
+            maxMembers: 10,
+            maxAiCoachs: 5,
+            pricePerMonth: 1000,
+          },
+          startDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          endDate: new Date(Date.now() + 40 * 24 * 60 * 60 * 1000).toISOString(),
+          currentUsage: 30,
+          currentAiCoachUsage: 5,
+          isActive: true,
+          subscriptionType: null,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+        nextTeamPlan: null,
+        users: [],
+        billingFailureReason: null,
+        teamPlanCancelAt: null,
+        teamPlanDowngradeAt: null,
+        downgradePlanId: null,
+        item: null,
+      });
+
+      expect(team.canUseAiCoach).toBe(false);
+    });
+  });
+});

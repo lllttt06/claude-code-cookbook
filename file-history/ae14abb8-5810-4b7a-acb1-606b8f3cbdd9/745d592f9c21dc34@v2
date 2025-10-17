@@ -1,0 +1,214 @@
+// Dart imports:
+import 'dart:async';
+import 'dart:io';
+
+// Package imports:
+import 'package:dynamic_parallel_queue/dynamic_parallel_queue.dart';
+import 'package:fimber/fimber.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/local_video.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/repositories/repository.dart';
+import 'package:baseball_detector_flutter/providers/repository_provider.dart';
+
+part 'upload_queue.g.dart';
+
+@Riverpod(keepAlive: true)
+UploadQueue uploadQueue(Ref ref) {
+  final repository = ref.watch(repositoryProvider);
+  final queue = UploadQueue(repository);
+  ref.onDispose(queue.dispose);
+  return queue;
+}
+
+class UploadQueue {
+  UploadQueue(this._repository);
+
+  final Repository _repository;
+  final _logger = FimberLog('UploadQueue');
+  // Queue for parallel uploads (max 3 at a time)
+  final _queue = Queue(parallel: 3);
+
+  /// Maximum video file size in bytes (500 MB)
+  static const int maxVideoSizeBytes = 500 * 1024 * 1024;
+
+  /// Stream for notifying upload state changes
+  final _eventCtrl = StreamController<UploadEvent>.broadcast();
+  Stream<UploadEvent> get events => _eventCtrl.stream;
+
+  /// Flag to track if the controller has been disposed
+  bool _isDisposed = false;
+
+  /// IDs that are queued (not yet started uploading)
+  final _idsOnQueue = <String>{};
+
+  /// IDs that are currently uploading
+  final _idsUploading = <String>{};
+
+  /// Add a new upload task to the queue. Ignores duplicates.
+  Future<void> addUploadTask(LocalVideoData localVideo) async {
+    if (_idsOnQueue.contains(localVideo.id) ||
+        _idsUploading.contains(localVideo.id)) {
+      return; // Prevent duplicates
+    }
+
+    final path = localVideo.absolutePath;
+
+    // Validate file size
+    if (path != null) {
+      final file = File(path);
+      if (await file.exists()) {
+        final fileSize = await file.length();
+        if (fileSize > maxVideoSizeBytes) {
+          _logger.w(
+            'Video file size exceeds limit (id=${localVideo.id}, size=${fileSize / (1024 * 1024)} MB)',
+          );
+          if (!_isDisposed) {
+            _eventCtrl.add(
+              UploadEvent.failed(
+                localVideo,
+                Failure.undefined(
+                  code: 'EM-UPLD-SIZE-001',
+                  description: (l10n) => l10n.upload_queue__video_size_exceeded,
+                ),
+              ),
+            );
+          }
+          return;
+        }
+      }
+    }
+
+    _idsOnQueue.add(localVideo.id);
+    if (!_isDisposed) {
+      _eventCtrl.add(UploadEvent.queued(localVideo));
+    }
+
+    _logger.i('add video to queue (id=${localVideo.id}, path=$path)');
+
+    _queue.add(() async {
+      _idsOnQueue.remove(localVideo.id);
+      _idsUploading.add(localVideo.id);
+      if (!_isDisposed) {
+        _eventCtrl.add(UploadEvent.started(localVideo));
+      }
+
+      await _uploadVideo(localVideo);
+      _idsUploading.remove(localVideo.id);
+    });
+  }
+
+  /// Clear only the tasks that are waiting (not in progress)
+  void clearAwaiting() {
+    // Do not kill tasks that are already uploading, only clear waiting ones
+    _idsOnQueue.clear();
+    _queue.clear();
+    if (!_isDisposed) {
+      _eventCtrl.add(const UploadEvent.cleared());
+    }
+  }
+
+  bool contains(ResourceData resource) =>
+      _idsOnQueue.contains(resource.id) || _idsUploading.contains(resource.id);
+
+  /// Internal: Upload a video and notify result via event stream
+  Future<void> _uploadVideo(LocalVideoData d) async {
+    _logger.i('start upload: id=${d.id}, path=${d.absolutePath}');
+
+    d.hasEverUploaded = true;
+    await LocalVideoStorage.getInstance().save();
+
+    final response = await _repository.uploadVideo(
+      sessionId: d.sessionId,
+      resourceId: d.id,
+      filePath: d.absolutePath!,
+      analyzeType: d.analyzeType,
+      focalLengthIn35mmEquivalent: d.focalLengthIn35mmEquivalent,
+      longsideAngleOfView: d.longsideAngleOfView,
+      accX: d.accX,
+      accY: d.accY,
+      accZ: d.accZ,
+      lens: d.lens,
+      focus: d.focus,
+      isAutoFocus: d.isAutoFocus,
+      zoom: d.zoom,
+      iso: d.iso,
+      shutterSpeed: d.shutterSpeed,
+      device: d.device,
+      recordedAt: d.createdAt,
+      cameraMode: d.cameraMode,
+    );
+
+    response.fold(
+      (left) {
+        _logger.w(
+          'failed to upload (id=${d.id}, path=${d.path})',
+          ex: left,
+        );
+        if (!_isDisposed) {
+          _eventCtrl.add(UploadEvent.failed(d, left));
+        }
+      },
+      (right) {
+        _logger.i(
+          'upload successful (id=${d.id}, path=${d.path}, remoteId=$right)',
+        );
+        if (!_isDisposed) {
+          _eventCtrl.add(UploadEvent.succeeded(d, right));
+        }
+      },
+    );
+  }
+
+  /// Dispose the event stream controller
+  void dispose() {
+    _isDisposed = true;
+    _eventCtrl.close();
+  }
+}
+
+/// Sealed class representing upload state events
+sealed class UploadEvent {
+  const UploadEvent._();
+
+  factory UploadEvent.queued(LocalVideoData v) = Queued;
+  factory UploadEvent.started(LocalVideoData v) = Started;
+  factory UploadEvent.succeeded(LocalVideoData v, String remoteId) = Succeeded;
+  factory UploadEvent.failed(LocalVideoData v, Failure failure) = Failed;
+  const factory UploadEvent.cleared() = Cleared;
+}
+
+/// Event: Video is queued for upload
+class Queued extends UploadEvent {
+  const Queued(this.video) : super._();
+  final LocalVideoData video;
+}
+
+/// Event: Upload has started
+class Started extends UploadEvent {
+  const Started(this.video) : super._();
+  final LocalVideoData video;
+}
+
+/// Event: Upload succeeded
+class Succeeded extends UploadEvent {
+  const Succeeded(this.video, this.remoteId) : super._();
+  final LocalVideoData video;
+  final String remoteId;
+}
+
+/// Event: Upload failed
+class Failed extends UploadEvent {
+  const Failed(this.video, this.failure) : super._();
+  final LocalVideoData video;
+  final Failure failure;
+}
+
+/// Event: All waiting tasks cleared
+class Cleared extends UploadEvent {
+  const Cleared() : super._();
+}

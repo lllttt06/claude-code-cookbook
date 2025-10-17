@@ -1,0 +1,77 @@
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/subscription_groups_controller.dart';
+import 'package:baseball_detector_flutter/data/models/app_store_plan.dart';
+import 'package:baseball_detector_flutter/utils/platform.dart';
+
+part 'subscription_plans_controller.g.dart';
+
+@riverpod
+Future<List<AppStoreProduct>> subscriptionPlansController(Ref ref) async {
+  if (!isIos) return [];
+
+  // SmartScout サーバーに登録済みのプランを取得
+  final plans = await ref.watch(plansControllerProvider.future);
+  if (plans.isEmpty) return [];
+
+  final productIds = plans
+      .map((plan) {
+        final appleProductId = plan.platformConfig?.apple?.productId;
+        if (appleProductId != null) {
+          return appleProductId;
+        }
+      })
+      .whereType<String>()
+      .toSet();
+
+  if (productIds.isEmpty) return [];
+
+  // iOS の App Store Connect に登録されている商品情報を取得
+  final appStoreProducts =
+      await InAppPurchase.instance.queryProductDetails(productIds);
+
+  // API から取得した Plan と App Store Connect の商品を照合
+  return appStoreProducts.productDetails
+      .sorted((a, b) => a.rawPrice.compareTo(b.rawPrice))
+      .map(
+        (product) {
+          final p = (product as AppStoreProduct2Details).sk2Product;
+
+          // App Store 商品 ID に対応する Plan を見つける
+          final matchedPlan = plans.firstWhereOrNull(
+            (plan) => plan.platformConfig?.apple?.productId == p.id,
+          );
+
+          // マッチするプランが見つからない場合は null を返す
+          if (matchedPlan?.name == null) {
+            return null;
+          }
+
+          // Plan name から PlanType を判定
+          final planType = PlanType.fromName(matchedPlan!.name!);
+
+          return AppStoreProduct(
+            planType: planType,
+            productDetails: product,
+            aiCoachCount: matchedPlan.maxAiCoachs,
+            ballCount: matchedPlan.maxBalls,
+            id: p.id,
+            displayName: p.displayName,
+            displayPrice: p.displayPrice,
+            description: p.description,
+            price: p.price,
+            type: p.type,
+            priceLocale: p.priceLocale,
+            subscription: p.subscription,
+          );
+        },
+      )
+      .whereType<AppStoreProduct>()
+      .toList();
+}

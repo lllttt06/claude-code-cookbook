@@ -1,0 +1,23 @@
+/// {@category DTO}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+
+// Project imports:
+part 'edit_member_role_response.freezed.dart';
+part 'edit_member_role_response.g.dart';
+
+@freezed
+abstract class EditMemberRoleResponse with _$EditMemberRoleResponse {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)
+  const factory EditMemberRoleResponse({
+    required UserInfo user,
+  }) = _EditMemberRoleResponse;
+
+  factory EditMemberRoleResponse.fromJson(Map<String, dynamic> json) =>
+      _$EditMemberRoleResponseFromJson(json);
+}

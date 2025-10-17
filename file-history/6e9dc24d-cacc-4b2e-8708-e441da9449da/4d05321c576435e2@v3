@@ -1,0 +1,69 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:playbook/playbook.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/subscription/subscription_page.dart';
+
+const storyTitle = 'SubscriptionPage';
+
+// 基本（デフォルトのプランあり）
+@GenerateScenario()
+Widget subscriptionPageDefaultPlan(BuildContext context) {
+  return SubscriptionPage(
+    currentPlanId: '00000001-0000-0100-0000-000000000000',
+    team: _fakeTeam(id: 'team1'),
+  );
+}
+
+// キャンセル予定あり
+@GenerateScenario()
+Widget subscriptionPageWithCancelScheduled(BuildContext context) {
+  return SubscriptionPage(
+    currentPlanId: '00000001-0000-0100-0000-000000000000',
+    team: _fakeTeam(
+      id: 'team1',
+      cancelAt: DateTime(2222, 2, 22),
+    ),
+  );
+}
+
+// ダウングレード予定あり（適用後プラン名あり）
+@GenerateScenario()
+Widget subscriptionPageWithDowngradeScheduled(BuildContext context) {
+  return SubscriptionPage(
+    currentPlanId: '00000001-0000-0100-0000-000000000000',
+    team: _fakeTeam(
+      id: 'team1',
+      downgradeAt: DateTime(2222, 2, 22),
+      downgradePlanId: '00000001-0000-0050-0000-000000000000', // LIGHT plan
+    ),
+  );
+}
+
+Team _fakeTeam({
+  required String id,
+  DateTime? cancelAt,
+  DateTime? downgradeAt,
+  String? downgradePlanId,
+}) {
+  return Team(
+    id: id,
+    name: 'Demo Team',
+    teamPlan: TeamPlan(
+      isActive: true,
+      plan: const Plan(
+          id: '00000001-0000-0100-0000-000000000000', name: 'STANDARD'),
+    ),
+    teamPlanCancelAt: cancelAt,
+    teamPlanDowngradeAt: downgradeAt,
+    downgradePlanId: downgradePlanId,
+  );
+}
+
+// ProfileStorage のフェイクは不要になったため削除

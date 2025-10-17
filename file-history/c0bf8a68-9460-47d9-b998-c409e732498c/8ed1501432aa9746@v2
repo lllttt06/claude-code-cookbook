@@ -1,0 +1,104 @@
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import Image from 'next/image';
+import React, { ReactNode } from 'react';
+
+import AppConstants from '@/constants/app.constants';
+import { Team, TeamType } from '@/models/team';
+import { ServiceError } from '@/services/errors/service-error';
+import { translate, TranslationKey } from '@/utils/i18n';
+
+import ValidationError from './validation-error';
+
+export interface TeamHeaderProps {
+  team: Team;
+  pageTitleKey: string;
+  hasManagementWriteAccess: boolean;
+  onEditTeam: () => void;
+  error?: ServiceError | null;
+  children?: ReactNode;
+}
+
+export function TeamHeader({
+  team,
+  pageTitleKey,
+  hasManagementWriteAccess,
+  onEditTeam,
+  error,
+  children,
+}: TeamHeaderProps) {
+  return (
+    <>
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        alignItems={{ xs: 'center', md: 'center' }}
+        spacing={{ xs: 2, md: 0 }}
+        sx={{ py: 1 }}
+      >
+        <Box
+          sx={{
+            width: { xs: 80, md: 120 },
+            height: { xs: 80, md: 120 },
+            position: 'relative',
+            flexShrink: 0,
+          }}
+        >
+          <Image
+            src={
+              team?.presignedImageUrl ?? AppConstants.NO_IMAGE_2ND_BASE_URL
+            }
+            alt=""
+            fill
+            style={{ objectFit: 'cover' }}
+          />
+        </Box>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          sx={{
+            alignItems: { xs: 'center', md: 'center' },
+            flex: 1,
+            px: { xs: 0, md: 3 },
+            py: 1,
+            width: { xs: '100%', md: 'auto' },
+          }}
+        >
+          {/* multiple team:チーム名, single team:ページタイトル */}
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: { xs: '1.5rem', md: '2rem' },
+              textAlign: { xs: 'center', md: 'left' },
+            }}
+          >
+            {team.teamType === TeamType.SINGLE
+              ? translate(pageTitleKey as TranslationKey)
+              : team?.name}
+          </Typography>
+          {hasManagementWriteAccess ? (
+            <Button
+              sx={{
+                color: '#707070',
+                textDecoration: 'underline',
+                mt: { xs: 1, md: 0 },
+              }}
+              color="neutral"
+              onClick={onEditTeam}
+            >
+              {translate('edit')}
+            </Button>
+          ) : (
+            ''
+          )}
+          {error && (
+            <ValidationError
+              error={error}
+              pos={['name']}
+              sx={{ ml: { xs: 0, md: 1 }, mt: 1 }}
+            />
+          )}
+        </Stack>
+      </Stack>
+      <Divider sx={{ mt: 2 }} />
+      {children}
+    </>
+  );
+}

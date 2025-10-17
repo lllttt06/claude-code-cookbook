@@ -1,0 +1,496 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+// Package imports:
+import 'package:gap/gap.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/gen/assets.gen.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/build_context_ext.dart';
+
+class RecordingCoachMarks {
+  static const double borderRadius = 8.0;
+  static const Color primaryColor = Color(0xFF0052CC);
+  static const Color backgroundColor = Color(0xFF091E42);
+
+  static List<TargetFocus> createTargets({
+    required BuildContext context,
+    required GlobalKey recordButtonKey,
+    required GlobalKey analysisModeKey,
+    required GlobalKey focusButtonKey,
+    required GlobalKey configurationKey,
+    required VoidCallback launchTutorialVideoUrl,
+    void Function(int currentStep, int totalSteps)? onStepChange,
+  }) {
+    final l10n = context.l10n;
+    return [
+      // Record button
+      TargetFocus(
+        identify: "record",
+        keyTarget: recordButtonKey,
+        shape: ShapeLightFocus.Circle,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return _buildContentCard(
+                context: context,
+                title: l10n.recording_coach_marks__record_title,
+                description: l10n.recording_coach_marks__record_description,
+                icon: Icons.fiber_manual_record_outlined,
+                tips: [
+                  l10n.recording_coach_marks__record_tip_tripod,
+                  l10n.recording_coach_marks__record_tip_environment,
+                  l10n.recording_coach_marks__record_tip_distance,
+                ],
+                isLast: true,
+                currentStep: 1,
+                totalSteps: 3,
+                onNext: () {
+                  onStepChange?.call(1, 3);
+                  controller.next();
+                },
+                launchTutorialVideoUrl: launchTutorialVideoUrl,
+              );
+            },
+          ),
+        ],
+      ),
+
+      // Analysis mode selection
+      TargetFocus(
+        identify: "analysis_mode",
+        keyTarget: analysisModeKey,
+        shape: ShapeLightFocus.Circle,
+        radius: borderRadius,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return _buildContentCard(
+                context: context,
+                title: l10n.recording_coach_marks__analysis_mode_title,
+                description:
+                    l10n.recording_coach_marks__analysis_mode_description,
+                icon: Icons.settings_outlined,
+                tips: [
+                  l10n.recording_coach_marks__analysis_mode_tip_pitching,
+                  l10n.recording_coach_marks__analysis_mode_tip_hitting,
+                ],
+                currentStep: 2,
+                totalSteps: 3,
+                onNext: () {
+                  onStepChange?.call(2, 3);
+                  controller.next();
+                },
+                launchTutorialVideoUrl: launchTutorialVideoUrl,
+              );
+            },
+          ),
+        ],
+      ),
+
+      // Focus settings
+      TargetFocus(
+        identify: "focus",
+        keyTarget: focusButtonKey,
+        shape: ShapeLightFocus.Circle,
+        radius: borderRadius,
+        contents: [
+          TargetContent(
+            align: ContentAlign.top,
+            builder: (context, controller) {
+              return _buildContentCard(
+                context: context,
+                title: l10n.recording_coach_marks__focus_title,
+                description: l10n.recording_coach_marks__focus_description,
+                icon: Icons.center_focus_strong_outlined,
+                tips: [
+                  l10n.recording_coach_marks__focus_tip_af_to_mf,
+                  l10n.recording_coach_marks__focus_tip_behind_pitcher,
+                  l10n.recording_coach_marks__focus_tip_behind_catcher,
+                ],
+                currentStep: 3,
+                totalSteps: 3,
+                onNext: () {
+                  onStepChange?.call(3, 3);
+                  controller.next();
+                },
+                launchTutorialVideoUrl: launchTutorialVideoUrl,
+              );
+            },
+          ),
+        ],
+      ),
+    ];
+  }
+
+  static Widget _buildContentCard({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required IconData icon,
+    List<String>? tips,
+    bool isLast = false,
+    int? currentStep,
+    int? totalSteps,
+    VoidCallback? onNext,
+    VoidCallback? launchTutorialVideoUrl,
+  }) {
+    final l10n = context.l10n;
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: [
+        Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          margin: const EdgeInsets.fromLTRB(24, 0, 24, 80),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.04),
+                blurRadius: 24,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Header with gradient
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        primaryColor.withValues(alpha: 0.08),
+                        primaryColor.withValues(alpha: 0.04),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                primaryColor,
+                                primaryColor.withValues(alpha: 0.8),
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: primaryColor.withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            icon,
+                            color: Colors.white,
+                            size: 26,
+                          ),
+                        ),
+                        const Gap(16),
+                        Expanded(
+                          child: Text(
+                            title,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF172B4D),
+                              letterSpacing: -0.3,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Content
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 24, 24, 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        description,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Color(0xFF5E6C84),
+                          height: 1.6,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                      if (tips != null && tips.isNotEmpty) ...[
+                        const Gap(20),
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color:
+                                const Color(0xFFFFF0E5), // Warning background
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: const Color(0xFFFF8B00), // Warning border
+                              width: 2,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color(0xFFFF8B00)
+                                    .withValues(alpha: 0.15),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Header section
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFFF8B00)
+                                      .withValues(alpha: 0.1),
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFF8B00),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: const Icon(
+                                        Icons.warning_amber_rounded,
+                                        size: 20,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    const Gap(12),
+                                    Text(
+                                      l10n.recording_coach_marks__tips_label,
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Color(0xFF172B4D),
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Content section
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: tips
+                                      .asMap()
+                                      .entries
+                                      .map((entry) => Padding(
+                                            padding: EdgeInsets.only(
+                                              bottom:
+                                                  entry.key < tips.length - 1
+                                                      ? 12
+                                                      : 0,
+                                            ),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: 20,
+                                                  height: 20,
+                                                  margin: const EdgeInsets.only(
+                                                      top: 2),
+                                                  decoration: BoxDecoration(
+                                                    color:
+                                                        const Color(0xFFFF8B00),
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Center(
+                                                    child: Text(
+                                                      '${entry.key + 1}',
+                                                      style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const Gap(12),
+                                                Expanded(
+                                                  child: Text(
+                                                    entry.value,
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF172B4D),
+                                                      fontSize: 15,
+                                                      height: 1.5,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      letterSpacing: -0.1,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ))
+                                      .toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                // Progress indicator
+                if (currentStep != null && totalSteps != null)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF4F5F7),
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(16),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        totalSteps,
+                        (index) => Container(
+                          width: 10,
+                          height: 10,
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: index < currentStep
+                                ? primaryColor
+                                : primaryColor.withValues(alpha: 0.3),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: onNext,
+          child: Container(
+            width: context.screenWidth,
+            height: context.screenHeight,
+            color: Colors.transparent,
+          ),
+        ),
+        if (launchTutorialVideoUrl != null)
+          Align(
+            alignment: Alignment.topRight,
+            child: GestureDetector(
+              onTap: () {
+                launchTutorialVideoUrl.call();
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Assets.images.icYoutube.svg(width: 32),
+                    const Gap(4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          context.l10n.recording_coach_marks__more,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const Gap(5),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+      ],
+    );
+  }
+
+  static void show({
+    required BuildContext context,
+    required List<GlobalKey> targetKeys,
+    required VoidCallback launchTutorialVideoUrl,
+    VoidCallback? onFinish,
+  }) {
+    // Set orientation to portrait when coach marks are shown
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+
+    final targets = createTargets(
+      context: context,
+      recordButtonKey: targetKeys[0],
+      analysisModeKey: targetKeys[1],
+      focusButtonKey: targetKeys[2],
+      configurationKey: targetKeys[3],
+      launchTutorialVideoUrl: launchTutorialVideoUrl,
+    );
+
+    TutorialCoachMark(
+      colorShadow: backgroundColor.withValues(alpha: 0.7),
+      targets: targets,
+      alignSkip: Alignment.topRight,
+      hideSkip: true,
+      onFinish: () {
+        // Reset orientation to allow all orientations when finished
+        SystemChrome.setPreferredOrientations([
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+          DeviceOrientation.landscapeLeft,
+          DeviceOrientation.landscapeRight,
+        ]);
+        onFinish?.call();
+      },
+    ).show(context: context);
+  }
+}

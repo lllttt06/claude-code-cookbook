@@ -1,0 +1,1169 @@
+// Package imports:
+
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/item.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+
+void main() {
+  // TeamPlanStatusテスト用の定数を再定義
+  const id = '00000000-0000-4000-8000-000000000000';
+  const teamPlanId = '77777777-0003-0001-0000-000000000001';
+  const teamPlanId2 = '77777777-0003-0001-0000-000000000002';
+  const name = 'test name';
+  const ownerUserId = '00000000-0000-4000-8000-000000000001';
+  final createdAt = DateTime(2024, 1, 1, 0, 0);
+  final updatedAt = DateTime(2024, 1, 1, 1, 0);
+  const imageUrl = 'https://example.test/image.jpg';
+  const presignedImageUrl = 'https://example.test/image.jpg?presigned';
+  const item = Item(
+    aiCoachUsage: 1,
+    ballUsage: 10,
+    aiCoachAvailableCount: 5,
+    ballAvailableCount: 50,
+  );
+  final teamPlan = TeamPlan(
+    id: teamPlanId,
+    teamId: '00000000-0000-4000-8000-000000000000',
+    planId: '2',
+    startDate: DateTime.utc(2023, 1, 1, 0, 0),
+    endDate: DateTime.utc(2024, 1, 1, 0, 0),
+    currentUsage: 0,
+    currentAiCoachUsage: 0,
+    isActive: true,
+    isPendingActivation: false,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    plan: null,
+  );
+  final nextTeamPlan = TeamPlan(
+    id: teamPlanId2,
+    teamId: '00000000-0000-4000-8000-000000000001',
+    planId: '3',
+    startDate: DateTime.utc(2024, 1, 1, 0, 0),
+    endDate: DateTime.utc(2025, 1, 1, 0, 0),
+    isPendingActivation: false,
+    currentUsage: 0,
+    currentAiCoachUsage: 0,
+    isActive: true,
+    createdAt: createdAt,
+    updatedAt: updatedAt,
+    plan: null,
+  );
+
+  group('Testing Team', () {
+    test('toJson1', () {
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        imageUrl: imageUrl,
+        teamPlan: teamPlan,
+        nextTeamPlan: nextTeamPlan,
+        presignedImageUrl: presignedImageUrl,
+        item: item,
+      );
+
+      final teamJson = team.toJson();
+
+      expect(teamJson.length, 15);
+
+      expect(teamJson.containsKey('id'), isTrue);
+      expect(teamJson.containsKey('name'), isTrue);
+      expect(teamJson.containsKey('ownerUserId'), isTrue);
+      expect(teamJson.containsKey('createdAt'), isTrue);
+      expect(teamJson.containsKey('updatedAt'), isTrue);
+      expect(teamJson.containsKey('imageUrl'), isTrue);
+      expect(teamJson.containsKey('teamPlan'), isTrue);
+      expect(teamJson.containsKey('nextTeamPlan'), isTrue);
+      expect(teamJson.containsKey('presignedImageUrl'), isTrue);
+      expect(teamJson.containsKey('item'), isTrue);
+
+      expect(teamJson['id'], id);
+      expect(teamJson['name'], name);
+      expect(teamJson['ownerUserId'], ownerUserId);
+      expect(teamJson['createdAt'], createdAt.toIso8601String());
+      expect(teamJson['updatedAt'], updatedAt.toIso8601String());
+      expect(teamJson['imageUrl'], imageUrl);
+      expect(teamJson['teamPlan'], teamPlan.toJson());
+      expect(teamJson['nextTeamPlan'], nextTeamPlan.toJson());
+      expect(teamJson['presignedImageUrl'], presignedImageUrl);
+      expect(teamJson['item'], item.toJson());
+
+      final deserializedTeam = Team.fromJson(teamJson);
+      expect(deserializedTeam, team);
+    });
+
+    test('fromJson1 (API New)', () {
+      final teamJson = {
+        'id': id,
+        'name': name,
+        'ownerUserId': ownerUserId,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+        'imageUrl': imageUrl,
+        'teamPlan': {
+          'id': teamPlan.id,
+          'teamId': teamPlan.teamId,
+          'planId': teamPlan.planId,
+          'startDate': teamPlan.startDate!.toIso8601String(),
+          'endDate': teamPlan.endDate!.toIso8601String(),
+          'currentUsage': teamPlan.currentUsage,
+          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,
+          'isActive': teamPlan.isActive,
+          'isPendingActivation': teamPlan.isPendingActivation,
+          'createdAt': teamPlan.createdAt!.toIso8601String(),
+          'updatedAt': teamPlan.updatedAt!.toIso8601String(),
+          'plan': null,
+          'appleSubscription': null,
+          'stripeSubscription': null,
+        },
+        'nextTeamPlan': {
+          'id': nextTeamPlan.id,
+          'teamId': nextTeamPlan.teamId,
+          'planId': nextTeamPlan.planId,
+          'startDate': nextTeamPlan.startDate!.toIso8601String(),
+          'endDate': nextTeamPlan.endDate!.toIso8601String(),
+          'currentUsage': nextTeamPlan.currentUsage,
+          'currentAiCoachUsage': teamPlan.currentAiCoachUsage,
+          'isActive': nextTeamPlan.isActive,
+          'isPendingActivation': nextTeamPlan.isPendingActivation,
+          'createdAt': nextTeamPlan.createdAt!.toIso8601String(),
+          'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),
+          'plan': null,
+          'appleSubscription': null,
+          'stripeSubscription': null,
+        },
+        'presignedImageUrl': presignedImageUrl,
+        'teamType': 'multiple',
+        'teamPlanCancelAt': null,
+        'teamPlanDowngradeAt': null,
+        'billingFailureReason': null,
+        'downgradePlanId': null,
+        'item': item.toJson(),
+      };
+
+      final team = Team.fromJson(teamJson);
+
+      expect(team.id, id);
+      expect(team.name, name);
+      expect(team.ownerUserId, ownerUserId);
+      expect(team.createdAt, createdAt);
+      expect(team.updatedAt, updatedAt);
+      expect(team.imageUrl, imageUrl);
+      expect(team.teamPlan, teamPlan);
+      expect(team.nextTeamPlan, nextTeamPlan);
+      expect(team.presignedImageUrl, presignedImageUrl);
+      expect(team.item, item);
+
+      final serializedJson = team.toJson();
+      expect(serializedJson, teamJson);
+    });
+  });
+
+  test('fromJson2 (API Old)', () {
+    const oldTeamPlanId = 1;
+    const oldNextTeamPlanId = 2;
+    final teamJson = {
+      'id': id,
+      'name': name,
+      'ownerUserId': ownerUserId,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      'imageUrl': imageUrl,
+      'teamPlan': {
+        'id': oldTeamPlanId,
+        'teamId': teamPlan.teamId,
+        'planId': teamPlan.planId,
+        'startDate': teamPlan.startDate!.toIso8601String(),
+        'endDate': teamPlan.endDate!.toIso8601String(),
+        'currentUsage': teamPlan.currentUsage,
+        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,
+        'isActive': teamPlan.isActive,
+        'isPendingActivation': teamPlan.isPendingActivation,
+        'createdAt': teamPlan.createdAt!.toIso8601String(),
+        'updatedAt': teamPlan.updatedAt!.toIso8601String(),
+        'plan': null,
+        'appleSubscription': null,
+        'stripeSubscription': null,
+      },
+      'nextTeamPlan': {
+        'id': oldNextTeamPlanId,
+        'teamId': nextTeamPlan.teamId,
+        'planId': nextTeamPlan.planId,
+        'startDate': nextTeamPlan.startDate!.toIso8601String(),
+        'endDate': nextTeamPlan.endDate!.toIso8601String(),
+        'currentUsage': nextTeamPlan.currentUsage,
+        'currentAiCoachUsage': teamPlan.currentAiCoachUsage,
+        'isActive': nextTeamPlan.isActive,
+        'isPendingActivation': nextTeamPlan.isPendingActivation,
+        'createdAt': nextTeamPlan.createdAt!.toIso8601String(),
+        'updatedAt': nextTeamPlan.updatedAt!.toIso8601String(),
+        'plan': null,
+        'appleSubscription': null,
+        'stripeSubscription': null,
+      },
+      'presignedImageUrl': presignedImageUrl,
+      'teamType': 'multiple',
+      'teamPlanCancelAt': null,
+      'teamPlanDowngradeAt': null,
+      'billingFailureReason': null,
+      'downgradePlanId': null,
+    };
+
+    final team = Team.fromJson(teamJson);
+
+    expect(team.id, id);
+    expect(team.name, name);
+    expect(team.ownerUserId, ownerUserId);
+    expect(team.createdAt, createdAt);
+    expect(team.updatedAt, updatedAt);
+    expect(team.imageUrl, imageUrl);
+    expect(team.teamPlan, teamPlan.copyWith(id: oldTeamPlanId.toString()));
+    expect(team.nextTeamPlan,
+        nextTeamPlan.copyWith(id: oldNextTeamPlanId.toString()));
+    expect(team.presignedImageUrl, presignedImageUrl);
+    expect(team.item, isNull);
+
+    final serializedJson = team.toJson();
+    expect(serializedJson['item'], isNull);
+    final serializedJsonWithoutItem = Map.of(serializedJson)..remove('item');
+    expect(serializedJsonWithoutItem, teamJson);
+  });
+
+  group('TeamPlanStatus', () {
+    final now = DateTime.now();
+    final createdAt = now.subtract(const Duration(days: 1));
+    final updatedAt = now.subtract(const Duration(days: 1));
+    final plan = Plan(
+      id: '2',
+      name: 'Test plan',
+      description: 'Test description',
+      type: 1,
+      maxBalls: 100,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+    Team buildTeamWithPlan(TeamPlan? teamPlan, [TeamPlan? nextTeamPlan]) =>
+        Team(
+          id: id,
+          name: name,
+          ownerUserId: ownerUserId,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          imageUrl: imageUrl,
+          teamPlan: teamPlan,
+          nextTeamPlan: nextTeamPlan,
+          presignedImageUrl: presignedImageUrl,
+        );
+
+    test('expired', () {
+      final pastDateTime = now.subtract(const Duration(days: 1));
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: pastDateTime,
+        currentUsage: 0,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.expired);
+    });
+
+    test('ok', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.ok);
+    });
+
+    test('expiringSoon', () {
+      final endDate = now.add(const Duration(days: 15));
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: endDate,
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.expiringSoon);
+    });
+
+    test('expiringSoon: endDate が 30 日以内なら expiringSoon', () {
+      final endDate = now.add(const Duration(days: 30));
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now,
+        endDate: endDate,
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.expiringSoon);
+    });
+
+    test('expiringSoon: endDateが30日を超えるならok', () {
+      final endDate = now.add(const Duration(days: 31));
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now,
+        endDate: endDate,
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.ok);
+    });
+
+    test('analysisLimitIsApproaching: usageがmaxBallsの89%未満ならok', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now,
+        endDate: now.add(const Duration(days: 40)),
+        currentUsage: 89,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: const Plan(maxBalls: 100),
+      );
+      final team = buildTeamWithPlan(teamPlan, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.ok);
+    });
+
+    test('noContract: teamPlanがnullならteamPlanStatusはnoContract', () {
+      final team = buildTeamWithPlan(null, null);
+      expect(team.teamPlanStatus, TeamPlanStatus.noContract);
+    });
+
+    test('effectiveEndDate: nextTeamPlanのendDateが30日以内ならexpiringSoon', () {
+      final now = DateTime.now();
+      final createdAt = now.subtract(const Duration(days: 1));
+      final updatedAt = now.subtract(const Duration(days: 1));
+      final plan = Plan(
+        id: '2',
+        name: 'Test plan',
+        description: 'Test description',
+        type: 1,
+        maxBalls: 100,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 60)),
+        endDate: now.add(const Duration(days: 2)),
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final nextTeamPlan = TeamPlan(
+        id: teamPlanId2,
+        teamId: id,
+        planId: '3',
+        startDate: now.add(const Duration(days: 2)),
+        endDate: now.add(const Duration(days: 15)),
+        currentUsage: 0,
+        isActive: false,
+        isPendingActivation: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        imageUrl: imageUrl,
+        teamPlan: teamPlan,
+        nextTeamPlan: nextTeamPlan,
+        presignedImageUrl: presignedImageUrl,
+      );
+      expect(team.teamPlanStatus, TeamPlanStatus.expiringSoon);
+    });
+
+    test('effectiveEndDate: nextTeamPlanのendDateが30日超ならok', () {
+      final now = DateTime.now();
+      final createdAt = now.subtract(const Duration(days: 1));
+      final updatedAt = now.subtract(const Duration(days: 1));
+      final plan = Plan(
+        id: '2',
+        name: 'Test plan',
+        description: 'Test description',
+        type: 1,
+        maxBalls: 100,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 60)),
+        endDate: now.add(const Duration(days: 2)),
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final nextTeamPlan = TeamPlan(
+        id: teamPlanId2,
+        teamId: id,
+        planId: '3',
+        startDate: now.add(const Duration(days: 2)),
+        endDate: now.add(const Duration(days: 40)),
+        currentUsage: 0,
+        isActive: true,
+        isPendingActivation: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        imageUrl: imageUrl,
+        teamPlan: teamPlan,
+        nextTeamPlan: nextTeamPlan,
+        presignedImageUrl: presignedImageUrl,
+      );
+      expect(team.teamPlanStatus, TeamPlanStatus.ok);
+    });
+
+    test(
+        'effectiveEndDate: nextTeamPlan の startDate が teamPlan の endDate と一致していない場合でまだ plan が終了していない場合',
+        () {
+      final now = DateTime.now();
+      final createdAt = now.subtract(const Duration(days: 1));
+      final updatedAt = now.subtract(const Duration(days: 1));
+      final plan = Plan(
+        id: '2',
+        name: 'Test plan',
+        description: 'Test description',
+        type: 1,
+        maxBalls: 100,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 60)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 0,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final nextTeamPlan = TeamPlan(
+        id: teamPlanId2,
+        teamId: id,
+        planId: '3',
+        startDate: now.add(const Duration(days: 20)),
+        endDate: now.add(const Duration(days: 50)),
+        currentUsage: 0,
+        isActive: false,
+        isPendingActivation: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        imageUrl: imageUrl,
+        teamPlan: teamPlan,
+        nextTeamPlan: nextTeamPlan,
+        presignedImageUrl: presignedImageUrl,
+      );
+      expect(team.teamPlanStatus, TeamPlanStatus.expiringSoon);
+    });
+
+    test(
+        'effectiveEndDate: nextTeamPlan の startDate が teamPlan の endDate と一致していない場合でまだ plan が終了している場合',
+        () {
+      final now = DateTime.now();
+      final createdAt = now.subtract(const Duration(days: 1));
+      final updatedAt = now.subtract(const Duration(days: 1));
+      final plan = Plan(
+        id: '2',
+        name: 'Test plan',
+        description: 'Test description',
+        type: 1,
+        maxBalls: 100,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+      );
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 60)),
+        endDate: now.subtract(const Duration(days: 1)),
+        currentUsage: 0,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final nextTeamPlan = TeamPlan(
+        id: teamPlanId2,
+        teamId: id,
+        planId: '3',
+        startDate: now.add(const Duration(days: 20)),
+        endDate: now.add(const Duration(days: 50)),
+        currentUsage: 0,
+        isActive: false,
+        isPendingActivation: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        imageUrl: imageUrl,
+        teamPlan: teamPlan,
+        nextTeamPlan: nextTeamPlan,
+        presignedImageUrl: presignedImageUrl,
+      );
+      expect(team.teamPlanStatus, TeamPlanStatus.nextPlanPending);
+    });
+  });
+
+  group('BallAnalysisUsageStatus', () {
+    final now = DateTime.now();
+    final createdAt = now.subtract(const Duration(days: 1));
+    final updatedAt = now.subtract(const Duration(days: 1));
+    final plan = Plan(
+      id: '2',
+      name: 'Test plan',
+      description: 'Test description',
+      type: 1,
+      maxBalls: 100,
+      maxAiCoachs: 50,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+
+    Team buildTeamWithPlan(TeamPlan? teamPlan) => Team(
+          id: id,
+          name: name,
+          ownerUserId: ownerUserId,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          imageUrl: imageUrl,
+          teamPlan: teamPlan,
+          presignedImageUrl: presignedImageUrl,
+        );
+
+    test('limitReached: プランがnullの場合', () {
+      final team = buildTeamWithPlan(null);
+      expect(
+          team.ballAnalysisUsageStatus, BallAnalysisUsageStatus.limitReached);
+    });
+
+    test('limitReached: isActiveがfalseの場合', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 0,
+        isActive: false,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(
+          team.ballAnalysisUsageStatus, BallAnalysisUsageStatus.limitReached);
+    });
+
+    test('limitReached: usageがmaxBallsと同じ', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 100,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(
+          team.ballAnalysisUsageStatus, BallAnalysisUsageStatus.limitReached);
+    });
+
+    test('limitReached: usageがmaxBallsを超える', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 101,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(
+          team.ballAnalysisUsageStatus, BallAnalysisUsageStatus.limitReached);
+    });
+
+    test('limitApproaching: usageがmaxBallsの90%', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 90,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.ballAnalysisUsageStatus,
+          BallAnalysisUsageStatus.limitApproaching);
+    });
+
+    test('limitApproaching: usageがmaxBallsの91%', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 91,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.ballAnalysisUsageStatus,
+          BallAnalysisUsageStatus.limitApproaching);
+    });
+
+    test('ok: usageがmaxBallsの89%', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 89,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.ballAnalysisUsageStatus, BallAnalysisUsageStatus.ok);
+    });
+
+    test('ok: usageが0', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentUsage: 0,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.ballAnalysisUsageStatus, BallAnalysisUsageStatus.ok);
+    });
+  });
+
+  group('AiCoachUsageStatus', () {
+    final now = DateTime.now();
+    final createdAt = now.subtract(const Duration(days: 1));
+    final updatedAt = now.subtract(const Duration(days: 1));
+    final plan = Plan(
+      id: '2',
+      name: 'Test plan',
+      description: 'Test description',
+      type: 1,
+      maxBalls: 100,
+      maxAiCoachs: 50,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+
+    Team buildTeamWithPlan(TeamPlan? teamPlan) => Team(
+          id: id,
+          name: name,
+          ownerUserId: ownerUserId,
+          createdAt: createdAt,
+          updatedAt: updatedAt,
+          imageUrl: imageUrl,
+          teamPlan: teamPlan,
+          presignedImageUrl: presignedImageUrl,
+        );
+
+    test('limitReached: プランがnullの場合', () {
+      final team = buildTeamWithPlan(null);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.limitReached);
+    });
+
+    test('limitReached: isActiveがfalseの場合', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 0,
+        isActive: false,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.limitReached);
+    });
+
+    test('limitReached: usageがmaxAiCoachsと同じ', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 50,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.limitReached);
+    });
+
+    test('limitReached: usageがmaxAiCoachsを超える', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 51,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.limitReached);
+    });
+
+    test('limitApproaching: usageがmaxAiCoachsの90%', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 45,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.limitApproaching);
+    });
+
+    test('limitApproaching: usageがmaxAiCoachsの91%', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 46,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.limitApproaching);
+    });
+
+    test('ok: usageがmaxAiCoachsの89%', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 44,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.ok);
+    });
+
+    test('ok: usageが0', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 10)),
+        currentAiCoachUsage: 0,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = buildTeamWithPlan(teamPlan);
+      expect(team.aiCoachUsageStatus, AICoachUsageStatus.ok);
+    });
+  });
+
+  group('canAnalyzeBall', () {
+    final now = DateTime.now();
+    final createdAt = now.subtract(const Duration(days: 1));
+    final updatedAt = now.subtract(const Duration(days: 1));
+    final plan = Plan(
+      id: '2',
+      name: 'Test plan',
+      description: 'Test description',
+      type: 1,
+      maxBalls: 100,
+      maxAiCoachs: 50,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+
+    test('プランが有効で使用量も問題ない場合はtrue', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canAnalyzeBall, isTrue);
+    });
+
+    test('プランが期限切れの場合はfalse', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 100)),
+        endDate: now.subtract(const Duration(days: 1)),
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canAnalyzeBall, isFalse);
+    });
+
+    test('使用量が上限に達している場合はfalse', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentUsage: 100,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canAnalyzeBall, isFalse);
+    });
+
+    test('期限が近づいているが使用量に問題ない場合はtrue', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 15)),
+        currentUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canAnalyzeBall, isTrue);
+    });
+
+    test('使用量が接近しているがプランは有効な場合はtrue', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentUsage: 90,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canAnalyzeBall, isTrue);
+    });
+  });
+
+  group('canUseAiCoach', () {
+    final now = DateTime.now();
+    final createdAt = now.subtract(const Duration(days: 1));
+    final updatedAt = now.subtract(const Duration(days: 1));
+    final plan = Plan(
+      id: '2',
+      name: 'Test plan',
+      description: 'Test description',
+      type: 1,
+      maxBalls: 100,
+      maxAiCoachs: 50,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+
+    test('プランが有効で使用量も問題ない場合はtrue', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentAiCoachUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canUseAiCoach, isTrue);
+    });
+
+    test('プランが期限切れの場合はfalse', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 100)),
+        endDate: now.subtract(const Duration(days: 1)),
+        currentAiCoachUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canUseAiCoach, isFalse);
+    });
+
+    test('使用量が上限に達している場合はfalse', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentAiCoachUsage: 50,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canUseAiCoach, isFalse);
+    });
+
+    test('期限が近づいているが使用量に問題ない場合はtrue', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 15)),
+        currentAiCoachUsage: 10,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canUseAiCoach, isTrue);
+    });
+
+    test('使用量が接近しているがプランは有効な場合はtrue', () {
+      final teamPlan = TeamPlan(
+        id: teamPlanId,
+        teamId: id,
+        planId: '2',
+        startDate: now.subtract(const Duration(days: 10)),
+        endDate: now.add(const Duration(days: 40)),
+        currentAiCoachUsage: 45,
+        isActive: true,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        plan: plan,
+      );
+      final team = Team(
+        id: id,
+        name: name,
+        ownerUserId: ownerUserId,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        teamPlan: teamPlan,
+      );
+      expect(team.canUseAiCoach, isTrue);
+    });
+  });
+}

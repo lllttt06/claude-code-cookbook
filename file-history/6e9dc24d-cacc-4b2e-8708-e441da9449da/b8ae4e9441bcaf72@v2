@@ -1,0 +1,31 @@
+/// {@category Data}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+
+part 'subscription_group.freezed.dart';
+part 'subscription_group.g.dart';
+
+@freezed
+abstract class SubscriptionGroup with _$SubscriptionGroup {
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory SubscriptionGroup({
+    @Default(null) String? id,
+    @Default(null) String? name,
+    @Default(null) String? description,
+    @Default([]) List<Plan> plans,
+    @Default(null) DateTime? createdAt, // assumes UTC
+    @Default(null) DateTime? updatedAt, // assumes UTC
+  }) = _SubscriptionGroup;
+
+  factory SubscriptionGroup.fromJson(Map<String, dynamic> json) =>
+      _$SubscriptionGroupFromJson(json);
+}

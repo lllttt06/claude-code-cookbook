@@ -1,0 +1,19 @@
+# 1. `cp .env.default .env`
+# 2. Edit .env for your environment.
+# 3. docker compose up -d
+
+# Change the project name such as yourname-mypjt
+COMPOSE_PROJECT_NAME=baseball-detector-api
+DB_NAME=baseball_detector
+
+# Change the path for your environment
+COMPOSE_FILE=./tools/virtualization/local/docker-compose.yml
+
+# If you want to build magnito using local module, uncomment the following line
+COMPOSE_FILE=./tools/virtualization/local/docker-compose.yml:./tools/virtualization/local/docker-compose.override.yml
+
+BUILD_PLATFORM=linux/amd64
+
+# Define account id for dev environment(CI environment)
+AWS_ACCOUNT_ID=dummy
+

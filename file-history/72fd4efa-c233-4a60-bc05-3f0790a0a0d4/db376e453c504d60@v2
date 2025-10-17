@@ -1,0 +1,209 @@
+// Dart imports:
+import 'dart:ui';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/enums/extended_zoom_type.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/profile_storage.dart';
+
+class FakeProfileStorage extends ProfileStorage {
+  final bool isDarkMode;
+  FakeProfileStorage(
+      {this.isDarkMode = false, String? teamId, String? userId}) {
+    dataMap[ProfileStorage.prefsKeyDarkMode] = isDarkMode;
+    dataMap[ProfileStorage.prefsKeyTeamId] =
+        teamId ?? dataMap[ProfileStorage.prefsKeyTeamId];
+    dataMap[ProfileStorage.prefsKeyUserId] =
+        userId ?? dataMap[ProfileStorage.prefsKeyUserId];
+  }
+
+  final dataMap = <String, dynamic>{
+    ProfileStorage.prefsKeyTerminalId: '00000000-0000-4000-8000-000000000000',
+    ProfileStorage.prefsKeyEmail: 'testemail@gmail.com',
+    ProfileStorage.prefsKeyPassword: 'password',
+    ProfileStorage.prefsKeyUserBirthday: DateTime(2000, 1, 1),
+    ProfileStorage.prefsKeyTeamId: 'teamId',
+    ProfileStorage.prefsKeyUserId: 'userId',
+    ProfileStorage.prefsKeyPendingSignUpUserId: 'userId',
+    ProfileStorage.prefsKeyIsOnboardingPageShown: true,
+    ProfileStorage.prefsKeyIsmphInchUnit: UnitType.mphInch,
+    ProfileStorage.prefsKeyDarkMode: false,
+    ProfileStorage.prefsKeyLocaleLanguage: const Locale('en'),
+  };
+
+  @override
+  Future<bool> setTerminalId(String terminalId) async {
+    dataMap[ProfileStorage.prefsKeyTerminalId] = terminalId;
+    return true;
+  }
+
+  @override
+  Future<bool> setEmail(String? email) async {
+    dataMap[ProfileStorage.prefsKeyEmail] = email;
+    return true;
+  }
+
+  @override
+  Future<bool> setPassword(String? password) async {
+    dataMap[ProfileStorage.prefsKeyPassword] = password;
+    return true;
+  }
+
+  @override
+  Future<bool> setUserBirthday(DateTime? birthday) async {
+    dataMap[ProfileStorage.prefsKeyUserBirthday] = birthday;
+    return true;
+  }
+
+  @override
+  Future<bool> setTeamId(String? teamId) async {
+    dataMap[ProfileStorage.prefsKeyTeamId] = teamId;
+    return true;
+  }
+
+  @override
+  Future<bool> setUserId(String? userId) async {
+    dataMap[ProfileStorage.prefsKeyUserId] = userId;
+    return true;
+  }
+
+  @override
+  Future<bool> setPendingSignUpUserId(String? userId) async {
+    dataMap[ProfileStorage.prefsKeyPendingSignUpUserId] = userId;
+    return true;
+  }
+
+  @override
+  Future<bool> setIsOnboardingPageShown(bool isOnboardingPageShown) async {
+    dataMap[ProfileStorage.prefsKeyIsOnboardingPageShown] =
+        isOnboardingPageShown;
+    return true;
+  }
+
+  @override
+  Future<bool> setIsRecordingIntroductionDismissed(
+      bool isRecordingIntroductionDismissed) async {
+    dataMap[ProfileStorage.prefsKeyIsRecordingIntroductionDismissed] =
+        isRecordingIntroductionDismissed;
+    return true;
+  }
+
+  @override
+  Future<void> setCameraLensIndex(int index) async {
+    dataMap[ProfileStorage.prefsKeyCameraLensIndex] = index;
+  }
+
+  @override
+  Future<void> setCameraFormatIndex(int index) async {
+    dataMap[ProfileStorage.prefsKeyCameraFormatIndex] = index;
+  }
+
+  @override
+  Future<void> setCameraAutoFocusMode(bool isAutoFocusOn) async {
+    dataMap[ProfileStorage.prefsKeyCameraAutoFocusMode] = isAutoFocusOn;
+  }
+
+  @override
+  Future<void> setCameraFocusValue(double value) async {
+    dataMap[ProfileStorage.prefsKeyCameraFocusValue] = value;
+  }
+
+  @override
+  Future<void> setCameraZoomValue(double value) async {
+    dataMap[ProfileStorage.prefsKeyCameraZoomValue] = value;
+  }
+
+  @override
+  Future<void> setCameraAnalysisType(int value) async {
+    dataMap[ProfileStorage.prefsKeyCameraAnalysisType] = value;
+  }
+
+  @override
+  Future<void> setCameraExtendedZoomType(
+      ExtendedZoomType extendedZoomType) async {
+    dataMap[ProfileStorage.prefsKeyCameraExtendedZoomType] = extendedZoomType;
+  }
+
+  @override
+  Future<void> setUnitType(UnitType unitType) async {
+    dataMap[ProfileStorage.prefsKeyIsmphInchUnit] = unitType;
+  }
+
+  @override
+  Future<void> setLocaleLanguage(String languageCode) async {
+    dataMap[ProfileStorage.prefsKeyLocaleLanguage] = Locale(languageCode);
+  }
+
+  @override
+  Future<void> setDarkMode(bool darkMode) async {
+    dataMap[ProfileStorage.prefsKeyDarkMode] = darkMode;
+  }
+
+  @override
+  String? getTerminalId() => dataMap[ProfileStorage.prefsKeyTerminalId];
+
+  @override
+  Future<String?> getEmail() async => dataMap[ProfileStorage.prefsKeyEmail];
+
+  @override
+  Future<String?> getPassword() async =>
+      dataMap[ProfileStorage.prefsKeyPassword];
+
+  @override
+  Future<DateTime?> getUserBirthday() async =>
+      dataMap[ProfileStorage.prefsKeyUserBirthday] as DateTime?;
+
+  @override
+  String? getTeamId() => dataMap[ProfileStorage.prefsKeyTeamId];
+
+  @override
+  String? getUserId() => dataMap[ProfileStorage.prefsKeyUserId];
+
+  @override
+  String? getPendingSignUpUserId() =>
+      dataMap[ProfileStorage.prefsKeyPendingSignUpUserId];
+
+  @override
+  bool? getIsOnboardingPageShown() =>
+      dataMap[ProfileStorage.prefsKeyIsOnboardingPageShown];
+
+  @override
+  bool? getIsRecordingIntroductionDismissed() =>
+      dataMap[ProfileStorage.prefsKeyIsRecordingIntroductionDismissed];
+
+  @override
+  int? getCameraLensIndex() => dataMap[ProfileStorage.prefsKeyCameraLensIndex];
+
+  @override
+  int? getCameraFormatIndex() =>
+      dataMap[ProfileStorage.prefsKeyCameraFormatIndex];
+
+  @override
+  bool? getCameraAutoFocusMode() =>
+      dataMap[ProfileStorage.prefsKeyCameraAutoFocusMode];
+
+  @override
+  double? getCameraFocusValue() =>
+      dataMap[ProfileStorage.prefsKeyCameraFocusValue];
+
+  @override
+  double? getCameraZoomValue() =>
+      dataMap[ProfileStorage.prefsKeyCameraZoomValue];
+
+  @override
+  int? getCameraAnalysisType() =>
+      dataMap[ProfileStorage.prefsKeyCameraAnalysisType];
+
+  @override
+  ExtendedZoomType? getCameraExtendedZoomType() =>
+      dataMap[ProfileStorage.prefsKeyCameraExtendedZoomType];
+
+  @override
+  UnitType? getUnitType() => dataMap[ProfileStorage.prefsKeyIsmphInchUnit];
+
+  @override
+  Locale? getLocaleLanguage() => dataMap[ProfileStorage.prefsKeyLocaleLanguage];
+
+  @override
+  bool? getDarkMode() => dataMap[ProfileStorage.prefsKeyDarkMode];
+}

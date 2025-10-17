@@ -1,0 +1,334 @@
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/app_store_plan.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/date.dart';
+
+enum SubscriptionBadgeType {
+  bestValue,
+  recommended,
+}
+
+class SubscriptionPlanCard extends HookWidget {
+  const SubscriptionPlanCard({
+    required this.plan,
+    required this.badgeType,
+    required this.onTap,
+    required this.isSelected,
+    this.isCurrentPlan = false,
+    this.cancelScheduledAt,
+    this.downgradeScheduledAt,
+    this.downgradePlanName,
+    super.key,
+  });
+  final AppStoreProduct plan;
+  final SubscriptionBadgeType? badgeType;
+  final VoidCallback? onTap;
+  final bool isSelected;
+  final bool isCurrentPlan;
+  final DateTime? cancelScheduledAt;
+  final DateTime? downgradeScheduledAt;
+  final String? downgradePlanName;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final features = getPlanFeatures(plan.plan, context);
+    // 現在のプランでキャンセルの予定もダウングレードの予定もない場合
+    final isTapEnabled = !(isCurrentPlan &&
+        cancelScheduledAt == null &&
+        downgradeScheduledAt == null);
+    return GestureDetector(
+      onTap: isTapEnabled ? onTap : null,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            // 現在プランかつキャンセル予定、ダウングレード予定なし: 「現在利用中」スタイル
+            // それ以外（キャンセル予定あり含む）は通常の選択/非選択スタイル
+            color: isTapEnabled
+                ? isSelected
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.outline.withValues(alpha: 0.3)
+                : theme.colorScheme.primary.withValues(alpha: 0.5),
+            width: isSelected ? 2 : 1,
+          ),
+          color: isTapEnabled
+              ? theme.colorScheme.surface
+              : theme.colorScheme.primary.withValues(alpha: 0.05),
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // プラン名と価格
+                  const Gap(20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        features.planName,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            plan.displayPrice,
+                            style: theme.textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Gap(4),
+                          Text(
+                            context.l10n.subscription_page__per_month_suffix,
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const Gap(12),
+                  // プラン詳細情報
+                  _buildPlanFeature(
+                    context,
+                    icon: Icons.sports_baseball,
+                    title: context.l10n.subscription_page__analysis_ball_count,
+                    value:
+                        '${features.ballCount} ${context.l10n.subscription_page__ball_count}',
+                  ),
+                  const Gap(4),
+                  _buildPlanFeature(
+                    context,
+                    icon: Icons.psychology,
+                    title: context.l10n.subscription_page__ai_coach_usage_count,
+                    value:
+                        '${features.aiCoachCount} ${context.l10n.subscription_page__ai_coach_count}',
+                  ),
+                  // キャンセル/ダウングレード予定の注意書き
+                  if (cancelScheduledAt != null ||
+                      downgradeScheduledAt != null) ...[
+                    const Gap(8),
+                    _buildScheduleNotice(context, theme),
+                  ],
+                ],
+              ),
+            ),
+            // Best value / Recommended バッジ
+            if (badgeType != null)
+              Positioned(
+                top: -1,
+                left: -1,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(16),
+                      bottomRight: Radius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    switch (badgeType) {
+                      SubscriptionBadgeType.bestValue =>
+                        context.l10n.subscription_page__best_value_badge,
+                      SubscriptionBadgeType.recommended =>
+                        context.l10n.subscription_page__recommended_badge,
+                      _ => '',
+                    },
+                    style: TextStyle(
+                      color: theme.colorScheme.onPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            // 選択中チェックマーク / 現在利用中バッジ（予定の表示は下部の注意書きへ移動）
+            if (isCurrentPlan)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  constraints: const BoxConstraints(maxWidth: 220),
+                  child: const _CurrentBadgeWithSchedule(),
+                ),
+              )
+            else if (isSelected)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.check,
+                    color: theme.colorScheme.onPrimary,
+                    size: 16,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlanFeature(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required String value,
+  }) {
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        Icon(
+          icon,
+          size: 18,
+          color: theme.colorScheme.primary,
+        ),
+        const Gap(8),
+        Text(title, style: theme.textTheme.bodyLarge),
+        const Spacer(),
+        Text(
+          value,
+          style: theme.textTheme.bodyLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          context.l10n.subscription_page__per_month_suffix,
+          style: theme.textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+
+  // キャンセル/ダウングレード予定の注意書き
+  Widget _buildScheduleNotice(BuildContext context, ThemeData theme) {
+    String formatDate(DateTime? dt) {
+      if (dt == null) return '';
+      return dateTimeToString(
+        timestamp: dt,
+        locale: Localizations.localeOf(context).languageCode,
+        template: context.l10n.date_time_with_seconds_format,
+      );
+    }
+
+    final now = DateTime.now();
+    final lines = <String>[];
+    if ((downgradeScheduledAt?.isAfter(now) ?? false)) {
+      lines.add(
+        downgradePlanName != null
+            ? context.l10n
+                .settings_page__subscription_downgrade_scheduled_with_plan(
+                formatDate(downgradeScheduledAt),
+                downgradePlanName!,
+              )
+            : context.l10n
+                .settings_page__subscription_downgrade_scheduled_without_plan(
+                formatDate(downgradeScheduledAt),
+              ),
+      );
+    }
+    if ((cancelScheduledAt?.isAfter(now) ?? false)) {
+      lines.add(
+        context.l10n.settings_page__subscription_cancel_scheduled(
+          formatDate(cancelScheduledAt),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Gap(4),
+        for (final line in lines)
+          Text(
+            line,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+      ],
+    );
+  }
+
+  ({String planName, int? ballCount, int? aiCoachCount}) getPlanFeatures(
+    Plan plan,
+    BuildContext context,
+  ) {
+    // Plan ID に基づいて多言語対応の表示名を取得
+    final planName = switch (plan.id) {
+      '00000001-0000-0050-0000-000000000000' =>
+        context.l10n.subscription_page__plan_light,
+      '00000001-0000-0100-0000-000000000000' =>
+        context.l10n.subscription_page__plan_standard,
+      '00000001-0000-0300-0000-000000000000' =>
+        context.l10n.subscription_page__plan_premium,
+      _ => plan.name ?? '', // 新しいプランの場合は API から取得した名前を使用
+    };
+
+    return (
+      planName: planName,
+      ballCount: plan.maxBalls,
+      aiCoachCount: plan.maxAiCoachs,
+    );
+  }
+}
+
+class _CurrentBadgeWithSchedule extends StatelessWidget {
+  const _CurrentBadgeWithSchedule();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.check_circle,
+          color: theme.colorScheme.onPrimary,
+          size: 14,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          context.l10n.subscription_page__current_plan_badge,
+          style: TextStyle(
+            color: theme.colorScheme.onPrimary,
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+}

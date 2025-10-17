@@ -1,0 +1,33 @@
+/// {@category DTO}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'resource_search_request.freezed.dart';
+part 'resource_search_request.g.dart';
+
+@freezed
+abstract class ResourceSearchRequest with _$ResourceSearchRequest {
+  @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)
+  const factory ResourceSearchRequest({
+    String? keyword,
+    String? userId,
+    bool? isBallPitched,
+    DateTime? dateFrom,
+    DateTime? dateTo,
+    @JsonKey(includeIfNull: false) int? page,
+    @JsonKey(includeIfNull: false) int? pageSize,
+    @JsonKey(includeIfNull: false) ResourceSearchRequestOrderBy? orderBy,
+    @JsonKey(includeIfNull: false) bool? isOrderDesc,
+  }) = _ResourceSearchRequest;
+
+  factory ResourceSearchRequest.fromJson(Map<String, dynamic> json) =>
+      _$ResourceSearchRequestFromJson(json);
+}
+
+@JsonEnum(fieldRename: FieldRename.snake)
+enum ResourceSearchRequestOrderBy {
+  id,
+  createdAt,
+}

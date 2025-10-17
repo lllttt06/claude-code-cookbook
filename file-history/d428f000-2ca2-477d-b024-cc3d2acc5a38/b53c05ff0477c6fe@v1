@@ -1,0 +1,74 @@
+/// {@category Data}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/apple_subscription.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+import 'package:baseball_detector_flutter/data/models/stripe_subscription.dart';
+
+part 'team_plan.freezed.dart';
+part 'team_plan.g.dart';
+
+/// Converts either an [int] or [String] identifier coming from the backend
+/// into a nullable [String].  This keeps the public API for [TeamPlan]
+/// consistent (always expose `id` as `String?`) while accepting both shapes
+/// coming from different API versions.
+String? _idFromJson(dynamic value) {
+  if (value == null) return null;
+  // The backend may send an int or a String.  We normalise both to String.
+  return value.toString();
+}
+
+/// Serialises the [id] back to JSON.  If the string represents a pure
+/// integer we keep it numeric to preserve the original payload shape;
+/// otherwise we return it as a String.
+dynamic _idToJson(String? value) {
+  if (value == null) return null;
+  final int? maybeInt = int.tryParse(value);
+  return maybeInt ?? value;
+}
+
+@freezed
+abstract class TeamPlan with _$TeamPlan {
+  const TeamPlan._();
+
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory TeamPlan({
+    // TODO: Change String when backend is updated.
+    // See also : https://knowhere-org.slack.com/archives/C07D9BA4A9W/p1747227418428809?thread_ts=1747226544.048269&cid=C07D9BA4A9W
+    /// Identifier that may arrive as either **int** (old API) or **String**
+    /// (new API).  We store it as **String?** internally but accept both via
+    /// the custom `fromJson`/`toJson` converters above.
+    @JsonKey(fromJson: _idFromJson, toJson: _idToJson) String? id,
+    @Default(null) String? teamId,
+    @Default(null) String? planId,
+    @Default(null) DateTime? startDate, // assumes UTC
+    @Default(null) DateTime? endDate, // assumes UTC
+    @Default(null) int? currentUsage,
+    @Default(null) int? currentAiCoachUsage,
+    @Default(null) bool? isActive,
+    @Default(null) bool? isPendingActivation,
+    @Default(null) DateTime? createdAt, // assumes UTC
+    @Default(null) DateTime? updatedAt, // assumes UTC
+    @Default(null) Plan? plan,
+    @Default(null) AppleSubscription? appleSubscription,
+    @Default(null) StripeSubscription? stripeSubscription,
+  }) = _TeamPlan;
+
+  factory TeamPlan.fromJson(Map<String, dynamic> json) =>
+      _$TeamPlanFromJson(json);
+
+  /// Returns true if the plan is withinPeriod
+  bool get withinPeriod =>
+      isActive == true && (endDate == null || endDate!.isAfter(DateTime.now()));
+
+  bool get isInAppleSubscription => withinPeriod && appleSubscription != null;
+  bool get isInStripeSubscription => withinPeriod && stripeSubscription != null;
+}

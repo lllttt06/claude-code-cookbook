@@ -1,0 +1,183 @@
+/// {@category Routers}
+library;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/team.dart';
+import 'package:baseball_detector_flutter/views/pages/delete_account/cancel_subscription_page.dart';
+import 'package:baseball_detector_flutter/views/pages/delete_account/delete_account_page.dart';
+import 'package:baseball_detector_flutter/views/pages/force_migration/force_migration_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/home_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/recording/recording_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/resource_details/video/video_player_full_screen_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/in_app_purchase_debug/in_app_purchase_debug_page.dart';
+import 'package:baseball_detector_flutter/views/pages/home/settings/subscription/subscription_page.dart';
+import 'package:baseball_detector_flutter/views/pages/login/forgot_password/forgot_password_page.dart';
+import 'package:baseball_detector_flutter/views/pages/login/login_page.dart';
+import 'package:baseball_detector_flutter/views/pages/maintenance/maintenance_page.dart';
+import 'package:baseball_detector_flutter/views/pages/onboarding/onboarding_page.dart';
+import 'package:baseball_detector_flutter/views/pages/sign_up/confirm_code/confirm_code_page.dart';
+import 'package:baseball_detector_flutter/views/pages/sign_up/sign_up_page.dart';
+import 'package:baseball_detector_flutter/views/pages/splash/splash_page.dart';
+import 'package:baseball_detector_flutter/views/pages/update_required/update_required_page.dart';
+import 'package:baseball_detector_flutter/views/routers/navigation_streamer.dart';
+
+class AppRouter {
+  // NOTE: Do not define '/'. See https://qiita.com/youmeee/items/c71e4d906ef93f3b228b
+  static const String cancelSubscriptionPage = '/cancelSubscriptionPage';
+  static const String confirmCodePage = '/confirmCodePage';
+  static const String forceMigrationPage = '/forceMigrationPage';
+  static const String deleteAccountPage = '/deleteAccountPage';
+  static const String forgotPasswordPage = '/forgotPasswordPage';
+  static const String homePage = '/homePage';
+  static const String loginPage = '/loginPage';
+  static const String maintenancePage = '/maintenancePage';
+  static const String onboardingPage = '/onboardingPage';
+  static const String recordingPage = '/recordingPage';
+  static const String signUpPage = '/signUpPage';
+  static const String splashPage = '/splashPage';
+  static const String updateRequiredPage = '/updateRequiredPage';
+  static const String videoPlayerFullScreenPage = '/videoPlayerFullScreenPage';
+  static const String inAppPurchaseDebugPage = '/iap-debug';
+  static const String subscriptionPage = '/subscription';
+
+  // NOTE: These dialog names are for logging purposes only; do not pass them to pushNamed.
+  static const String cancellableLoadingDialog = '/cancellableLoadingDialog';
+  static const String changePasswordConfirmationDialog =
+      '/changePasswordConfirmationDialog';
+  static const String createPlayerDialog = '/createPlayerDialog';
+  static const String deactivateMemberDialog = '/deactivateMemberDialog';
+  static const String deleteBallDialog = '/deleteBallDialog';
+  static const String deletePlayerDialog = '/deletePlayerDialog';
+  static const String deleteResourceDialog = '/deleteResourceDialog';
+  static const String deleteSessionDialog = '/deleteSessionDialog';
+  static const String editMemberDialog = '/editMemberDialog';
+  static const String editPlayerDialog = '/editPlayerDialog';
+  static const String inviteMemberDialog = '/inviteMemberDialog';
+  static const String loadingDialog = '/loadingDialog';
+  static const String reactivateMemberDialog = '/reactivateMemberDialog';
+  static const String reanalyzeResourceDialog = '/reanalyzeResourceDialog';
+  static const String signOutDialog = '/signOutDialog';
+  static const String updateAvailableDialog = '/updateAvailableDialog';
+  static const String uploadResourceDialog = '/uploadResourceDialog';
+
+  /// A set of route names not to be logged. The routes must be a return to the previous route.
+  static const Set<String> ignoreRoutesForLogging = {loadingDialog};
+
+  static Widget getPage(BuildContext context, RouteSettings routeSettings) {
+    switch (routeSettings.name) {
+      case cancelSubscriptionPage:
+        return const CancelSubscriptionPage();
+      case forgotPasswordPage:
+        return const ForgotPasswordPage();
+      case loginPage:
+        return const LoginPage();
+      case signUpPage:
+        return const SignUpPage();
+      case confirmCodePage:
+        return const ConfirmCodePage();
+      case forceMigrationPage:
+        return const ForceMigrationPage();
+      case deleteAccountPage:
+        if (routeSettings.arguments != null) {
+          final shouldShowCancelSubscriptionMessage =
+              (routeSettings.arguments as Map<String, dynamic>)[
+                  'shouldShowCancelSubscriptionMessage'] as bool;
+          return DeleteAccountPage(
+            shouldShowCancelSubscriptionMessage:
+                shouldShowCancelSubscriptionMessage,
+          );
+        }
+        return DeleteAccountPage();
+
+      case recordingPage:
+        final sessionId = (routeSettings.arguments
+            as Map<String, dynamic>)['sessionId'] as String;
+        final sessionCreatedAt = (routeSettings.arguments
+            as Map<String, dynamic>)['sessionCreatedAt'] as DateTime;
+        final teamId = (routeSettings.arguments
+            as Map<String, dynamic>)['teamId'] as String;
+        return RecordingPage(
+          sessionId: sessionId,
+          sessionCreatedAt: sessionCreatedAt,
+          teamId: teamId,
+        );
+      case homePage:
+        return HomePage();
+      case splashPage:
+        return const SplashPage();
+      case maintenancePage:
+        return const MaintenancePage();
+      case updateRequiredPage:
+        return const UpdateRequiredPage();
+      case onboardingPage:
+        return const OnboardingPage();
+      case videoPlayerFullScreenPage:
+        final ball = (routeSettings.arguments as Map<String, dynamic>)['ball'];
+        final videoURL =
+            (routeSettings.arguments as Map<String, dynamic>)['videoURL'];
+        final fileName =
+            (routeSettings.arguments as Map<String, dynamic>)['fileName'];
+        final isShareAvailable = (routeSettings.arguments
+            as Map<String, dynamic>)['isShareAvailable'];
+
+        return VideoPlayerFullScreenPage(
+          ball: ball,
+          videoURL: videoURL,
+          fileName: fileName,
+          isShareAvailable: isShareAvailable,
+        );
+      case inAppPurchaseDebugPage:
+        return const InAppPurchaseDebugPage();
+      case subscriptionPage:
+        final team =
+            (routeSettings.arguments as Map<String, dynamic>)['team'] as Team;
+        final currentPlanId = (routeSettings.arguments
+            as Map<String, dynamic>)['currentPlanId'] as String?;
+
+        return SubscriptionPage(team: team, currentPlanId: currentPlanId);
+      default:
+        throw 'Undefined route "${routeSettings.name}" found.';
+    }
+  }
+
+  static PageRouteBuilder<dynamic> generateRoute(RouteSettings settings) {
+    if (settings.name == subscriptionPage) {
+      return PageRouteBuilder<dynamic>(
+        settings: settings,
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            getPage(context, settings),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          const curve = Curves.easeOutCubic;
+
+          var tween = Tween(begin: begin, end: end).chain(
+            CurveTween(curve: curve),
+          );
+
+          return SlideTransition(
+            position: animation.drive(tween),
+            child: child,
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 400),
+        reverseTransitionDuration: const Duration(milliseconds: 200),
+        fullscreenDialog: true,
+      );
+    }
+
+    return PageRouteBuilder<dynamic>(
+      settings: settings,
+      pageBuilder: (context, _, __) => getPage(context, settings),
+    );
+  }
+}
+
+final appRouterKey = GlobalKey<NavigatorState>();
+
+final appRouterObserver = RouteObserver<ModalRoute>();
+
+final appRouterStreamer = NavigationStreamer();

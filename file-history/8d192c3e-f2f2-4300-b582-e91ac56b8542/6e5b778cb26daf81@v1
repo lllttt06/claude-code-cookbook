@@ -1,0 +1,9 @@
+// Flutter imports:
+import 'package:flutter/widgets.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/l10n/l10n.dart';
+
+extension BuildContextExt on BuildContext {
+  L10n get l10n => L10n.of(this);
+}

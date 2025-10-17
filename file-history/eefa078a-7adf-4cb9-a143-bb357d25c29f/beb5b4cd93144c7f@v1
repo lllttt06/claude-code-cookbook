@@ -1,0 +1,227 @@
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { ReactElement, useEffect, useState } from 'react';
+
+import DocumentsLayout from '@/layouts/documents.layout';
+
+const privacyPolicyContent = {
+  ja: {
+    title: 'プライバシーポリシー',
+    sections: [
+      {
+        title: '',
+        content: '株式会社Knowhere（以下「当社」といいます）は、当社が提供するサービス「SmartScout」（以下「本サービス」といいます）においてユーザーの個人情報を適切に取り扱うために、本プライバシーポリシー（以下「本ポリシー」といいます）を定めます。なお、当社は個人情報の保護に関する法律その他の関連法令を遵守し、ユーザーの個人情報を適切に管理・保護いたします。\n\n本ポリシーにおいて「個人情報保護法」とは、個人情報の保護に関する法律を意味し、「個人情報」とは、個人情報保護法第2条第1項により定義される個人情報を意味し、「本人」とは、個人情報の主体である個人を意味するものとします。'
+      },
+      {
+        title: '第1条 事業者情報',
+        content: '事業者の名称： 株式会社Knowhere'
+      },
+      {
+        title: '第2条 収集する情報',
+        content: '当社は、本サービスの提供にあたり、ユーザーから以下の情報を収集します。\n\n・ユーザーから提供される情報: 氏名、住所、電話番号、メールアドレス等の連絡先情報、生年月日などのプロフィール情報、および本サービスの利用登録やお問い合わせ時にユーザーが入力または送信する情報。\n・本サービスの利用に際して提供される、ユーザーのプレイ映像（投球動作、打撃動作を含むが、これらに限られない）に関するデータ。\n・プレイデータ等の利用履歴情報: ユーザーが本サービスを利用する過程で収集される、ゲームのプレイデータや利用履歴に関する情報（例：プレイの記録やスコア、利用時間、操作履歴など）。\n・位置情報: ユーザーが本サービスで位置情報の利用を許可した場合に取得される、端末の位置情報データ。\n・デバイス情報等: 本サービス利用時に自動的に収集されるユーザーの端末に関する情報（例：デバイスの種類・OS・端末識別子、IPアドレス、ブラウザ情報等のログ情報）。\n・決済に関する情報: 本サービスで有料コンテンツの購入や課金を行う際に取得される、クレジットカード情報やその他の決済手段に関する情報。これには、決済処理のために必要となるApple社やStripe社等の外部サービスを利用する場合に取得される情報が含まれます。'
+      },
+      {
+        title: '第3条 個人情報の利用目的',
+        content: '当社は、取得したユーザーの個人情報を以下の目的のために利用いたします。また、当社は個人情報を非識別化または統計化することがあります。\n\n・本サービスの機能を提供・運営するため（スカウトとの連携機能の提供等、本サービスの円滑な利用を実現する目的を含みます）。\n・ユーザーからのお問い合わせやご相談に対応し、適切なサポートを行うため。\n・当社のサービスに関する最新情報、更新内容、キャンペーン情報等をユーザーに通知（メール送信等）し、マーケティングに活用するため。\n・ユーザーによる本サービスの利用状況を分析し、サービスの利用状況把握や新機能の開発、既存サービスの改善に役立てるため。\n・ユーザーに適した広告やプロモーションコンテンツを、本サービス上または提携する第三者の媒体上で表示・配信するため。\n・本サービスの安全な利用環境を確保するため、不正アクセスや不正利用の監視・防止、利用規約に違反する行為への対応等を行うため。\n・ユーザーが有料サービスを利用した場合に利用料金の請求や決済処理を行うため。\n・上記の利用目的に付随し、またはこれらに関連する事項を遂行するため。\n\n当社は、個人情報保護法その他の法令により許容される場合を除き、本人の同意を得ず、利用目的の達成に必要な範囲を超えて個人情報を取り扱いません。ただし、次の場合はこの限りではありません。\n\n・法令に基づく場合。\n・人の生命、身体または財産の保護のために必要がある場合であって、本人の同意を得ることが困難であるとき。\n・公衆衛生の向上または児童の健全な育成の推進のため特に必要がある場合であって、本人の同意を得ることが困難であるとき。\n・国の機関もしくは地方公共団体、またはその委託を受けた者が法令の定める事務を遂行するうえで協力する必要がある場合であって、本人の同意取得によって当該事務の遂行に支障を及ぼすおそれがあるとき。\n・学術研究機関等に個人データを提供する場合であって、当該学術研究機関等が当該個人データを学術研究目的で取り扱う必要があるとき（当該個人データを取り扱う目的の一部が学術研究目的である場合を含み、個人の権利利益を不当に侵害するおそれがある場合を除く。）。'
+      },
+      {
+        title: '第4条 個人情報の第三者提供',
+        content: '当社は、ユーザーの個人情報について、前条に規定する場合のいずれかに該当する場合を除き、ユーザー本人の同意なく第三者に提供することはいたしません。ただし、次に掲げる必要があり第三者に提供する場合はこの限りではありません。\n\n・当社が利用目的の達成に必要な範囲内において個人情報の取扱いの全部または一部を委託する場合\n・合併その他の事由による事業の承継に伴って個人情報が提供される場合\n・その他、個人情報保護法その他の法令で認められる場合\n\n※なお、ユーザーの個人情報を国外の第三者に提供する場合には、個人情報保護法その他の法令に従い必要な措置（ユーザーの同意取得等）を講じた上で行います。'
+      },
+      {
+        title: '第5条 個人情報の取扱いの委託',
+        content: '当社は、ユーザーの個人情報の取扱いに関して、基本的に外部への業務委託を行いません。ただし、本サービスにおける決済処理等の必要な業務について、Apple社やStripe社など外部のサービスを利用する場合があります。その際、当該業務の遂行に必要な範囲でユーザーの個人情報がこれらの外部サービス提供者に提供されることがあります。この場合でも、当社は委託先に対し適切な契約締結や管理・監督を行い、ユーザーの個人情報が安全に取り扱われるよう努めます。'
+      },
+      {
+        title: '第6条 匿名加工情報および統計データの利用',
+        content: '当社は、ユーザーの個人情報を保護するため、個人情報から特定の個人を識別できないように加工した匿名加工情報を作成し、利用することがあります。また、ユーザーの個人情報を集計・分析して個人を特定できない形式に加工した統計データを作成し、当社内での利用のほか、第三者に提供または公表する場合があります。これら匿名加工情報や統計データについては、個人を識別できない状態に十分配慮した上で取り扱いを行い、匿名加工情報の作成・提供に当たっては法令で定められた手続・基準に従います。'
+      },
+      {
+        title: '第7条 個人情報の管理と安全対策',
+        content: '当社は、ユーザーの個人情報を正確かつ最新の状態に保つよう努めるとともに、これを安全に管理するため、適切な組織的・技術的・物理的安全管理措置を講じます。不正アクセス、個人情報の漏えい、紛失、改ざん、毀損等を防止するための対策を実施し、従業員に対する教育・指導を徹底するなど必要かつ適切な管理を行います。'
+      },
+      {
+        title: '第8条 個人情報の保管場所および国外への移転',
+        content: '当社が取得したユーザーの個人情報は、主として日本国内に設置されたサーバーに保管しております。ただし、本サービスの提供に際して米国をはじめとする国外のクラウドサービスのサーバーを利用する場合があり、ユーザーの個人情報が国外のサーバーに保存・移転されることがあります。その際には、適用される法令に従い必要な措置を講じた上で情報を取扱います（例：国外の第三者への提供の場合はユーザーの同意取得や受入先の安全管理措置の確認等）。'
+      },
+      {
+        title: '第9条 クッキー等の利用について',
+        content: '現時点では、当社は本サービスにおいてユーザーの識別や利用状況の分析を目的としたクッキー（Cookie）や類似のトラッキング技術、アクセス解析ツールを使用しておりません。ただし、今後サービス向上や適切な広告配信のためにクッキーの利用やアクセス解析ツール（例：ウェブ解析サービス）の導入を検討する場合があります。その際は、本ポリシーに必要な情報を追記・更新し、ユーザーに対して適切に周知いたします。ユーザーは、ご利用のブラウザ設定等によりクッキーを無効化することも可能です。'
+      },
+      {
+        title: '第10条 個人情報の開示・訂正・利用停止等',
+        content: '当社は、ユーザー本人から自己の提供した個人情報に関する開示の請求があった場合、所定の手続により本人確認を行った上で、法令に基づき遅滞なく開示いたします。保有する個人情報の内容が事実と異なる場合であって、ユーザーからその訂正・追加・削除を求められたとき、またはユーザーから利用の停止や消去、第三者提供の停止を求められたときも、本人からのご請求であることを確認した上で、法令に従い適切に対応いたします。これらの請求を希望される場合は、本ポリシー第12条のお問い合わせ窓口までご連絡ください。なお、開示等の請求にあたっては、法令の定めに基づき手数料をいただく場合があります。'
+      },
+      {
+        title: '第11条 未成年者の個人情報',
+        content: '当社は、未成年のユーザーから取得した個人情報についても、原則として成年のユーザーの場合と同様に適切に取り扱います。ただし、16歳未満のユーザーが本サービスを利用して個人情報を提供される場合には、必要に応じて保護者の同意を得るものとします。'
+      },
+      {
+        title: '第12条 お問い合わせ窓口',
+        content: '当社の個人情報の取扱いに関するご質問・ご相談、開示等の請求、苦情その他のお問い合わせは、以下の窓口までご連絡ください。\n\nメールアドレス：smartscout-jp@knowhere.co.jp'
+      },
+      {
+        title: '第13条 プライバシーポリシーの変更',
+        content: '当社は、本ポリシーの内容を適宜見直し、改善に努めます。必要に応じて、本ポリシーを予告なく改定することがあります。ただし、ユーザーの同意が法律上必要となる本ポリシーの変更を行う場合、変更後の内容をユーザーに通知し、必要な同意を取得いたします。変更後のプライバシーポリシーは、当社が別途定める場合を除き、当社ウェブサイト上または本サービス上に掲載した時点より効力を生じるものとします。'
+      },
+      {
+        title: '第14条 制定日および改定日',
+        content: '制定： 2025年4月18日'
+      }
+    ]
+  },
+  en: {
+    title: 'SmartScout Privacy Policy',
+    sections: [
+      {
+        title: '',
+        content: 'This Privacy Policy (hereinafter "Policy") outlines how Knowhere Inc. (hereinafter the "Company") collects, uses, and manages personal information of users (hereinafter "User(s)") in relation to the "SmartScout" service (hereinafter the "Service"). The Company is committed to protecting personal information by complying with the Act on the Protection of Personal Information of Japan and other relevant laws and regulations, and by handling personal information appropriately.'
+      },
+      {
+        title: 'Article 1 (Definition of Personal Information)',
+        content: 'In this Policy, "personal information" refers to any information about a living individual which can identify a specific individual, such as name, date of birth, address, telephone number, email address, and other descriptions that can identify an individual (including information that can be easily cross-referenced with other data to identify an individual). Personal information also includes data defined as "personal information" by applicable laws and regulations (for example, information relating to physical characteristics such as facial images or fingerprints, and individual identification codes).'
+      },
+      {
+        title: 'Article 2 (Collection of Personal Information)',
+        content: 'The Company will acquire personal information by appropriate and lawful means. The Company may collect the following personal information from Users when they use the Service or when such information is provided by Users:\n\n• Information provided by the User: e.g. name, address, telephone number, email address, date of birth, and other profile or contact information that the User enters when registering for or using the Service.\n• Information related to Service usage: e.g. usage history of the Service, access logs, device information, cookies and similar identifiers, and any data (including images, videos, or performance metrics) that the User uploads or inputs into the Service, including play videos (such as pitching and batting actions, among others).\n• Location information: Device location data obtained when the User permits the use of location services within the Service.\n• Payment information: Information related to credit card details and other payment methods collected when purchasing paid content or making transactions within the Service, including information obtained through external services such as Apple or Stripe necessary for payment processing.\n• Other information obtained in connection with the User\'s use of the Service: Any additional personal information that the Company needs to collect for operating or improving the Service, which will be obtained by appropriate means and with prior notice to the User when required.'
+      },
+      {
+        title: 'Article 3 (Purpose of Use of Personal Information)',
+        content: 'The Company will use the collected personal information for the following purposes:\n\n1. Provision and operation of the Service: To allow Users to fully utilize the Service\'s features, maintain and administer User accounts, and provide any services or functionality available through the Service, including features for collaboration with scouts to ensure smooth use of the Service.\n2. Identity verification and security: To verify User identity when logging into the Service or when otherwise necessary, and to ensure the security of the Service by preventing unauthorized access and fraud.\n3. Customer support and communication: To respond to inquiries, support requests, or complaints from Users, and to provide guidance or notices regarding the use of the Service.\n4. Notifications and updates: To send Users important notices regarding the Service (such as changes in terms, maintenance notifications, or security alerts) and to inform Users about new features, updates, or related services offered by the Company.\n5. Marketing and information provision (with consent as required): To send newsletters, surveys, promotional materials or other information regarding the Service or the Company\'s related products and services that may be of interest to the User. (The Company will obtain the User\'s consent in accordance with applicable laws before sending marketing communications when such consent is required.)\n6. Improvement and analysis: To analyze usage of the Service (including creating statistical data that has been anonymized) in order to maintain, improve, or enhance the quality of the Service and to develop new services.\n7. Advertisements and promotional contents: To display and distribute advertisements and promotional contents tailored to Users on the Service or through partnered third-party media.\n8. Compliance and enforcement: To monitor and enforce compliance with the Terms of Use and this Policy, to investigate and prevent any improper or unauthorized activities, and to protect the rights, property, or safety of the Company, the Users, or others.\n9. Billing and payment: To bill and process payments for Users utilizing paid services.\n10. Other purposes related to or incidental to the above: To use the information for any purpose that is ancillary to the above purposes of use, to the extent permitted by law.\n\nThe Company will not use personal information beyond the scope necessary for achieving the above purposes without obtaining the User\'s prior consent, except where permitted by law.'
+      },
+      {
+        title: 'Article 4 (Provision of Personal Information to Third Parties)',
+        content: 'The Company will not provide a User\'s personal information to any third party without the User\'s consent, except where permitted by law. However, the following circumstances may necessitate the provision of personal information to third parties:\n\n• When the Company entrusts the handling of personal information to a third party within the scope necessary to achieve the intended purposes of use.\n• When personal information is provided as part of a business transfer due to a merger or other reasons.\n• When permitted by the Act on the Protection of Personal Information or other applicable laws and regulations.'
+      },
+      {
+        title: 'Article 5 (Outsourcing of Personal Information Handling)',
+        content: 'When the Company outsources any part of the handling of personal information to external service providers (for example, cloud storage providers or data processors) in order to facilitate the operation of the Service, the Company will carefully select providers that have sufficient standards for protecting personal information. In such cases, the Company will enter into appropriate agreements with the providers and exercise necessary and appropriate supervision over them to ensure that the outsourced personal information is managed in a safe and proper manner.'
+      },
+      {
+        title: 'Article 6 (Use of Anonymized Information and Statistical Data)',
+        content: 'To protect the personal information of Users, the Company may create and use anonymized information that has been processed so that specific individuals cannot be identified. Additionally, the Company may aggregate and analyze personal information of Users to create statistical data that cannot identify individuals, which may be used internally or provided or disclosed to third parties. These anonymized information and statistical data will be handled with due care to ensure that individuals cannot be identified, and the creation and provision of anonymized information will comply with procedures and standards prescribed by law.'
+      },
+      {
+        title: 'Article 7 (Management and Protection of Personal Information)',
+        content: 'The Company will handle personal information securely and implement appropriate organizational, physical, technical, and human security measures to protect personal information from unauthorized access, loss, destruction, falsification, leakage, or other risks. These measures include managing access controls to personal information, encrypting sensitive data, and providing training to employees on proper handling of personal information.'
+      },
+      {
+        title: 'Article 8 (Storage Location and Transfer of Personal Information Overseas)',
+        content: 'The personal information of Users acquired by the Company is primarily stored on servers located in Japan. However, in the course of providing the Service, the Company may utilize cloud service servers located outside of Japan, including in the United States, and personal information may be stored or transferred to these overseas servers. In such cases, the Company will handle the information in accordance with applicable laws and take necessary measures, such as obtaining User consent and verifying the safety management measures of the recipient, when providing personal information to third parties overseas.'
+      },
+      {
+        title: 'Article 9 (Use of Cookies and Similar Technologies)',
+        content: 'The Service may use cookies, web beacons, and similar tracking technologies to enhance User experience and analyze User behavior. Cookies are small data files stored on a User\'s device that allow the Service to remember the User\'s preferences and activities. Web beacons (also known as pixel tags) are small invisible images embedded in web pages or emails that allow the Company to understand whether a specific page was visited or an email was opened.\n\nUsers can control or disable cookies through their web browser settings. However, if cookies are disabled, some features of the Service (such as maintaining login status or saving preferences) may not function properly. The Company may also use third-party analytics services (for example, Google Analytics) that utilize cookies and similar technologies to collect usage data in an aggregate form. Any data collected via such analytics services will be used only to analyze and improve the Service and will be handled in accordance with the providers\' privacy policies and applicable laws.'
+      },
+      {
+        title: 'Article 10 (Disclosure, Correction, and Deletion of Personal Information)',
+        content: '1. Disclosure: If a User requests disclosure of their "retained personal data" (as defined by law) held by the Company, the Company will respond to the request without delay after confirming that the request is from the User themselves (or a legitimate representative of the User). However, the Company may refuse to disclose all or part of the information in the following cases: (a) if disclosure could potentially harm the life, body, property, or other rights or interests of the User or a third party; (b) if disclosure would significantly impede the proper operation of the Company\'s business; (c) if disclosure would violate any other laws or regulations; or (d) if the data requested is not considered "retained personal data" subject to the disclosure obligation under the law. If the Company decides not to disclose the information in response to a User\'s request, the Company will inform the User of the reason for the refusal in accordance with applicable laws.\n\n2. Correction/Additions/Deletion: If a User finds that the personal information held by the Company is incorrect or outdated, and requests correction, addition, or deletion of that information, the Company will investigate the request to the extent necessary for its purpose. Upon confirming the necessity based on the results of the investigation, the Company will correct, add, or delete the personal information without delay and inform the User of the changes. If the Company decides not to make the requested change, the Company will explain the reason to the User if required.\n\n3. Suspension of Use, etc.: If a User requests the suspension of use or erasure of their personal information (e.g., for reasons such as the information being handled beyond the scope of the stated purpose of use or obtained by unlawful means), or requests the cessation of provision of their personal information to third parties, the Company will investigate the request. If the Company finds valid grounds under the law that require complying with the request, the Company will suspend use, erase the information, or cease provision to third parties as appropriate without delay, and notify the User of such action. If the Company decides not to honor the request (for example, if the Company is legally permitted to continue retaining the information), the Company will notify the User with an explanation if required by law.\n\n4. Contact for Requests: Procedures for making any of the requests described in this Article (disclosure, correction, deletion, suspension, etc.) will be guided by the Company. For specifics on how to make such requests, please contact the Company at the inquiry contact point provided in Article 12. Please note that the Company may charge the fee permitted by law for processing a request for disclosure or notification of purpose of use.'
+      },
+      {
+        title: 'Article 11 (Personal Information of Minors)',
+        content: 'The Company will handle personal information obtained from minor Users in the same appropriate manner as it does for adult Users. However, if Users under the age of 16 use the Service and provide personal information, the Company will obtain consent from a parent or guardian as necessary.'
+      },
+      {
+        title: 'Article 12 (Contact for Inquiries)',
+        content: 'For any questions, concerns, or requests regarding this Privacy Policy or the Company\'s handling of personal information (including requests for disclosure, correction, suspension of use, or deletion as described in Article 10), please contact the Company at the following:\n\nPersonal Information Inquiry Desk – Knowhere Inc.\nE-mail: smartscout-jp@knowhere.co.jp'
+      },
+      {
+        title: 'Article 13 (Changes to this Policy)',
+        content: 'The Company may amend this Policy from time to time as necessary to reflect changes in law or changes in the Service or Company practices. When the Company makes significant changes to this Policy, the Company will notify Users of the updated Policy and its effective date by an appropriate method (such as posting a notice on the Service website or within the app, or sending an email notification to Users). If required by applicable law, the Company will also seek the User\'s consent for material changes that involve new uses or disclosures of personal information.\n\nUnless otherwise specified by the Company, the revised Policy will take effect as of the effective date indicated at the time of publication. Users are encouraged to review the latest version of this Policy periodically. Continued use of the Service after the effective date of any updated Policy will be deemed as acceptance of the changes, except where explicit consent is required.'
+      },
+      {
+        title: 'Article 14 (Effective Date and Revision Date)',
+        content: 'Effective Date: 2025/4/18\n\nThis Privacy Policy is originally written in Japanese. This English translation is provided for reference purposes. In the event of any inconsistency or discrepancy between the Japanese version and this English version, the Japanese version shall prevail.'
+      }
+    ]
+  }
+};
+
+function PageInner() {
+  const router = useRouter();
+  const [currentLang, setCurrentLang] = useState<'ja' | 'en'>('en');
+
+  useEffect(() => {
+    // クエリパラメータから言語を取得
+    const lang = router.query.lang as string;
+    if (lang === 'ja' || lang === 'en') {
+      setCurrentLang(lang);
+    }
+  }, [router.query.lang]);
+
+  const handleLanguageChange = (lang: 'ja' | 'en') => {
+    setCurrentLang(lang);
+    // URLのクエリパラメータも更新
+    router.push(`/privacy-policy?lang=${lang}`, undefined, { shallow: true });
+  };
+
+  const content = privacyPolicyContent[currentLang];
+
+  return (
+    <Box
+      sx={{
+        px: { xs: 2, sm: 4, md: 6 },
+        py: 2,
+      }}
+    >
+      <Box sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', sm: 'row' },
+        justifyContent: 'space-between',
+        alignItems: { xs: 'flex-start', sm: 'center' },
+        gap: { xs: 2, sm: 0 },
+        mb: 3
+      }}>
+        <Typography variant="h2" sx={{
+          fontSize: { xs: '1.75rem', sm: '2rem', md: '2.25rem' }
+        }}>
+          {content.title}
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          <Button
+            variant={currentLang === 'en' ? 'contained' : 'outlined'}
+            onClick={() => handleLanguageChange('en')}
+            size="small"
+          >
+            English
+          </Button>
+          <Button
+            variant={currentLang === 'ja' ? 'contained' : 'outlined'}
+            onClick={() => handleLanguageChange('ja')}
+            size="small"
+          >
+            日本語
+          </Button>
+        </Stack>
+      </Box>
+      <Stack direction="column" justifyContent="center" spacing={3}>
+        {content.sections.map((section, index) => (
+          <Box key={index}>
+            <Typography variant="h6" sx={{
+              mb: 1,
+              fontWeight: 'bold',
+              fontSize: { xs: '1.1rem', sm: '1.25rem' }
+            }}>
+              {section.title}
+            </Typography>
+            <Typography sx={{
+              whiteSpace: 'pre-wrap',
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              lineHeight: { xs: 1.5, sm: 1.6 }
+            }}>
+              {section.content}
+            </Typography>
+          </Box>
+        ))}
+      </Stack>
+    </Box>
+  );
+}
+
+export default function Page() {
+  return <PageInner />;
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <DocumentsLayout tab="privacy">{page}</DocumentsLayout>;
+};

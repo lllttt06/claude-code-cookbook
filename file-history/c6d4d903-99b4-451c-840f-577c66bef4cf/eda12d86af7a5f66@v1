@@ -1,0 +1,100 @@
+import _ from 'lodash';
+import React, { Dispatch, FC, SetStateAction, useState } from 'react';
+
+import AppConstants from '@/constants/app.constants';
+import useServicesHook from '@/hooks';
+import { User } from '@/models/user';
+import { ServiceError } from '@/services/errors/service-error';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import { translate } from '@/utils/i18n';
+
+import {
+  ModifyPlayerModal,
+  ModifyPlayerModalParam,
+} from './modify-player-modal';
+
+export const CreatePlayerModal: FC<{
+  teamId: string;
+  currentUser: User;
+  defaultData: ModifyPlayerModalParam;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  onSuccess?: Function;
+  onCancel?: Function;
+}> = ({
+  teamId,
+  currentUser,
+  defaultData,
+  isOpen,
+  setIsOpen,
+  onSuccess,
+  onCancel,
+}) => {
+  const { services } = useServicesHook();
+
+  const [error, setError] = useState<ServiceError | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const createNewPlayer = async (
+    teamId: string,
+    param: ModifyPlayerModalParam,
+  ) => {
+    wrapForLoading(setIsSubmitting, async () => {
+      if (param.imageFile) {
+        if (param.imageFile.size > AppConstants.THUMBNAIL_FILE_SIZE_LIMIT) {
+          setError(
+            new ServiceError(new Error(translate('thumbnail_file_too_large'))),
+          );
+          return;
+        }
+      }
+      const { player, error } = await services.default.player.createNewPlayer(
+        teamId,
+        currentUser.profile.id,
+        param.name,
+        param.note,
+        param.throw,
+        param.stand,
+        param.birthday,
+      );
+
+      if (error) {
+        setError(error);
+        return;
+      }
+
+      if (player && param.imageFile) {
+        const { error: editPlayerError } =
+          await services.default.player.editPlayer(teamId, player.id, {
+            imageFile: param.imageFile,
+          });
+
+        if (editPlayerError) {
+          setError(editPlayerError);
+          return;
+        }
+      }
+
+      onSuccess?.();
+      setIsOpen(false);
+    });
+  };
+
+  return (
+    <ModifyPlayerModal
+      teamId={teamId}
+      currentUser={currentUser}
+      defaultData={defaultData}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      onOk={async (param) => {
+        await createNewPlayer(teamId, param);
+      }}
+      mode={'create'}
+      isSubmitting={isSubmitting}
+      error={error}
+      setError={setError}
+      onCancel={onCancel}
+    />
+  );
+};

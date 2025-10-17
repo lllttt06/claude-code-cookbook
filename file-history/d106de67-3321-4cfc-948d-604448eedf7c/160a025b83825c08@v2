@@ -1,0 +1,36 @@
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      // TODO: For development setting.
+      {
+        protocol: 'https',
+        hostname: 'placehold.jp',
+      },
+    ],
+  },
+  trailingSlash: true,
+  output: 'export',
+  skipTrailingSlashRedirect: true,
+  distDir: 'dist',
+  transpilePackages: ['@mui/x-charts'],
+  allowedDevOrigins: [],
+  redirects: async () => {
+    return process.env.NEXT_PUBLIC_APP_ENV === 'production'
+      ? [
+          // sample
+          // {
+          //   source: '/account/plans',
+          //   destination: '/account',
+          //   permanent: false,
+          // },
+        ]
+      : [];
+  },
+};
+
+export default nextConfig;

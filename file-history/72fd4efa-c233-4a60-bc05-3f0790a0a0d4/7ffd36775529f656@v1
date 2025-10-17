@@ -1,0 +1,313 @@
+/// {@category Containers}
+library;
+
+// Flutter imports:
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/login_state_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/bad_request_failure.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/date.dart';
+import 'package:baseball_detector_flutter/views/components/custom_button.dart';
+import 'package:baseball_detector_flutter/views/components/custom_password_text_field.dart';
+import 'package:baseball_detector_flutter/views/components/custom_text_form_field.dart';
+import 'package:baseball_detector_flutter/views/components/login_layout.dart';
+import 'package:baseball_detector_flutter/views/constants/input_max_lengths.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_operation.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_privacy_policy.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_single_action.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_terms_of_use.dart';
+import 'package:baseball_detector_flutter/views/routers/app_router.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+import 'package:baseball_detector_flutter/views/validators/email.dart';
+import 'package:baseball_detector_flutter/views/validators/password.dart';
+
+class SignUpPage extends HookConsumerWidget {
+  const SignUpPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final emailController = useTextEditingController();
+    final birthdayController = useTextEditingController();
+    final passwordController = useTextEditingController();
+    final handleOperation = useOperation();
+    final isLoading = useState(false);
+    final isChecked = useState(false);
+    final emailError = useState<EmailError?>(null);
+    final birthday = useState<DateTime?>(null);
+    final birthdayError = useState<String?>(null);
+    final passwordError = useState<PasswordError?>(null);
+    final checkboxError = useState<String?>(null);
+    final openTermsOfUse = useTermsOfUse();
+    final openPrivacyPolicy = usePrivacyPolicy();
+
+    // 多重サインアップ防止
+    final runSignUp = useSingleAction<void>(asyncCallback: (_) async {
+      isLoading.value = true;
+
+      // Validate password
+      passwordError.value = validatePassword(
+        password: passwordController.text,
+      );
+
+      // Validate email
+      emailError.value = validateEmailAddress(emailController.text);
+
+      // Validate birthday
+      final selectedBirthday = birthday.value;
+      if (selectedBirthday == null) {
+        birthdayError.value = context.l10n.sign_up_page__birthday_required;
+      } else if (_calculateAge(selectedBirthday) < 13) {
+        birthdayError.value =
+            context.l10n.sign_up_page__birthday_error_under_13;
+      } else {
+        birthdayError.value = null;
+      }
+
+      // Validate checkbox
+      checkboxError.value =
+          isChecked.value ? null : context.l10n.sign_up_page__terms_error;
+
+      if (passwordError.value != null ||
+          emailError.value != null ||
+          birthdayError.value != null ||
+          checkboxError.value != null) {
+        isLoading.value = false;
+        return;
+      }
+
+      await handleOperation(
+        operation: ref.read(loginStateControllerProvider.notifier).signUp(
+              emailController.text,
+              passwordController.text,
+              birthday.value!,
+            ),
+        onSucceeded: (_) {
+          isLoading.value = false;
+          Navigator.of(context).pushNamed(
+            AppRouter.confirmCodePage,
+            arguments: {
+              'email': emailController.text,
+            },
+          );
+          return null;
+        },
+        onFailed: (failure) {
+          isLoading.value = false;
+          return failure.translate(context.l10n);
+        },
+        // 既にユーザーが存在するエラーはは実装の不備ではないので、エラーログを送信しない
+        shouldSendErrorLog: (failure) =>
+            failure is! UserAlreadyExistsFailure &&
+            failure is! AlreadyInUseFailure &&
+            failure is! UnprocessableEntityFailure,
+      );
+    });
+
+    return LoginLayout(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          CustomTextFormField(
+            controller: emailController,
+            label: Text(
+              context.l10n.sign_up_page__email_label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+            keyboardType: TextInputType.emailAddress,
+            maxLength: InputMaxLengths.email,
+            errorText: translateEmailError(
+              context,
+              emailError.value,
+            ),
+            onChanged: (value) {
+              emailError.value = null;
+            },
+          ),
+          const Gap(16),
+          CustomPasswordTextField(
+            controller: passwordController,
+            label: Text(
+              context.l10n.sign_up_page__password_label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+            maxLength: InputMaxLengths.password,
+            errorText: translatePasswordError(
+              context,
+              passwordError.value,
+            ),
+            onChanged: (value) {
+              passwordError.value = null;
+            },
+          ),
+          const Gap(16),
+          CustomTextFormField(
+            controller: birthdayController,
+            label: Text(
+              context.l10n.sign_up_page__birthday_label,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+            hintText: context.l10n.sign_up_page__birthday_placeholder,
+            readOnly: true,
+            errorText: birthdayError.value,
+            onTap: () async {
+              FocusScope.of(context).requestFocus(FocusNode());
+              final now = DateTime.now();
+              final picked = await showDatePicker(
+                context: context,
+                initialDate: birthday.value ?? DateTime(2005, 1, 1),
+                firstDate: DateTime(1900),
+                lastDate: now,
+                helpText: context.l10n.sign_up_page__birthday_label,
+                fieldLabelText: context.l10n.sign_up_page__birthday_label,
+                builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                    data: Theme.of(context),
+                    child: child!,
+                  );
+                },
+              );
+              if (picked != null) {
+                birthday.value = picked;
+                birthdayController.text = dateTimeToString(timestamp: picked);
+                birthdayError.value = null;
+              }
+            },
+          ),
+          const Gap(8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Text(
+              context.l10n.sign_up_page__birthday_notice,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ),
+          const Gap(12),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Checkbox(
+                value: isChecked.value,
+                onChanged: (bool? checked) {
+                  isChecked.value = checked!;
+                  if (checked) {
+                    checkboxError.value = null;
+                  }
+                },
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                visualDensity: VisualDensity.compact,
+              ),
+              const Gap(8),
+              Expanded(
+                child: RichText(
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                        ),
+                    children: [
+                      TextSpan(text: context.l10n.sign_up_page__terms_text),
+                      TextSpan(
+                        text: context.l10n.sign_up_page__privacy_policy,
+                        style: TextStyleManager.link.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = openPrivacyPolicy,
+                      ),
+                      TextSpan(text: context.l10n.sign_up_page__and),
+                      TextSpan(
+                        text: context.l10n.sign_up_page__terms_and_conditions,
+                        style: TextStyleManager.link.copyWith(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = openTermsOfUse,
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (checkboxError.value != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 32.0),
+              child: Row(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.red, size: 16),
+                  const Gap(8),
+                  Expanded(
+                    child: Text(
+                      checkboxError.value!,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.red,
+                          ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          const Gap(20),
+          CustomButton(
+            variant: CustomButtonVariant.primary,
+            onPressed: isLoading.value ? null : () => runSignUp(),
+            text: context.l10n.sign_up_page__next,
+            loading: isLoading.value,
+          ),
+          const Gap(28),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed(AppRouter.loginPage);
+            },
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 4,
+              children: [
+                Text(
+                  context.l10n.sign_up_page__already_have_account,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontSize: 16,
+                      ),
+                ),
+                Text(
+                  context.l10n.sign_up_page__login,
+                  style: TextStyleManager.link.copyWith(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Gap(32),
+        ],
+      ),
+    );
+  }
+}
+
+int _calculateAge(DateTime birthday) {
+  final today = DateTime.now();
+  final birthdayThisYear = DateTime(today.year, birthday.month, birthday.day);
+  final years = today.year - birthday.year;
+  return birthdayThisYear.isAfter(today) ? years - 1 : years;
+}

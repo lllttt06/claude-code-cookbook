@@ -1,0 +1,518 @@
+import AVFoundation
+import AVKit
+import AudioToolbox
+import UIKit
+import VideoToolbox
+
+// MARK: - Session Management
+extension CameraSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
+    /**
+     @brief Configure session for launch the app.
+     */
+    func configureSession(deviceType: AVCaptureDevice.DeviceType) -> Int {  // 戻り値はiOSでは使用されない。
+        tearDownAutoExposureObserver()  // 安全のため、AutoExposure監視を停止してからセッションを初期化する。
+        // カメラセッションを初期化する。
+        // 初回起動とレンズ切り替えの両方に対応できるように実装する必要あり。
+
+        if self.deviceList == nil {
+            let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(
+                deviceTypes: [
+                    AVCaptureDevice.DeviceType.builtInWideAngleCamera,
+                    AVCaptureDevice.DeviceType.builtInTelephotoCamera,
+                ], mediaType: AVMediaType.video,
+                position: AVCaptureDevice.Position.back)
+            // プロパティの条件を満たしたカメラデバイスの取得
+            self.deviceList = deviceDiscoverySession.devices
+        }
+
+        if isSessionConfigured {
+            return 0
+        }
+
+        self.messageText = "Configuring session started."
+
+        let originalFocusMode = self.currentDevice?.focusMode
+
+        self.captureSession.beginConfiguration()
+        do {
+            var defaultVideoDevice: AVCaptureDevice?
+            if let backCameraDevice = AVCaptureDevice.default(
+                deviceType, for: .video, position: .back)
+            {
+                defaultVideoDevice = backCameraDevice
+            }
+
+            guard let videoDevice = defaultVideoDevice else {
+                self.captureSession.commitConfiguration()
+                return -1
+            }
+
+            self.currentDevice = videoDevice
+
+            do {
+                try self.currentDevice?.lockForConfiguration()
+                // これをしないと https://knowhere-org.slack.com/archives/C03EGR0M9AN/p1746674847303779
+                self.currentDevice?.exposureMode = .continuousAutoExposure
+                self.currentDevice?.unlockForConfiguration()
+            } catch {
+                print("Failed to clamp ISO: \(error)")
+            }
+
+            let input = try AVCaptureDeviceInput(device: videoDevice)
+            if !self.captureSession.canAddInput(input) && self.videoDeviceInput != nil {
+                // レンズ切り替えの場合は一度削除してから紐づける。
+                self.captureSession.removeInput(self.videoDeviceInput!)
+            }
+            self.captureSession.addInput(input)
+            self.videoDeviceInput = input
+
+            // VideoDataOutput の設定
+            // captureSession から videoDataOutput を remove しないと次に configureSession
+            // を実行した際に video が撮影できなくなる
+            // Singleton を止めたら必要なくなるかも
+            if self.videoDataOutput != nil {
+                self.captureSession.removeOutput(self.videoDataOutput!)
+            }
+            videoDataOutput = AVCaptureVideoDataOutput()
+            videoDataOutputQueue = DispatchQueue(
+                label: "VideoDataOutput", qos: .userInitiated)
+            videoDataOutput!.setSampleBufferDelegate(
+                self, queue: videoDataOutputQueue)
+            if captureSession.canAddOutput(videoDataOutput!) {
+                captureSession.addOutput(videoDataOutput!)
+
+                // ビデオ安定化を無効化（紫色ノイズリダクション対策）
+                if let connection = videoDataOutput!.connection(with: .video) {
+                    if connection.isVideoStabilizationSupported {
+                        connection.preferredVideoStabilizationMode = .off
+                    }
+                }
+            }
+
+            if self.captureVideoLayer == nil {
+                // 一回で良い。レンズ切り替え時に再実行すると、PreviewLayerがおかしくなった。
+                self.captureVideoLayer = AVCaptureVideoPreviewLayer.init(
+                    session: self.captureSession)
+                self.captureVideoLayer?.videoGravity =
+                    AVLayerVideoGravity.resizeAspectFill
+            }
+
+            self.messageText = "`photoOutput` set."
+
+            self.captureSession.sessionPreset = AVCaptureSession.Preset.photo
+        } catch {
+            let e = "Error configure capture session : \(error)"
+            print(e)
+
+            self.captureSession.commitConfiguration()
+            return -1
+        }
+
+        self.captureSession.commitConfiguration()
+        self.messageText = "Session configuration committed."
+
+        // Xcode 上で警告が出るが非同期で処理するとスペックの低い端末でこれらの設定が完了する前に
+        // Zoom, SS, ISO のセットが開始されてしまい、カメラの設定がおかしくなる。
+        // そのため、ここでは同期処理で実行する。
+        // See also: https://github.com/Knowhere-inc/knowhere_configurable_camera/pull/23
+        self.captureSession.startRunning()
+        self.messageText = "Running session started."
+        // デバイス設定
+        if let device = self.currentDevice {
+            try! device.lockForConfiguration()
+            // フォーカスモードを元のdeviceのモードに変更。
+            if originalFocusMode != nil {
+                device.focusMode = originalFocusMode!
+            }
+            // 露出をマニュアル設定固定に変更。
+            device.exposureMode = .custom
+            if self.exposureDuration == nil {
+                self.exposureDuration = device.exposureDuration
+                self.iso = device.iso
+            } else {
+                self.iso = max(
+                    min(self.iso!, device.activeFormat.maxISO),
+                    device.activeFormat.minISO)
+                device.setExposureModeCustom(
+                    duration: self.exposureDuration!, iso: self.iso!)
+            }
+            device.unlockForConfiguration()
+            self.setFormatIndex(
+                index: min(
+                    self.currentFormatIndex, device.formats.count - 1))
+        }
+        self.isRecording = false
+        self.isSessionConfigured = true
+        if !self.isObserverAdded {
+            let action = #selector(CameraSessionManager.orientationDidChange(_:))
+            let center = NotificationCenter.default
+            let name = UIDevice.orientationDidChangeNotification
+            center.addObserver(self, selector: action, name: name, object: nil)
+            self.isObserverAdded = true
+        }
+        self.setVideoOrientation()
+        return 0
+    }
+
+    func closeSession() -> String {
+        tearDownAutoExposureObserver()
+        self.captureSession.stopRunning()
+
+        if self.isRecording {
+            _ = self.stopRecording()
+        }
+
+        if self.videoDeviceInput != nil {
+            self.captureSession.removeInput(self.videoDeviceInput!)
+        }
+        if self.videoDataOutput != nil {
+            self.captureSession.removeOutput(self.videoDataOutput!)
+        }
+        if let layer = self.captureVideoLayer {
+            layer.removeFromSuperlayer()
+        }
+        if let magnifierLayer = self.magnifierState.layer {
+            magnifierLayer.removeFromSuperlayer()
+        }
+        if let markView = self.focusState.markView {
+            markView.removeFromSuperview()
+        }
+
+        self.isSessionConfigured = false
+        self.isObserverAdded = false
+        self.isRecording = false
+        self.messageText = "not initialized"
+        self.currentLensIndex = 0
+        self.currentFormatIndex = 0
+        self.currentDevice = nil
+        self.videoDeviceInput = nil
+        self.captureVideoLayer = nil
+        self.deviceList = nil
+        self.exposureDuration = nil
+        self.iso = nil
+        self.assetWriter = nil
+        self.assetWriterInput = nil
+        self.videoDataOutput = nil
+        self.videoDataOutputQueue = nil
+        self.adaptor = nil
+        self.startTime = nil
+        self.targetBitrate = 20_000_000
+        self.focusState.markView = nil
+        self.focusState.markViewAnimationReferenceCount = 0
+        self.magnifierState.layer = nil
+        self.magnifierState.isEnabled = false
+        self.magnifierState.position = nil
+        self.magnifierState.devicePoint = nil
+        self.magnifierState.imageView = nil
+        self.magnifierState.lastCapturedImage = nil
+
+        return "Session finished."
+    }
+
+    func isSupportedDevice() -> Bool {
+        let modelName = UIDevice.current.modelName
+        return DeviceFOVConfigs.configs.keys.contains(modelName)
+    }
+
+    func getModelName() -> String? {
+        let modelName = UIDevice.current.modelName
+        return modelName
+    }
+
+    func setVideoOrientation() {
+        if let layer = self.captureVideoLayer {
+            switch UIDevice.current.orientation {
+            case .portrait:
+                layer.connection?.videoOrientation = .portrait
+                self.videoDataOutput!.connection(with: .video)?
+                    .videoOrientation =
+                    .portrait
+            case .portraitUpsideDown:
+                layer.connection?.videoOrientation = .portraitUpsideDown
+                self.videoDataOutput!.connection(with: .video)?
+                    .videoOrientation =
+                    .portraitUpsideDown
+            case .landscapeRight:
+                // 逆にするらしい
+                layer.connection?.videoOrientation = .landscapeLeft
+                self.videoDataOutput!.connection(with: .video)?
+                    .videoOrientation =
+                    .landscapeLeft
+            case .landscapeLeft:
+                // 逆にするらしい
+                layer.connection?.videoOrientation = .landscapeRight
+                self.videoDataOutput!.connection(with: .video)?
+                    .videoOrientation =
+                    .landscapeRight
+            default:
+                break
+            }
+        }
+    }
+
+    @objc func orientationDidChange(_ notification: NSNotification) {
+        // ===================================================================================
+        // 画面回転時のフォーカスモード処理
+        // ===================================================================================
+        // この処理は以下の問題を解決するため複雑になっている：
+        //
+        // 1. singleTap時の一時的なAF状態の考慮
+        //    - singleTapで device.focusMode = .autoFocus を実行
+        //    - 内部的に .autoFocus → .locked に自動変化する
+        //    - 回転直前にsingleTapが発生すると、.locked に戻る前にこのメソッドが呼ばれる
+        //    - そのため isManualFocus() ではなく isAutoFocus() == false で判定する
+        //
+        // 2. レコーディング開始時のレースコンディション対策（修正済み）
+        //    - アプリケーション開始時に以下の競合が発生していた：
+        //      a) configureSession() → orientationDidChange(0.1秒遅延) → setAutoFocusMode()
+        //      b) 外部からの保存されたフォーカス設定復元処理
+        //    - タイミングによっては「表示MF、実際AF」の不整合が発生
+        //    - 修正：遅延実行時に現在のフォーカスモードを再確認して対処
+        // ===================================================================================
+
+        // 回転前の現在のフォーカスモードを確認してMFの場合は位置を保存
+        let rotationStartIsAutoFocus = isAutoFocus()
+        if rotationStartIsAutoFocus == false && lastManualFocusPosition == nil {
+            // MFの場合：現在のフォーカス位置を保存
+            lastManualFocusPosition = getFocus()
+        } else {
+            // AFの場合：保存位置をクリア
+            lastManualFocusPosition = nil
+        }
+
+        // ビデオの向きを設定
+        setVideoOrientation()
+
+        // ===================================================================================
+        // レースコンディション対策
+        // ===================================================================================
+        // 問題：アプリケーション開始時に以下の処理が競合していた
+        //   1. orientationDidChange (unknown→portraitUp) が即座に発火
+        //   2. 回転開始時点ではデフォルトのAF状態のため rotationStartIsAutoFocus = true
+        //   3. 0.1秒後に setAutoFocusMode() が実行される遅延処理がセットされる
+        //   4. 外部からの保存されたフォーカス設定復元処理
+        //   5. 0.1秒後：保存された遅延処理が setAutoFocusMode() を実行してMFを上書き
+        //   6. 結果：「表示MF、実際AF」の不整合発生
+        //
+        // 解決策：遅延実行時に現在のフォーカスモードを再確認する
+        // ===================================================================================
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            // 遅延実行時点での現在のフォーカスモードを再確認
+            // rotationStartIsAutoFocus は回転開始時点の古い状態のため使用しない
+            let currentIsAutoFocus = self.isAutoFocus()
+
+            if currentIsAutoFocus == false {
+                // 現在MFの場合：保存されたフォーカス位置があれば復元
+                if let focus = self.lastManualFocusPosition {
+                    self.setFocus(focus: focus)
+                }
+                // 注意：既にMFに設定されている場合は何もしない
+                // setAutoFocusMode() を呼んでMFを上書きしてはいけない
+            } else {
+                // 現在AFの場合のみ setAutoFocusMode() を実行
+                // これにより中央フォーカス位置とAFモードを確実に設定
+                self.setAutoFocusMode()
+            }
+            self.lastManualFocusPosition = nil  // 遅延実行後は位置をクリア
+            if self.magnifierEnabled {
+                self.hideMagnifier()
+            }
+        }
+    }
+
+    func connectToView(view: SizeTransferUIView, viewId: Int64) -> String {
+        // 与えられたSizeTransferUIViewとcaptureVideoLayerを接続する。
+        // viewIdおよび戻り値はデバッグ用。
+
+        if self.captureSession.isRunning {
+            if let layer = self.captureVideoLayer {
+                view.addSizeTransferSublayer(layer: layer)
+
+                // タップジェスチャー用のインスタンスを生成する
+                let tapGesture: UITapGestureRecognizer = UITapGestureRecognizer(
+                    target: self,
+                    action: #selector(CameraSessionManager.singleTap(_:))
+                )
+                tapGesture.delegate = self
+                view.addGestureRecognizer(tapGesture)
+
+                // Create focus mark view
+                let markView = UIView()
+                markView.frame = CGRect(x: 0, y: 0, width: 0, height: 0)
+                markView.layer.borderWidth = 2
+                markView.layer.borderColor = UIColor.systemYellow.cgColor
+                markView.isHidden = true
+                self.focusState.markView = markView
+                view.addSubview(markView)
+
+                // iOS 17.2 以上で音量ボタン押下で動画を撮影するための処理
+                if #available(iOS 17.2, *) {
+                    let interaction = AVCaptureEventInteraction(
+                        primary: { event in
+                            if event.phase == .ended {
+                                self.recordingStateCallback?(self.isRecording)
+                            }
+                        },
+                        secondary: { event in
+                            if event.phase == .ended {
+                                self.recordingStateCallback?(self.isRecording)
+                            }
+                        })
+                    view.addInteraction(interaction)
+                }
+
+                return "Connected to view #\(viewId)."
+            }
+        }
+        return "Connecting to view failed."
+    }
+
+    // MARK: - Video Recording
+    func startRecording(fileURL: String) -> String? {
+        if isRecording || startTime != nil {
+            return nil
+        }
+
+        if magnifierEnabled {
+            hideMagnifier()
+        }
+        // 録画開始時にヒープ音を鳴らす
+        AudioServicesPlaySystemSound(1117)
+
+        let fileURLWithExt = fileURL + ".mov"
+        let url = URL(string: "file://" + fileURLWithExt)
+
+        assetWriter = try! AVAssetWriter(outputURL: url!, fileType: .mov)
+
+        // ビデオ設定を現在のデバイスフォーマットに合わせる
+        if let device = self.currentDevice {
+            let dimensions = CMVideoFormatDescriptionGetDimensions(
+                device.activeFormat.formatDescription)
+
+            let colorPropertySettings = [
+                AVVideoColorPrimariesKey: AVVideoColorPrimaries_ITU_R_2020,
+                AVVideoTransferFunctionKey:
+                    AVVideoTransferFunction_ITU_R_2100_HLG,
+                AVVideoYCbCrMatrixKey: AVVideoYCbCrMatrix_ITU_R_2020,
+            ]
+            // Get current orientation
+            let orientation = UIDevice.current.orientation
+
+            // Set dimensions based on orientation
+            let videoWidth: Int32
+            let videoHeight: Int32
+            if orientation == .landscapeLeft || orientation == .landscapeRight {
+                // Landscape - use native dimensions
+                videoWidth = dimensions.width
+                videoHeight = dimensions.height
+            } else {
+                // Portrait - swap dimensions
+                videoWidth = dimensions.height
+                videoHeight = dimensions.width
+            }
+
+            let targetBitrate: Int = self.targetBitrate
+
+            let compressionSettings: [String: Any] = [
+                AVVideoCodecKey: AVVideoCodecType.hevc,
+                AVVideoWidthKey: videoWidth,
+                AVVideoHeightKey: videoHeight,
+                AVVideoColorPropertiesKey: colorPropertySettings,
+                AVVideoCompressionPropertiesKey: [
+                    AVVideoProfileLevelKey:
+                        kVTProfileLevel_HEVC_Main10_AutoLevel,
+                    AVVideoAverageBitRateKey: targetBitrate,
+                    kVTCompressionPropertyKey_HDRMetadataInsertionMode:
+                        kVTHDRMetadataInsertionMode_Auto,
+                ],
+            ]
+            // フルレンジ (pcレンジ) のピクセルフォーマットを設定
+            let pixelBufferAttributes: [String: Any] = [
+                kCVPixelBufferPixelFormatTypeKey as String:
+                    kCVPixelFormatType_420YpCbCr10BiPlanarFullRange,
+                kCVPixelBufferWidthKey as String: dimensions.height,
+                kCVPixelBufferHeightKey as String: dimensions.width,
+            ]
+
+            assetWriterInput = AVAssetWriterInput(
+                mediaType: .video, outputSettings: compressionSettings)
+            assetWriterInput!.expectsMediaDataInRealTime = true
+
+            adaptor = AVAssetWriterInputPixelBufferAdaptor(
+                assetWriterInput: assetWriterInput!,
+                sourcePixelBufferAttributes: pixelBufferAttributes)
+
+            if assetWriter!.canAdd(assetWriterInput!) {
+                assetWriter!.add(assetWriterInput!)
+            }
+            assetWriter!.startWriting()
+            assetWriter!.startSession(atSourceTime: CMTime.zero)
+
+            self.isRecording = true
+            self.messageText = "Recording started."
+
+            return fileURLWithExt
+        }
+        return nil
+    }
+
+    /**
+     @brief Stop recording a video movie.
+     */
+    func stopRecording() -> Bool {
+        guard self.isRecording else {
+            return false
+        }
+
+        // 録画終了時にヒープ音を鳴らす
+        AudioServicesPlaySystemSound(1118)
+
+        assetWriterInput?.markAsFinished()
+        assetWriter?.finishWriting { [weak self] in
+            self?.assetWriterInput = nil
+            self?.startTime = nil
+        }
+
+        self.isRecording = false
+        self.messageText = "Recording stopped."
+        return true
+    }
+
+    public func captureOutput(
+        _ output: AVCaptureOutput,
+        didOutput sampleBuffer: CMSampleBuffer,
+        from connection: AVCaptureConnection
+    ) {
+        // Capture image for magnifier if enabled
+        if magnifierEnabled, let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) {
+            magnifierState.lastCapturedImage = CIImage(cvPixelBuffer: imageBuffer)
+            updateMagnifierImage()
+        }
+        guard isRecording else { return }
+        guard let writerInput = assetWriterInput,
+            writerInput.isReadyForMoreMediaData,
+            let adaptor = adaptor
+        else {
+            print("Warning: Writer input or adaptor is not ready.")
+            return
+        }
+
+        if startTime == nil {
+            startTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+        }
+
+        guard let imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            print("Error: Failed to get image buffer from sample buffer.")
+            return
+        }
+
+        let timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+        let time = CMTimeSubtract(timestamp, startTime!)
+
+        // 録画処理
+        let success = adaptor.append(imageBuffer, withPresentationTime: time)
+        if !success {
+            print("Error: Failed to append pixel buffer at time: \(time).")
+        }
+    }
+}

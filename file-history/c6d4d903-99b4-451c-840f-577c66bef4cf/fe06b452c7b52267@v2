@@ -1,0 +1,48 @@
+import { useState, useCallback } from 'react';
+
+/**
+ * フォーム送信時の連打防止機能を提供するカスタムフック
+ *
+ * @example
+ * ```tsx
+ * const { isSubmitting, executeWithGuard } = useSubmitGuard();
+ *
+ * const handleSubmit = async () => {
+ *   await executeWithGuard(async () => {
+ *     // 送信処理
+ *     await apiCall();
+ *   });
+ * };
+ *
+ * return (
+ *   <Button
+ *     loading={isSubmitting}
+ *     disabled={isSubmitting}
+ *     onClick={handleSubmit}
+ *   >
+ *     送信
+ *   </Button>
+ * );
+ * ```
+ */
+export const useSubmitGuard = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const executeWithGuard = useCallback(
+    async <T>(fn: () => Promise<T>): Promise<T | null> => {
+      if (isSubmitting) {
+        return null;
+      }
+
+      setIsSubmitting(true);
+      try {
+        return await fn();
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [isSubmitting],
+  );
+
+  return { isSubmitting, executeWithGuard };
+};

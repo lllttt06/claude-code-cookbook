@@ -1,0 +1,254 @@
+import Flutter
+import StoreKit
+import UIKit
+
+@main
+@objc class AppDelegate: FlutterAppDelegate {
+    private var methodChannelConfigured = false
+
+    override func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        GeneratedPluginRegistrant.register(with: self)
+        return super.application(application, didFinishLaunchingWithOptions: launchOptions)
+    }
+
+    override func applicationDidBecomeActive(_ application: UIApplication) {
+        super.applicationDidBecomeActive(application)
+
+        // Method Channel は初回アクティブ時に一度だけ設定
+        if !methodChannelConfigured {
+            setupMethodChannels()
+            methodChannelConfigured = true
+        }
+    }
+
+    private func setupMethodChannels() {
+        guard let controller = window?.rootViewController as? FlutterViewController else {
+            return
+        }
+
+        let channel = FlutterMethodChannel(
+            name: "baseball_detector_flutter/method",
+            binaryMessenger: controller.binaryMessenger
+        )
+        channel.setMethodCallHandler {
+            [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) in
+            if call.method == "setExcludedFromICloudBackup" {
+                let args = call.arguments as! [String: Any]
+                let path = args["path"] as! String
+
+                do {
+                    try self?.setExcludedFromICloudBackup(to: path)
+                    result(true)
+                } catch {
+                    result(
+                        FlutterError(
+                            code: "FAILED_TO_SET_RESOURCE_VALUE",
+                            message: "Failed to exclude path from backup",
+                            details: error.localizedDescription
+                        ))
+                }
+            } else if call.method == "beginRefundRequest" {
+                guard let args = call.arguments as? [String: Any],
+                    let productId = args["productId"] as? String
+                else {
+                    result(
+                        FlutterError(
+                            code: "INVALID_ARGUMENTS",
+                            message: "productId is required",
+                            details: nil))
+                    return
+                }
+
+                Task { @MainActor in
+                    await self?.handleRefundRequest(productId: productId, result: result)
+                }
+            } else {
+                result(FlutterMethodNotImplemented)
+            }
+        }
+
+        // StoreKit 2 currentEntitlements を返す
+        let iapChannel = FlutterMethodChannel(
+            name: "jp.knowhere/iap_bridge",
+            binaryMessenger: controller.binaryMessenger
+        )
+        iapChannel.setMethodCallHandler {
+            (call: FlutterMethodCall, result: @escaping FlutterResult) in
+            switch call.method {
+            case "currentEntitlements":
+                if #available(iOS 15.0, *) {
+                    Task {
+                        var rows: [[String: Any]] = []
+                        let iso = ISO8601DateFormatter()
+
+                        // AsyncSequence をスナップショット化して返却
+                        for await status in Transaction.currentEntitlements {
+                            guard case .verified(let t) = status else { continue }
+
+                            // ProductID がサブスクであれば公式の Status を取得
+                            var statusStates: [String]? = nil
+                            do {
+                                let products = try await Product.products(for: [t.productID])
+                                if let sub = products.first?.subscription {
+                                    let st = try await sub.status // [Product.SubscriptionInfo.Status]
+                                    statusStates = st.map { s in
+                                        switch s.state {
+                                        case .subscribed: return "subscribed"
+                                        case .inGracePeriod: return "inGracePeriod"
+                                        case .inBillingRetryPeriod: return "inBillingRetryPeriod"
+                                        case .expired: return "expired"
+                                        case .revoked: return "revoked"
+                                        default: return "unknown"
+                                        }
+                                    }
+                                }
+                            } catch {
+                                // 取得に失敗した場合は nil のまま（クライアント側でフォールバック）
+                            }
+
+                            rows.append([
+                                "id": String(t.id),
+                                "webOrderLineItemID": t.webOrderLineItemID ?? "",
+                                "productId": t.productID,
+                                "purchaseDate": iso.string(from: t.purchaseDate),
+                                "originalId": String(t.originalID),
+                                "originalPurchaseDate": iso.string(from: t.originalPurchaseDate),
+                                "expirationDate": t.expirationDate.map { iso.string(from: $0) }
+                                    as Any,
+                                "revocationDate": t.revocationDate.map { iso.string(from: $0) }
+                                    as Any,
+                                "revocationReason": t.revocationReason?.rawValue as Any,
+                                "isUpgraded": t.isUpgraded,
+                                // 公式ステータス（存在すれば配列、非サブスク等は nil）
+                                "status": statusStates as Any,
+                                // Swift の UUID#uuidString は大文字を返すため、小文字に正規化して返却
+                                "appAccountToken": t.appAccountToken.map { $0.uuidString.lowercased() } as Any,
+                            ])
+                        }
+                        result(rows)
+                    }
+                } else {
+                    result(
+                        FlutterError(
+                            code: "iOS_VERSION",
+                            message: "StoreKit 2 requires iOS 15+",
+                            details: nil
+                        ))
+                }
+
+            // （任意）ユーザー操作で最新化したい時に呼べる sync
+            case "sync":
+                if #available(iOS 15.0, *) {
+                    Task {
+                        do {
+                            try await AppStore.sync()  // App Store の状態同期
+                            result(true)
+                        } catch {
+                            result(
+                                FlutterError(
+                                    code: "SYNC_FAILED", message: error.localizedDescription,
+                                    details: nil))
+                        }
+                    }
+                } else {
+                    result(
+                        FlutterError(
+                            code: "iOS_VERSION", message: "StoreKit 2 requires iOS 15+",
+                            details: nil))
+                }
+
+            // ストアフロント情報を取得
+            case "getStorefront":
+                Task { @MainActor in
+                    if #available(iOS 15.0, *) {
+                        if let s = await Storefront.current {
+                            result(["countryCode": s.countryCode, "id": s.id])
+                            return
+                        }
+                    }
+                    // フォールバック（iOS 13+ の StoreKit 1）
+                    if let s = SKPaymentQueue.default().storefront {
+                        result(["countryCode": s.countryCode, "id": s.identifier])
+                    } else {
+                        result(nil)  // まだ取得できない場合
+                    }
+                }
+
+            default:
+                result(FlutterMethodNotImplemented)
+            }
+        }
+    }
+
+    private func setExcludedFromICloudBackup(to path: String) throws {
+        let url = NSURL.fileURL(withPath: path) as NSURL
+        do {
+            try url.setResourceValue(true, forKey: URLResourceKey.isExcludedFromBackupKey)
+        } catch {
+            print("Error excluding \(url.lastPathComponent ?? "(nil)") from backup: \(error)")
+            throw error
+        }
+    }
+
+    @MainActor
+    private func handleRefundRequest(productId: String, result: @escaping FlutterResult) async {
+        // iOS 15+ / StoreKit 2 が必要
+        if #available(iOS 15.0, *) {
+            do {
+                // 該当商品の最新トランザクションを取得
+                if let verification = try await Transaction.latest(for: productId),
+                    case .verified(let transaction) = verification
+                {
+
+                    // 現在のウィンドウシーンを取得
+                    guard
+                        let windowScene = UIApplication.shared.connectedScenes.first
+                            as? UIWindowScene
+                    else {
+                        result(
+                            FlutterError(
+                                code: "NO_WINDOW_SCENE",
+                                message: "Could not find window scene",
+                                details: nil))
+                        return
+                    }
+
+                    // 返金リクエストを開始
+                    let refundResult = try await transaction.beginRefundRequest(in: windowScene)
+
+                    // 結果に応じて適切な値を返す
+                    switch refundResult {
+                    case .success:
+                        result("success")
+                    case .userCancelled:
+                        result("userCancelled")
+                    @unknown default:
+                        result("error")
+                    }
+
+                } else {
+                    result(
+                        FlutterError(
+                            code: "TRANSACTION_NOT_FOUND",
+                            message: "No transaction found for product: \(productId)",
+                            details: nil))
+                }
+            } catch {
+                result(
+                    FlutterError(
+                        code: "REFUND_ERROR",
+                        message: "Failed to process refund request: \(error.localizedDescription)",
+                        details: nil))
+            }
+        } else {
+            result(
+                FlutterError(
+                    code: "UNSUPPORTED_IOS_VERSION",
+                    message: "Refund functionality requires iOS 15 or later",
+                    details: nil))
+        }
+    }
+}

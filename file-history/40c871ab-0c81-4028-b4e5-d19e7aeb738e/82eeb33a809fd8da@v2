@@ -1,0 +1,158 @@
+/// {@category Containers}
+library;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/player_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/session_list_controller.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/models/player.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/profile_storage_provider.dart';
+import 'package:baseball_detector_flutter/views/components/custom_app_bar.dart';
+import 'package:baseball_detector_flutter/views/components/custom_loading_indicator.dart';
+import 'package:baseball_detector_flutter/views/components/custom_text_form_field.dart';
+import 'package:baseball_detector_flutter/views/components/edit_page_layout.dart';
+import 'package:baseball_detector_flutter/views/components/searchable_dropdown_menu.dart';
+import 'package:baseball_detector_flutter/views/constants/input_max_lengths.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_operation.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_single_action.dart';
+import 'package:baseball_detector_flutter/views/hooks/use_single_team_check.dart';
+import 'package:baseball_detector_flutter/views/routers/home_router.dart';
+
+class AddSessionPage extends HookConsumerWidget {
+  const AddSessionPage({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final titleController = useTextEditingController();
+    final noteController = useTextEditingController();
+    final locationController = useTextEditingController();
+    final selectedPlayer = useState<Player?>(null);
+
+    useListenable(titleController);
+
+    final handleOperation = useOperation<Session>();
+    final playerList = ref.watch(allPlayersProvider);
+    final isValid = useState(false);
+    final isSingleTeam = useSingleTeamCheck();
+
+    useEffect(() {
+      isValid.value = selectedPlayer.value != null;
+      return null;
+    }, [selectedPlayer.value]);
+
+    final runCreateSession = useSingleAction<void>(asyncCallback: (_) async {
+      debugPrint('aaa: ${selectedPlayer.value?.id}');
+      await handleOperation(
+        operation: ref.read(sessionListControllerProvider.notifier).addSession(
+              playerId: selectedPlayer.value?.id ?? '',
+              location: locationController.text,
+              note: noteController.text,
+              title: titleController.text,
+            ),
+        onSucceeded: (newSession) {
+          final teamId = ref.read(profileStorageProvider).getTeamId();
+          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed(
+            HomeRouter.sessionDetailsPage,
+            arguments: {
+              'teamId': teamId,
+              'sessionId': newSession.id,
+              'session': newSession,
+            },
+          );
+          return context.l10n.edit_session_page__add_session_succeeded;
+        },
+        onFailed: (error) {
+          return '${context.l10n.edit_session_page__add_session_failed}: ${error.translate(context.l10n)}';
+        },
+        shouldSendErrorLog: (failure) => failure is! UnprocessableEntityFailure,
+      );
+    });
+
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: context.l10n.edit_session_page__title_add,
+        isBackNavigation: true,
+      ),
+      body: playerList.when(
+        loading: () => CustomLoadingIndicator(),
+        error: (_, __) => SizedBox.shrink(),
+        data: (players) => HookBuilder(builder: (context) {
+          useEffect(() {
+            // シングルチームの場合、プレイヤーリストから自動的に先頭要素を選択
+            // ビルド中に ValueNotifier を変更すると setState during build 例外が起きるため
+            // フレーム後に遅延して値を反映する。
+            debugPrint('useEffect selectedPlayer: ${selectedPlayer.value?.id}');
+            if (isSingleTeam && players.isNotEmpty) {
+              // players リストが変更された場合、現在選択中の player が新しいリストに存在するか確認
+              final currentPlayerId = selectedPlayer.value?.id;
+              final isCurrentPlayerInList = currentPlayerId != null &&
+                  players.any((p) => p.id == currentPlayerId);
+
+              // 選択中の player が新しいリストに存在しない場合は、リストの先頭を選択
+              if (!isCurrentPlayerInList) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  debugPrint('selectedPlayer new: ${players.first.id}');
+                  selectedPlayer.value = players.first;
+                });
+              }
+            }
+            return null;
+          }, [isSingleTeam, players]);
+
+          return SafeArea(
+            child: EditPageLayout(
+              onPressed: isValid.value ? () => runCreateSession() : null,
+              children: [
+                const Gap(16),
+                CustomTextFormField(
+                  controller: titleController,
+                  hintText: context.l10n.edit_session_page__title_hint,
+                  maxLength: InputMaxLengths.sessionTitle,
+                  onChanged: (text) {},
+                ),
+                // シングルチームの場合はプレイヤー選択UIを非表示
+                if (!isSingleTeam) ...[
+                  const Gap(24),
+                  SearchableDropdownMenu<Player>(
+                    value: selectedPlayer.value,
+                    itemList: players,
+                    itemBuilder: (player) => Text(player.name ?? ''),
+                    displayString: (player) => player.name ?? '',
+                    hintText: context.l10n.edit_session_page__player_hint,
+                    onChanged: (player) {
+                      selectedPlayer.value = player;
+                    },
+                  ),
+                ],
+                const Gap(24),
+                CustomTextFormField(
+                  controller: locationController,
+                  hintText: context.l10n.edit_session_page__location_hint,
+                  maxLength: InputMaxLengths.sessionLocation,
+                ),
+                const Gap(24),
+                CustomTextFormField(
+                  maxLines: 1,
+                  controller: noteController,
+                  hintText: context.l10n.edit_session_page__note_hint,
+                  maxLength: InputMaxLengths.sessionNote,
+                ),
+              ],
+            ),
+          );
+        }),
+      ),
+    );
+  }
+}

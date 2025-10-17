@@ -1,0 +1,29 @@
+# サインアップ未確認メール再送の問題と対策
+
+## 概要
+- シナリオ: email1 でサインアップ→確認コード入力ページを離脱→email2 で再サインアップ→ログインページに戻り email1 でログイン→サーバーが `UnconfirmedEmailFailure` を返し `ConfirmCodePage` へ遷移→`resendCode()` 実行時に `assert(_profileStorage.getIsInSignUpFlow() ?? false)` が発火。
+- 根本原因: email2 をサインアップしたタイミングで `ProfileStorage` の `email/password/birthday/isInSignUpFlow` が上書きされ、さらに `UnconfirmedEmailFailure` 発生時には email のみが再保存されるため、サインアップフロー前提の再送処理が成立しない。
+
+## 影響範囲
+- `lib/controllers/login_state_controller.dart:128` の `resendCode()` で `assert` に失敗、リリースビルドではその後の `email! / password! / birthday!` 強制アンラップで例外が発生するリスクが高い。
+- サインアップとログインで同一確認コードフローを使い回しているため、複数メールを跨いだ登録・削除操作で容易に再現する。
+
+## 対策方針
+1. **フロー状態の明示化**  
+   - `ProfileStorage` に `verificationFlowType`（例: `none / signUp / login`）を追加。
+   - `signUp` 完了時は `signUp` を、`UnconfirmedEmailFailure` を受けたログイン導線では `login` をセットし、最低限必要なデータ（email、可能なら password）を保存。
+
+2. **再送 API の使い分け**  
+   - サインアップ中は現行どおり `/auth/signup` を再実行して確認コードを再送。
+   - ログイン中はメールのみで再送できるエンドポイント（既存の `/auth/users/verification-status` を拡張、または `/auth/resend-code` のような新規 API）を AuthClient に追加し、`LoginStateController` ではフロー種別で呼び分け。
+
+3. **ConfirmCodePage の分岐**  
+   - `useAuthCodeOperations` 内で `verificationFlowType` を参照。`login` の場合は `completeSignUp` をスキップし、確認コード検証→サインインのみを実行。
+
+4. **状態の片付け**  
+   - 確認完了や `deleteAccount` 成功時に `verificationFlowType` を `none` へ戻し、不要になったメール／パスワード／誕生日情報をクリア。
+
+## 次のステップ
+1. バックエンドとログインフロー用確認コード再送 API の仕様を調整。
+2. `ProfileStorage`・`LoginStateController`・`ConfirmCodePage` の分岐実装を追加。
+3. 「email1 でサインアップ→離脱→email2 でサインアップ→email1 でログイン」など複数パターンの回帰テストを用意して検証。

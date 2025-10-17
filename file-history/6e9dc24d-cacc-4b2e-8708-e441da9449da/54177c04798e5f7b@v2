@@ -1,0 +1,116 @@
+// Package imports:
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/app_store_plan.dart';
+import 'package:baseball_detector_flutter/data/models/plan.dart';
+
+/// VRT 用のダミー課金プラン（英語）
+List<AppStoreProduct> get enPlans => [
+      _p(
+        planId: '00000001-0000-0050-0000-000000000000',
+        name: 'LIGHT',
+        displayPrice: '\$12.99',
+        rawPrice: 12.99,
+        currencyCode: 'USD',
+        currencySymbol: '\$',
+        maxBalls: 50,
+        maxAiCoachs: 5,
+      ),
+      _p(
+        planId: '00000001-0000-0100-0000-000000000000',
+        name: 'STANDARD',
+        displayPrice: '\$39.99',
+        rawPrice: 39.99,
+        currencyCode: 'USD',
+        currencySymbol: '\$',
+        maxBalls: 250,
+        maxAiCoachs: 15,
+      ),
+      _p(
+        planId: '00000001-0000-0300-0000-000000000000',
+        name: 'PREMIUM',
+        displayPrice: '\$79.99',
+        rawPrice: 79.99,
+        currencyCode: 'USD',
+        currencySymbol: '\$',
+        maxBalls: 500,
+        maxAiCoachs: 30,
+      ),
+    ];
+
+/// VRT 用のダミー課金プラン（日本語）
+List<AppStoreProduct> get jaPlans => [
+      _p(
+        planId: '00000001-0000-0050-0000-000000000000',
+        name: 'ライト',
+        displayPrice: '¥1500',
+        rawPrice: 1500,
+        currencyCode: 'JPY',
+        currencySymbol: '¥',
+        maxBalls: 50,
+        maxAiCoachs: 5,
+      ),
+      _p(
+        planId: '00000001-0000-0100-0000-000000000000',
+        name: 'スタンダード',
+        displayPrice: '¥5000',
+        rawPrice: 5000,
+        currencyCode: 'JPY',
+        currencySymbol: '¥',
+        maxBalls: 250,
+        maxAiCoachs: 15,
+      ),
+      _p(
+        planId: '00000001-0000-0300-0000-000000000000',
+        name: 'プレミアム',
+        displayPrice: '¥10000',
+        rawPrice: 10000,
+        currencyCode: 'JPY',
+        currencySymbol: '¥',
+        maxBalls: 500,
+        maxAiCoachs: 30,
+      ),
+    ];
+
+AppStoreProduct _p({
+  required String planId,
+  required String name,
+  required String displayPrice,
+  required double rawPrice,
+  required String currencyCode,
+  required String currencySymbol,
+  required int maxBalls,
+  required int maxAiCoachs,
+}) {
+  final plan = Plan(
+    id: planId,
+    name: name,
+    maxBalls: maxBalls,
+    maxAiCoachs: maxAiCoachs,
+  );
+
+  return AppStoreProduct(
+    plan: plan,
+    productDetails: ProductDetails(
+      id: planId,
+      title: name,
+      description: '$name plan',
+      price: displayPrice,
+      rawPrice: rawPrice,
+      currencyCode: currencyCode,
+      currencySymbol: currencySymbol,
+    ),
+    id: planId,
+    displayName: name,
+    displayPrice: displayPrice,
+    description: '$name plan',
+    price: rawPrice,
+    type: SK2ProductType.autoRenewable,
+    priceLocale: SK2PriceLocale(
+      currencyCode: currencyCode,
+      currencySymbol: currencySymbol,
+    ),
+  );
+}

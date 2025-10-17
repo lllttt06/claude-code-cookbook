@@ -1,0 +1,192 @@
+# サインアップ未確認メール再送の問題と対策
+
+## 概要
+- **シナリオ**: email1 でサインアップ→確認コード入力ページを離脱→email2 で再サインアップ→ログインページに戻り email1 でログイン→サーバーが `UnconfirmedEmailFailure` を返し `ConfirmCodePage` へ遷移→`resendCode()` 実行時に不整合状態で失敗。
+- **根本原因**: email2 をサインアップしたタイミングで `ProfileStorage` の `email/password/birthday/isInSignUpFlow` が上書きされ、さらに `UnconfirmedEmailFailure` 発生時（`auth_client.dart:248-250`）には email のみが再保存されるため、email1 + password2/birthday2 という不整合状態が発生。
+
+## 調査結果詳細
+
+### 問題の発生箇所
+
+#### 1. `auth_client.dart:248-250` - 不整合状態の発生源
+```dart
+// UnconfirmedEmailFailure 発生時に email のみ再保存
+await _profileStorage.setEmail(email);
+await _profileStorage.setIsInSignUpFlow(true);
+```
+**問題**: password と birthday は email2 のサインアップ時の値のままで、email だけ email1 に上書きされる。
+
+#### 2. `login_state_controller.dart:127-144` - assert と強制アンラップ
+```dart
+Future<Result<Failure, void>> resendCode() async {
+  assert(_profileStorage.getIsInSignUpFlow() ?? false);  // デバッグビルドのみ有効
+
+  state = const AsyncValue.loading();
+  final email = await _profileStorage.getEmail();
+  final password = await _profileStorage.getPassword();
+  final birthday = await _profileStorage.getBirthday();
+  assert(birthday != null);  // デバッグビルドのみ有効
+
+  final res = await _authClient.signUp(
+    email: email!,      // リリースビルドで null 参照の可能性
+    password: password!,  // 不整合: email2 の password
+    birthday: birthday!,  // 不整合: email2 の birthday
+  );
+  // ...
+}
+```
+**問題**:
+- assert はリリースビルドで無効化されるため、本番環境で例外発生リスク
+- email1 + password2/birthday2 で `/auth/signup` を呼び出すため失敗
+
+#### 3. `use_auth_code_operations.dart:66-70` - サインアップ専用フロー
+```dart
+progress = _ConfirmCodeProgress.completeSignUp;
+final completeSignUpRes = await ctrl.completeSignUp(token);
+```
+**問題**: ログインフローでは `completeSignUp`（初期パスワード設定）が不要だが、常に実行される。
+
+### 現状の API 確認結果
+
+**利用可能な API**:
+- `/auth/signup` - サインアップ（確認コード送信含む）
+- `/auth/code-verification` - 確認コード検証
+- `/auth/password-reset/initial` - 初期パスワード設定（サインアップ完了時）
+- `/auth/users/verification-status` - メール確認状態取得（GET のみ）
+
+**結論**: ログインフロー用の確認コード再送専用 API は存在しない。バックエンド側の API 追加が必要。
+
+## 影響範囲
+- **デバッグビルド**: `login_state_controller.dart:128` の assert で異常検知可能
+- **リリースビルド**: assert が無効化されるため、line 137-139 の強制アンラップで null 参照例外が発生する可能性が高い
+- **再現条件**: 複数メールアドレスを跨いだサインアップ・ログイン操作で容易に再現
+
+## 修正方針（改訂版）
+
+### 必須対応
+
+#### 1. **フロー状態の明示化**
+`ProfileStorage` に確認フロータイプを追加:
+```dart
+enum VerificationFlowType {
+  none,    // 確認フロー外
+  signUp,  // サインアップフロー
+  login,   // ログインフロー（未確認メールでログイン試行）
+}
+```
+
+**実装箇所**:
+- `profile_storage.dart`: getter/setter 追加
+- `auth_client.dart:359-366`: `signUp()` 完了時に `signUp` をセット
+- `auth_client.dart:248-250`: `_getEmailVerificationStatus()` で `notVerified` 時に `login` をセット
+
+#### 2. **ログインフロー用確認コード再送 API の追加**
+
+**バックエンド側で新規 API を追加**:
+```
+POST /auth/resend-verification-code
+Body: { "email": "user@example.com" }
+```
+
+**フロントエンド側実装**:
+- `auth_client.dart`: `resendVerificationCode(String email)` メソッド追加
+- `login_state_controller.dart`: `resendCode()` で flow type による分岐
+
+```dart
+Future<Result<Failure, void>> resendCode() async {
+  final flowType = _profileStorage.getVerificationFlowType();
+  final email = await _profileStorage.getEmail();
+
+  if (email == null) {
+    return Left(Failure.undefined(...));
+  }
+
+  switch (flowType) {
+    case VerificationFlowType.signUp:
+      // 既存の signUp 再実行
+      final password = await _profileStorage.getPassword();
+      final birthday = await _profileStorage.getBirthday();
+      if (password == null || birthday == null) {
+        return Left(Failure.undefined(...));
+      }
+      return await _authClient.signUp(...);
+
+    case VerificationFlowType.login:
+      // 新規 API を使用
+      return await _authClient.resendVerificationCode(email);
+
+    default:
+      return Left(Failure.undefined(...));
+  }
+}
+```
+
+#### 3. **ConfirmCodePage の分岐処理**
+`use_auth_code_operations.dart` の `confirmCode()` で flow type による分岐:
+
+```dart
+Future<bool> confirmCode(String code) async {
+  final flowType = ref.read(profileStorageProvider).getVerificationFlowType();
+
+  // 確認コード検証
+  final verifyCodeRes = await ctrl.verifyCode(code);
+  if (!verifyCodeRes.hasRight) return false;
+
+  final token = verifyCodeRes.right;
+
+  // フロータイプによる分岐
+  if (flowType == VerificationFlowType.signUp) {
+    // サインアップフロー: completeSignUp が必要
+    final completeSignUpRes = await ctrl.completeSignUp(token);
+    if (!completeSignUpRes.hasRight) return false;
+  }
+
+  // 両フロー共通: サインイン
+  final email = await profileStorage.getEmail();
+  final password = await profileStorage.getPassword();
+  return await ctrl.signInWithPassword(email!, password!, true);
+}
+```
+
+#### 4. **状態のクリーンアップ**
+- `auth_client.dart:418-421`: `completeSignUp()` 完了時に `verificationFlowType = none` をセット
+- `auth_client.dart:440-447`: `deleteAccount()` 完了時に `verificationFlowType = none` をセット
+- サインイン成功時にも `verificationFlowType = none` をセット
+
+### 推奨対応（セキュリティ強化）
+
+#### 5. **null 安全性の強化**
+assert による防御ではなく、適切なエラーハンドリングに変更:
+
+```dart
+Future<Result<Failure, void>> resendCode() async {
+  final email = await _profileStorage.getEmail();
+  if (email == null) {
+    return Left(Failure.undefined(
+      code: _fc.position('XXX'),
+      description: (l10n) => 'Email not found in storage',
+    ));
+  }
+  // ...
+}
+```
+
+## 次のステップ
+
+### Phase 1: バックエンド対応
+1. **API 追加**: `/auth/resend-verification-code` エンドポイントの実装
+2. **API テスト**: メールのみで確認コード再送が可能か検証
+
+### Phase 2: フロントエンド実装
+1. **ProfileStorage 拡張**: `VerificationFlowType` の追加
+2. **AuthClient 拡張**: `resendVerificationCode()` メソッド追加
+3. **LoginStateController 修正**: `resendCode()` の分岐処理
+4. **useAuthCodeOperations 修正**: `confirmCode()` の分岐処理
+5. **状態クリーンアップ**: 各完了時の状態リセット
+
+### Phase 3: テスト
+以下のシナリオで回帰テストを実施:
+1. **正常系**: email1 でサインアップ→確認コード入力→完了
+2. **問題シナリオ**: email1 でサインアップ→離脱→email2 でサインアップ→email1 でログイン→確認コード再送→完了
+3. **複数メール**: email1/email2/email3 で順次サインアップ→それぞれでログイン試行
+4. **アカウント削除**: サインアップ後削除→再度同じメールでサインアップ

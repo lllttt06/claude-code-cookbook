@@ -1,0 +1,41 @@
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+
+part 'sign_up_context.freezed.dart';
+part 'sign_up_context.g.dart';
+
+/// サインアップコンテキストのフロータイプ
+enum SignUpFlowType {
+  /// サインアップフロー（新規登録）
+  signUp,
+
+  /// ログインフロー（未確認メールでのログイン）
+  login,
+
+  /// フローなし
+  none,
+}
+
+/// メール単位のサインアップコンテキスト
+///
+/// 複数メールでのサインアップ/ログイン時に各メールの情報を保持するモデル
+@freezed
+abstract class SignUpContext with _$SignUpContext {
+  const SignUpContext._();
+
+  @JsonSerializable(
+      explicitToJson: true, fieldRename: Constants.modelFieldRename)
+  const factory SignUpContext({
+    required String email,
+    required String password,
+    required DateTime birthday,
+    required SignUpFlowType flowType,
+    required DateTime lastUpdated,
+  }) = _SignUpContext;
+
+  factory SignUpContext.fromJson(Map<String, dynamic> json) =>
+      _$SignUpContextFromJson(json);
+}

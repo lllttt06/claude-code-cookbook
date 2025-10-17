@@ -1,0 +1,372 @@
+import { CalendarToday, MoreHoriz, PinDrop } from '@mui/icons-material';
+import {
+  Button,
+  Grid2 as Grid,
+  Menu,
+  MenuItem,
+  Paper,
+  Stack,
+  TableContainer,
+  Typography,
+} from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/system';
+import _ from 'lodash';
+import moment from 'moment';
+import Link from 'next/link';
+import React, { FC, MouseEvent, useState } from 'react';
+
+import { ImageOrAvatar } from '@/components/common/image-or-avatar';
+import {
+  LinkableTable as Table,
+  LinkableTableBody as TableBody,
+  LinkableTableCell as TableCell,
+  LinkableTableHead as TableHead,
+  LinkableTableRow as TableRow,
+  LinkedTableCell,
+} from '@/components/common/linkable-table';
+import { PAGE_INFO } from '@/constants/page.constants';
+import { Session } from '@/models/session';
+import { User } from '@/models/user';
+import { isNilOrEmpty } from '@/utils/functions/transformer';
+import { translate } from '@/utils/i18n';
+
+export type SessionSearchResultTableParam = {
+  user: User;
+  teamId: string;
+  sessions: Session[];
+  onEditButtonClicked?: (session: Session) => void;
+  onDeleteButtonClicked?: (session: Session) => void;
+};
+
+export const SessionSearchResultTable: FC<SessionSearchResultTableParam> = ({
+  user,
+  teamId,
+  sessions,
+  onEditButtonClicked,
+  onDeleteButtonClicked,
+}) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
+    null,
+  );
+  const openMenu = (event: React.MouseEvent<HTMLElement>, session: Session) => {
+    setAnchorEl(event.currentTarget);
+    setSelectedSessionId(session.id);
+  };
+  const closeMenu = () => {
+    setAnchorEl(null);
+    setSelectedSessionId(null);
+  };
+
+  const moveToDetailPage = (sess: Session) =>
+    PAGE_INFO.SESSION_RESOURCES.href(teamId, sess.id);
+
+  if (_.isEmpty(sessions)) {
+    return (
+      <Typography sx={{ p: 1 }} variant="inherit">
+        {translate('no_sessions')}
+      </Typography>
+    );
+  }
+
+  const Layout = isSmallScreen ? CardLayout : TableLayout;
+
+  return (
+    <Layout
+      user={user}
+      sessions={sessions}
+      anchorEl={anchorEl}
+      selectedSessionId={selectedSessionId}
+      openMenu={openMenu}
+      closeMenu={closeMenu}
+      moveToDetailPage={moveToDetailPage}
+      onEditButtonClicked={onEditButtonClicked}
+      onDeleteButtonClicked={onDeleteButtonClicked}
+    />
+  );
+};
+
+type ResponsiveLayoutParam = {
+  user: User;
+  sessions: Session[];
+  anchorEl: HTMLElement | null;
+  selectedSessionId: string | null;
+  openMenu: (event: React.MouseEvent<HTMLElement>, session: Session) => void;
+  closeMenu: () => void;
+  moveToDetailPage: (session: Session) => string;
+  onEditButtonClicked?: (session: Session) => void;
+  onDeleteButtonClicked?: (session: Session) => void;
+};
+
+const TableLayout: FC<ResponsiveLayoutParam> = ({
+  user,
+  sessions,
+  anchorEl,
+  selectedSessionId,
+  openMenu,
+  closeMenu,
+  moveToDetailPage,
+  onEditButtonClicked,
+  onDeleteButtonClicked,
+}) => {
+  return (
+    <TableContainer component={Paper}>
+      <Table
+        aria-label="a dense table"
+        sx={{
+          tableLayout: 'fixed',
+          '.MuiTableCell-root': { overflowWrap: 'anywhere' },
+        }}
+      >
+        <TableHead>
+          <TableRow>
+            {/*<th/>*/}
+            <TableCell>{translate('session_table_title')}</TableCell>
+            <TableCell>{translate('session_table_player')}</TableCell>
+            <TableCell>{translate('session_table_date')}</TableCell>
+            <TableCell>{translate('session_table_location')}</TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sessions.map((sess) => {
+            return (
+              <TableRow key={sess.id}>
+                {/*<td>*/}
+                {/*  <StarOutline onClick={() => addToFavorite(sess)}/>*/}
+                {/*</td>*/}
+                <LinkedTableCell
+                  sx={{ maxWidth: '20rem', wordBreak: 'break-all' }}
+                  href={moveToDetailPage(sess)}
+                >
+                  <Typography component="span" variant="inherit">
+                    {isNilOrEmpty(sess.title) ? '-' : sess.title}
+                  </Typography>
+                </LinkedTableCell>
+                <LinkedTableCell href={moveToDetailPage(sess)}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <ImageOrAvatar
+                      url={sess.player?.presignedImageUrl}
+                      width={30}
+                      height={30}
+                    />
+                    <Typography component="span" variant="inherit">
+                      {isNilOrEmpty(sess.player?.name)
+                        ? '-'
+                        : sess.player?.name}
+                    </Typography>
+                  </Stack>
+                </LinkedTableCell>
+                <LinkedTableCell href={moveToDetailPage(sess)}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <CalendarToday />
+                    <Typography component="span" variant="inherit">
+                      {moment(sess.createdAt).format('YYYY-MM-DD')}
+                    </Typography>
+                  </Stack>
+                </LinkedTableCell>
+                <LinkedTableCell href={moveToDetailPage(sess)}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <PinDrop />
+                    <Typography component="span" variant="inherit">
+                      {isNilOrEmpty(sess.location) ? '-' : sess.location}
+                    </Typography>
+                  </Stack>
+                </LinkedTableCell>
+                <TableCell style={{ textAlign: 'right' }}>
+                  {user.hasBasicWriteAccessFor(sess) && (
+                    <SessionMenu
+                      anchorEl={anchorEl}
+                      isOpen={selectedSessionId === sess.id}
+                      open={(ev) => openMenu(ev, sess)}
+                      close={closeMenu}
+                      onEditButtonClicked={() => onEditButtonClicked?.(sess)}
+                      onDeleteButtonClicked={() =>
+                        onDeleteButtonClicked?.(sess)
+                      }
+                    />
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const CardLayout: FC<ResponsiveLayoutParam> = ({
+  user,
+  sessions,
+  anchorEl,
+  selectedSessionId,
+  openMenu,
+  closeMenu,
+  moveToDetailPage,
+  onEditButtonClicked,
+  onDeleteButtonClicked,
+}) => {
+  return (
+    <Grid container spacing={2} columns={{ xs: 1, sm: 2 }} sx={{ my: 1 }}>
+      {sessions.map((sess) => (
+        <Grid
+          component={Link}
+          key={sess.id}
+          size={1}
+          href={moveToDetailPage(sess)}
+        >
+          <Paper elevation={2} sx={{ px: 2, py: 1, position: 'relative' }}>
+            <Stack direction="column" spacing={1} useFlexGap>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontWeight: 500,
+                  overflow: 'hidden',
+                  textWrap: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  marginRight: 5,
+                }}
+              >
+                {isNilOrEmpty(sess.title) ? '-' : sess.title}
+              </Typography>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <ImageOrAvatar
+                  url={sess.player?.presignedImageUrl}
+                  width={30}
+                  height={30}
+                />
+                <Typography
+                  component="span"
+                  variant="subtitle2"
+                  sx={{
+                    overflow: 'hidden',
+                    textWrap: 'nowrap',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {isNilOrEmpty(sess.player?.name) ? '-' : sess.player?.name}
+                </Typography>
+              </Stack>
+              <Grid container columns={2} direction="row" sx={{ mt: 1 }}>
+                <Grid size={1}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <CalendarToday />
+                    <Typography component="span" variant="body2">
+                      {moment(sess.createdAt).format('YYYY-MM-DD')}
+                    </Typography>
+                  </Stack>
+                </Grid>
+                <Grid size={1}>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <PinDrop />
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      sx={{
+                        overflow: 'hidden',
+                        textWrap: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {isNilOrEmpty(sess.location) ? '-' : sess.location}
+                    </Typography>
+                  </Stack>
+                </Grid>
+              </Grid>
+            </Stack>
+
+            {user.hasBasicWriteAccessFor(sess) && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 0,
+                }}
+              >
+                <SessionMenu
+                  anchorEl={anchorEl}
+                  isOpen={selectedSessionId === sess.id}
+                  open={(ev) => openMenu(ev, sess)}
+                  close={closeMenu}
+                  onEditButtonClicked={() => onEditButtonClicked?.(sess)}
+                  onDeleteButtonClicked={() => onDeleteButtonClicked?.(sess)}
+                />
+              </Box>
+            )}
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+const SessionMenu: FC<{
+  anchorEl: HTMLElement | null;
+  isOpen: boolean;
+  open: (event: MouseEvent<HTMLElement>) => void;
+  close: () => void;
+  onEditButtonClicked: () => void;
+  onDeleteButtonClicked: () => void;
+}> = ({
+  anchorEl,
+  isOpen,
+  open,
+  close,
+  onEditButtonClicked,
+  onDeleteButtonClicked,
+}) => {
+  return (
+    <>
+      <Button
+        color="neutral"
+        onClick={(ev) => {
+          ev.stopPropagation();
+          ev.preventDefault();
+          open(ev);
+        }}
+      >
+        <MoreHoriz />
+      </Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={isOpen}
+        onClose={(ev: MouseEvent | KeyboardEvent) => {
+          ev.stopPropagation();
+          ev.preventDefault();
+          close();
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem
+          onClick={(e) => {
+            e.stopPropagation();
+            onEditButtonClicked();
+            close();
+          }}
+        >
+          {translate('edit')}
+        </MenuItem>
+        <MenuItem
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteButtonClicked();
+            close();
+          }}
+        >
+          {translate('delete')}
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};

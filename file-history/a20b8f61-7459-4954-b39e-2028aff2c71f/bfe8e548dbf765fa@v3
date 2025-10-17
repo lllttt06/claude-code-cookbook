@@ -1,0 +1,344 @@
+import { CalendarTodayOutlined, EmailOutlined } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  Link as MuiLink,
+  OutlinedInput,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { format } from 'date-fns';
+import i18next from 'i18next';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  FormEvent,
+  type ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import CriticalError from '@/components/common/critical-error';
+import ValidationError from '@/components/common/validation-error';
+import AppConstants, { SupportedLanguage } from '@/constants/app.constants';
+import { PAGE_INFO } from '@/constants/page.constants';
+import useServicesHook from '@/hooks';
+import SigningLayout from '@/layouts/signing.layout';
+import { ServiceError } from '@/services/errors/service-error';
+import { useSelector } from '@/store';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import { getDefaultLanguage, translate } from '@/utils/i18n';
+import { logger } from '@/utils/logger';
+import { signupValidator } from '@/validations/auth';
+
+export default function Page() {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [error, setError] = useState<ServiceError | null>(null);
+  const [birthdayInputValue, setBirthdayInputValue] = useState<string>('');
+  const [currentLang, setCurrentLang] = useState<SupportedLanguage>('en');
+  const [signupInfo, setSignupInfo] = useState<{
+    name: string;
+    email: string;
+    birthday: Date | null;
+  }>({
+    name: '',
+    email: '',
+    birthday: null,
+  });
+  const { router, services } = useServicesHook();
+  const currentUser = useSelector((state) => state.user.me);
+  const loginStatus = useSelector((state) => state.user.loginStatus);
+  const hiddenDateInputRef = useRef<HTMLInputElement | null>(null);
+
+
+  const openBirthdayPicker = () => {
+    const el = hiddenDateInputRef.current as (HTMLInputElement & { showPicker?: () => void }) | null;
+    if (!el) { return; }
+
+    // 重要: 非同期にしない（setTimeoutしない）
+    el.focus();
+
+    // Chromium系: showPicker が最適
+    if (typeof el.showPicker === 'function') {
+      el.showPicker();
+    } else {
+      // Safari等: click でピッカーを開く
+      el.click();
+    }
+  };
+
+  const validator = signupValidator();
+
+  const normalizeLang = useCallback((lang: string | undefined | null): SupportedLanguage => {
+    if (!lang) {
+      return 'en';
+    }
+    return lang.startsWith('ja') ? 'ja' : 'en';
+  }, []);
+
+  useEffect(() => {
+    setCurrentLang(
+      normalizeLang(
+        services.localStorage.getLanguage(null) ?? getDefaultLanguage(),
+      ),
+    );
+  }, [services.localStorage, normalizeLang]);
+
+  useEffect(() => {
+    setCurrentLang(
+      normalizeLang(i18next.language || i18next.resolvedLanguage || getDefaultLanguage()),
+    );
+
+    const handleLanguageChanged = (lng: string) => {
+      setCurrentLang(normalizeLang(lng));
+    };
+
+    i18next.on('languageChanged', handleLanguageChanged);
+
+    return () => {
+      i18next.off('languageChanged', handleLanguageChanged);
+    };
+  }, [normalizeLang]);
+
+  useEffect(() => {
+    if (!signupInfo.birthday) {
+      return;
+    }
+
+    const formatted = format(signupInfo.birthday, 'yyyy/MM/dd');
+    setBirthdayInputValue((current) => (current === formatted ? current : formatted));
+  }, [signupInfo.birthday]);
+
+  const onSubmitButtonClicked = async (
+    e: FormEvent<HTMLFormElement | HTMLAnchorElement>,
+  ) => {
+    e.preventDefault();
+    setError(null);
+    try {
+      validator.parse(signupInfo);
+    } catch (validationError) {
+      if (validationError instanceof Error) {
+        setError(new ServiceError(validationError));
+      }
+      return;
+    }
+
+    wrapForLoading(setIsSubmitting, async () => {
+      setError(null);
+      const result = await services.default.user.signup({
+        email: signupInfo.email,
+        name: signupInfo.name,
+        birthday: signupInfo.birthday,
+      });
+      if (result.error) {
+        setError(result.error);
+        return;
+      }
+      setIsFinished(true);
+    });
+  };
+
+  useEffect(() => {
+    if (currentUser && loginStatus == 'yes') {
+      logger.debug('SI: already logged in - redirect to top');
+      router.replace(PAGE_INFO.TOP.href());
+    }
+  }, [currentUser]);
+
+  return (
+    <Box
+      sx={{
+        '.data-error': {
+          p: 0.5,
+          display: 'flex',
+        },
+      }}
+    >
+      <form onSubmit={onSubmitButtonClicked}>
+        <Stack
+          direction="column"
+          alignItems="center"
+          sx={{
+            width: '100%',
+            maxWidth: { xs: '100%' },
+            mx: 'auto',
+            px: { xs: 0, sm: 12 },
+            py: { xs: 6, sm: 12 },
+          }}
+        >
+          <Image
+            src={AppConstants.LOGO_URL}
+            alt=""
+            priority={true}
+            height="80"
+            width="300"
+          />
+          {isFinished && (
+            <Box>
+              <Typography textAlign="center" sx={{ my: 4 }}>
+                {translate('thank_you_for_registration')}
+              </Typography>
+
+              <Typography textAlign="center" sx={{ my: 4 }}>
+                {translate('invitation_email_sent', {
+                  email: signupInfo.email,
+                })}
+              </Typography>
+            </Box>
+          )}
+          {!isFinished && (
+            <>
+              <Box sx={{ px: 1, width: 1 }}>
+                <Typography textAlign="left" sx={{ mt: 12 }} variant="h2">
+                  {translate('new_user_registration')}
+                </Typography>
+              </Box>
+              <Box sx={{ width: 1 }}>
+                <FormControl fullWidth size="small" sx={{ mt: 6 }}>
+                  <OutlinedInput
+                    placeholder={translate('name')}
+                    onChange={(x) =>
+                      setSignupInfo({ ...signupInfo, name: x.target.value })
+                    }
+                  />
+                  <ValidationError error={error} pos={['name']} />
+                </FormControl>
+                <FormControl fullWidth size="small" sx={{ mt: 2 }}>
+                  <OutlinedInput
+                    placeholder={translate('email')}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <EmailOutlined />
+                      </InputAdornment>
+                    }
+                    onChange={(x) =>
+                      setSignupInfo({ ...signupInfo, email: x.target.value })
+                    }
+                  />
+                  <ValidationError error={error} pos={['email']} />
+                </FormControl>
+                <FormControl fullWidth size="small" sx={{ mt: 2 }}>
+                  <OutlinedInput
+                    value={birthdayInputValue}
+                    placeholder={translate('birthday')}
+                    inputProps={{ readOnly: true, 'aria-haspopup': 'dialog' }}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton
+                          edge="start"
+                          size="small"
+                          aria-label={translate('birthday')}
+                        >
+                          <CalendarTodayOutlined fontSize="small" />
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      openBirthdayPicker();
+                    }}
+                    onTouchEnd={(e) => {
+                      e.preventDefault();
+                      openBirthdayPicker();
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar' || e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        openBirthdayPicker();
+                      } else {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+
+                  <input
+                    ref={hiddenDateInputRef}
+                    type="date"
+                    value={signupInfo.birthday ? format(signupInfo.birthday, 'yyyy-MM-dd') : ''}
+                    max={format(new Date(), 'yyyy-MM-dd')}
+                    onChange={(event) => {
+                      const { value } = event.target;
+                      if (!value) {
+                        setSignupInfo((prev) => ({ ...prev, birthday: null }));
+                        setBirthdayInputValue('');
+                        return;
+                      }
+                      const d = new Date(`${value}T00:00:00`);
+                      if (Number.isNaN(d.getTime())) { return; }
+                      setSignupInfo((prev) => ({ ...prev, birthday: d }));
+                      setBirthdayInputValue(format(d, 'yyyy/MM/dd'));
+                    }}
+                    tabIndex={-1}
+                    aria-hidden
+                    style={{ position: 'absolute', width: 0, height: 0, opacity: 0 }}
+                  />
+                  <ValidationError error={error} pos={['birthday']} />
+                </FormControl>
+                <Typography
+                  variant="caption"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
+                  {translate('birthday_change_notice')}
+                </Typography>
+                <CriticalError error={error} />
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 4 }}
+                >
+                  {translate('terms_privacy_agreement_prefix')}
+                  <MuiLink
+                    component={Link}
+                    href={
+                      currentLang === 'ja'
+                        ? '/terms-of-use?lang=ja'
+                        : '/terms-of-use?lang=en'
+                    }
+                    underline="hover"
+                  >
+                    {translate('term_of_use')}
+                  </MuiLink>
+                  {translate('terms_privacy_connector')}
+                  <MuiLink
+                    component={Link}
+                    href={
+                      currentLang === 'ja'
+                        ? '/privacy-policy?lang=ja'
+                        : '/privacy-policy?lang=en'
+                    }
+                    underline="hover"
+                  >
+                    {translate('privacy')}
+                  </MuiLink>
+                  {translate('terms_privacy_agreement_suffix')}
+                </Typography>
+                <Button
+                  sx={{ mt: 4 }}
+                  type="submit"
+                  color="primary"
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  loading={isSubmitting}
+                >
+                  {translate('button_complete_signup')}
+                </Button>
+              </Box>
+            </>
+          )}
+        </Stack>
+      </form>
+    </Box>
+  );
+}
+
+Page.getLayout = function getLayout(page: ReactElement) {
+  return <SigningLayout>{page}</SigningLayout>;
+};

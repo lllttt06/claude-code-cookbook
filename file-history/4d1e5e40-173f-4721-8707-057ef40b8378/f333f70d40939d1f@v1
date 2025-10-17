@@ -1,0 +1,807 @@
+/// Defines a collection of widgets to display and modify the camera parameters.
+library;
+
+import 'dart:math';
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Project imports:
+import './camera_configuration.dart';
+import './camera_controller.dart';
+
+String _formatModelName(dynamic value) {
+  if (value == null) {
+    return '';
+  }
+
+  final raw = value.toString();
+  if (raw.isEmpty) {
+    return raw;
+  }
+
+  final formatted = raw.replaceAllMapped(
+    RegExp(r'(iPhone|iPad)'),
+    (match) {
+      final device = match.group(0)!;
+      final needsLineBreak =
+          match.end < raw.length && raw[match.end] != '\n';
+      return needsLineBreak ? '$device\n' : device;
+    },
+  );
+
+  return formatted;
+}
+
+/// A widget to list the current camera parameters.
+class CameraValueWidget extends StatelessWidget {
+  final CameraController cameraController;
+  final CameraConfiguration cameraConfiguration;
+
+  const CameraValueWidget(
+      {super.key,
+      required this.cameraController,
+      required this.cameraConfiguration});
+
+  @override
+  Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    return Container(
+      height: mediaQuery.size.height - kToolbarHeight,
+      padding: EdgeInsets.only(
+        bottom: mediaQuery.orientation == Orientation.landscape ? 32 : 72,
+      ),
+      child: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            _CameraValueItem(
+              label: "modelName",
+              notifier: cameraConfiguration.modelName,
+              formatter: _formatModelName,
+            ),
+            _CameraValueItem(
+              label: "isSupportedDevice",
+              notifier: cameraConfiguration.isSupportedDevice,
+              formatter: (value) => value.toString(),
+            ),
+            _CameraValueItem(
+              label: "isStabilizationSupportedDevice",
+              notifier: cameraConfiguration.isStabilizationSupportedDevice,
+              formatter: (value) => value.toString(),
+            ),
+            _CameraValueItem(
+                label: "Lens index",
+                notifier: cameraConfiguration.lensIndex,
+                formatter: (value) => value.toString(),
+                onTap: () {
+                  _showLensDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Format index",
+                notifier: cameraConfiguration.formatIndex,
+                formatter: (value) => value.toString(),
+                onTap: () {
+                  _showFormatDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Zoom",
+                notifier: cameraConfiguration.zoom,
+                formatter: (value) => value.toStringAsFixed(2),
+                onTap: () {
+                  _showZoomDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Min zoom",
+                notifier: cameraConfiguration.minZoom,
+                formatter: (value) => value.toStringAsFixed(2)),
+            _CameraValueItem(
+                label: "Max zoom",
+                notifier: cameraConfiguration.maxZoom,
+                formatter: (value) => value.toStringAsFixed(2)),
+            _CameraValueItem(
+                label: "AutoExposure",
+                notifier: cameraConfiguration.isAutoExposure,
+                formatter: (value) => value.toString(),
+                onTap: () {
+                  _showAutoExposureDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Exposure Offset Bias",
+                notifier: cameraConfiguration.exposureOffsetBias,
+                formatter: (value) => value.toStringAsFixed(2),
+                onTap: () {
+                  _showExposureOffsetBiasDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "ISO",
+                notifier: cameraConfiguration.iso,
+                formatter: (value) => value.toStringAsFixed(0),
+                onTap: () {
+                  _showISODialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Min ISO",
+                notifier: cameraConfiguration.minISO,
+                formatter: (value) => value.toStringAsFixed(0)),
+            _CameraValueItem(
+                label: "Max ISO",
+                notifier: cameraConfiguration.maxISO,
+                formatter: (value) => value.toStringAsFixed(0)),
+            _CameraValueItem(
+                label: "Shutter speed",
+                notifier: cameraConfiguration.shutterSpeed,
+                formatter: (value) => value.toStringAsFixed(0),
+                onTap: () {
+                  _showShutterSpeedDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Min shutter speed",
+                notifier: cameraConfiguration.minShutterSpeed,
+                formatter: (value) => value.toStringAsFixed(0)),
+            _CameraValueItem(
+                label: "Max shutter speed",
+                notifier: cameraConfiguration.maxShutterSpeed,
+                formatter: (value) => value.toStringAsFixed(0)),
+            _CameraValueItem(
+                label: "Target bitrate (Mbps)",
+                notifier: cameraConfiguration.targetBitrate,
+                formatter: (value) => (value / 1000000).toStringAsFixed(0),
+                onTap: () {
+                  _showTargetBitrateDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Min target bitrate (Mbps)",
+                notifier: cameraConfiguration.minTargetBitrate,
+                formatter: (value) => (value / 1000000).toStringAsFixed(0)),
+            _CameraValueItem(
+                label: "Max target bitrate (Mbps)",
+                notifier: cameraConfiguration.maxTargetBitrate,
+                formatter: (value) => (value / 1000000).toStringAsFixed(0)),
+            _CameraValueItem(
+                label: "Focus",
+                notifier: cameraConfiguration.focus,
+                formatter: (value) => value.toStringAsFixed(2),
+                onTap: () {
+                  _showFocusDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Min focus",
+                notifier: cameraConfiguration.minFocus,
+                formatter: (value) => value.toStringAsFixed(2)),
+            _CameraValueItem(
+                label: "Max focus",
+                notifier: cameraConfiguration.maxFocus,
+                formatter: (value) => value.toStringAsFixed(2)),
+            _CameraValueItem(
+                label: "AF/MF",
+                notifier: cameraConfiguration.focusModeIsAuto,
+                formatter: (value) => value ? "AF" : "MF",
+                onTap: () {
+                  _showAFDialog(context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Focus Magnifier",
+                notifier: cameraConfiguration.focusMagnifierEnabled,
+                formatter: (value) => value == true ? "On" : "Off",
+                onTap: () {
+                  _showFocusMagnifierDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+            _CameraValueItem(
+                label: "Focus unit",
+                notifier: cameraConfiguration.focusUnit,
+                formatter: (value) => value),
+            _CameraValueItem(
+                label: "Min focus distance",
+                notifier: cameraConfiguration.minimumFocusDistance,
+                formatter: (value) => value.toStringAsFixed(2)),
+            _CameraValueItem(
+                label: "Longside angle of view",
+                notifier: cameraConfiguration.longsideAngleOfView,
+                formatter: (value) => value.toStringAsFixed(2)),
+            _CameraValueItem(
+                label: "StabilizationMode",
+                notifier: cameraConfiguration.stabilizationMode,
+                formatter: (value) => value ? "On" : "Off",
+                onTap: () {
+                  _showStabilizationModeDialog(
+                      context, cameraController, cameraConfiguration);
+                }),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CameraValueItem extends StatelessWidget {
+  final String label;
+  final ValueNotifier notifier;
+  final String Function(dynamic) formatter;
+  final void Function()? onTap;
+
+  const _CameraValueItem({
+    required this.label,
+    required this.notifier,
+    required this.formatter,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    const labelColor = Colors.white;
+    const valueColor = Colors.white;
+    const bgColor = Color.fromRGBO(0, 0, 0, 0.6);
+    const borderRadius = BorderRadius.all(Radius.circular(12));
+    const padding = EdgeInsets.symmetric(vertical: 8, horizontal: 8);
+    final isTappable = onTap != null;
+    final iconColor = isTappable ? Colors.amber : Colors.grey;
+    final iconTooltip = isTappable ? 'Change setting' : null;
+    final boxWidth = MediaQuery.of(context).orientation == Orientation.landscape
+        ? MediaQuery.of(context).size.width * 0.35
+        : MediaQuery.of(context).size.width * 0.5;
+
+    return ValueListenableBuilder(
+      valueListenable: notifier,
+      builder: (context, value, _) {
+        final body = Container(
+          width: boxWidth,
+          decoration: const BoxDecoration(
+            color: bgColor,
+            borderRadius: borderRadius,
+          ),
+          padding: padding,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: boxWidth * 0.5,
+                child: GestureDetector(
+                  onTap: onTap,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          label,
+                          style: const TextStyle(
+                            color: labelColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                          maxLines: 3,
+                        ),
+                      ),
+                      if (isTappable) ...[
+                        const SizedBox(width: 8),
+                        Tooltip(
+                          message: iconTooltip,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child:
+                                Icon(Icons.build, color: iconColor, size: 22),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: boxWidth * 0.3,
+                child: Text(
+                  value != null ? formatter(value) : 'N/a',
+                  style: const TextStyle(
+                    color: valueColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                  textAlign: TextAlign.end,
+                  maxLines: 3,
+                ),
+              )
+            ],
+          ),
+        );
+
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+          child: body,
+        );
+      },
+    );
+  }
+}
+
+class _SliderSettingDialog extends StatefulWidget {
+  final double? value;
+  final double? min;
+  final double? max;
+  final void Function(double) onChange;
+  final int fixed;
+  final String mappingType; // 'linear' or 'sqrt'
+
+  const _SliderSettingDialog(
+      {required this.value,
+      required this.min,
+      required this.max,
+      required this.onChange,
+      required this.fixed,
+      this.mappingType = 'linear'});
+
+  @override
+  State<_SliderSettingDialog> createState() => _SliderSettingDialogState();
+
+  static show(
+      {required BuildContext context,
+      required String title,
+      required double? value,
+      required double? min,
+      required double? max,
+      required void Function(double) onChange,
+      required int fixed,
+      String mappingType = 'linear'}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text(title),
+          children: <Widget>[
+            _SliderSettingDialog(
+                value: value,
+                min: min,
+                max: max,
+                onChange: onChange,
+                fixed: fixed,
+                mappingType: mappingType)
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _SliderSettingDialogState extends State<_SliderSettingDialog> {
+  double? value;
+  double? sliderValue;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.value;
+    if (value != null && widget.min != null && widget.max != null) {
+      sliderValue = _valueToSlider(value!);
+    }
+  }
+
+  double _sliderToValue(double slider) {
+    if (widget.mappingType == 'sqrt') {
+      return widget.min! + (widget.max! - widget.min!) * (slider * slider);
+    } else {
+      return widget.min! + (widget.max! - widget.min!) * slider;
+    }
+  }
+
+  double _valueToSlider(double value) {
+    if (widget.mappingType == 'sqrt') {
+      final norm = (value - widget.min!) / (widget.max! - widget.min!);
+      return norm >= 0 ? sqrt(norm) : 0.0;
+    } else {
+      return (value - widget.min!) / (widget.max! - widget.min!);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return (sliderValue != null && widget.min != null && widget.max != null)
+        ? Container(
+            padding: const EdgeInsets.all(15),
+            child: Column(children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(value?.toStringAsFixed(widget.fixed) ?? "N/a"),
+              ),
+              Align(
+                  alignment: Alignment.topLeft,
+                  child: Slider(
+                    value: sliderValue!,
+                    min: 0.0,
+                    max: 1.0,
+                    onChanged: (newSlider) {
+                      final newValue = _sliderToValue(newSlider);
+                      widget.onChange(newValue);
+                      setState(() {
+                        sliderValue = newSlider;
+                        value = newValue;
+                      });
+                    },
+                    onChangeEnd: (newSlider) {},
+                  )),
+            ]))
+        : const Text("Notifiers not initialized.");
+  }
+}
+
+_showZoomDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _SliderSettingDialog.show(
+      context: context,
+      title: "Zoom",
+      value: cameraConfiguration.zoom.value,
+      min: cameraConfiguration.minZoom.value,
+      max: cameraConfiguration.maxZoom.value,
+      onChange: (double newValue) {
+        cameraController.setZoom(newValue);
+      },
+      fixed: 2,
+      mappingType: 'linear');
+}
+
+_showISODialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _SliderSettingDialog.show(
+    context: context,
+    title: "ISO",
+    value: cameraConfiguration.iso.value,
+    min: cameraConfiguration.minISO.value,
+    max: cameraConfiguration.maxISO.value,
+    onChange: (double newValue) {
+      cameraController.setISO(newValue);
+    },
+    fixed: 0,
+    mappingType: 'sqrt',
+  );
+}
+
+_showShutterSpeedDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _SliderSettingDialog.show(
+    context: context,
+    title: "ShutterSpeed",
+    value: cameraConfiguration.shutterSpeed.value,
+    min: cameraConfiguration.minShutterSpeed.value,
+    max: cameraConfiguration.maxShutterSpeed.value,
+    onChange: (double newValue) {
+      cameraController.setShutterSpeed(newValue);
+    },
+    fixed: 0,
+    mappingType: 'sqrt',
+  );
+}
+
+_showTargetBitrateDialog(
+    BuildContext context,
+    CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _SliderSettingDialog.show(
+    context: context,
+    title: "Target Bitrate (Mbps)",
+    value: cameraConfiguration.targetBitrate.value != null
+        ? cameraConfiguration.targetBitrate.value! / 1000000
+        : null,
+    min: cameraConfiguration.minTargetBitrate.value != null
+        ? cameraConfiguration.minTargetBitrate.value! / 1000000
+        : null,
+    max: cameraConfiguration.maxTargetBitrate.value != null
+        ? cameraConfiguration.maxTargetBitrate.value! / 1000000
+        : null,
+    onChange: (double newValue) {
+      cameraController.setTargetBitrate((newValue * 1000000).round());
+    },
+    fixed: 0,
+    mappingType: 'linear',
+  );
+}
+
+_showFocusDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _SliderSettingDialog.show(
+      context: context,
+      title: "Focus",
+      value: cameraConfiguration.focus.value,
+      min: cameraConfiguration.minFocus.value,
+      max: cameraConfiguration.maxFocus.value,
+      onChange: (double newValue) {
+        cameraController.setFocus(newValue);
+      },
+      fixed: 2,
+      mappingType: 'linear');
+}
+
+class _DropdownSettingDialog extends StatefulWidget {
+  final int? index;
+  final List<dynamic>? list;
+  final String Function(dynamic) formatter;
+  final void Function(dynamic) onChange;
+
+  const _DropdownSettingDialog({
+    required this.index,
+    required this.list,
+    required this.formatter,
+    required this.onChange,
+  });
+
+  @override
+  State<_DropdownSettingDialog> createState() => _DropdownSettingDialogState();
+
+  static show(
+      {required BuildContext context,
+      required String title,
+      required int? index,
+      required List<dynamic>? list,
+      required String Function(dynamic) formatter,
+      required void Function(dynamic) onChange}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text(title),
+          children: <Widget>[
+            _DropdownSettingDialog(
+                index: index,
+                list: list,
+                formatter: formatter,
+                onChange: onChange)
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _DropdownSettingDialogState extends State<_DropdownSettingDialog> {
+  int? index;
+
+  @override
+  void initState() {
+    super.initState();
+    index = widget.index;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return index != null && widget.list != null
+        ? Container(
+            padding: const EdgeInsets.all(15),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: DropdownButton(
+                isExpanded: true,
+                value: widget.list![index!],
+                icon: const Icon(Icons.arrow_drop_down_circle),
+                items: widget.list!.map<DropdownMenuItem>((object) {
+                  return DropdownMenuItem(
+                    value: object,
+                    child: Row(children: [
+                      Text("${object.index}: "),
+                      Text(widget.formatter(object))
+                    ]),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  if (newValue != null) {
+                    widget.onChange(newValue.index);
+                    setState(() {
+                      index = newValue.index;
+                    });
+                  }
+                },
+                hint: const Text("Select"),
+              ),
+            ),
+          )
+        : const Text("Notifiers not initialized.");
+  }
+}
+
+_showLensDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _DropdownSettingDialog.show(
+      context: context,
+      title: "Lens",
+      index: cameraConfiguration.lensIndex.value,
+      list: cameraConfiguration.lensList.value,
+      formatter: (lens) => lens.description,
+      onChange: (newIndex) {
+        cameraController.setLensIndex(newIndex);
+      });
+}
+
+_showFormatDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _DropdownSettingDialog.show(
+      context: context,
+      title: "Format",
+      index: cameraConfiguration.formatIndex.value,
+      list: cameraConfiguration.formatList.value,
+      formatter: (format) {
+        final height = format.landscapeHeight;
+        final width = format.landscapeWidth;
+        final fps = format.fps;
+        final fov = format.videoFieldOfView.toStringAsFixed(2);
+        final options = <String>[];
+        if (format.hdr) {
+          options.add('hdr');
+        }
+        if (format.binned) {
+          options.add('binned');
+        }
+        if (format.stabilization) {
+          options.add('stbl.');
+        }
+        final description =
+            "${height}x$width, ${fps}FPS\ndevice FoV $fov, ${options.join(', ')}";
+        return description;
+      },
+      onChange: (newIndex) {
+        cameraController.setFormatIndex(newIndex);
+      });
+}
+
+class _ToggleSettingDialog extends StatefulWidget {
+  final bool? value;
+  final String falseLabel;
+  final String trueLabel;
+  final void Function(dynamic) onChange;
+
+  const _ToggleSettingDialog({
+    required this.value,
+    required this.falseLabel,
+    required this.trueLabel,
+    required this.onChange,
+  });
+
+  @override
+  State<_ToggleSettingDialog> createState() => _ToggleSettingDialogState();
+
+  static show(
+      {required BuildContext context,
+      required String title,
+      required bool? value,
+      required String falseLabel,
+      required String trueLabel,
+      required void Function(dynamic) onChange}) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text(title),
+          children: <Widget>[
+            _ToggleSettingDialog(
+                value: value,
+                falseLabel: falseLabel,
+                trueLabel: trueLabel,
+                onChange: onChange)
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _ToggleSettingDialogState extends State<_ToggleSettingDialog> {
+  bool? value;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.value;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return value != null
+        ? Container(
+            padding: const EdgeInsets.all(15),
+            child: Row(children: [
+              Text(widget.falseLabel),
+              Switch(
+                value: value!,
+                onChanged: (newValue) {
+                  widget.onChange(newValue);
+                  setState(() {
+                    value = newValue;
+                  });
+                },
+              ),
+              Text(widget.trueLabel),
+            ]),
+          )
+        : const Text("Notifiers not initialized.");
+  }
+}
+
+_showAFDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _ToggleSettingDialog.show(
+      context: context,
+      title: "Focus",
+      value: cameraConfiguration.focusModeIsAuto.value,
+      falseLabel: "Manual",
+      trueLabel: "Auto",
+      onChange: (newValue) {
+        if (newValue) {
+          cameraController.setFocusModeToAuto();
+        } else {
+          cameraController.setFocusModeToManual();
+        }
+      });
+}
+
+_showAutoExposureDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _ToggleSettingDialog.show(
+    context: context,
+    title: "Auto Exposure",
+    value: cameraConfiguration.isAutoExposure.value,
+    falseLabel: "Off",
+    trueLabel: "On",
+    onChange: (newValue) {
+      if (newValue) {
+        cameraController.setUpAutoExposureObserver();
+      } else {
+        cameraController.tearDownAutoExposureObserver();
+      }
+    },
+  );
+}
+
+_showStabilizationModeDialog(
+    BuildContext context,
+    CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _ToggleSettingDialog.show(
+      context: context,
+      title: "Stabilization Mode",
+      value: cameraConfiguration.stabilizationMode.value,
+      falseLabel: "Off",
+      trueLabel: "On",
+      onChange: (newValue) {
+        if (newValue) {
+          cameraController.setStabilizationModeOn();
+        } else {
+          cameraController.setStabilizationModeOff();
+        }
+      });
+}
+
+_showExposureOffsetBiasDialog(
+    BuildContext context,
+    CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _SliderSettingDialog.show(
+    context: context,
+    title: "Exposure Offset Bias",
+    value: cameraConfiguration.exposureOffsetBias.value,
+    min: -10.0,
+    max: 10.0,
+    onChange: (double newValue) {
+      cameraController.setExposureOffsetBias(newValue);
+    },
+    fixed: 2,
+    mappingType: 'linear',
+  );
+}
+
+_showFocusMagnifierDialog(BuildContext context, CameraController cameraController,
+    CameraConfiguration cameraConfiguration) {
+  _ToggleSettingDialog.show(
+    context: context,
+    title: "Focus Magnifier",
+    value: cameraConfiguration.focusMagnifierEnabled.value,
+    falseLabel: "Off",
+    trueLabel: "On",
+    onChange: (newValue) {
+      cameraController.setFocusMagnifierEnabled(newValue);
+    },
+  );
+}

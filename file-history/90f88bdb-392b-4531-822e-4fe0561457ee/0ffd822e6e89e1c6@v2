@@ -1,0 +1,14 @@
+import { combineReducers } from '@reduxjs/toolkit';
+
+import { reducer as errorReducer } from '@/store/slices/error.slice';
+import { reducer as masterReducer } from '@/store/slices/master.slice';
+import { reducer as userReducer } from '@/store/slices/user.slice';
+
+/**
+ * Storeへデータを格納する各種reducerをまとめたもの
+ */
+export const rootReducer = combineReducers({
+  user: userReducer,
+  master: masterReducer,
+  error: errorReducer,
+});

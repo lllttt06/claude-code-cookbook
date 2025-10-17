@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: false
+  commands:
+    lint:
+      stage_fixed: true
+      glob: '*.{js,ts,tsx,jsx}'
+      run: yarn lint --fix {staged_files}
+    prettier:
+      stage_fixed: true
+      glob: '*.{js,ts,tsx,jsx,json,css,md,yml,yaml}'
+      run: yarn prettier --write {staged_files}

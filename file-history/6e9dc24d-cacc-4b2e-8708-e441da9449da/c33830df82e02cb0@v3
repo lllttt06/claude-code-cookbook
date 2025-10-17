@@ -1,0 +1,51 @@
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/store_kit_2_wrappers.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+
+@immutable
+class AppStoreProduct extends SK2Product {
+  AppStoreProduct({
+    required this.planType,
+    required this.productDetails,
+    required super.id,
+    required super.displayName,
+    required super.displayPrice,
+    required super.description,
+    required super.price,
+    required super.type,
+    required super.priceLocale,
+    super.subscription,
+  });
+
+  final PlanType planType;
+
+  final ProductDetails productDetails;
+}
+
+// プラン種別
+enum PlanType {
+  light(id: Constants.appStoreProductIdLight),
+  standard(id: Constants.appStoreProductIdStandard),
+  premium(id: Constants.appStoreProductIdPremium);
+
+  const PlanType({required this.id});
+
+  final String id;
+
+  factory PlanType.fromId(String id) {
+    return PlanType.values.firstWhere(
+      (e) => e.id == id,
+      orElse: () => PlanType.light,
+    );
+  }
+
+  String get planId => switch (this) {
+        light => '00000001-0000-0050-0000-000000000000',
+        standard => '00000001-0000-0100-0000-000000000000',
+        premium => '00000001-0000-0300-0000-000000000000',
+      };
+}

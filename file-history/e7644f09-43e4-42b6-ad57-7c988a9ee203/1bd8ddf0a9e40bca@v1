@@ -1,0 +1,169 @@
+// Dart imports:
+import 'dart:io';
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/ball_info.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_domain.dart';
+import 'package:baseball_detector_flutter/data/models/enums/role_level.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/session.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import 'package:baseball_detector_flutter/data/models/user_info.dart';
+import 'package:baseball_detector_flutter/data/models/utils/json_big_int_converter.dart';
+
+part 'resource.freezed.dart';
+part 'resource.g.dart';
+
+enum ResourceStatusType {
+  none,
+  onLocalStorage,
+  onAnalysisServerQueue,
+  inAnalysis,
+  analysisFailed,
+  analysisSucceeded,
+  insufficientBalls;
+
+  bool get isOnLocalStorage => this == ResourceStatusType.onLocalStorage;
+}
+
+@unfreezed
+abstract class ResourceData with _$ResourceData {
+  // Countermeasure for the error of seeder generator when referring to dart:ui with a model
+  static bool Function(ResourceData) isOnLocalStorage = (_) => false;
+
+  ResourceData._();
+
+  @JsonSerializable(
+      explicitToJson: true, fieldRename: Constants.modelFieldRename)
+  factory ResourceData({
+    // remote data
+    final String? appVersion,
+    final String? id,
+    final double? focalLength,
+    final double? longsideAngleOfView,
+    final double? fps,
+    final String? uploadFilename,
+    final String? originalVideoFilename,
+    final int? movieWidth,
+    final int? movieHeight,
+    final double? movieTime,
+    final int? status,
+    final DateTime? createdAt, // assumes UTC
+    final DateTime? updatedAt, // assumes UTC
+    final DateTime? recordedAt, // assumes UTC
+    final bool? deleteFlag,
+    final String? userId,
+    final String? sessionId,
+    final double? accX,
+    final double? accY,
+    final double? accZ,
+    final double? focus,
+    final double? iso,
+    final String? lens,
+    final double? shutterSpeed,
+    final double? zoom,
+    final String? device,
+    final bool? isAutoFocus,
+    @JsonBigIntConverter() final int? analyzeType,
+    final UnitType? unit,
+    final String? cameraMode,
+    final String? algorithmVersion,
+    final String? presignedOriginalVideoUrl,
+    final Session? session,
+    final String? teamPlanId,
+    final TeamPlan? teamPlan,
+    final List<BallInfo>? ballInfoList,
+
+    // data filled by repository
+    @JsonKey(includeToJson: false) final String? teamId,
+
+    // local data
+    @JsonKey(includeToJson: false) final String? pathVideoOnLocal,
+  }) = _ResourceData;
+
+  String? get fileName =>
+      uploadFilename ??
+      (pathVideoOnLocal != null
+          ? File(pathVideoOnLocal!).uri.pathSegments.last
+          : null);
+
+  ResourceStatusType get statusType {
+    return switch (status) {
+      0 => ResourceStatusType.onAnalysisServerQueue,
+      1000 || 2000 => ResourceStatusType.inAnalysis,
+      3000 => ResourceStatusType.analysisSucceeded,
+      4000 || 4001 || 4002 => ResourceStatusType.analysisFailed,
+      5000 => ResourceStatusType.insufficientBalls,
+      -1 => ResourceStatusType.onLocalStorage,
+      _ => ResourceStatusType.none,
+    };
+  }
+
+  /// Converts raw data loaded from Supabase to [ResourceData].
+  factory ResourceData.fromJson(Map<String, dynamic> json) =>
+      _$ResourceDataFromJson(json);
+
+  bool isDeletableByUser(
+    String currentUserId,
+    UserAccessibleContents accessibleContents,
+  ) {
+    if (statusType != ResourceStatusType.onLocalStorage &&
+        !_canDeleteRecordByUser(currentUserId, accessibleContents)) {
+      return false;
+    }
+    return switch (statusType) {
+      ResourceStatusType.analysisSucceeded ||
+      ResourceStatusType.analysisFailed ||
+      ResourceStatusType.insufficientBalls =>
+        true,
+      ResourceStatusType.none ||
+      ResourceStatusType.onAnalysisServerQueue ||
+      ResourceStatusType.inAnalysis =>
+        false,
+      ResourceStatusType.onLocalStorage => !isOnLocalStorage(this),
+    };
+  }
+
+  bool _canDeleteRecordByUser(
+    String currentUserId,
+    UserAccessibleContents accessibleContents,
+  ) {
+    if (teamId == null) {
+      return false;
+    }
+    if (accessibleContents.hasPrivilegesFor(
+        teamId!, RoleDomain.basic, RoleLevel.write, true)) {
+      return true;
+    }
+    if (userId == currentUserId &&
+        accessibleContents.hasPrivilegesFor(
+            teamId!, RoleDomain.basic, RoleLevel.write, false)) {
+      return true;
+    }
+    return false;
+  }
+
+  List<BallInfo> getPitchedBallInfoList() {
+    if (ballInfoList != null) {
+      return ballInfoList!
+          .where((ballInfo) => ballInfo.ball.isPitched ?? false)
+          .toList();
+    } else {
+      return <BallInfo>[];
+    }
+  }
+
+  List<BallInfo> getBattedBallInfoList() {
+    if (ballInfoList != null) {
+      return ballInfoList!
+          .where((ballInfo) => ballInfo.ball.isHit ?? false)
+          .toList();
+    } else {
+      return <BallInfo>[];
+    }
+  }
+}

@@ -1,0 +1,36 @@
+/// {@category Data}
+library;
+
+// Package imports:
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/data/models/platform_config.dart';
+import 'package:baseball_detector_flutter/data/models/utils/json_big_int_converter.dart';
+
+part 'plan.freezed.dart';
+part 'plan.g.dart';
+
+@freezed
+abstract class Plan with _$Plan {
+  @JsonSerializable(
+    explicitToJson: true,
+    fieldRename: Constants.modelFieldRename,
+  )
+  const factory Plan({
+    @Default(null) String? id,
+    @Default(null) String? name,
+    @Default(null) String? description,
+    @Default(null) @JsonBigIntConverter() int? type,
+    @Default(null) @JsonBigIntConverter() int? maxBalls,
+    @Default(null) @JsonBigIntConverter() int? maxAiCoachs,
+    @Default(false) bool isPaid,
+    @Default(false) bool isActive,
+    @Default(null) DateTime? createdAt, // assumes UTC
+    @Default(null) DateTime? updatedAt, // assumes UTC
+    @Default(null) PlatformConfig? platformConfig,
+  }) = _Plan;
+
+  factory Plan.fromJson(Map<String, dynamic> json) => _$PlanFromJson(json);
+}

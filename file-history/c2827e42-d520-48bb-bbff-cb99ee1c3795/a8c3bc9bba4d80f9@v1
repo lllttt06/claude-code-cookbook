@@ -1,0 +1,54 @@
+// Project imports:
+import 'package:baseball_detector_flutter/controllers/local_video_list_controller.dart';
+import 'package:baseball_detector_flutter/controllers/resource_data_list_controller.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/upload_queue.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/views/components/custom_dialog.dart';
+import 'package:flutter/material.dart';
+// Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+class ResourceUploadDialog extends HookConsumerWidget {
+  const ResourceUploadDialog({
+    required this.resource,
+    this.onSucceeded,
+    this.onFailed,
+    super.key,
+  });
+
+  final ResourceData resource;
+  final VoidCallback? onSucceeded;
+  final VoidCallback? onFailed;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return CustomDialog.oneMessage(
+      title: context.l10n.resource_upload_dialog__title,
+      aboveButtonText: context.l10n.resource_upload_dialog__above_button_label,
+      messageText: context.l10n.resource_upload_dialog__message,
+      isAbovePositive: true,
+      belowButtonText: context.l10n.resource_upload_dialog__below_button_label,
+      aboveButtonAction: (context) async {
+        final localVideoData = await ref
+            .read(localVideoListControllerProvider.notifier)
+            .findVideoById(resource.id!);
+
+        // Add to upload queue
+        ref.read(uploadQueueProvider).addUploadTask(localVideoData);
+
+        // Invalidate resource data list
+        ref.invalidate(
+          resourceDataListControllerProvider(
+            teamId: resource.teamId!,
+            sessionId: resource.sessionId!,
+          ),
+        );
+        onSucceeded?.call();
+        if (context.mounted) {
+          Navigator.of(context).pop(); // pop the dialog.
+        }
+      },
+    );
+  }
+}

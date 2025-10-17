@@ -1,0 +1,149 @@
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton, Stack, Typography } from '@mui/material';
+import _ from 'lodash';
+import React, { FC, ReactElement, useEffect, useState } from 'react';
+
+import { StyledLink } from '@/components/common/styled-link';
+import { PAGE_INFO } from '@/constants/page.constants';
+import { Team } from '@/models/team';
+import { BallUsageStatus, TeamPlanStatus } from '@/models/team-status';
+import { TeamTab } from '@/pages/account';
+import { translate } from '@/utils/i18n';
+
+import { InfoSvg } from '../svgs/band-icon-svgs';
+
+export type TeamPlanLimitBandParam = {
+  team: Team;
+};
+
+export const TeamPlanLimitBand: FC<TeamPlanLimitBandParam> = ({ team }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(true);
+
+  const [param, setParam] = useState<{
+    background: string;
+    icon: ReactElement;
+    text: string;
+    isActive: boolean;
+  }>({
+    background: '',
+    icon: InfoSvg,
+    text: '',
+    isActive: false,
+  });
+
+  useEffect(() => {
+    if (team.billingFailureReason) {
+      setParam({
+        background: '#FF0000',
+        icon: InfoSvg,
+        text: translate('payment_failed'),
+        isActive: true,
+      });
+      return;
+    }
+
+    // ボール使用量チェック（利用不可の場合は即座に通知）
+    if (team.ballUsageStatus === BallUsageStatus.LIMIT_REACHED) {
+      setParam({
+        background: '#FF0000',
+        icon: InfoSvg,
+        text: translate('you_have_reached_usage_limit'),
+        isActive: true,
+      });
+      return;
+    }
+
+    // TeamPlan の期限チェック
+    if (team.teamPlanStatus === TeamPlanStatus.EXPIRED) {
+      setParam({
+        background: '#FF0000',
+        icon: InfoSvg,
+        text: translate('team_plan_expired'),
+        isActive: true,
+      });
+      return;
+    }
+
+    if (team.teamPlanStatus === TeamPlanStatus.NO_CONTRACT) {
+      setParam({
+        background: '#FF0000',
+        icon: InfoSvg,
+        text: translate('no_team_plan_found'),
+        isActive: true,
+      });
+      return;
+    }
+
+    if (team.teamPlanStatus === TeamPlanStatus.NEXT_PLAN_PENDING) {
+      setParam({
+        background: '#FF0000',
+        icon: InfoSvg,
+        text: translate('next_team_plan_has_not_started_yet'),
+        isActive: true,
+      });
+      return;
+    }
+
+    // 警告表示
+    const isUsageLimitApproaching =
+      team.ballUsageStatus === BallUsageStatus.LIMIT_APPROACHING;
+    const isExpirationApproaching =
+      team.teamPlanStatus === TeamPlanStatus.EXPIRING_SOON &&
+      !team.teamPlan?.subscriptionType;
+
+    if (isUsageLimitApproaching || isExpirationApproaching) {
+      const texts: string[] = [];
+      if (isExpirationApproaching) {
+        texts.push(translate('team_plan_expiration_is_approaching'));
+      }
+      if (isUsageLimitApproaching) {
+        texts.push(translate('usage_limit_is_approaching'));
+      }
+      setParam({
+        background: '#FF8152',
+        icon: InfoSvg,
+        text: texts.join(' / '),
+        isActive: true,
+      });
+      return;
+    }
+
+    setParam({
+      background: '#000000',
+      icon: InfoSvg,
+      text: '',
+      isActive: false,
+    });
+  }, [team.teamPlan, team.nextTeamPlan, team.billingFailureReason]);
+
+  if (!isOpen || !param.isActive) {
+    return '';
+  }
+
+  return (
+    <Stack
+      direction="row"
+      sx={{ backgroundColor: param.background, color: 'white' }}
+    >
+      <Typography
+        sx={{ alignItems: 'center', display: 'flex', flex: 1, padding: '5px' }}
+        variant="body2"
+      >
+        {param.icon}
+        <Typography
+          component="span"
+          sx={{ paddingLeft: '5px' }}
+          variant="inherit"
+        >
+          {param.text}{' '}
+          <StyledLink href={PAGE_INFO.ACCOUNT.href(TeamTab)} color="inherit">
+            {translate('check_team_plan')}
+          </StyledLink>
+        </Typography>
+      </Typography>
+      <IconButton color="inherit" onClick={() => setIsOpen(false)}>
+        <CloseIcon />
+      </IconButton>
+    </Stack>
+  );
+};

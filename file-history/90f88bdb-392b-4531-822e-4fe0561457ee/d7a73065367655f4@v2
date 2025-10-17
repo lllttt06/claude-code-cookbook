@@ -1,0 +1,25 @@
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
+interface ErrorState {
+  hasForbiddenError: boolean;
+}
+
+const initialState: ErrorState = {
+  hasForbiddenError: false,
+};
+
+const slice = createSlice({
+  name: 'error',
+  initialState,
+  reducers: {
+    setForbiddenError(
+      state: ErrorState,
+      action: PayloadAction<boolean>,
+    ): void {
+      state.hasForbiddenError = action.payload;
+    },
+  },
+});
+
+export const { reducer, actions } = slice;

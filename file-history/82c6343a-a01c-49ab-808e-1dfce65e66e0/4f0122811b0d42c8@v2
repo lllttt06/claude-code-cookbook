@@ -1,0 +1,613 @@
+import {
+  AdminPanelSettings,
+  AdminPanelSettingsOutlined,
+  FormatListBulleted,
+  Groups3Outlined,
+  Inventory2Outlined,
+  KeyboardDoubleArrowLeft,
+  KeyboardDoubleArrowRight,
+  Menu as MenuIcon,
+  NotificationsOutlined,
+} from '@mui/icons-material';
+import {
+  AppBar,
+  Box,
+  Button,
+  CSSObject,
+  Divider,
+  Drawer as MuiDrawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Slide,
+  styled,
+  Theme,
+  Toolbar,
+  Typography,
+  useMediaQuery,
+  useScrollTrigger,
+  useTheme,
+} from '@mui/material';
+import Image from 'next/image';
+import Link from 'next/link';
+import { enqueueSnackbar } from 'notistack';
+import React, { ReactElement, ReactNode, useEffect, useState } from 'react';
+
+import CriticalError from '@/components/common/critical-error';
+import { ImageOrAvatar } from '@/components/common/image-or-avatar';
+import PlanStatusCard, {
+  PlanStatus,
+} from '@/components/common/plan-status-card';
+import AppConstants from '@/constants/app.constants';
+import { EnvManager } from '@/constants/env.constants';
+import { PAGE_INFO } from '@/constants/page.constants';
+import { isTopTierPlan } from '@/constants/plan.constants';
+import useServicesHook from '@/hooks';
+import { Team, TeamType } from '@/models/team';
+import { User } from '@/models/user';
+import { useSelector } from '@/store';
+import { wrapForLoading } from '@/utils/functions/transformer';
+import { translate } from '@/utils/i18n';
+import { logger } from '@/utils/logger';
+import { createSafeCallbackUrl } from '@/utils/redirect-validator';
+
+const drawerWidth = '16rem';
+
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: drawerWidth,
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.enteringScreen,
+  }),
+  overflowX: 'hidden',
+});
+
+const closedMixin = (theme: Theme): CSSObject => ({
+  transition: theme.transitions.create('width', {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  overflowX: 'hidden',
+  width: `calc(${theme.spacing(7)} + 1px)`,
+  [theme.breakpoints.up('sm')]: {
+    width: `calc(${theme.spacing(8)} + 1px)`,
+  },
+});
+
+const Drawer = styled(MuiDrawer)(({ theme }) => ({
+  width: drawerWidth,
+  flexShrink: 0,
+  whiteSpace: 'nowrap',
+  boxSizing: 'border-box',
+  variants: [
+    {
+      props: { open: true },
+      style: {
+        ...openedMixin(theme),
+        '.MuiDrawer-paper': openedMixin(theme),
+      },
+    },
+    {
+      props: { open: false },
+      style: {
+        ...closedMixin(theme),
+        '.MuiDrawer-paper': closedMixin(theme),
+      },
+    },
+  ],
+}));
+
+type MenuItemDataType = {
+  name: string;
+  link?: string;
+  isSelected?: boolean;
+  icon: ReactElement;
+  isDivider?: boolean;
+};
+
+function LayoutInner({
+  children,
+  currentUser,
+  currentTeam,
+}: {
+  children: ReactNode;
+  currentUser: User;
+  currentTeam: Team;
+}) {
+  const { router, services } = useServicesHook();
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const scrollTrigger = useScrollTrigger();
+
+  const [open, setOpen] = useState(!isSmallScreen);
+  const flipOpen = () => setOpen(!open);
+
+  const adminItem = {
+    name: translate(PAGE_INFO.ADMIN.name as keyof typeof translate),
+    icon: <AdminPanelSettingsOutlined />,
+    isSelected: router.pathname == PAGE_INFO.ADMIN.href(currentTeam.id),
+    link: PAGE_INFO.ADMIN.href(currentTeam.id),
+  };
+
+  const superAdminItems = [
+    {
+      name: translate(
+        PAGE_INFO.SUPER_ADMIN_RESOURCES.name as keyof typeof translate,
+      ),
+      icon: <AdminPanelSettings />,
+      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),
+      link: PAGE_INFO.SUPER_ADMIN_RESOURCES.href(),
+    },
+    {
+      name: translate(
+        PAGE_INFO.SUPER_ADMIN_TEAMS.name as keyof typeof translate,
+      ),
+      icon: <AdminPanelSettings />,
+      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_TEAMS.href(),
+      link: PAGE_INFO.SUPER_ADMIN_TEAMS.href(),
+    },
+    {
+      name: translate(
+        PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.name as keyof typeof translate,
+      ),
+      icon: <AdminPanelSettings />,
+      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),
+      link: PAGE_INFO.SUPER_ADMIN_NOTIFICATIONS.href(),
+    },
+    {
+      name: translate(
+        PAGE_INFO.SUPER_ADMIN_AI_COACH.name as keyof typeof translate,
+      ),
+      icon: <AdminPanelSettings />,
+      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),
+      link: PAGE_INFO.SUPER_ADMIN_AI_COACH.href(),
+    },
+    {
+      name: translate(
+        PAGE_INFO.SUPER_ADMIN_ITEMS.name as keyof typeof translate,
+      ),
+      icon: <Inventory2Outlined />,
+      isSelected: router.pathname == PAGE_INFO.SUPER_ADMIN_ITEMS.href(),
+      link: PAGE_INFO.SUPER_ADMIN_ITEMS.href(),
+    },
+  ];
+
+  const menuItems: MenuItemDataType[] = [
+    {
+      name: translate(PAGE_INFO.SESSIONS.name as keyof typeof translate),
+      icon: <FormatListBulleted />,
+      isSelected: router.pathname == PAGE_INFO.SESSIONS.href(currentTeam.id),
+      link: PAGE_INFO.SESSIONS.href(currentTeam.id),
+    },
+    {
+      name: translate(PAGE_INFO.PLAYERS.name as keyof typeof translate),
+      icon: <Groups3Outlined />,
+      isSelected: router.pathname == PAGE_INFO.PLAYERS.href(currentTeam.id),
+      link: PAGE_INFO.PLAYERS.href(currentTeam.id),
+    },
+    ...(User.isAccessible(
+      currentUser,
+      currentTeam.id,
+      'management',
+      'read',
+      true,
+    )
+      ? [adminItem]
+      : []),
+    {
+      name: '_divider_0',
+      icon: <></>,
+      isDivider: true,
+    },
+    {
+      name: translate(PAGE_INFO.NOTIFICATIONS.name as keyof typeof translate),
+      icon: <NotificationsOutlined />,
+      isSelected: router.pathname == PAGE_INFO.NOTIFICATIONS.href(),
+      link: PAGE_INFO.NOTIFICATIONS.href(),
+    },
+    ...(User.isAccessible(currentUser, 'all', 'admin', 'read', false)
+      ? [
+          {
+            name: '_divider_2',
+            icon: <></>,
+            isDivider: true,
+          },
+          ...superAdminItems,
+        ]
+      : []),
+  ];
+
+  const closeDrawerOnSmallScreen = () => {
+    if (isSmallScreen) {
+      setOpen(false);
+    }
+  };
+
+  // プランステータスの判定
+  const getPlanStatus = (): { status: PlanStatus | null } => {
+    if (currentTeam.teamType === TeamType.MULTIPLE) {
+      return { status: null };
+    }
+
+    // 期限内のAppleサブスクリプションがある場合は表示しない
+    if (currentTeam.teamPlan?.isInAppleSubscription) {
+      return { status: null };
+    }
+
+    // 支払い失敗の場合
+    if (
+      currentTeam.billingFailureReason !== null &&
+      currentTeam.billingFailureReason !== ''
+    ) {
+      return { status: 'billing_failure' };
+    }
+
+    // teamPlan が無料プランの場合
+    if (!currentTeam.teamPlan?.plan.isPaid) {
+      return { status: 'upgrade_prompt' };
+    }
+
+    // プランが利用不可の場合（期限切れや利用制限に達している場合）
+    if (!currentTeam.teamPlanAvailability.isAvailable) {
+      const reason = currentTeam.teamPlanAvailability.unavailableReason;
+      if (reason === 'team_plan_expired' || reason === 'no_team_plan_found') {
+        return { status: 'upgrade_prompt' };
+      }
+    }
+
+    // 既存のplanがisTopTierPlanの場合は表示しない
+    if (isTopTierPlan(currentTeam.teamPlan?.plan.id)) {
+      return { status: null };
+    }
+
+    // 利用制限に達している場合
+    if (currentTeam.ballRate >= 1) {
+      return { status: 'limit_reached' };
+    }
+
+    // 利用制限が近づいている場合
+    const isUsageLimitApproaching = currentTeam.ballRate >= 0.9;
+    if (isUsageLimitApproaching) {
+      return { status: 'pre_warning' };
+    }
+
+    // その他の場合は常にUpgrade promptを表示
+    return { status: 'upgrade_prompt' };
+  };
+
+  const planStatus = getPlanStatus();
+
+  const handleUpgrade = () => {
+    // 期限内のAppleサブスクリプションがある場合は何もしない
+    if (currentTeam.teamPlan?.isInAppleSubscription) {
+      return;
+    }
+    // 期限内のStripeサブスクリプションがある場合は請求ポータルを開く
+    if (currentTeam.teamPlan?.isInStripeSubscription) {
+      handleBillingPortal(planStatus.status);
+      return;
+    }
+    // その他の場合はプラン選択ページに遷移
+    router.push('/account/plans');
+  };
+
+  const handleBillingPortal = async (status: PlanStatus | null) => {
+    try {
+      let type:
+        | 'subscription_update'
+        | 'subscription_cancel'
+        | 'payment_method_update'
+        | undefined;
+      if (status === 'billing_failure') {
+        type = 'payment_method_update';
+      } else if (
+        status === 'upgrade_prompt' ||
+        status === 'pre_warning' ||
+        status === 'limit_reached'
+      ) {
+        type = 'subscription_update';
+      }
+
+      const result = await services.default.payment.createBillingPortalSession({
+        teamId: currentTeam.id,
+        type,
+      });
+      if (result.error) {
+        throw result.error;
+      }
+      if (result.data?.url) {
+        window.open(result.data.url, '_blank', 'noopener,noreferrer');
+      }
+    } catch (error) {
+      enqueueSnackbar({
+        variant: 'error',
+        message: translate('payment_error_occurred'),
+      });
+    }
+  };
+
+  return (
+    <>
+      <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+        <Slide appear={false} direction="down" in={!scrollTrigger}>
+          <AppBar variant="outlined" color="inherit" elevation={0}>
+            <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Box sx={{ display: 'flex', flex: 1 }}>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  sx={{ mr: 2 }}
+                  onClick={flipOpen}
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Box>
+              <Box sx={{ display: 'flex', flex: 1, justifyContent: 'center' }}>
+                <Image
+                  src={AppConstants.LOGO_URL}
+                  alt=""
+                  priority={true}
+                  height="40"
+                  width="150"
+                />
+              </Box>
+              <Box sx={{ display: 'flex', flex: 1 }} />
+            </Toolbar>
+          </AppBar>
+        </Slide>
+        <Toolbar />
+      </Box>
+      <Box sx={{ display: 'flex' }}>
+        <Drawer
+          open={open}
+          onClose={flipOpen}
+          variant={isSmallScreen ? 'temporary' : 'permanent'}
+          slotProps={{
+            root: {
+              keepMounted: true, // Better open performance on mobile.
+            },
+          }}
+        >
+          <List sx={{ flex: 1 }}>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={flipOpen}
+                sx={{
+                  justifyContent: 'space-between',
+                }}
+              >
+                <Image
+                  src={AppConstants.LOGO_URL}
+                  alt=""
+                  priority={true}
+                  height="40"
+                  width="150"
+                  style={{ display: open ? 'block' : 'none' }}
+                />
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 1 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {open ? (
+                    <KeyboardDoubleArrowLeft />
+                  ) : (
+                    <KeyboardDoubleArrowRight />
+                  )}
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            <Divider sx={{ mt: 2, mb: 6 }} />
+            <ListItem sx={{ opacity: open ? 1 : 0, mb: 2, py: 0 }}>
+              <Typography>{translate('navigation')}</Typography>
+            </ListItem>
+            {menuItems.map((x) => {
+              return (
+                <React.Fragment key={x.name}>
+                  {x.link ? (
+                    <ListItem disablePadding>
+                      <Link
+                        href={x.link}
+                        passHref
+                        style={{ width: '100%', textDecoration: 'none' }}
+                        onClick={closeDrawerOnSmallScreen}
+                      >
+                        <ListItemButton
+                          selected={!!x.isSelected}
+                          sx={{
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <ListItemIcon
+                            sx={{
+                              minWidth: 0,
+                              mr: open ? 3 : 'auto',
+                              justifyContent: 'center',
+                            }}
+                          >
+                            {x.icon}
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={x.name}
+                            sx={{
+                              opacity: open ? 1 : 0,
+                            }}
+                          />
+                        </ListItemButton>
+                      </Link>
+                    </ListItem>
+                  ) : x.isDivider ? (
+                    <Divider sx={{ my: 1 }} />
+                  ) : (
+                    <></>
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </List>
+
+          {/* Plan Status Card */}
+          {planStatus.status !== null && (
+            <PlanStatusCard
+              status={planStatus.status}
+              open={open}
+              onUpgrade={handleUpgrade}
+              billingFailureReason={currentTeam.billingFailureReason}
+            />
+          )}
+
+          {/* TODO: remove this */}
+          {!EnvManager.isPrd && (
+            // NOTE: Nest Box components to avoid the effects of flex and
+            // prevent the vertical size from shrinking
+            <Box>
+              <Box
+                className={'develop'}
+                sx={{
+                  padding: 0.5,
+                  background: 'lightgray',
+                  height: '100%',
+                  overflowX: 'hidden',
+                  textOverflow: 'ellipsis',
+                }}
+              >
+                build: {EnvManager.config.APP_UPDATED_AT}
+                <br />
+                commit: {EnvManager.config.GIT_COMMIT_HASH}
+                <br />
+              </Box>
+            </Box>
+          )}
+
+          <Box>
+            <Divider></Divider>
+            <Link
+              href={PAGE_INFO.ACCOUNT.href()}
+              passHref
+              style={{ width: '100%', textDecoration: 'none' }}
+              onClick={closeDrawerOnSmallScreen}
+            >
+              <ListItemButton
+                selected={
+                  router.pathname == PAGE_INFO.ACCOUNT.href() ||
+                  router.pathname == PAGE_INFO.ACCOUNT_EDIT.href()
+                }
+                sx={{
+                  justifyContent: 'center',
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <ImageOrAvatar
+                    url={currentUser.profile?.presignedImageUrl}
+                    width={40}
+                    height={40}
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  primary={currentUser?.profile?.username ?? '-'}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                  }}
+                  slotProps={{
+                    primary: {
+                      sx: {
+                        overflowX: 'hidden',
+                        textOverflow: 'ellipsis',
+                      },
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </Link>
+          </Box>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            py: 2,
+            px: 2,
+            overflowX: 'auto',
+            minHeight: '100vh',
+            background: '#F9F9F9',
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
+    </>
+  );
+}
+
+export default function ConsoleLayout({ children }: { children: ReactNode }) {
+  const { services, router } = useServicesHook();
+  const [_, setIsSubmitting] = useState<boolean>(false);
+  const currentUser = useSelector((state) => state.user.me);
+  const currentTeam = useSelector((state) => state.user.currentTeam);
+  const userError = useSelector((state) => state.user.error);
+  const loginStatus = useSelector((state) => state.user.loginStatus);
+
+  const logout = () => {
+    wrapForLoading(setIsSubmitting, async () => {
+      await services.default.auth.signOut();
+      location.href = PAGE_INFO.SIGN_IN.href();
+    });
+  };
+
+  useEffect(() => {
+    if (loginStatus === 'initial') {
+      return;
+    }
+
+    if (loginStatus != 'yes') {
+      logger.debug('SD: no user - redirect to signin');
+      const callbackUrl = createSafeCallbackUrl();
+      router.replace(`${PAGE_INFO.SIGN_IN.href()}?callbackUrl=${callbackUrl}`);
+    }
+  }, [loginStatus]);
+
+  if (loginStatus == 'error' && userError) {
+    return (
+      <>
+        <CriticalError error={userError} />
+      </>
+    );
+  }
+
+  return currentUser && currentTeam ? (
+    <LayoutInner currentUser={currentUser} currentTeam={currentTeam}>
+      {children}
+    </LayoutInner>
+  ) : currentUser ? (
+    <Box
+      sx={{
+        p: 2,
+      }}
+    >
+      <Typography>{translate('no_active_teams_found')}</Typography>
+      <Button color="error" sx={{ mt: 2 }} variant="contained" onClick={logout}>
+        {translate('sign_out')}
+      </Button>
+    </Box>
+  ) : (
+    <>
+      {
+        // nothing to do (waiting initialization)
+      }
+    </>
+  );
+}

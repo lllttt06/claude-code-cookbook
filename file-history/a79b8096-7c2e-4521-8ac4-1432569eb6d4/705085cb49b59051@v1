@@ -1,0 +1,81 @@
+import 'package:baseball_detector_flutter/constants.dart';
+import 'package:baseball_detector_flutter/controllers/locale_controller.dart';
+import 'package:baseball_detector_flutter/gen/assets.gen.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/utils/dark_mode_ext.dart';
+import 'package:baseball_detector_flutter/utils/locale_ext.dart';
+import 'package:baseball_detector_flutter/utils/web_url.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+class IntroductionVideoContainer extends HookConsumerWidget {
+  const IntroductionVideoContainer({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isJa = ref.watch(localeControllerProvider).isJapanese;
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: context.isDarkMode
+              ? ColorManager.darkSecondaryText.withValues(alpha: 0.3)
+              : ColorManager.secondaryText.withValues(alpha: 0.3),
+        ),
+      ),
+      height: 60,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            final url = isJa
+                ? Constants.howToUseSmartScoutURLJa
+                : Constants.howToUseSmartScoutURLEn;
+            openURLWithSystemBrowser(url: url);
+          },
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Row(
+              children: [
+                Assets.images.icYoutube.svg(width: 32),
+                const Gap(8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        context.l10n.sessions_page__introduction_video_title,
+                        style: TextStyle(
+                          fontSize: FontSize.s16,
+                          fontWeight: FontWeight.w600,
+                          color: context.isDarkMode
+                              ? ColorManager.darkForeground
+                              : ColorManager.primaryText,
+                          height: 1,
+                        ),
+                      ),
+                      Text(
+                        context
+                            .l10n.sessions_page__introduction_video_description,
+                        style: TextStyle(
+                          color: context.isDarkMode
+                              ? ColorManager.darkSecondaryText
+                              : ColorManager.secondaryText,
+                          height: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

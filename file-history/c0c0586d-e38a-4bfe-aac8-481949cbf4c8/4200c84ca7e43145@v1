@@ -1,0 +1,481 @@
+/// {@category Containers}
+// This file provides a scatter chart visualization for baseball pitch data, including average statistics by pitch type.
+library;
+
+// Flutter imports:
+import 'package:flutter/material.dart';
+
+// Package imports:
+import 'package:collection/collection.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sprintf/sprintf.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/ball.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/pitch_type.dart';
+import 'package:baseball_detector_flutter/l10n/l10n_ext.dart';
+import 'package:baseball_detector_flutter/providers/app_unit_provider.dart';
+import 'package:baseball_detector_flutter/utils/unit_converter.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/hooks/use_lighten_color.dart';
+import 'package:baseball_detector_flutter/views/pages/home/sessions/session_details/hooks/use_pitch_type_map.dart';
+import 'package:baseball_detector_flutter/views/themes/color_manager.dart';
+import 'package:baseball_detector_flutter/views/themes/font_manager.dart';
+
+class PitchingStats {
+  // Holds average statistics for a group of balls (pitches)
+  final double avgVelocity; // Average initial velocity
+  final double avgVBreak; // Average vertical break
+  final double avgHBreak; // Average horizontal break
+
+  PitchingStats({
+    required this.avgVelocity,
+    required this.avgVBreak,
+    required this.avgHBreak,
+  });
+}
+
+/// A widget that displays a scatter chart of pitch break data and a summary table by pitch type.
+class PitchingScatterChart extends HookConsumerWidget {
+  final List<Ball> balls; // List of pitch data to visualize
+
+  const PitchingScatterChart({
+    super.key,
+    required this.balls,
+  });
+
+  /// Normalize pitchType: treat null and pitchType.pitchType == 'none' as the same group (null)
+  PitchType? _normalizePitchType(PitchType? pitchType) {
+    if (pitchType == null || pitchType.pitchType == 'none') {
+      return null;
+    }
+    return pitchType;
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Get unit type and axis settings
+    final unitType = ref.watch(appUnitProvider);
+    final breakUnit = UnitConverter.formatBreak(0, unitType).unit;
+    final maxAxis = unitType == UnitType.mphInch ? 30.0 : 70.0;
+    final lightenColor = useLightenColor();
+    final pitchTypeColor = usePitchTypeColor();
+
+    // Filter balls with valid break data (exclude nulls) and within axis range
+    final balls = this.balls.where(
+      (ball) {
+        if (ball.verticalBreak == null || ball.horizontalBreak == null) {
+          return false;
+        }
+        final vBreak =
+            UnitConverter.convertBreak(ball.verticalBreak!, unitType);
+        final hBreak =
+            UnitConverter.convertBreak(ball.horizontalBreak!, unitType);
+        return vBreak.abs() <= maxAxis && hBreak.abs() <= maxAxis;
+      },
+    );
+    // Get unique pitch types, sorted by their priority
+    final pitchTypes = Set<PitchType?>.from(
+      balls.map((ball) => _normalizePitchType(ball.pitchType)),
+    ).sortedBy<num>((pitchType) => pitchType?.priority ?? double.infinity);
+
+    // Axis side titles for the chart
+    final sideTitles = SideTitles(
+      showTitles: true,
+      reservedSize: 40,
+      interval: unitType == UnitType.mphInch ? 10 : 20,
+      getTitlesWidget: (value, meta) => SideTitleWidget(
+        meta: meta,
+        child: Text(
+          (unitType == UnitType.kmhCm && value.abs() == 70)
+              ? ''
+              : meta.formattedValue,
+          style: const TextStyle(
+            fontSize: 12,
+            color: ColorManager.disabled,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+    // Axis titles data (labels for axes and chart title)
+    final titlesData = FlTitlesData(
+      leftTitles: AxisTitles(
+        sideTitles: sideTitles,
+        axisNameWidget: Padding(
+          padding: const EdgeInsets.only(left: 40),
+          child: Text(
+            sprintf(
+              context.l10n.balls_scatter_chart__left_axis_label_format,
+              [breakUnit],
+            ),
+            style: TextStyleManager.subtitle2
+                .copyWith(color: ColorManager.disabled),
+          ),
+        ),
+        axisNameSize: 24,
+      ),
+      bottomTitles: AxisTitles(
+        sideTitles: sideTitles,
+        axisNameWidget: Padding(
+          padding: const EdgeInsets.only(left: 40),
+          child: Text(
+            sprintf(
+              context.l10n.balls_scatter_chart__bottom_axis_label_format,
+              [breakUnit],
+            ),
+            style: TextStyleManager.subtitle2
+                .copyWith(color: ColorManager.disabled),
+          ),
+        ),
+        axisNameSize: 24,
+      ),
+      topTitles: AxisTitles(
+        axisNameWidget: Padding(
+          padding: const EdgeInsets.only(left: 40),
+          child: Text(
+            context.l10n.balls_scatter_chart__title,
+            style: TextStyleManager.body1.copyWith(fontWeight: FontWeight.w500),
+          ),
+        ),
+        axisNameSize: 36,
+      ),
+      rightTitles: const AxisTitles(axisNameWidget: SizedBox.shrink()),
+    );
+
+    // Convert filtered balls to a list for index access
+    final ballsList = balls.toList();
+
+    // Group balls by pitch type
+    final Map<PitchType?, List<Ball>> ballsByPitchType = {};
+    for (final ball in ballsList) {
+      final normalized = _normalizePitchType(ball.pitchType);
+      ballsByPitchType.putIfAbsent(normalized, () => []).add(ball);
+    }
+
+    // Calculate average stats for each pitch type group
+    final Map<PitchType?, PitchingStats> statsByPitchType = {};
+    ballsByPitchType.forEach((pitchType, balls) {
+      final velocities =
+          balls.map((b) => b.initialVelocity).whereType<double>().toList();
+      final vBreaks =
+          balls.map((b) => b.verticalBreak).whereType<double>().toList();
+      final hBreaks =
+          balls.map((b) => b.horizontalBreak).whereType<double>().toList();
+      if (velocities.isEmpty || vBreaks.isEmpty || hBreaks.isEmpty) return;
+      statsByPitchType[pitchType] = PitchingStats(
+        avgVelocity: velocities.average,
+        avgVBreak: vBreaks.average,
+        avgHBreak: hBreaks.average,
+      );
+    });
+
+    // Main layout: chart and summary table
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        AspectRatio(
+          aspectRatio:
+              MediaQuery.of(context).orientation == Orientation.landscape
+                  ? 2.0
+                  : 1.0,
+          child: Center(
+            heightFactor: 1,
+            child: LayoutBuilder(builder: (context, constraints) {
+              // Calculate available chart area, considering axis labels and titles
+              double calc(AxisTitles titles) =>
+                  (titles.showAxisTitles ? titles.axisNameSize : 0) +
+                  (titles.showSideTitles ? titles.sideTitles.reservedSize : 0);
+
+              final verticalSpaces =
+                  calc(titlesData.topTitles) + calc(titlesData.bottomTitles);
+              final horizontalSpaces =
+                  calc(titlesData.leftTitles) + calc(titlesData.rightTitles);
+              final candidateWidth =
+                  constraints.maxHeight - verticalSpaces + horizontalSpaces;
+              final candidateHeight =
+                  constraints.maxWidth - horizontalSpaces + verticalSpaces;
+              final size = candidateWidth <= constraints.maxWidth
+                  ? Size(candidateWidth, constraints.maxHeight)
+                  : Size(constraints.maxWidth, candidateHeight);
+              return SizedBox(
+                width: size.width,
+                height: size.height,
+                child: ScatterChart(
+                  ScatterChartData(
+                    minX: -maxAxis,
+                    maxX: maxAxis,
+                    minY: -maxAxis,
+                    maxY: maxAxis,
+                    // Map each ball to a scatter spot on the chart
+                    scatterSpots: ballsList.map((ball) {
+                      final color = pitchTypeColor(ball.pitchType?.pitchType);
+                      final colorLighten = lightenColor(color, 0.15);
+                      return ScatterSpot(
+                        UnitConverter.convertBreak(
+                            ball.horizontalBreak!, unitType),
+                        UnitConverter.convertBreak(
+                            ball.verticalBreak!, unitType),
+                        dotPainter: FlDotCirclePainter(
+                          color: colorLighten,
+                          strokeColor: color,
+                          strokeWidth: 2,
+                          radius: 3,
+                        ),
+                      );
+                    }).toList(),
+                    borderData: FlBorderData(
+                      border: Border.all(
+                        color: ColorManager.primaryBorder,
+                        width: 2,
+                      ),
+                    ),
+                    gridData: FlGridData(
+                      horizontalInterval:
+                          unitType == UnitType.mphInch ? 10 : 20,
+                      verticalInterval: unitType == UnitType.mphInch ? 10 : 20,
+                      getDrawingHorizontalLine: (value) => FlLine(
+                        color: ColorManager.primaryBorder,
+                        strokeWidth: value == 0 ? 2 : 0.4,
+                      ),
+                      getDrawingVerticalLine: (value) => FlLine(
+                        color: ColorManager.primaryBorder,
+                        strokeWidth: value == 0 ? 2 : 0.4,
+                      ),
+                    ),
+                    titlesData: titlesData,
+                    scatterTouchData: ScatterTouchData(enabled: false),
+                  ),
+                ),
+              );
+            }),
+          ),
+        ),
+        const SizedBox(height: 16),
+        // Show summary table of average stats by pitch type
+        _PitchTypeTable(
+          pitchTypes: pitchTypes,
+          statsByPitchType: statsByPitchType,
+          unitType: unitType,
+        ),
+        const SizedBox(height: 32),
+      ],
+    );
+  }
+}
+
+/// Table widget that displays average stats for each pitch type.
+class _PitchTypeTable extends HookWidget {
+  const _PitchTypeTable({
+    required this.pitchTypes,
+    required this.statsByPitchType,
+    required this.unitType,
+  });
+
+  final List<PitchType?> pitchTypes;
+  final Map<PitchType?, PitchingStats> statsByPitchType;
+  final UnitType unitType;
+
+  @override
+  Widget build(BuildContext context) {
+    final vUnit = UnitConverter.formatVelocity(0, unitType).unit;
+    final bUnit = UnitConverter.formatBreak(0, unitType).unit;
+    final lightenColor = useLightenColor();
+    final translatePitchType = useTranslatePitchType();
+    final pitchTypeColor = usePitchTypeColor();
+
+    String formatNum(double v) => v.toStringAsFixed(1);
+
+    // Convert velocity to the correct unit for display
+    double convertVelocity(double v) {
+      // Assuming input v is in km/h based on UnitConverter logic
+      switch (unitType) {
+        case UnitType.mphInch:
+          return v * 0.621371;
+        case UnitType.kmhCm:
+          return v;
+      }
+    }
+
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      child: DataTable(
+        columnSpacing: 8,
+        headingRowHeight: 50,
+        dataRowMinHeight: 32,
+        dataRowMaxHeight: 36,
+        columns: [
+          DataColumn(
+            label: Expanded(
+              child: Text(
+                context.l10n.balls_scatter_chart__pitch_type,
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                softWrap: true,
+              ),
+            ),
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    context.l10n.balls_scatter_chart__avg_velo,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "[$vUnit]",
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    context.l10n.balls_scatter_chart__avg_vb,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "[$bUnit]",
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                    softWrap: true,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          DataColumn(
+            label: Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    context.l10n.balls_scatter_chart__avg_hb,
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    "[$bUnit]",
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        // Build a row for each pitch type
+        rows: pitchTypes.map((pitchType) {
+          final stats = statsByPitchType[pitchType];
+          final color = pitchTypeColor(pitchType?.pitchType);
+          final colorLightened = lightenColor(color, 0.15);
+          final label = translatePitchType(pitchType?.pitchType);
+
+          // Build the cell for the pitch type, including a colored dot
+          Widget buildPitchTypeCell(String text) {
+            return Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize
+                  .min, // Prevent Row from taking full cell width unnecessarily
+              children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  margin: const EdgeInsets.only(
+                    right: 4,
+                  ),
+                  foregroundDecoration: BoxDecoration(
+                    border: Border.all(color: color, width: 2),
+                    shape: BoxShape.circle, // Use shape for cleaner circle
+                  ),
+                  decoration: BoxDecoration(
+                    color: colorLightened,
+                    shape: BoxShape.circle, // Use shape for cleaner circle
+                  ),
+                ),
+                // Wrap text in Flexible to allow it to take available space and prevent overflow
+                Flexible(
+                    child: Text(
+                  text,
+                  overflow: TextOverflow
+                      .ellipsis, // Handle potential overflow within the cell
+                )),
+              ],
+            );
+          }
+
+          if (stats == null) {
+            // If no stats, show dashes
+            return DataRow(cells: [
+              DataCell(buildPitchTypeCell(label)),
+              const DataCell(Text('-', style: TextStyle(fontSize: 11))),
+              const DataCell(Text('-', style: TextStyle(fontSize: 11))),
+              const DataCell(Text('-', style: TextStyle(fontSize: 11))),
+            ]);
+          }
+
+          // Show average stats for this pitch type
+          return DataRow(cells: [
+            DataCell(buildPitchTypeCell(label)),
+            DataCell(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  formatNum(convertVelocity(stats.avgVelocity)),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            )),
+            DataCell(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  formatNum(
+                      UnitConverter.convertBreak(stats.avgVBreak, unitType)),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            )),
+            DataCell(Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  formatNum(
+                      UnitConverter.convertBreak(stats.avgHBreak, unitType)),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ],
+            )),
+          ]);
+        }).toList(),
+      ),
+    );
+  }
+}

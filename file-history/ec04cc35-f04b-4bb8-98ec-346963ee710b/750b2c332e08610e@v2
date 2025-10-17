@@ -1,0 +1,96 @@
+// Project imports:
+import '../record_definitions.dart';
+import 'items.dart';
+import 'teams.dart';
+
+class TeamItemData {
+  const TeamItemData({
+    required this.id,
+    required this.teamId,
+    this.teamSubscriptionId,
+    required this.itemId,
+    this.terminatedAt,
+    required this.isLatest,
+  });
+
+  final String id;
+  final String teamId;
+  final String? teamSubscriptionId;
+  final String itemId;
+  final DateTime? terminatedAt;
+  final bool isLatest;
+}
+
+class TeamItemBallData {
+  const TeamItemBallData({
+    required this.id,
+    required this.teamItemId,
+    required this.itemBallId,
+    required this.startDate,
+    required this.endDate,
+    this.currentUsage = 0,
+  });
+
+  final String id;
+  final String teamItemId;
+  final String itemBallId;
+  final DateTime startDate;
+  final DateTime endDate;
+  final int currentUsage;
+}
+
+// teamWriteTestに対するteam_item（サブスクリプションなし、直接付与）
+final teamItemWriteTest = TeamItemData(
+  id: '77777777-1100-0000-0000-000000000000',
+  teamId: teamWriteTest.id!,
+  teamSubscriptionId: null,
+  itemId: itemTestBall1000.id,
+  terminatedAt: null,
+  isLatest: true,
+);
+
+// teamWriteTestのteam_item_ball
+final teamItemBallWriteTest = TeamItemBallData(
+  id: '77777777-1105-0000-0000-000000000000',
+  teamItemId: teamItemWriteTest.id,
+  itemBallId: itemBallTest1000.id,
+  startDate: DateTime.utc(2025, 1, 1),
+  endDate: DateTime.utc(2026, 1, 1),
+  currentUsage: 0,
+);
+
+final _time = DateTime.utc(2024, 1, 1);
+
+final teamItemRecords = RecordDefinitions<TeamItemData>(
+  table: 'team_items',
+  data: [
+    teamItemWriteTest,
+  ],
+  columns: {
+    'id': (e) => e.id,
+    'team_id': (e) => e.teamId,
+    'team_subscription_id': (e) => e.teamSubscriptionId,
+    'item_id': (e) => e.itemId,
+    'terminated_at': (e) => e.terminatedAt,
+    'is_latest': (e) => e.isLatest,
+    'created_at': (_) => _time,
+    'updated_at': (_) => _time,
+  },
+);
+
+final teamItemBallRecords = RecordDefinitions<TeamItemBallData>(
+  table: 'team_item_balls',
+  data: [
+    teamItemBallWriteTest,
+  ],
+  columns: {
+    'id': (e) => e.id,
+    'team_item_id': (e) => e.teamItemId,
+    'item_ball_id': (e) => e.itemBallId,
+    'start_date': (e) => e.startDate,
+    'end_date': (e) => e.endDate,
+    'current_usage': (e) => e.currentUsage,
+    'created_at': (_) => _time,
+    'updated_at': (_) => _time,
+  },
+);

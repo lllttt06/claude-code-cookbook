@@ -1,0 +1,389 @@
+// Package imports:
+import 'package:flutter_test/flutter_test.dart';
+
+// Project imports:
+import 'package:baseball_detector_flutter/data/models/enums/app_role.dart';
+import 'package:baseball_detector_flutter/data/models/enums/unit_type.dart';
+import 'package:baseball_detector_flutter/data/models/resource.dart';
+import 'package:baseball_detector_flutter/data/models/team_plan.dart';
+import '../../_common/create_accessible_contents.dart';
+
+void main() {
+  group('Testing Resource', () {
+    const id = 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
+    const appVersion = '1.1.0+58';
+    const focalLength = 24.0;
+    const longsideAngleOfView = 25.0;
+    const fps = 60.0;
+    const uploadFilename = 'video.mp4';
+    const originalVideoFilename = 'original.mp4';
+    const movieWidth = 1920;
+    const movieHeight = 1080;
+    const movieTime = 1.0;
+    const status = 3000;
+    final createdAt = DateTime(2024, 1, 1, 1, 1);
+    final updatedAt = DateTime(2024, 1, 1, 2, 1);
+    final recordedAt = DateTime(2024, 1, 1, 3, 1);
+    const deleteFlag = false;
+    const userId = 'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb';
+    const sessionId = 'cccccccc-cccc-cccc-cccc-cccccccccccc';
+    const accX = 0.1;
+    const accY = 9.8;
+    const accZ = 0.1;
+    const focus = 1.0;
+    const isAutoFocus = true;
+    const iso = 6000.0;
+    const cameraMode = 'brightWithTelephoto';
+    const lens = 'Test lens';
+    const shutterSpeed = 1.0;
+    const zoom = 1.0;
+    const device = 'iPhone 15 Pro';
+    const analyzeType = 1;
+    const unit = UnitType.mphInch;
+    const presignedOriginalVideoUrl =
+        'https://example.test/original.mp4?presigned';
+    const session = null;
+    const ballInfoList = null;
+    const teamPlanId = 'dddddddd-dddd-dddd-dddd-dddddddddddd';
+    const teamPlan = TeamPlan(
+      id: teamPlanId,
+    );
+
+    test('toJson1', () {
+      final resource = ResourceData(
+        id: id,
+        appVersion: appVersion,
+        cameraMode: cameraMode,
+        focalLength: focalLength,
+        longsideAngleOfView: longsideAngleOfView,
+        fps: fps,
+        uploadFilename: uploadFilename,
+        originalVideoFilename: originalVideoFilename,
+        movieWidth: movieWidth,
+        movieHeight: movieHeight,
+        movieTime: movieTime,
+        status: status,
+        createdAt: createdAt,
+        updatedAt: updatedAt,
+        recordedAt: recordedAt,
+        deleteFlag: deleteFlag,
+        userId: userId,
+        sessionId: sessionId,
+        accX: accX,
+        accY: accY,
+        accZ: accZ,
+        focus: focus,
+        isAutoFocus: isAutoFocus,
+        iso: iso,
+        lens: lens,
+        shutterSpeed: shutterSpeed,
+        zoom: zoom,
+        device: device,
+        analyzeType: analyzeType,
+        unit: unit,
+        presignedOriginalVideoUrl: presignedOriginalVideoUrl,
+        session: session,
+        ballInfoList: ballInfoList,
+        teamPlan: teamPlan,
+        teamPlanId: teamPlanId,
+      );
+
+      final resourceJson = resource.toJson();
+
+      expect(resourceJson.length, 36);
+
+      expect(resourceJson.containsKey('id'), isTrue);
+      expect(resourceJson.containsKey('appVersion'), isTrue);
+      expect(resourceJson.containsKey('cameraMode'), isTrue);
+      expect(resourceJson.containsKey('focalLength'), isTrue);
+      expect(resourceJson.containsKey('longsideAngleOfView'), isTrue);
+      expect(resourceJson.containsKey('fps'), isTrue);
+      expect(resourceJson.containsKey('uploadFilename'), isTrue);
+      expect(resourceJson.containsKey('originalVideoFilename'), isTrue);
+      expect(resourceJson.containsKey('movieWidth'), isTrue);
+      expect(resourceJson.containsKey('movieHeight'), isTrue);
+      expect(resourceJson.containsKey('movieTime'), isTrue);
+      expect(resourceJson.containsKey('status'), isTrue);
+      expect(resourceJson.containsKey('createdAt'), isTrue);
+      expect(resourceJson.containsKey('updatedAt'), isTrue);
+      expect(resourceJson.containsKey('recordedAt'), isTrue);
+      expect(resourceJson.containsKey('deleteFlag'), isTrue);
+      expect(resourceJson.containsKey('userId'), isTrue);
+      expect(resourceJson.containsKey('sessionId'), isTrue);
+      expect(resourceJson.containsKey('accX'), isTrue);
+      expect(resourceJson.containsKey('accY'), isTrue);
+      expect(resourceJson.containsKey('accZ'), isTrue);
+      expect(resourceJson.containsKey('focus'), isTrue);
+      expect(resourceJson.containsKey('isAutoFocus'), isTrue);
+      expect(resourceJson.containsKey('iso'), isTrue);
+      expect(resourceJson.containsKey('lens'), isTrue);
+      expect(resourceJson.containsKey('shutterSpeed'), isTrue);
+      expect(resourceJson.containsKey('zoom'), isTrue);
+      expect(resourceJson.containsKey('device'), isTrue);
+      expect(resourceJson.containsKey('analyzeType'), isTrue);
+      expect(resourceJson.containsKey('unit'), isTrue);
+      expect(resourceJson.containsKey('presignedOriginalVideoUrl'), isTrue);
+      expect(resourceJson.containsKey('session'), isTrue);
+      expect(resourceJson.containsKey('ballInfoList'), isTrue);
+      expect(resourceJson.containsKey('teamPlan'), isTrue);
+      expect(resourceJson.containsKey('teamPlanId'), isTrue);
+
+      expect(resourceJson['id'], id);
+      expect(resourceJson['focalLength'], focalLength);
+      expect(resourceJson['longsideAngleOfView'], longsideAngleOfView);
+      expect(resourceJson['fps'], fps);
+      expect(resourceJson['uploadFilename'], uploadFilename);
+      expect(resourceJson['originalVideoFilename'], originalVideoFilename);
+      expect(resourceJson['movieWidth'], movieWidth);
+      expect(resourceJson['movieHeight'], movieHeight);
+      expect(resourceJson['movieTime'], movieTime);
+      expect(resourceJson['status'], status);
+      expect(resourceJson['createdAt'], createdAt.toIso8601String());
+      expect(resourceJson['updatedAt'], updatedAt.toIso8601String());
+      expect(resourceJson['recordedAt'], recordedAt.toIso8601String());
+      expect(resourceJson['deleteFlag'], deleteFlag);
+      expect(resourceJson['userId'], userId);
+      expect(resourceJson['sessionId'], sessionId);
+      expect(resourceJson['accX'], accX);
+      expect(resourceJson['accY'], accY);
+      expect(resourceJson['accZ'], accZ);
+      expect(resourceJson['focus'], focus);
+      expect(resourceJson['isAutoFocus'], isAutoFocus);
+      expect(resourceJson['iso'], iso);
+      expect(resourceJson['lens'], lens);
+      expect(resourceJson['shutterSpeed'], shutterSpeed);
+      expect(resourceJson['zoom'], zoom);
+      expect(resourceJson['device'], device);
+      expect(resourceJson['analyzeType'], analyzeType.toString());
+      expect(resourceJson['unit'], unit.toJson());
+      expect(
+          resourceJson['presignedOriginalVideoUrl'], presignedOriginalVideoUrl);
+      expect(resourceJson['session'], session);
+      expect(resourceJson['ballInfoList'], ballInfoList);
+      expect(resourceJson['teamPlan'], teamPlan.toJson());
+      expect(resourceJson['teamPlanId'], teamPlanId);
+    });
+
+    test('fromJson1 (API)', () {
+      final resourceJson = {
+        'id': id,
+        'appVersion': appVersion,
+        'cameraMode': cameraMode,
+        'focalLength': focalLength,
+        'longsideAngleOfView': longsideAngleOfView,
+        'fps': fps,
+        'uploadFilename': uploadFilename,
+        'originalVideoFilename': originalVideoFilename,
+        'movieWidth': movieWidth,
+        'movieHeight': movieHeight,
+        'movieTime': movieTime,
+        'status': status,
+        'createdAt': createdAt.toIso8601String(),
+        'updatedAt': updatedAt.toIso8601String(),
+        'recordedAt': recordedAt.toIso8601String(),
+        'deleteFlag': deleteFlag,
+        'userId': userId,
+        'sessionId': sessionId,
+        'accX': accX,
+        'accY': accY,
+        'accZ': accZ,
+        'focus': focus,
+        'isAutoFocus': isAutoFocus,
+        'iso': iso,
+        'lens': lens,
+        'shutterSpeed': shutterSpeed,
+        'zoom': zoom,
+        'device': device,
+        'analyzeType': analyzeType.toString(),
+        'unit': unit.toJson(),
+        'presignedOriginalVideoUrl': presignedOriginalVideoUrl,
+        'session': session,
+        'ballInfoList': ballInfoList,
+        'teamPlan': teamPlan.toJson(),
+        'teamPlanId': teamPlanId,
+      };
+
+      final resource = ResourceData.fromJson(resourceJson);
+
+      expect(resource.id, id);
+      expect(resource.appVersion, appVersion);
+      expect(resource.cameraMode, cameraMode);
+      expect(resource.focalLength, focalLength);
+      expect(resource.longsideAngleOfView, longsideAngleOfView);
+      expect(resource.fps, fps);
+      expect(resource.uploadFilename, uploadFilename);
+      expect(resource.originalVideoFilename, originalVideoFilename);
+      expect(resource.movieWidth, movieWidth);
+      expect(resource.movieHeight, movieHeight);
+      expect(resource.movieTime, movieTime);
+      expect(resource.status, status);
+      expect(resource.createdAt, createdAt);
+      expect(resource.updatedAt, updatedAt);
+      expect(resource.recordedAt, recordedAt);
+      expect(resource.deleteFlag, deleteFlag);
+      expect(resource.userId, userId);
+      expect(resource.sessionId, sessionId);
+      expect(resource.accX, accX);
+      expect(resource.accY, accY);
+      expect(resource.accZ, accZ);
+      expect(resource.focus, focus);
+      expect(resource.isAutoFocus, isAutoFocus);
+      expect(resource.iso, iso);
+      expect(resource.lens, lens);
+      expect(resource.shutterSpeed, shutterSpeed);
+      expect(resource.zoom, zoom);
+      expect(resource.device, device);
+      expect(resource.analyzeType, analyzeType);
+      expect(resource.unit, unit);
+      expect(resource.presignedOriginalVideoUrl, presignedOriginalVideoUrl);
+      expect(resource.session, session);
+      expect(resource.ballInfoList, ballInfoList);
+      expect(resource.teamPlan, teamPlan);
+      expect(resource.teamPlanId, teamPlanId);
+    });
+
+    test('isDeletableByUser', () {
+      const teamId1 = '00000000-0000-4000-8000-000000000001';
+      const userId1 = '10000000-0000-4000-8000-000000000001';
+      const teamId2 = '00000000-0000-4000-8000-000000000002';
+      const userId2 = '10000000-0000-4000-8000-000000000002';
+      final r = ResourceData(
+        teamId: teamId1,
+        userId: userId1,
+        status: 3000, // analysisSucceeded
+      );
+
+      // same team, same user
+      expect(
+        r.isDeletableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.teamAdmin]
+          }),
+        ),
+        true,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.teamManager]
+          }),
+        ),
+        true,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.teamMember]
+          }),
+        ),
+        true,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.superAdmin]
+          }),
+        ),
+        false, // superAdmin は basic ドメインで Read のみ
+      );
+      expect(
+        r.isDeletableByUser(
+          userId1,
+          createAccessibleContents({
+            teamId1: [AppRole.personalUser]
+          }),
+        ),
+        true,
+      );
+
+      // same team, another user
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.teamAdmin]
+          }),
+        ),
+        true,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.teamManager]
+          }),
+        ),
+        true,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.superAdmin]
+          }),
+        ),
+        false, // superAdmin は basic ドメインで Read のみ
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId1: [AppRole.teamMember]
+          }),
+        ),
+        false,
+      );
+
+      // another team, another user
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.superAdmin]
+          }),
+        ),
+        false, // superAdmin は basic ドメインで Read のみ
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.teamAdmin]
+          }),
+        ),
+        false,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.teamManager]
+          }),
+        ),
+        false,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.teamMember]
+          }),
+        ),
+        false,
+      );
+      expect(
+        r.isDeletableByUser(
+          userId2,
+          createAccessibleContents({
+            teamId2: [AppRole.personalUser]
+          }),
+        ),
+        false,
+      );
+    });
+  });
+}

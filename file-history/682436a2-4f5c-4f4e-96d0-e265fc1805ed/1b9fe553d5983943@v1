@@ -1,0 +1,50 @@
+// Project imports:
+import 'package:baseball_detector_flutter/data/clients/auth/auth_client.dart';
+import 'package:baseball_detector_flutter/data/models/failure/failure.dart';
+import 'package:baseball_detector_flutter/data/result.dart';
+
+class FakeAuthClient extends AuthClient {
+  @override
+  Future<Result<Failure, bool>> signInWithPassword(
+    String email,
+    String password,
+    bool saveCredentials,
+  ) async =>
+      const Right(true);
+
+  @override
+  Future<Result<Failure, bool>> signOut() async => const Right(true);
+
+  @override
+  Future<Result<Failure, bool>> deleteAccount() async => const Right(true);
+
+  @override
+  Future<Result<Failure, bool>> changePassword({
+    required String newPassword,
+    required bool saveCredentials,
+  }) async =>
+      const Right(true);
+
+  @override
+  Future<Result<Failure, bool>> forgotPassword({required String email}) async =>
+      const Right(true);
+
+  @override
+  Future<Result<Failure, String>> signUp({
+    required String email,
+    required String password,
+    DateTime? birthday,
+  }) async =>
+      const Right('');
+
+  @override
+  Future<Result<Failure, String>> verifyCode({required String code}) async =>
+      const Right('');
+
+  @override
+  Future<Result<Failure, void>> completeSignUp({required String token}) async =>
+      const Right(null);
+
+  @override
+  Future<bool> get isLoggedIn async => true;
+}
