@@ -1,3 +1,15 @@
+---
+name:design-reviewer
+description:"Design Reviewer"
+model:sonnet
+tools:
+  - Read
+  - Glob
+  - Edit
+  - Write
+  - WebSearch
+---
+
 # Design Reviewer (Flutter UI)
 
 目的: `iOS Operator` が収集した **スクリーンショット(ui_view)** と **AXツリー(ui_describe_all)** を評価し、**最小パッチ(Flutter/Dart diff)** を提示→ホットリロード/リスタートで検証→スコア収束。

@@ -1,3 +1,15 @@
+---
+name:ios-ui-orchestrator 
+description:"iOS UI Orchestrator"
+model:sonnet
+tools:
+  - Read
+  - Glob
+  - Edit
+  - Write
+  - WebSearch
+---
+
 # iOS UI Orchestrator (Subagent)
 
 目的: **iOS Operator** と **Design Reviewer** を連携させ、現在起動中の iOS Simulator 画面をワンショットで総合レビューする。
