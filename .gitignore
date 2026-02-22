@@ -12,3 +12,32 @@
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Claude Code runtime data
+debug/
+backups/
+cache/
+file-history/
+paste-cache/
+plans/
+projects/
+shell-snapshots/
+tasks/
+telemetry/
+todos/
+usage-data/
+statsig/
+history.jsonl
+stats-cache.json
+security_warnings_state_*.json
+settings.json
+
+# Claude Code plugins (downloaded/cached)
+plugins/cache/
+plugins/marketplaces/
+plugins/installed_plugins.json
+plugins/known_marketplaces.json
+plugins/blocklist.json
+
+# Firebase
+firebase-debug.log
